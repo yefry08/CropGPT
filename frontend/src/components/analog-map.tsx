@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react"
 import * as maplibregl from "maplibre-gl"
-import type { GeoJSONSource, Map as MLMap } from "maplibre-gl"
+import type { GeoJSONSource, Map as MLMap, StyleSpecification } from "maplibre-gl"
 
 import type { GridPoint, QueryResult } from "@/lib/api"
-import { baseStyle, EMPTY_FC } from "@/lib/geo"
+import { BASE_STYLE, offlineStyle, EMPTY_FC } from "@/lib/geo"
 
 interface Props {
   result: QueryResult
@@ -26,11 +26,14 @@ export function AnalogMap({ result, grid, selected, onSelect, count = 3 }: Props
     if (!el.current) return
     const m = new maplibregl.Map({
       container: el.current,
-      style: baseStyle(),
+      style: BASE_STYLE as string | StyleSpecification,
       center: [0, 10],
       zoom: 1,
       attributionControl: { compact: true },
       renderWorldCopies: false,
+    })
+    m.on("error", () => {
+      m.setStyle(offlineStyle() as string | StyleSpecification)
     })
     m.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right")
     m.on("load", () => {
@@ -41,8 +44,9 @@ export function AnalogMap({ result, grid, selected, onSelect, count = 3 }: Props
         type: "circle",
         source: "grid",
         paint: {
-          "circle-radius": ["case", ["get", "regional"], 1.8, 1.2],
-          "circle-color": ["case", ["get", "regional"], "#3b5566", "#243040"],
+          "circle-radius": ["case", ["get", "regional"], 2.2, 1.4],
+          "circle-color": ["case", ["get", "regional"], "#4a6680", "#2a3f55"],
+          "circle-opacity": 0.7,
         },
       })
       m.addLayer({
@@ -50,9 +54,9 @@ export function AnalogMap({ result, grid, selected, onSelect, count = 3 }: Props
         type: "line",
         source: "links",
         paint: {
-          "line-color": ["case", ["get", "active"], "#5ec8e5", "#5ec8e5"],
+          "line-color": "#5ec8e5",
           "line-opacity": ["case", ["get", "active"], 0.9, 0.35],
-          "line-width": ["case", ["get", "active"], 1.6, 1],
+          "line-width": ["case", ["get", "active"], 1.8, 1],
           "line-dasharray": [2, 2],
         },
       })
@@ -94,7 +98,7 @@ export function AnalogMap({ result, grid, selected, onSelect, count = 3 }: Props
     })
     markers.current.forEach((mk) => mk.remove())
     const target = document.createElement("div")
-    target.className = "h-3.5 w-3.5 rounded-full border-2 border-[#05070d] bg-[#f2b45a] shadow-[0_0_0_4px_rgba(242,180,90,0.25)]"
+    target.className = "h-3.5 w-3.5 rounded-full border-2 border-[#1a1200] bg-[#f2b45a] shadow-[0_0_0_4px_rgba(242,180,90,0.22)]"
     target.title = r.parcel.name ?? "Your parcel"
     markers.current = [new maplibregl.Marker({ element: target }).setLngLat([c.lon, c.lat]).addTo(m)]
     analogs.forEach((a, i) => {
@@ -103,7 +107,7 @@ export function AnalogMap({ result, grid, selected, onSelect, count = 3 }: Props
       node.title = `${a.region_name} — similarity percentile ${a.similarity_percentile.toFixed(1)}`
       node.className =
         "flex h-6 w-6 items-center justify-center rounded-full border text-[11px] font-bold shadow " +
-        (i === sel ? "border-[#05070d] bg-[#5ec8e5] text-[#04121a]" : "border-[#5ec8e5] bg-[#05070d] text-[#5ec8e5]")
+        (i === sel ? "border-[#05070d] bg-[#5ec8e5] text-[#04121a]" : "border-[#5ec8e5] bg-[#0a1e2a] text-[#5ec8e5]")
       node.textContent = String(i + 1)
       node.addEventListener("click", () => pick(i))
       markers.current.push(new maplibregl.Marker({ element: node }).setLngLat([a.lon, a.lat]).addTo(m))

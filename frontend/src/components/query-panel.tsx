@@ -31,40 +31,9 @@ export function QueryPanel(p: Props) {
 
   return (
     <div className="space-y-6">
+      {/* Parcel definition */}
       <section>
-        <div className="eyebrow mb-2">Recorded parcels</div>
-        <div className="flex flex-wrap gap-1.5">
-          {p.fixtures.map((f) => (
-            <button
-              key={f.id}
-              type="button"
-              onClick={() => p.onPickFixture(f)}
-              className={cn(
-                "rounded-full border px-3 py-1 text-[12px] transition-colors",
-                p.activeFixture === f.id ? "border-parcel bg-parcel text-[#1b1203]" : "border-parcel/40 text-parcel hover:bg-parcel/10",
-              )}
-            >
-              {f.name}
-              <span className="ml-1 opacity-70">· {f.country}</span>
-            </button>
-          ))}
-        </div>
-        {p.staticMode ? (
-          <p className="mt-2 text-[11px] leading-snug text-muted-foreground">
-            Static demo: these three parcels were computed from recorded satellite and soil data. Changing the weights
-            re-runs the matching in your browser. Defining a new parcel needs the Python server in live mode.
-          </p>
-        ) : p.mode === "offline" ? (
-          <p className="mt-2 text-[11px] leading-snug text-muted-foreground">
-            Offline mode: these three parcels replay recorded satellite and soil responses. Other parcels need{" "}
-            <code className="num">make demo-live</code>.
-          </p>
-        ) : null}
-      </section>
-
-      {p.staticMode ? null : (
-      <section>
-        <div className="eyebrow mb-2">Or define a parcel</div>
+        <div className="eyebrow mb-2">Define your parcel</div>
         <div className="mb-3 inline-flex rounded-lg border border-border p-0.5">
           {(["circle", "polygon"] as const).map((m) => (
             <button
@@ -81,6 +50,7 @@ export function QueryPanel(p: Props) {
             </button>
           ))}
         </div>
+
         {d.mode === "circle" ? (
           <div className="grid grid-cols-3 gap-2">
             {(
@@ -106,12 +76,15 @@ export function QueryPanel(p: Props) {
                 />
               </label>
             ))}
-            <p className="col-span-3 text-[11px] text-muted-foreground">Or click the map to place the centre.</p>
+            <p className="col-span-3 text-[11px] text-muted-foreground">
+              Search for a place on the map, or click to drop a pin. Adjust the radius in km.
+            </p>
           </div>
         ) : (
           <div className="flex items-center justify-between gap-2 text-[12px] text-muted-foreground">
             <span>
-              {d.vertices.length} vertices {d.closed ? "· closed" : "· click the map to add, double-click to close"}
+              {d.vertices.length} vertices{" "}
+              {d.closed ? "· closed" : "· click the map to add points, double-click to close"}
             </span>
             <Button size="sm" variant="ghost" onClick={() => p.onDraft({ ...d, vertices: [], closed: false })}>
               <RotateCcw /> Clear
@@ -119,12 +92,16 @@ export function QueryPanel(p: Props) {
           </div>
         )}
       </section>
-      )}
 
+      {/* Weights */}
       <section>
         <div className="mb-2 flex items-center justify-between">
           <span className="eyebrow">Dimension-group weights</span>
-          <button type="button" className="text-[11px] text-muted-foreground hover:text-foreground" onClick={() => p.onWeights(p.defaultWeights)}>
+          <button
+            type="button"
+            className="text-[11px] text-muted-foreground hover:text-foreground"
+            onClick={() => p.onWeights(p.defaultWeights)}
+          >
             reset
           </button>
         </div>
@@ -143,17 +120,66 @@ export function QueryPanel(p: Props) {
                 value={p.weights[g]}
                 onChange={(e) => p.onWeights({ ...p.weights, [g]: Number(e.target.value) })}
               />
-              <span className="num text-right text-muted-foreground">{Math.round((p.weights[g] / total) * 100)}%</span>
+              <span className="num text-right text-muted-foreground">
+                {Math.round((p.weights[g] / total) * 100)}%
+              </span>
             </label>
           ))}
         </div>
-        <p className="mt-2 text-[11px] text-muted-foreground">Normalised to 100%. Default: water 30, soil 25, climate 25, terrain 10, vegetation 10.</p>
+        <p className="mt-2 text-[11px] text-muted-foreground">
+          Normalised to 100 %. Default: water 30, soil 25, climate 25, terrain 10, vegetation 10.
+        </p>
       </section>
 
+      {/* Run button */}
       <Button size="lg" className="w-full" disabled={!p.canRun || p.loading} onClick={p.onRun}>
         {p.loading ? <LoaderCircle className="animate-spin" /> : <Play />}
-        {p.loading ? "Computing vector and matching…" : "Find analogs"}
+        {p.loading ? "Computing…" : "Find analogs"}
       </Button>
+
+      {/* Precomputed examples (static mode only) */}
+      {p.staticMode && p.fixtures.length > 0 && (
+        <section className="border-t border-border pt-4">
+          <div className="eyebrow mb-2">Precomputed examples</div>
+          <p className="mb-2 text-[11px] leading-snug text-muted-foreground">
+            This static demo ships three recorded results. Click to load one instantly — matching can still be
+            re-run in your browser with different weights.
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {p.fixtures.map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                onClick={() => p.onPickFixture(f)}
+                className={cn(
+                  "rounded-full border px-3 py-1 text-[11px] transition-colors",
+                  p.activeFixture === f.id
+                    ? "border-parcel bg-parcel text-[#1b1203]"
+                    : "border-parcel/40 text-parcel hover:bg-parcel/10",
+                )}
+              >
+                {f.name}
+                <span className="ml-1 opacity-60">· {f.country}</span>
+              </button>
+            ))}
+          </div>
+          {!p.activeFixture && p.mode === "offline" && (
+            <p className="mt-2 text-[11px] text-muted-foreground">
+              For live analysis of any location run{" "}
+              <code className="num">make demo-live</code>.
+            </p>
+          )}
+        </section>
+      )}
+
+      {/* Offline mode hint (live server, not static) */}
+      {!p.staticMode && p.mode === "offline" && (
+        <p className="text-[11px] text-muted-foreground">
+          Offline mode: recorded responses for{" "}
+          {p.fixtures.map((f) => f.name).join(", ")}. Other parcels need{" "}
+          <code className="num">make demo-live</code>.
+        </p>
+      )}
     </div>
   )
 }

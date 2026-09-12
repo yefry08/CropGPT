@@ -48,10 +48,10 @@ export default function App() {
   }, [])
 
   const ring = draftRing(draft)
-  const canRun = api.isStatic
-    ? fixture !== null
-    : fixture !== null || (draft.mode === "circle" ? ring !== null : draft.closed && ring !== null)
-  const ignoreDraft = useCallback(() => {}, [])
+  const hasDraft = draft.mode === "circle" ? ring !== null : draft.closed && ring !== null
+  // In static mode a custom parcel will show a friendly error; the button is still enabled so the user
+  // discovers the limitation rather than wondering why it's disabled.
+  const canRun = fixture !== null || hasDraft
 
   // Static build: the JSON export is the result object itself, offered as a local file.
   const jsonHref = useMemo(
@@ -66,6 +66,15 @@ export default function App() {
   async function run() {
     setLoading(true)
     setError(null)
+    // Static mode with a custom parcel: show a helpful message instead of a server error.
+    if (api.isStatic && !fixture) {
+      setLoading(false)
+      setError(
+        "This static demo can only load the three precomputed examples (see below the Run button). " +
+        "For live analysis of any location, clone the repo and run `make demo-live`.",
+      )
+      return
+    }
     let body: QueryBody
     if (fixture) body = { fixture_id: fixture }
     else if (draft.mode === "circle") body = { lat: draft.lat!, lon: draft.lon!, radius_km: draft.radiusKm, name: "Custom parcel" }
@@ -179,10 +188,11 @@ export default function App() {
             <div className="relative min-h-[460px] p-2">
               <ParcelMap
                 draft={draft}
-                onChange={api.isStatic ? ignoreDraft : onDraft}
+                onChange={onDraft}
                 fixtures={meta?.fixtures ?? []}
                 activeFixture={fixture}
                 onPickFixture={pickFixture}
+                staticMode={api.isStatic}
               />
             </div>
           </Card>

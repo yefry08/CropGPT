@@ -1,9 +1,10 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import * as maplibregl from "maplibre-gl"
-import type { GeoJSONSource, Map as MLMap } from "maplibre-gl"
+import type { GeoJSONSource, Map as MLMap, StyleSpecification } from "maplibre-gl"
+import { Search, Loader2 } from "lucide-react"
 
 import type { Fixture } from "@/lib/api"
-import { baseStyle, circleRing, EMPTY_FC } from "@/lib/geo"
+import { BASE_STYLE, offlineStyle, circleRing, EMPTY_FC } from "@/lib/geo"
 
 export interface ParcelDraft {
   mode: "circle" | "polygon"
@@ -26,52 +27,79 @@ interface Props {
   fixtures: Fixture[]
   activeFixture: string | null
   onPickFixture: (f: Fixture) => void
+  staticMode?: boolean
+}
+
+interface NominatimResult {
+  lat: string
+  lon: string
+  display_name: string
 }
 
 /** Click to place a circular parcel, or click vertices and double-click to close a polygon. */
-export function ParcelMap({ draft, onChange, fixtures, activeFixture, onPickFixture }: Props) {
+export function ParcelMap({ draft, onChange, fixtures, activeFixture, onPickFixture, staticMode }: Props) {
   const el = useRef<HTMLDivElement>(null)
   const map = useRef<MLMap | null>(null)
   const latest = useRef({ draft, onChange })
   latest.current = { draft, onChange }
   const markers = useRef<maplibregl.Marker[]>([])
 
+  const [query, setQuery] = useState("")
+  const [searching, setSearching] = useState(false)
+  const [geoError, setGeoError] = useState<string | null>(null)
+
   useEffect(() => {
     if (!el.current) return
-    const m = new maplibregl.Map({
-      container: el.current,
-      style: baseStyle(),
-      center: [-60, -15],
-      zoom: 2.2,
-      doubleClickZoom: false,
-      attributionControl: { compact: true },
-    })
-    m.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right")
-    m.on("load", () => {
-      m.addSource("parcel", { type: "geojson", data: EMPTY_FC })
-      m.addSource("vertices", { type: "geojson", data: EMPTY_FC })
-      m.addLayer({ id: "parcel-fill", type: "fill", source: "parcel", paint: { "fill-color": "#f2b45a", "fill-opacity": 0.22 } })
-      m.addLayer({ id: "parcel-line", type: "line", source: "parcel", paint: { "line-color": "#f2b45a", "line-width": 1.6 } })
-      m.addLayer({
-        id: "vertices",
-        type: "circle",
-        source: "vertices",
-        paint: { "circle-radius": 4, "circle-color": "#05070d", "circle-stroke-color": "#f2b45a", "circle-stroke-width": 1.5 },
+
+    const tryStyle = (style: string | StyleSpecification, fallback: StyleSpecification | null) => {
+      const m = new maplibregl.Map({
+        container: el.current!,
+        style: style as string | StyleSpecification,
+        center: [0, 20],
+        zoom: 1.8,
+        doubleClickZoom: false,
+        attributionControl: { compact: true },
       })
-      paint(m, latest.current.draft)
-    })
-    m.on("click", (e) => {
-      const { draft: d, onChange: set } = latest.current
-      const { lng, lat } = e.lngLat
-      if (d.mode === "circle") set({ ...d, lat, lon: lng })
-      else if (d.closed) set({ ...d, vertices: [[lng, lat]], closed: false })
-      else set({ ...d, vertices: [...d.vertices, [lng, lat]] })
-    })
-    m.on("dblclick", (e) => {
-      e.preventDefault()
-      const { draft: d, onChange: set } = latest.current
-      if (d.mode === "polygon" && d.vertices.length >= 3) set({ ...d, closed: true })
-    })
+
+      if (fallback) {
+        m.on("error", (e) => {
+          const msg = String((e as { error?: { message?: string } }).error?.message ?? "")
+          if (fallback && (msg.includes("style") || msg.includes("tiles") || msg.includes("Failed to fetch"))) {
+            m.setStyle(fallback as string | StyleSpecification)
+          }
+        })
+      }
+
+      m.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right")
+      m.on("load", () => {
+        m.addSource("parcel", { type: "geojson", data: EMPTY_FC })
+        m.addSource("vertices", { type: "geojson", data: EMPTY_FC })
+        m.addLayer({ id: "parcel-fill", type: "fill", source: "parcel", paint: { "fill-color": "#f2b45a", "fill-opacity": 0.18 } })
+        m.addLayer({ id: "parcel-line", type: "line", source: "parcel", paint: { "line-color": "#f2b45a", "line-width": 1.8 } })
+        m.addLayer({
+          id: "vertices",
+          type: "circle",
+          source: "vertices",
+          paint: { "circle-radius": 4, "circle-color": "#05070d", "circle-stroke-color": "#f2b45a", "circle-stroke-width": 1.5 },
+        })
+        paint(m, latest.current.draft)
+      })
+      m.on("click", (e) => {
+        const { draft: d, onChange: set } = latest.current
+        const { lng, lat } = e.lngLat
+        if (d.mode === "circle") set({ ...d, lat, lon: lng })
+        else if (d.closed) set({ ...d, vertices: [[lng, lat]], closed: false })
+        else set({ ...d, vertices: [...d.vertices, [lng, lat]] })
+      })
+      m.on("dblclick", (e) => {
+        e.preventDefault()
+        const { draft: d, onChange: set } = latest.current
+        if (d.mode === "polygon" && d.vertices.length >= 3) set({ ...d, closed: true })
+      })
+      return m
+    }
+
+    const m = tryStyle(BASE_STYLE, offlineStyle())
     map.current = m
     return () => {
       m.remove()
@@ -84,7 +112,7 @@ export function ParcelMap({ draft, onChange, fixtures, activeFixture, onPickFixt
     if (m && m.isStyleLoaded()) paint(m, draft)
   }, [draft])
 
-  // Fixture parcels as HTML markers (the offline basemap has no glyphs for text layers).
+  // Fixture parcels as small dot markers on the map.
   useEffect(() => {
     const m = map.current
     if (!m) return
@@ -92,22 +120,22 @@ export function ParcelMap({ draft, onChange, fixtures, activeFixture, onPickFixt
     markers.current = fixtures.map((f) => {
       const node = document.createElement("button")
       node.type = "button"
-      node.title = `${f.name} (${f.country})`
+      node.title = `${f.name} · ${f.country}`
+      const active = f.id === activeFixture
       node.className =
-        "rounded-full border px-2 py-0.5 text-[10px] font-semibold tracking-wide shadow transition-colors " +
-        (f.id === activeFixture
-          ? "border-[#f2b45a] bg-[#f2b45a] text-[#1b1203]"
-          : "border-[#f2b45a]/60 bg-[#05070d]/85 text-[#f2b45a] hover:bg-[#f2b45a]/20")
-      node.textContent = f.name
+        "h-3 w-3 rounded-full border-2 shadow-sm transition-all " +
+        (active
+          ? "border-[#f2b45a] bg-[#f2b45a] scale-150"
+          : "border-[#f2b45a]/70 bg-[#f2b45a]/25 hover:bg-[#f2b45a]/60")
       node.addEventListener("click", (ev) => {
         ev.stopPropagation()
         onPickFixture(f)
       })
-      return new maplibregl.Marker({ element: node, anchor: "bottom", offset: [0, -6] }).setLngLat([f.lon, f.lat]).addTo(m)
+      return new maplibregl.Marker({ element: node, anchor: "center" }).setLngLat([f.lon, f.lat]).addTo(m)
     })
   }, [fixtures, activeFixture, onPickFixture])
 
-  // Fly to a parcel when it is set from outside the map (fixture pick, typed coordinates).
+  // Fly to parcel when set from outside the map.
   const lastCenter = useRef<string>("")
   useEffect(() => {
     const m = map.current
@@ -121,7 +149,61 @@ export function ParcelMap({ draft, onChange, fixtures, activeFixture, onPickFixt
     }
   }, [draft.lat, draft.lon, draft.mode])
 
-  return <div ref={el} className="h-full min-h-[380px] w-full overflow-hidden rounded-xl" />
+  async function geocode(e: React.FormEvent) {
+    e.preventDefault()
+    const q = query.trim()
+    if (!q) return
+    setSearching(true)
+    setGeoError(null)
+    try {
+      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1`
+      const res = await fetch(url, { headers: { Accept: "application/json" } })
+      const data: NominatimResult[] = await res.json()
+      if (!data.length) { setGeoError("Location not found"); return }
+      const { lat, lon } = data[0]
+      const latN = parseFloat(lat), lonN = parseFloat(lon)
+      onChange({ ...latest.current.draft, lat: latN, lon: lonN })
+      map.current?.flyTo({ center: [lonN, latN], zoom: 10, speed: 1.8 })
+    } catch {
+      setGeoError("Search failed")
+    } finally {
+      setSearching(false)
+    }
+  }
+
+  return (
+    <div className="relative h-full min-h-[400px] w-full overflow-hidden rounded-xl">
+      <div ref={el} className="h-full w-full" />
+
+      {/* Geocoder overlay */}
+      <form
+        onSubmit={geocode}
+        className="absolute left-2 top-2 z-10 flex items-center gap-1 rounded-lg border border-border/60 bg-background/90 px-2 py-1 shadow-md backdrop-blur"
+      >
+        <Search className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => { setQuery(e.target.value); setGeoError(null) }}
+          placeholder="Search any place…"
+          className="w-44 bg-transparent text-[12px] text-foreground outline-none placeholder:text-muted-foreground"
+        />
+        {searching && <Loader2 className="h-3 w-3 animate-spin text-muted-foreground" />}
+      </form>
+
+      {geoError && (
+        <div className="absolute left-2 top-10 z-10 rounded-md border border-warn/40 bg-background/95 px-2.5 py-1 text-[11px] text-warn shadow">
+          {geoError}
+        </div>
+      )}
+
+      {staticMode && (
+        <div className="absolute bottom-2 left-2 right-10 z-10 rounded-md border border-border/50 bg-background/80 px-2.5 py-1.5 text-[10px] leading-snug text-muted-foreground backdrop-blur">
+          Click a dot to load a precomputed example, or explore the map.
+        </div>
+      )}
+    </div>
+  )
 }
 
 function paint(m: MLMap, d: ParcelDraft) {

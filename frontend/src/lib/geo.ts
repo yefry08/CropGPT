@@ -17,12 +17,17 @@ export function circleRing(lat: number, lon: number, radiusKm: number, n = 64): 
   return ring
 }
 
-/** Offline basemap: Natural Earth 1:110m countries (public domain), bundled — no tile server, no glyphs. */
-export function baseStyle(): StyleSpecification {
+/**
+ * Dark vector basemap — CARTO Dark Matter (free, no API key, CC BY 3.0).
+ * Falls back to inline Natural Earth style if the tile server is unreachable.
+ */
+export const BASE_STYLE = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
+
+/** Minimal offline fallback: Natural Earth 1:110m countries bundled in public/. */
+export function offlineStyle(): StyleSpecification {
   return {
     version: 8,
     sources: {
-      // Resolved against the page so it works under a sub-path (static hosting) as well as at the root.
       countries: { type: "geojson", data: new URL("countries.geojson", document.baseURI).href, attribution: "Natural Earth" },
     },
     layers: [
