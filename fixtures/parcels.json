@@ -1,0 +1,11 @@
+{
+  "_about": "Fixture parcels for DEMO_MODE=offline. Every raw response needed to compute their vectors is recorded under fixtures/responses/ by scripts/record_fixtures.py.",
+  "parcels": [
+    {"id": "chaco-paraguayo", "name": "Chaco Paraguayo", "country": "Paraguay", "lat": -22.5, "lon": -60.0, "radius_km": 2.0,
+     "note": "Validation case: semi-arid Gran Chaco lowland."},
+    {"id": "monte-plata", "name": "Monte Plata", "country": "Dominican Republic", "lat": 18.8, "lon": -69.8, "radius_km": 2.0,
+     "note": "Humid tropical lowland."},
+    {"id": "san-jose-de-ocoa", "name": "San José de Ocoa", "country": "Dominican Republic", "lat": 18.5, "lon": -70.5, "radius_km": 2.0,
+     "note": "Sub-humid mountain valley in the Cordillera Central."}
+  ]
+}

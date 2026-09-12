@@ -1,0 +1,1470 @@
+{
+  "_about": "Curated technique knowledge base. `documented_effect` summarises, qualitatively, what the cited source reports; no effect sizes are stated here unless the cited source states them. `requires` thresholds are screening heuristics written for this demo (rationale in `requires_basis`), not agronomic prescriptions. Every DOI and URL is checked by scripts/check_evidence.py (Crossref title match / HTTP status) and the result is shown next to the citation. Entries whose evidence_url is null have no verified link: the UI prints 'not available'. Aridity thresholds follow the UNEP (1992) classes: hyper-arid < 0.05, arid 0.05–0.20, semi-arid 0.20–0.50, dry sub-humid 0.50–0.65.",
+  "categories": [
+    "irrigation",
+    "water_harvesting",
+    "salinity_management",
+    "soil_amendment",
+    "mulching_cover_cropping",
+    "shade_microclimate",
+    "windbreaks",
+    "rotation",
+    "agroforestry",
+    "low_cost_sensing"
+  ],
+  "techniques": [
+    {
+      "id": "neg-runoff-microcatchment-01",
+      "region_id": "negev-israel",
+      "technique": "Runoff agriculture with microcatchments and contour-bounded runoff plots",
+      "category": "water_harvesting",
+      "crops": [
+        "olive",
+        "almond",
+        "pistachio",
+        "fodder shrubs"
+      ],
+      "requires": {
+        "aridity_index_max": 0.35,
+        "annual_precip_min": 70,
+        "slope_min": 0.5
+      },
+      "requires_basis": "Runoff farming concentrates scarce rain from a bare catchment onto a cropped area: it only pays where rainfall alone cannot sustain the crop (arid to drier semi-arid), where there is some rain to harvest, and where the land has enough slope to generate runoff.",
+      "capital_tier": "low",
+      "documented_effect": "Describes rainwater-harvesting (runoff) agriculture, developed from ancient Negev runoff farms, as a way to produce food in arid zones where rainfall alone cannot support crops.",
+      "evidence_source": "Bruins, H.J., Evenari, M. & Nessler, U. (1986). Rainwater-harvesting agriculture for food production in arid zones: the challenge of the African famine. Applied Geography 6(1): 13–32.",
+      "evidence_doi": "10.1016/0143-6228(86)90026-3",
+      "evidence_url": "https://doi.org/10.1016/0143-6228(86)90026-3",
+      "adaptation_notes": "Catchment-to-cropped-area ratio must be sized to local rainfall and soil crusting; loess soils that crust generate runoff readily, sandy soils do not. Needs maintenance of bunds after every flood."
+    },
+    {
+      "id": "neg-brackish-drip-02",
+      "region_id": "negev-israel",
+      "technique": "Drip irrigation with brackish groundwater plus a leaching fraction",
+      "category": "salinity_management",
+      "crops": [
+        "tomato",
+        "melon",
+        "olive",
+        "date palm"
+      ],
+      "requires": {
+        "aridity_index_max": 0.5,
+        "clay_pct_max": 40,
+        "sand_pct_min": 25
+      },
+      "requires_basis": "Using saline water safely depends on leaching salts below the root zone, which needs reasonably permeable soils (not heavy clay) and is only worth it where irrigation is essential.",
+      "capital_tier": "medium",
+      "documented_effect": "FAO guidance on producing crops with saline water, covering crop salt tolerance, leaching requirements and irrigation methods; drip is described as favourable because it keeps the root zone continuously moist and salts pushed to the wetting-front margin.",
+      "evidence_source": "Rhoades, J.D., Kandiah, A. & Mashali, A.M. (1992). The use of saline waters for crop production. FAO Irrigation and Drainage Paper 48. Rome: FAO.",
+      "evidence_doi": null,
+      "evidence_url": "https://www.fao.org/3/t0667e/t0667e00.htm",
+      "adaptation_notes": "Measure irrigation-water EC and sodium (SAR) first; high-SAR water can disperse clay and seal the surface. Requires drainage for the leached salts and salt-tolerant crop choice."
+    },
+    {
+      "id": "neg-limans-03",
+      "region_id": "negev-israel",
+      "technique": "Limans: small runoff-fed tree groves in wadi depressions",
+      "category": "agroforestry",
+      "crops": [
+        "acacia",
+        "olive",
+        "carob",
+        "eucalyptus"
+      ],
+      "requires": {
+        "aridity_index_max": 0.3,
+        "annual_precip_min": 70,
+        "slope_min": 0.3
+      },
+      "requires_basis": "Limans depend on seasonal flood runoff collected behind small earth dikes; they apply in arid lands with occasional runoff-producing storms and gently sloping drainage lines.",
+      "capital_tier": "low",
+      "documented_effect": "The Negev runoff-farming research programme at Avdat and Shivta documents ancient and reconstructed runoff farms, the basis for runoff-fed tree plantings.",
+      "evidence_source": "Evenari, M., Shanan, L. & Tadmor, N. (1982). The Negev: The Challenge of a Desert, 2nd edition. Harvard University Press.",
+      "evidence_doi": null,
+      "evidence_url": null,
+      "adaptation_notes": "Dike height and spillway must match the expected flood volume; overtopping destroys the structure. Trees need establishment irrigation in the first seasons."
+    },
+    {
+      "id": "neg-shade-net-04",
+      "region_id": "negev-israel",
+      "technique": "Shade and photoselective netting over vegetables and orchards",
+      "category": "shade_microclimate",
+      "crops": [
+        "pepper",
+        "tomato",
+        "table grape",
+        "citrus"
+      ],
+      "requires": {
+        "tmax_warmest_min": 30,
+        "aridity_index_max": 0.65
+      },
+      "requires_basis": "Netting is used to cut radiation and heat load in hot, high-radiation summers; it offers little in cool or cloudy climates.",
+      "capital_tier": "medium",
+      "documented_effect": "Introduces coloured, light-manipulating nets for fruit trees that change the spectral quality and amount of light reaching the crop in addition to physical protection.",
+      "evidence_source": "Shahak, Y., Gussakovsky, E.E., Gal, E. & Ganelevin, R. (2004). ColorNets: crop protection and light-quality manipulation in one technology. Acta Horticulturae 659: 143–151.",
+      "evidence_doi": "10.17660/ActaHortic.2004.659.17",
+      "evidence_url": "https://doi.org/10.17660/ActaHortic.2004.659.17",
+      "adaptation_notes": "Shade factor and colour must be chosen per crop; too much shade lowers yield. Structures must be rated for local wind loads."
+    },
+    {
+      "id": "neg-fertigation-05",
+      "region_id": "negev-israel",
+      "technique": "Drip fertigation: nutrients injected into drip water in small, frequent doses",
+      "category": "irrigation",
+      "crops": [
+        "pepper",
+        "tomato",
+        "melon",
+        "date palm"
+      ],
+      "requires": {
+        "aridity_index_max": 0.65
+      },
+      "requires_basis": "Presumes an existing drip system, which is only standard where irrigation is required.",
+      "capital_tier": "medium",
+      "documented_effect": "Handbook describing fertigation practice and its rationale: matching nutrient supply to crop uptake through the irrigation water.",
+      "evidence_source": "Kafkafi, U. & Tarchitzky, J. (2011). Fertigation: A Tool for Efficient Fertilizer and Water Management. International Fertilizer Industry Association (IFA) and International Potash Institute (IPI), Paris.",
+      "evidence_doi": null,
+      "evidence_url": null,
+      "adaptation_notes": "Needs soluble fertilisers, a backflow preventer and filtration; phosphate and calcium can precipitate and clog emitters in hard water."
+    },
+    {
+      "id": "jor-treated-wastewater-01",
+      "region_id": "jordan-valley",
+      "technique": "Irrigation with treated wastewater blended with fresh water",
+      "category": "irrigation",
+      "crops": [
+        "fodder",
+        "olive",
+        "date palm",
+        "citrus"
+      ],
+      "requires": {
+        "aridity_index_max": 0.5
+      },
+      "requires_basis": "Treated wastewater reuse is a response to severe freshwater scarcity; it is most relevant in arid and semi-arid basins.",
+      "capital_tier": "high",
+      "documented_effect": "FAO report on the economics of wastewater use in agriculture, including valuation of treated-wastewater reuse and case material from the Jordan Valley.",
+      "evidence_source": "Winpenny, J., Heinz, I. & Koo-Oshima, S. (2010). The wealth of waste: The economics of wastewater use in agriculture. FAO Water Reports 35. Rome: FAO.",
+      "evidence_doi": null,
+      "evidence_url": "https://www.fao.org/3/i1629e/i1629e.pdf",
+      "adaptation_notes": "Requires treatment to the national/WHO standard for the target crop; restrict to crops not eaten raw unless water meets unrestricted-reuse quality. Monitor soil salinity and boron."
+    },
+    {
+      "id": "jor-pan-scheduling-02",
+      "region_id": "jordan-valley",
+      "technique": "Irrigation scheduling from evaporation-pan or weather-station ET and FAO-56 crop coefficients",
+      "category": "low_cost_sensing",
+      "crops": [
+        "vegetables",
+        "banana",
+        "citrus",
+        "date palm"
+      ],
+      "requires": {
+        "aridity_index_max": 0.65
+      },
+      "requires_basis": "Scheduling from reference ET matters where irrigation supplies most of the crop water.",
+      "capital_tier": "low",
+      "documented_effect": "FAO-56 defines the reference-evapotranspiration and crop-coefficient method for computing crop water requirements, including the pan-evaporation method.",
+      "evidence_source": "Allen, R.G., Pereira, L.S., Raes, D. & Smith, M. (1998). Crop evapotranspiration — Guidelines for computing crop water requirements. FAO Irrigation and Drainage Paper 56. Rome: FAO.",
+      "evidence_doi": null,
+      "evidence_url": "https://www.fao.org/3/x0490e/x0490e00.htm",
+      "adaptation_notes": "Pan coefficients depend on pan siting and fetch; calibrate against local soil-moisture observations in the first season."
+    },
+    {
+      "id": "alm-enarenado-01",
+      "region_id": "almeria-spain",
+      "technique": "Enarenado: a layer of sand over manure and imported soil under greenhouses",
+      "category": "mulching_cover_cropping",
+      "crops": [
+        "tomato",
+        "pepper",
+        "cucumber",
+        "melon"
+      ],
+      "requires": {
+        "aridity_index_max": 0.5,
+        "tmin_coldest_min": 2
+      },
+      "requires_basis": "The sand mulch is a response to high evaporation and poor, saline native soils in a mild-winter arid coast; frost-prone climates cannot grow the winter greenhouse crops it supports.",
+      "capital_tier": "medium",
+      "documented_effect": "Geographical account of the Almería horticulture industry, describing the enarenado sanded-soil system that underpins greenhouse vegetable production there.",
+      "evidence_source": "Tout, D. (1990). The horticulture industry of Almería province, Spain. The Geographical Journal 156(3): 304–312.",
+      "evidence_doi": "10.2307/635531",
+      "evidence_url": "https://doi.org/10.2307/635531",
+      "adaptation_notes": "Requires a source of clean coarse sand and manure; the system is labour-intensive to build and is normally combined with greenhouse cover and drip irrigation."
+    },
+    {
+      "id": "alm-whitewash-02",
+      "region_id": "almeria-spain",
+      "technique": "Seasonal whitewashing (calcium carbonate) of greenhouse plastic",
+      "category": "shade_microclimate",
+      "crops": [
+        "tomato",
+        "pepper",
+        "cucumber"
+      ],
+      "requires": {
+        "tmax_warmest_min": 28
+      },
+      "requires_basis": "Whitewashing reflects summer radiation to limit heat inside greenhouses; it is a hot-season measure.",
+      "capital_tier": "low",
+      "documented_effect": "Reports a regional surface cooling trend in Almería attributed to the high reflectivity (albedo) of the greenhouse area, in which summer whitewashing of roofs plays a part.",
+      "evidence_source": "Campra, P., Garcia, M., Canton, Y. & Palacios-Orueta, A. (2008). Surface temperature cooling trends and negative radiative forcing due to land use change toward greenhouse farming in southeastern Spain. Journal of Geophysical Research 113: D18109.",
+      "evidence_doi": "10.1029/2008JD009912",
+      "evidence_url": "https://doi.org/10.1029/2008JD009912",
+      "adaptation_notes": "Coating must be washed off before the low-light season. Only relevant where greenhouses are already in use."
+    },
+    {
+      "id": "alm-moisture-sensing-03",
+      "region_id": "almeria-spain",
+      "technique": "Soil-moisture sensor and tensiometer scheduling of drip fertigation to limit nitrate leaching",
+      "category": "low_cost_sensing",
+      "crops": [
+        "tomato",
+        "pepper",
+        "cucumber",
+        "melon"
+      ],
+      "requires": {
+        "aridity_index_max": 0.65
+      },
+      "requires_basis": "Relevant where crops are drip-irrigated and over-irrigation carries nitrate below the root zone.",
+      "capital_tier": "low",
+      "documented_effect": "Survey of greenhouse farms in Almería identifying the irrigation and nitrogen practices that contribute to nitrate leaching, which motivates sensor-based scheduling.",
+      "evidence_source": "Thompson, R.B., Martínez-Gaitán, C., Gallardo, M., Giménez, C. & Fernández, M.D. (2007). Identification of irrigation and N management practices that contribute to nitrate leaching loss from an intensive vegetable production system by use of a comprehensive survey. Agricultural Water Management 89: 261–274.",
+      "evidence_doi": "10.1016/j.agwat.2007.01.013",
+      "evidence_url": "https://doi.org/10.1016/j.agwat.2007.01.013",
+      "adaptation_notes": "Tensiometers need servicing and fail in very dry or very saline soils; install at two depths per irrigation sector."
+    },
+    {
+      "id": "alm-parral-greenhouse-04",
+      "region_id": "almeria-spain",
+      "technique": "Low-cost 'parral' plastic greenhouses with passive ventilation",
+      "category": "shade_microclimate",
+      "crops": [
+        "tomato",
+        "pepper",
+        "cucumber",
+        "zucchini",
+        "watermelon"
+      ],
+      "requires": {
+        "tmin_coldest_min": 2,
+        "mat_min": 15
+      },
+      "requires_basis": "Unheated parral greenhouses depend on mild winters for off-season production; frost-prone climates need heated structures.",
+      "capital_tier": "medium",
+      "documented_effect": "Techno-economic analysis of Almería greenhouse agriculture describing the parral structure, its costs and its role in the region's horticulture.",
+      "evidence_source": "Valera, D.L., Belmonte, L.J., Molina-Aiz, F.D. & López, A. (2016). Greenhouse agriculture in Almería: a comprehensive techno-economic analysis. Cajamar Caja Rural, Serie Economía.",
+      "evidence_doi": null,
+      "evidence_url": null,
+      "adaptation_notes": "Needs design for local wind loads and hail; passive ventilation is insufficient in humid tropical climates without additional cooling."
+    },
+    {
+      "id": "mur-rdi-01",
+      "region_id": "murcia-spain",
+      "technique": "Regulated deficit irrigation (RDI) in fruit trees and vines",
+      "category": "irrigation",
+      "crops": [
+        "almond",
+        "apricot",
+        "peach",
+        "citrus",
+        "wine grape"
+      ],
+      "requires": {
+        "aridity_index_max": 0.65
+      },
+      "requires_basis": "RDI withholds water in drought-tolerant phenological stages; it presumes irrigation control, i.e. irrigation-dependent climates.",
+      "capital_tier": "low",
+      "documented_effect": "Reviews Spanish research on deficit irrigation in fruit trees and vines, including which growth stages tolerate water deficit and the resulting water savings and fruit-quality effects.",
+      "evidence_source": "Ruiz-Sánchez, M.C., Domingo, R. & Castel, J.R. (2010). Review. Deficit irrigation in fruit trees and vines in Spain. Spanish Journal of Agricultural Research 8(S2): S5–S20.",
+      "evidence_doi": "10.5424/sjar/201008S2-1343",
+      "evidence_url": "https://doi.org/10.5424/sjar/201008S2-1343",
+      "adaptation_notes": "Stress-sensitive stages differ by species and cultivar; RDI needs monitoring (stem water potential or soil moisture) to avoid yield loss."
+    },
+    {
+      "id": "mur-desal-blend-02",
+      "region_id": "murcia-spain",
+      "technique": "Irrigation with desalinated seawater blended with other sources",
+      "category": "salinity_management",
+      "crops": [
+        "citrus",
+        "vegetables",
+        "stone fruit"
+      ],
+      "requires": {
+        "aridity_index_max": 0.5,
+        "elevation_max": 600
+      },
+      "requires_basis": "Desalinated water is costly to produce and pump uphill; it is used in severely water-short areas near the coast.",
+      "capital_tier": "high",
+      "documented_effect": "Reviews current experience of using desalinated seawater for irrigation, including south-east Spain, and the key issues: cost, energy, and boron and nutrient imbalances in the product water.",
+      "evidence_source": "Martínez-Alvarez, V., Martin-Gorriz, B. & Soto-García, M. (2016). Seawater desalination for crop irrigation — a review of current experiences and revealed key issues. Desalination 381: 58–70.",
+      "evidence_doi": "10.1016/j.desal.2015.11.032",
+      "evidence_url": "https://doi.org/10.1016/j.desal.2015.11.032",
+      "adaptation_notes": "Desalinated water can lack Ca and Mg and carry boron; blending or remineralisation is usually needed. Only viable with an existing desalination plant."
+    },
+    {
+      "id": "mur-reservoir-shade-03",
+      "region_id": "murcia-spain",
+      "technique": "Suspended shade covers on on-farm irrigation reservoirs to reduce evaporation",
+      "category": "shade_microclimate",
+      "crops": [
+        "any irrigated crop"
+      ],
+      "requires": {
+        "aridity_index_max": 0.5,
+        "tmax_warmest_min": 28
+      },
+      "requires_basis": "Open-water evaporation losses matter most in hot, arid climates where stored irrigation water is scarce.",
+      "capital_tier": "medium",
+      "documented_effect": "Measures how effectively different shading materials reduce evaporation from free water surfaces, for application to agricultural reservoirs.",
+      "evidence_source": "Martínez Alvarez, V., Baille, A., Molina Martínez, J.M. & González-Real, M.M. (2006). Efficiency of shading materials in reducing evaporation from free water surfaces. Agricultural Water Management 84: 229–239.",
+      "evidence_doi": "10.1016/j.agwat.2006.02.006",
+      "evidence_url": "https://doi.org/10.1016/j.agwat.2006.02.006",
+      "adaptation_notes": "Only useful where water is stored in open ponds; cover structures must withstand local wind."
+    },
+    {
+      "id": "men-hail-net-01",
+      "region_id": "mendoza-argentina",
+      "technique": "Anti-hail netting over vineyards and orchards",
+      "category": "shade_microclimate",
+      "crops": [
+        "wine grape",
+        "apple",
+        "pear",
+        "stone fruit"
+      ],
+      "requires": {
+        "tmin_coldest_max": 8,
+        "mat_max": 20
+      },
+      "requires_basis": "Screening heuristic: hail netting in the source region protects temperate fruit and vines; the rule restricts it to temperate climates where those crops are grown.",
+      "capital_tier": "high",
+      "documented_effect": "not available (no verified source linked for this entry)",
+      "evidence_source": "INTA EEA Mendoza extension material on hail protection (no specific trial report linked).",
+      "evidence_doi": null,
+      "evidence_url": null,
+      "adaptation_notes": "Only justified where hail frequency is high; netting also shades the crop, which can delay ripening."
+    },
+    {
+      "id": "men-deficit-vine-02",
+      "region_id": "mendoza-argentina",
+      "technique": "Controlled deficit irrigation in red wine grapes",
+      "category": "irrigation",
+      "crops": [
+        "wine grape"
+      ],
+      "requires": {
+        "aridity_index_max": 0.5,
+        "tmin_coldest_max": 8
+      },
+      "requires_basis": "Deficit irrigation in vines needs irrigation control (arid climate) and applies to temperate wine-grape regions.",
+      "capital_tier": "low",
+      "documented_effect": "Reviews physiological and molecular evidence on grapevine responses to deficit irrigation, including effects on vigour, water-use efficiency and berry quality.",
+      "evidence_source": "Chaves, M.M., Zarrouk, O., Francisco, R., Costa, J.M., Santos, T., Regalado, A.P., Rodrigues, M.L. & Lopes, C.M. (2010). Grapevine under deficit irrigation: hints from physiological and molecular data. Annals of Botany 105: 661–676.",
+      "evidence_doi": "10.1093/aob/mcq030",
+      "evidence_url": "https://doi.org/10.1093/aob/mcq030",
+      "adaptation_notes": "Evidence is largely from Mediterranean-climate vineyards; timing must be adjusted to local phenology and to the cultivar."
+    },
+    {
+      "id": "men-vine-cover-crop-03",
+      "region_id": "mendoza-argentina",
+      "technique": "Inter-row cover crops in irrigated vineyards",
+      "category": "mulching_cover_cropping",
+      "crops": [
+        "wine grape"
+      ],
+      "requires": {
+        "aridity_index_max": 0.65,
+        "slope_max": 15
+      },
+      "requires_basis": "Cover crops compete for water; in the source region they are grown under irrigation. Steep slopes need different erosion measures.",
+      "capital_tier": "low",
+      "documented_effect": "not available (no verified source linked for this entry)",
+      "evidence_source": "INTA EEA Mendoza extension material on vineyard cover crops (no specific trial report linked).",
+      "evidence_doi": null,
+      "evidence_url": null,
+      "adaptation_notes": "Choose species and mowing dates so cover-crop water use does not coincide with critical vine stages."
+    },
+    {
+      "id": "sj-drip-conversion-01",
+      "region_id": "san-juan-argentina",
+      "technique": "Conversion of furrow-irrigated vineyards to pressurised drip",
+      "category": "irrigation",
+      "crops": [
+        "wine grape",
+        "table grape",
+        "olive"
+      ],
+      "requires": {
+        "aridity_index_max": 0.3
+      },
+      "requires_basis": "The source region is arid and fully irrigation-dependent; the rule keeps the technique to arid climates.",
+      "capital_tier": "medium",
+      "documented_effect": "not available (no verified source linked for this entry)",
+      "evidence_source": "INTA EEA San Juan extension material (no specific trial report linked).",
+      "evidence_doi": null,
+      "evidence_url": null,
+      "adaptation_notes": "Requires reliable pressure (pump or elevation head) and filtration of canal water with high sediment load."
+    },
+    {
+      "id": "sj-windbreak-02",
+      "region_id": "san-juan-argentina",
+      "technique": "Tree windbreaks (e.g. poplar rows) around irrigated plots",
+      "category": "windbreaks",
+      "crops": [
+        "wine grape",
+        "vegetables",
+        "fruit trees"
+      ],
+      "requires": {
+        "slope_max": 15
+      },
+      "requires_basis": "Windbreaks work best on open, gently sloping land; on steep ground topography dominates wind flow.",
+      "capital_tier": "low",
+      "documented_effect": "Reviews windbreak research in North American agriculture: reduced wind speed in the sheltered zone, microclimate changes and crop and soil-erosion effects.",
+      "evidence_source": "Brandle, J.R., Hodges, L. & Zhou, X.H. (2004). Windbreaks in North American agricultural systems. Agroforestry Systems 61: 65–78.",
+      "evidence_doi": "10.1023/B:AGFO.0000028990.31801.62",
+      "evidence_url": "https://doi.org/10.1023/B:AGFO.0000028990.31801.62",
+      "adaptation_notes": "Evidence is from North America; windbreak trees need water themselves in arid areas and shade the rows next to them."
+    },
+    {
+      "id": "cv-sdi-01",
+      "region_id": "central-valley-california",
+      "technique": "Subsurface drip irrigation (SDI) of row crops",
+      "category": "irrigation",
+      "crops": [
+        "tomato",
+        "cotton",
+        "garlic",
+        "alfalfa"
+      ],
+      "requires": {
+        "aridity_index_max": 0.65,
+        "sand_pct_max": 85
+      },
+      "requires_basis": "Irrigation-dependent climates (UNEP drylands, AI < 0.65); very coarse sands limit lateral wetting from buried emitters.",
+      "capital_tier": "medium",
+      "documented_effect": "Reviews 15 years of subsurface drip research on row crops at the USDA-ARS Water Management Research Laboratory (Fresno), including yield, water use and salinity management.",
+      "evidence_source": "Ayars, J.E., Phene, C.J., Hutmacher, R.B., Davis, K.R., Schoneman, R.A., Vail, S.S. & Mead, R.M. (1999). Subsurface drip irrigation of row crops: a review of 15 years of research at the Water Management Research Laboratory. Agricultural Water Management 42: 1–27.",
+      "evidence_doi": "10.1016/S0378-3774(99)00025-6",
+      "evidence_url": "https://doi.org/10.1016/S0378-3774(99)00025-6",
+      "adaptation_notes": "Requires filtration and acid/chlorine maintenance; rodent damage and root intrusion are the common failure modes."
+    },
+    {
+      "id": "cv-cover-notill-02",
+      "region_id": "central-valley-california",
+      "technique": "Winter cover crops combined with no-till in irrigated annual crops",
+      "category": "mulching_cover_cropping",
+      "crops": [
+        "tomato",
+        "cotton",
+        "maize",
+        "wheat"
+      ],
+      "requires": {
+        "annual_precip_min": 150,
+        "tmin_coldest_min": -5
+      },
+      "requires_basis": "A winter cover crop needs some winter rain (or irrigation) and winters mild enough for it to grow.",
+      "capital_tier": "low",
+      "documented_effect": "Long-term trial in the San Joaquin Valley reporting that cover cropping and no-tillage improved soil-health indicators in an arid irrigated system.",
+      "evidence_source": "Mitchell, J.P. et al. (2017). Cover cropping and no-tillage improve soil health in an arid irrigated cropping system in California's San Joaquin Valley, USA. Soil & Tillage Research 165: 325–335.",
+      "evidence_doi": "10.1016/j.still.2016.09.001",
+      "evidence_url": "https://doi.org/10.1016/j.still.2016.09.001",
+      "adaptation_notes": "Needs no-till planting equipment; cover crop must be terminated early enough not to deplete stored soil water."
+    },
+    {
+      "id": "cv-gypsum-03",
+      "region_id": "central-valley-california",
+      "technique": "Gypsum application to improve infiltration in sodic or low-salinity-water-sealed soils",
+      "category": "soil_amendment",
+      "crops": [
+        "almond",
+        "pistachio",
+        "tomato",
+        "cotton"
+      ],
+      "requires": {
+        "soil_ph_range": [
+          7.0,
+          9.5
+        ],
+        "clay_pct_min": 15
+      },
+      "requires_basis": "Gypsum addresses sodium-induced clay dispersion and surface sealing, which occur in neutral-to-alkaline soils with meaningful clay content.",
+      "capital_tier": "low",
+      "documented_effect": "FAO guidance on irrigation-water quality, including infiltration problems caused by sodium or very low-salinity water and their correction with gypsum amendments.",
+      "evidence_source": "Ayers, R.S. & Westcot, D.W. (1985). Water quality for agriculture. FAO Irrigation and Drainage Paper 29 Rev. 1. Rome: FAO.",
+      "evidence_doi": null,
+      "evidence_url": "https://www.fao.org/3/t0234e/t0234e00.htm",
+      "adaptation_notes": "Confirm sodicity (ESP/SAR) with a lab test before applying; gypsum does nothing for non-sodic compaction."
+    },
+    {
+      "id": "cv-flood-mar-04",
+      "region_id": "central-valley-california",
+      "technique": "On-farm winter flood recharge (Flood-MAR) of groundwater on dormant fields",
+      "category": "water_harvesting",
+      "crops": [
+        "alfalfa",
+        "almond",
+        "vineyard"
+      ],
+      "requires": {
+        "sand_pct_min": 30,
+        "slope_max": 3,
+        "precip_seasonality_min": 60
+      },
+      "requires_basis": "Recharge by flooding needs permeable soils, flat fields and a strongly seasonal climate that produces surplus winter flows.",
+      "capital_tier": "low",
+      "documented_effect": "Field experiments reporting that managed winter flooding of alfalfa recharged groundwater with minimal crop damage.",
+      "evidence_source": "Dahlke, H.E., Brown, A.G., Orloff, S., Putnam, D. & O'Geen, T. (2018). Managed winter flooding of alfalfa recharges groundwater with minimal crop damage. California Agriculture 72(1): 65–75.",
+      "evidence_doi": "10.3733/ca.2018a0001",
+      "evidence_url": "https://doi.org/10.3733/ca.2018a0001",
+      "adaptation_notes": "Needs access to surplus surface water and a legal framework for recharge; avoid fields with nitrate legacies that would be flushed to the aquifer."
+    },
+    {
+      "id": "cv-pressure-chamber-05",
+      "region_id": "central-valley-california",
+      "technique": "Midday stem water potential (pressure chamber) to schedule orchard irrigation",
+      "category": "low_cost_sensing",
+      "crops": [
+        "almond",
+        "walnut",
+        "prune",
+        "pistachio"
+      ],
+      "requires": {
+        "aridity_index_max": 0.65
+      },
+      "requires_basis": "Plant-based scheduling is used in irrigated orchards in dry climates.",
+      "capital_tier": "low",
+      "documented_effect": "Establishes plant water status (stem water potential) as an index of irrigation need in deciduous fruit trees.",
+      "evidence_source": "Shackel, K.A. et al. (1997). Plant water status as an index of irrigation need in deciduous fruit trees. HortTechnology 7(1): 23–29.",
+      "evidence_doi": "10.21273/HORTTECH.7.1.23",
+      "evidence_url": "https://doi.org/10.21273/HORTTECH.7.1.23",
+      "adaptation_notes": "Baseline values are species-specific; readings must be taken at midday on bagged, shaded leaves."
+    },
+    {
+      "id": "son-sensor-n-01",
+      "region_id": "sonora-mexico",
+      "technique": "Optical-sensor (NDVI) based nitrogen top-dressing in irrigated wheat",
+      "category": "low_cost_sensing",
+      "crops": [
+        "wheat",
+        "maize"
+      ],
+      "requires": {
+        "aridity_index_max": 0.65
+      },
+      "requires_basis": "Tested in fully irrigated wheat, where nitrogen rather than water limits yield.",
+      "capital_tier": "low",
+      "documented_effect": "Reports reduced nitrogen use and improved farm income in irrigated spring wheat in the Yaqui Valley using sensor-based nitrogen management.",
+      "evidence_source": "Ortiz-Monasterio, J.I. & Raun, W. (2007). Reduced nitrogen and improved farm income for irrigated spring wheat in the Yaqui Valley, Mexico, using sensor based nitrogen management. Journal of Agricultural Science 145: 215–222.",
+      "evidence_doi": "10.1017/S0021859607006995",
+      "evidence_url": "https://doi.org/10.1017/S0021859607006995",
+      "adaptation_notes": "Needs an N-rich reference strip in each field; algorithms are calibrated per crop and region."
+    },
+    {
+      "id": "son-permanent-beds-02",
+      "region_id": "sonora-mexico",
+      "technique": "Permanent raised beds with crop-residue retention under furrow irrigation",
+      "category": "mulching_cover_cropping",
+      "crops": [
+        "wheat",
+        "maize",
+        "soybean"
+      ],
+      "requires": {
+        "slope_max": 2,
+        "clay_pct_min": 15
+      },
+      "requires_basis": "Furrow-irrigated beds need flat land and soils that hold a furrow.",
+      "capital_tier": "medium",
+      "documented_effect": "Long-term trial in the Yaqui Valley comparing tillage and residue management on beds; reports effects on soil quality indicators.",
+      "evidence_source": "Verhulst, N. et al. (2011). Soil quality as affected by tillage-residue management in a wheat-maize irrigated bed planting system. Plant and Soil 340: 453–466.",
+      "evidence_doi": "10.1007/s11104-010-0618-5",
+      "evidence_url": "https://doi.org/10.1007/s11104-010-0618-5",
+      "adaptation_notes": "Requires bed-shaping and residue-tolerant planters; residue must be managed so it doesn't block furrows."
+    },
+    {
+      "id": "son-bed-planting-03",
+      "region_id": "sonora-mexico",
+      "technique": "Bed planting of irrigated wheat (furrow-irrigated raised beds)",
+      "category": "irrigation",
+      "crops": [
+        "wheat"
+      ],
+      "requires": {
+        "slope_max": 2,
+        "aridity_index_max": 0.65
+      },
+      "requires_basis": "Furrow irrigation between beds needs flat fields and an irrigation-dependent climate.",
+      "capital_tier": "low",
+      "documented_effect": "Trial of straw management and nitrogen rates in a bed-planting system reporting wheat and maize yield responses.",
+      "evidence_source": "Limon-Ortega, A., Sayre, K.D. & Francis, C.A. (2000). Wheat and maize yields in response to straw management and nitrogen under a bed planting system. Agronomy Journal 92: 295–302.",
+      "evidence_doi": "10.2134/agronj2000.922295x",
+      "evidence_url": "https://doi.org/10.2134/agronj2000.922295x",
+      "adaptation_notes": "Row spacing and bed width must match available machinery."
+    },
+    {
+      "id": "pet-underground-dam-01",
+      "region_id": "petrolina-juazeiro-brazil",
+      "technique": "Underground (subsurface) dams across alluvial valley floors",
+      "category": "water_harvesting",
+      "crops": [
+        "maize",
+        "beans",
+        "fruit trees",
+        "forage"
+      ],
+      "requires": {
+        "aridity_index_min": 0.2,
+        "aridity_index_max": 0.65,
+        "precip_seasonality_min": 60
+      },
+      "requires_basis": "Underground dams store rainy-season flow in valley sediments for the dry season; they suit semi-arid, strongly seasonal climates.",
+      "capital_tier": "low",
+      "documented_effect": "Uses ground-penetrating radar and 3D modelling to judge whether sites in a Brazilian semiarid sub-watershed are adequate for underground dams. It is a siting method and does not quantify crop effects.",
+      "evidence_source": "Lima, A. de O., Lima-Filho, F.P., Dias, N. da S., Reis Júnior, J.A. dos & Sousa, A. de M. (2018). GPR 3D profile of the adequateness of underground dams in a sub-watershed of the Brazilian semiarid. Revista Caatinga 31: 523–531.",
+      "evidence_doi": "10.1590/1983-21252018v31n230rc",
+      "evidence_url": "https://doi.org/10.1590/1983-21252018v31n230rc",
+      "adaptation_notes": "Needs an alluvial deposit over shallow impermeable bedrock; siting requires a simple survey of sediment depth."
+    },
+    {
+      "id": "pet-cistern-02",
+      "region_id": "petrolina-juazeiro-brazil",
+      "technique": "Rainwater cisterns for household and small-plot production (P1MC / P1+2 programmes)",
+      "category": "water_harvesting",
+      "crops": [
+        "vegetables",
+        "fruit trees",
+        "small livestock"
+      ],
+      "requires": {
+        "annual_precip_min": 250,
+        "precip_seasonality_min": 50
+      },
+      "requires_basis": "Cisterns bridge a long dry season with rain stored in the wet season; they need enough rainfall to fill.",
+      "capital_tier": "low",
+      "documented_effect": "Viability assessment of the One Million Cisterns Programme as community rainwater management in Brazil's semiarid region.",
+      "evidence_source": "Cardoso Castro, P.P., Vachkova, M., Ravena, N. & Veloso, N. (2024). The One Million Cisterns Programme — a viability assessment of community rainwater management in Brazil. Frontiers in Sustainability 5.",
+      "evidence_doi": "10.3389/frsus.2024.1401440",
+      "evidence_url": "https://doi.org/10.3389/frsus.2024.1401440",
+      "adaptation_notes": "Storage volume must be sized to dry-season length and use; first-flush diversion protects water quality."
+    },
+    {
+      "id": "pet-fruit-drip-03",
+      "region_id": "petrolina-juazeiro-brazil",
+      "technique": "Drip and micro-sprinkler irrigated tropical fruit (mango, grape) with scheduled irrigation cut-off",
+      "category": "irrigation",
+      "crops": [
+        "mango",
+        "table grape",
+        "guava"
+      ],
+      "requires": {
+        "tmin_coldest_min": 10,
+        "aridity_index_max": 0.5
+      },
+      "requires_basis": "Tropical fruit needs frost-free warm winters; irrigated production suits semi-arid climates with reliable river water.",
+      "capital_tier": "high",
+      "documented_effect": "not available (no verified source linked for this entry)",
+      "evidence_source": "Embrapa Semiárido irrigated-fruit research (no specific trial report linked).",
+      "evidence_doi": null,
+      "evidence_url": null,
+      "adaptation_notes": "Depends on a reliable perennial water source (the São Francisco river in the source region) and export market access."
+    },
+    {
+      "id": "raj-khadin-01",
+      "region_id": "rajasthan-india",
+      "technique": "Khadin: runoff from a rocky catchment impounded behind an earthen bund, then cropped on residual moisture",
+      "category": "water_harvesting",
+      "crops": [
+        "wheat",
+        "chickpea",
+        "mustard"
+      ],
+      "requires": {
+        "aridity_index_max": 0.3,
+        "annual_precip_min": 100,
+        "slope_min": 0.3
+      },
+      "requires_basis": "Khadins need a runoff-producing catchment above a flat valley bottom in an arid climate.",
+      "capital_tier": "low",
+      "documented_effect": "Describes the khadin system of harvesting runoff water for agriculture in the Thar desert.",
+      "evidence_source": "Kolarkar, A.S., Murthy, K.N.K. & Singh, N. (1983). Khadin — a method of harvesting water for agriculture in the Thar desert. Journal of Arid Environments 6: 59–66.",
+      "evidence_doi": "10.1016/s0140-1963(18)31433-2",
+      "evidence_url": "https://doi.org/10.1016/s0140-1963(18)31433-2",
+      "adaptation_notes": "Salt accumulation can occur in the impounded bed if drainage is poor; bund spillways must pass large floods."
+    },
+    {
+      "id": "raj-tanka-02",
+      "region_id": "rajasthan-india",
+      "technique": "Tanka / kund: covered underground cisterns fed by a prepared catchment",
+      "category": "water_harvesting",
+      "crops": [
+        "household water",
+        "livestock",
+        "kitchen garden"
+      ],
+      "requires": {
+        "aridity_index_max": 0.5,
+        "annual_precip_min": 100
+      },
+      "requires_basis": "Cisterns suit arid areas with no reliable groundwater and some rain to collect.",
+      "capital_tier": "low",
+      "documented_effect": "Survey of India's traditional water-harvesting systems, including the tankas and kunds of the Thar desert.",
+      "evidence_source": "Agarwal, A. & Narain, S. (eds.) (1997). Dying Wisdom: Rise, Fall and Potential of India's Traditional Water Harvesting Systems. Centre for Science and Environment, New Delhi.",
+      "evidence_doi": null,
+      "evidence_url": null,
+      "adaptation_notes": "Catchment surface must be kept clean; lining quality determines losses."
+    },
+    {
+      "id": "raj-khejri-03",
+      "region_id": "rajasthan-india",
+      "technique": "Prosopis cineraria (khejri) parkland agroforestry with arable crops",
+      "category": "agroforestry",
+      "crops": [
+        "pearl millet",
+        "cluster bean",
+        "moth bean",
+        "fodder"
+      ],
+      "requires": {
+        "aridity_index_max": 0.4,
+        "tmin_coldest_min": 0
+      },
+      "requires_basis": "Khejri is a deep-rooted arid-zone tree that tolerates heat and drought but not hard frost.",
+      "capital_tier": "low",
+      "documented_effect": "Studies how tree density affects the productivity of a Prosopis cineraria agroforestry system in north-western India.",
+      "evidence_source": "Singh, G., Mutha, S. & Bala, N. (2007). Effect of tree density on productivity of a Prosopis cineraria agroforestry system in North Western India. Journal of Arid Environments 70: 152–163.",
+      "evidence_doi": "10.1016/j.jaridenv.2006.12.003",
+      "evidence_url": "https://doi.org/10.1016/j.jaridenv.2006.12.003",
+      "adaptation_notes": "Prosopis cineraria is native to the Thar; do not substitute invasive Prosopis juliflora. Lopping regime controls competition with crops."
+    },
+    {
+      "id": "raj-shelterbelt-04",
+      "region_id": "rajasthan-india",
+      "technique": "Shelterbelts of drought-hardy trees against wind erosion and sand movement",
+      "category": "windbreaks",
+      "crops": [
+        "pearl millet",
+        "legumes",
+        "vegetables"
+      ],
+      "requires": {
+        "aridity_index_max": 0.5,
+        "sand_pct_min": 40
+      },
+      "requires_basis": "Wind erosion is the main hazard on sandy soils in arid and semi-arid climates.",
+      "capital_tier": "low",
+      "documented_effect": "Measures soil drying and wind erosion behind different types of shelterbelts in the desert region of western Rajasthan.",
+      "evidence_source": "Gupta, J.P., Rao, G.G.S.N., Gupta, G.N. & Ramana Rao, B.V. (1983). Soil drying and wind erosion as affected by different types of shelterbelts planted in the desert region of Western Rajasthan, India. Journal of Arid Environments 6: 53–58.",
+      "evidence_doi": "10.1016/s0140-1963(18)31432-0",
+      "evidence_url": "https://doi.org/10.1016/s0140-1963(18)31432-0",
+      "adaptation_notes": "Establishment needs protection from grazing and a few seasons of watering."
+    },
+    {
+      "id": "raj-millet-legume-05",
+      "region_id": "rajasthan-india",
+      "technique": "Pearl millet – legume (cluster bean, moth bean) rotation and intercropping",
+      "category": "rotation",
+      "crops": [
+        "pearl millet",
+        "cluster bean",
+        "moth bean",
+        "cowpea"
+      ],
+      "requires": {
+        "aridity_index_max": 0.5,
+        "annual_precip_min": 150
+      },
+      "requires_basis": "A rainfed arid-zone rotation; needs at least a short monsoon season.",
+      "capital_tier": "low",
+      "documented_effect": "not available (no verified source linked for this entry)",
+      "evidence_source": "ICAR-Central Arid Zone Research Institute (CAZRI), Jodhpur — arid cropping-systems research.",
+      "evidence_doi": null,
+      "evidence_url": "https://www.cazri.res.in/",
+      "adaptation_notes": "Legume choice must match season length; guar (cluster bean) doubles as a cash crop."
+    },
+    {
+      "id": "guj-recharge-01",
+      "region_id": "gujarat-india",
+      "technique": "Community check dams and well recharge (Saurashtra recharge movement)",
+      "category": "water_harvesting",
+      "crops": [
+        "groundnut",
+        "cotton",
+        "wheat"
+      ],
+      "requires": {
+        "aridity_index_min": 0.15,
+        "aridity_index_max": 0.65,
+        "precip_seasonality_min": 80
+      },
+      "requires_basis": "Recharge structures capture monsoon runoff for dry-season groundwater use; they need a short intense rainy season and an aquifer that can store it.",
+      "capital_tier": "low",
+      "documented_effect": "Analyses the farmer-led groundwater recharge movement in western India (Saurashtra), how it spread and what it achieved.",
+      "evidence_source": "Shah, T. (2000). Mobilising social energy against environmental challenge: understanding the groundwater recharge movement in western India. Natural Resources Forum 24: 197–209.",
+      "evidence_doi": "10.1111/j.1477-8947.2000.tb00944.x",
+      "evidence_url": "https://doi.org/10.1111/j.1477-8947.2000.tb00944.x",
+      "adaptation_notes": "Works where hard-rock or alluvial aquifers accept recharge; needs community coordination along the drainage line."
+    },
+    {
+      "id": "guj-micro-irrigation-02",
+      "region_id": "gujarat-india",
+      "technique": "Subsidised drip and sprinkler irrigation for smallholder cash crops",
+      "category": "irrigation",
+      "crops": [
+        "cotton",
+        "groundnut",
+        "banana",
+        "vegetables"
+      ],
+      "requires": {
+        "aridity_index_max": 0.65
+      },
+      "requires_basis": "Micro-irrigation saves water where dry-season irrigation depends on scarce groundwater.",
+      "capital_tier": "medium",
+      "documented_effect": "Empirical study of the economics, adoption determinants and impacts of micro-irrigation technologies in India.",
+      "evidence_source": "Namara, R.E., Nagar, R.K. & Upadhyay, B. (2007). Economics, adoption determinants, and impacts of micro-irrigation technologies: empirical results from India. Irrigation Science 25: 283–297.",
+      "evidence_doi": "10.1007/s00271-007-0065-0",
+      "evidence_url": "https://doi.org/10.1007/s00271-007-0065-0",
+      "adaptation_notes": "Adoption in the source region was supported by a state subsidy scheme; without one, capital cost is the main barrier."
+    },
+    {
+      "id": "guj-salinity-ingress-03",
+      "region_id": "gujarat-india",
+      "technique": "Tidal regulators, spreading channels and recharge to halt seawater ingress into coastal aquifers",
+      "category": "salinity_management",
+      "crops": [
+        "groundnut",
+        "cotton",
+        "wheat"
+      ],
+      "requires": {
+        "elevation_max": 100
+      },
+      "requires_basis": "Seawater intrusion is a problem of low-lying coastal aquifers.",
+      "capital_tier": "high",
+      "documented_effect": "not available (no verified source linked for this entry)",
+      "evidence_source": "Gujarat Coastal Salinity Prevention Cell programme material (no specific evaluation linked).",
+      "evidence_doi": null,
+      "evidence_url": null,
+      "adaptation_notes": "Only relevant near a coast with pumping-induced intrusion; needs basin-scale planning."
+    },
+    {
+      "id": "xj-film-drip-01",
+      "region_id": "xinjiang-china",
+      "technique": "Drip irrigation under plastic film mulch for cotton",
+      "category": "irrigation",
+      "crops": [
+        "cotton",
+        "processing tomato",
+        "maize"
+      ],
+      "requires": {
+        "aridity_index_max": 0.3,
+        "tmin_coldest_max": 5
+      },
+      "requires_basis": "Film mulch in the source region warms soil in a short, cold-winter continental arid season and cuts evaporation; the rule keeps it to arid climates with cold winters.",
+      "capital_tier": "medium",
+      "documented_effect": "Field study of the soil water and salt balance and the water productivity of typical irrigation schedules for film-mulched, drip-irrigated cotton in northern Xinjiang.",
+      "evidence_source": "Ning, S., Zhou, B., Shi, J. & Wang, Q. (2021). Soil water/salt balance and water productivity of typical irrigation schedules for cotton under film mulched drip irrigation in northern Xinjiang. Agricultural Water Management 245: 106651.",
+      "evidence_doi": "10.1016/j.agwat.2020.106651",
+      "evidence_url": "https://doi.org/10.1016/j.agwat.2020.106651",
+      "adaptation_notes": "Residual plastic film pollutes soils unless recovered; salt accumulates between drip lines and needs periodic leaching."
+    },
+    {
+      "id": "xj-salt-leaching-02",
+      "region_id": "xinjiang-china",
+      "technique": "Pre-season (winter or spring) flood leaching of accumulated salts",
+      "category": "salinity_management",
+      "crops": [
+        "cotton",
+        "wheat",
+        "maize"
+      ],
+      "requires": {
+        "aridity_index_max": 0.3,
+        "sand_pct_min": 20
+      },
+      "requires_basis": "Leaching is needed where evaporation concentrates salts (arid) and is only effective where soils drain.",
+      "capital_tier": "low",
+      "documented_effect": "FAO guidance on salinity management describes leaching requirements and practices for removing salts from the root zone.",
+      "evidence_source": "Rhoades, J.D., Kandiah, A. & Mashali, A.M. (1992). The use of saline waters for crop production. FAO Irrigation and Drainage Paper 48. Rome: FAO.",
+      "evidence_doi": null,
+      "evidence_url": "https://www.fao.org/3/t0667e/t0667e00.htm",
+      "adaptation_notes": "Without drainage, leaching raises the water table and can worsen salinity. Uses large water volumes."
+    },
+    {
+      "id": "xj-shelterbelt-03",
+      "region_id": "xinjiang-china",
+      "technique": "Oasis farmland shelterbelt networks",
+      "category": "windbreaks",
+      "crops": [
+        "cotton",
+        "wheat",
+        "fruit"
+      ],
+      "requires": {
+        "aridity_index_max": 0.4,
+        "slope_max": 10
+      },
+      "requires_basis": "Shelterbelt grids protect irrigated oases on open, flat land in arid, windy climates.",
+      "capital_tier": "low",
+      "documented_effect": "Reviews windbreak research: reduced wind speed in the sheltered zone, microclimate changes and effects on crops and erosion.",
+      "evidence_source": "Brandle, J.R., Hodges, L. & Zhou, X.H. (2004). Windbreaks in North American agricultural systems. Agroforestry Systems 61: 65–78.",
+      "evidence_doi": "10.1023/B:AGFO.0000028990.31801.62",
+      "evidence_url": "https://doi.org/10.1023/B:AGFO.0000028990.31801.62",
+      "adaptation_notes": "The cited review is North American; shelterbelt trees need an irrigation allocation in oases."
+    },
+    {
+      "id": "xj-prd-04",
+      "region_id": "xinjiang-china",
+      "technique": "Alternate partial root-zone irrigation (PRD)",
+      "category": "irrigation",
+      "crops": [
+        "maize",
+        "cotton",
+        "grape",
+        "pear"
+      ],
+      "requires": {
+        "aridity_index_max": 0.5
+      },
+      "requires_basis": "PRD is a water-saving irrigation regime; relevant where irrigation water is scarce.",
+      "capital_tier": "low",
+      "documented_effect": "Reviews the physiology of controlled alternate partial root-zone irrigation and its effect on water-use efficiency.",
+      "evidence_source": "Kang, S. & Zhang, J. (2004). Controlled alternate partial root-zone irrigation: its physiological consequences and impact on water use efficiency. Journal of Experimental Botany 55: 2437–2446.",
+      "evidence_doi": "10.1093/jxb/erh249",
+      "evidence_url": "https://doi.org/10.1093/jxb/erh249",
+      "adaptation_notes": "Needs alternating furrows or dual drip lines and disciplined switching; the benefit is small on shallow soils."
+    },
+    {
+      "id": "ken-sand-dam-01",
+      "region_id": "kenya-asal",
+      "technique": "Sand dams across seasonal sandy riverbeds",
+      "category": "water_harvesting",
+      "crops": [
+        "vegetables",
+        "fruit trees",
+        "livestock water"
+      ],
+      "requires": {
+        "aridity_index_min": 0.15,
+        "aridity_index_max": 0.65,
+        "precip_seasonality_min": 60
+      },
+      "requires_basis": "Sand dams store wet-season flow in accumulated sand for the dry season; they need seasonal rivers in semi-arid, strongly seasonal climates.",
+      "capital_tier": "low",
+      "documented_effect": "Assesses the potential of community-built sand dams in Kitui, Kenya, for adaptation to droughts, including effects on water availability.",
+      "evidence_source": "Lasage, R., Aerts, J., Mutiso, G.-C.M. & de Vries, A. (2008). Potential for community based adaptation to droughts: Sand dams in Kitui, Kenya. Physics and Chemistry of the Earth 33: 67–73.",
+      "evidence_doi": "10.1016/j.pce.2007.04.009",
+      "evidence_url": "https://doi.org/10.1016/j.pce.2007.04.009",
+      "adaptation_notes": "Needs a sandy seasonal riverbed with bedrock close to the surface; a site survey is essential."
+    },
+    {
+      "id": "ken-fanya-juu-02",
+      "region_id": "kenya-asal",
+      "technique": "Fanya juu terraces (soil thrown uphill to build bench terraces over time)",
+      "category": "water_harvesting",
+      "crops": [
+        "maize",
+        "beans",
+        "pigeonpea",
+        "fruit trees"
+      ],
+      "requires": {
+        "slope_min": 1,
+        "slope_max": 25,
+        "aridity_index_min": 0.2
+      },
+      "requires_basis": "Terracing controls runoff and erosion on sloping cropland; it is not needed on flat land and becomes impractical on very steep slopes.",
+      "capital_tier": "low",
+      "documented_effect": "Long-term assessment in south-eastern Kenya of how fanya juu terraces affect soil organic matter on cultivated land.",
+      "evidence_source": "Saiz, G., Wandera, F.M., Pelster, D.E., Ngetich, W., Okalebo, J.R., Rufino, M.C. & Butterbach-Bahl, K. (2016). Long-term assessment of soil and water conservation measures (Fanya-juu terraces) on soil organic matter in South Eastern Kenya. Geoderma 274: 1–9.",
+      "evidence_doi": "10.1016/j.geoderma.2016.03.022",
+      "evidence_url": "https://doi.org/10.1016/j.geoderma.2016.03.022",
+      "adaptation_notes": "Labour-intensive to build; grass strips (e.g. Napier) on risers stabilise them and supply fodder."
+    },
+    {
+      "id": "ken-conservation-farming-03",
+      "region_id": "kenya-asal",
+      "technique": "Conservation farming: ripping/sub-soiling with mulch retention in rainfed maize",
+      "category": "mulching_cover_cropping",
+      "crops": [
+        "maize",
+        "sorghum",
+        "beans"
+      ],
+      "requires": {
+        "aridity_index_min": 0.2,
+        "aridity_index_max": 0.8
+      },
+      "requires_basis": "Tested in semi-arid and dry sub-humid rainfed systems where rain-water capture limits yield.",
+      "capital_tier": "low",
+      "documented_effect": "On-farm action research in East and Southern Africa reporting yields and rain-water productivity under conservation farming compared with conventional tillage.",
+      "evidence_source": "Rockström, J. et al. (2009). Conservation farming strategies in East and Southern Africa: Yields and rain water productivity from on-farm action research. Soil & Tillage Research 103: 23–32.",
+      "evidence_doi": "10.1016/j.still.2008.09.013",
+      "evidence_url": "https://doi.org/10.1016/j.still.2008.09.013",
+      "adaptation_notes": "Mulch competes with livestock feed; rippers need draught power or a service provider."
+    },
+    {
+      "id": "ken-pigeonpea-intercrop-04",
+      "region_id": "kenya-asal",
+      "technique": "Maize – pigeonpea intercropping",
+      "category": "rotation",
+      "crops": [
+        "maize",
+        "pigeonpea"
+      ],
+      "requires": {
+        "aridity_index_min": 0.2,
+        "tmin_coldest_min": 5
+      },
+      "requires_basis": "Pigeonpea is a drought-tolerant, frost-sensitive legume of the semi-arid tropics.",
+      "capital_tier": "low",
+      "documented_effect": "Study of nitrogen use in maize–pigeonpea intercrops under semi-arid conditions in Kenya.",
+      "evidence_source": "Wanderi, S.W., Mburu, M.W.K., Silim, S.N. & Kihanda, F.M. (2011). Nitrogen Use in Maize (Zea mays)–Pigeonpea (Cajanus cajans) Intercrop in Semi-arid Conditions of Kenya. In: Innovations as Key to the Green Revolution in Africa, pp. 563–570. Springer.",
+      "evidence_doi": "10.1007/978-90-481-2543-2_58",
+      "evidence_url": "https://doi.org/10.1007/978-90-481-2543-2_58",
+      "adaptation_notes": "Choose pigeonpea maturity group to match rainfall season length."
+    },
+    {
+      "id": "sah-zai-01",
+      "region_id": "sahel-pilot",
+      "technique": "Zaï planting pits with manure on crusted, degraded land",
+      "category": "water_harvesting",
+      "crops": [
+        "sorghum",
+        "millet",
+        "cowpea"
+      ],
+      "requires": {
+        "aridity_index_min": 0.1,
+        "aridity_index_max": 0.5,
+        "annual_precip_min": 300,
+        "annual_precip_max": 800
+      },
+      "requires_basis": "Zaï pits concentrate rain and nutrients in the planting hole; they are used in semi-arid rainfed zones (roughly 300–800 mm) on crusted soils.",
+      "capital_tier": "low",
+      "documented_effect": "Case study from Burkina Faso of zaï as a traditional practice for rehabilitating semi-arid degraded land.",
+      "evidence_source": "Roose, E., Kabore, V. & Guenat, C. (1999). Zaï practice: a West African traditional rehabilitation system for semiarid degraded lands, a case study in Burkina Faso. Arid Soil Research and Rehabilitation 13(4): 343–355.",
+      "evidence_doi": "10.1080/089030699263230",
+      "evidence_url": "https://doi.org/10.1080/089030699263230",
+      "adaptation_notes": "Labour-intensive (digging in the dry season); needs a manure or compost supply. Termite activity in the pits helps restore infiltration."
+    },
+    {
+      "id": "sah-demi-lune-02",
+      "region_id": "sahel-pilot",
+      "technique": "Half-moons (demi-lunes) with nutrient amendments",
+      "category": "water_harvesting",
+      "crops": [
+        "sorghum",
+        "millet",
+        "trees"
+      ],
+      "requires": {
+        "aridity_index_min": 0.1,
+        "aridity_index_max": 0.5,
+        "slope_min": 0.2,
+        "slope_max": 6
+      },
+      "requires_basis": "Half-moon bunds capture sheet runoff on gentle slopes in semi-arid zones.",
+      "capital_tier": "low",
+      "documented_effect": "Reports that the success of the half-moon practice in semi-arid Burkina Faso depended on combining it with nutrient amendments.",
+      "evidence_source": "Zougmoré, R., Zida, Z. & Kambou, N.F. (2003). Role of nutrient amendments in the success of half-moon soil and water conservation practice in semiarid Burkina Faso. Soil & Tillage Research 71: 143–149.",
+      "evidence_doi": "10.1016/S0167-1987(03)00050-3",
+      "evidence_url": "https://doi.org/10.1016/S0167-1987(03)00050-3",
+      "adaptation_notes": "Needs layout along contours; not effective on flat land where there is no runoff to capture."
+    },
+    {
+      "id": "sah-stone-bunds-03",
+      "region_id": "sahel-pilot",
+      "technique": "Contour stone bunds (cordons pierreux)",
+      "category": "water_harvesting",
+      "crops": [
+        "sorghum",
+        "millet"
+      ],
+      "requires": {
+        "aridity_index_min": 0.1,
+        "aridity_index_max": 0.5,
+        "slope_min": 0.3
+      },
+      "requires_basis": "Stone bunds slow runoff on gently sloping fields in semi-arid zones; flat land generates little runoff.",
+      "capital_tier": "low",
+      "documented_effect": "Evaluates the effect of adopting stone lines and fertilizer micro-dosing on sorghum yield and income of smallholder farmers in Burkina Faso.",
+      "evidence_source": "Sawadogo, D., Matsumura, I., Yasunobu, K., Fernandez, C. & Baya, A.E. (2023). Evaluation of the Effect of Stone Lines and Microdosing Adoption on Sorghum Yield and Income: A Case of Smallholder Farmers in Burkina Faso. Journal of Agricultural Science 15(6): 41.",
+      "evidence_doi": "10.5539/jas.v15n6p41",
+      "evidence_url": "https://doi.org/10.5539/jas.v15n6p41",
+      "adaptation_notes": "Needs a local stone source and transport; bunds must follow contours laid out with a water-tube level."
+    },
+    {
+      "id": "sah-fmnr-04",
+      "region_id": "sahel-pilot",
+      "technique": "Farmer-managed natural regeneration (FMNR) of trees in cropland",
+      "category": "agroforestry",
+      "crops": [
+        "millet",
+        "sorghum",
+        "cowpea"
+      ],
+      "requires": {
+        "aridity_index_min": 0.1,
+        "aridity_index_max": 0.65
+      },
+      "requires_basis": "FMNR regrows trees from living stumps in dryland cropland; documented in semi-arid to dry sub-humid Africa.",
+      "capital_tier": "low",
+      "documented_effect": "Makes the case for 'evergreen agriculture' — integrating trees such as Faidherbia albida and regenerated trees into annual cropping — drawing on experience from Niger and elsewhere in Africa.",
+      "evidence_source": "Garrity, D.P. et al. (2010). Evergreen Agriculture: a robust approach to sustainable food security in Africa. Food Security 2: 197–214.",
+      "evidence_doi": "10.1007/s12571-010-0070-7",
+      "evidence_url": "https://doi.org/10.1007/s12571-010-0070-7",
+      "adaptation_notes": "Needs living root stock in the soil and local agreements (tree tenure) so farmers benefit from protecting trees."
+    },
+    {
+      "id": "sah-faidherbia-05",
+      "region_id": "sahel-pilot",
+      "technique": "Faidherbia albida parklands (trees that leaf out in the dry season)",
+      "category": "agroforestry",
+      "crops": [
+        "millet",
+        "sorghum",
+        "maize"
+      ],
+      "requires": {
+        "aridity_index_min": 0.1,
+        "aridity_index_max": 0.8,
+        "tmin_coldest_min": 3
+      },
+      "requires_basis": "Faidherbia is a tropical dryland tree, not frost-hardy.",
+      "capital_tier": "low",
+      "documented_effect": "Describes Faidherbia albida's reverse phenology and its use in evergreen-agriculture systems across Africa.",
+      "evidence_source": "Garrity, D.P. et al. (2010). Evergreen Agriculture: a robust approach to sustainable food security in Africa. Food Security 2: 197–214.",
+      "evidence_doi": "10.1007/s12571-010-0070-7",
+      "evidence_url": "https://doi.org/10.1007/s12571-010-0070-7",
+      "adaptation_notes": "Slow to establish; seedlings need protection from browsing for several years."
+    },
+    {
+      "id": "sah-microdosing-06",
+      "region_id": "sahel-pilot",
+      "technique": "Fertilizer micro-dosing (small doses placed in the planting hole)",
+      "category": "soil_amendment",
+      "crops": [
+        "millet",
+        "sorghum",
+        "maize"
+      ],
+      "requires": {
+        "aridity_index_min": 0.1,
+        "soc_max": 15
+      },
+      "requires_basis": "Micro-dosing targets nutrient-poor soils (low organic carbon) in rainfed drylands.",
+      "capital_tier": "low",
+      "documented_effect": "Broad-scale on-farm trials presented as evidence for micro-dosing as a pathway to raising smallholder cereal yields.",
+      "evidence_source": "Twomlow, S. et al. (2010). Micro-dosing as a pathway to Africa's Green Revolution: evidence from broad-scale on-farm trials. Nutrient Cycling in Agroecosystems 88: 3–15.",
+      "evidence_doi": "10.1007/s10705-008-9200-4",
+      "evidence_url": "https://doi.org/10.1007/s10705-008-9200-4",
+      "adaptation_notes": "Needs fertiliser available in small, affordable packs and a measuring cap or bottle top for dose placement."
+    },
+    {
+      "id": "sah-windbreak-07",
+      "region_id": "sahel-pilot",
+      "technique": "Tree windbreaks against wind erosion on sandy Sahelian fields (e.g. Majjia Valley, Niger)",
+      "category": "windbreaks",
+      "crops": [
+        "millet",
+        "sorghum"
+      ],
+      "requires": {
+        "aridity_index_max": 0.5,
+        "sand_pct_min": 50
+      },
+      "requires_basis": "Wind erosion is the main hazard on sandy dryland soils.",
+      "capital_tier": "low",
+      "documented_effect": "Reviews windbreak research: reduced wind speed in the sheltered zone, microclimate changes and effects on crops and erosion.",
+      "evidence_source": "Brandle, J.R., Hodges, L. & Zhou, X.H. (2004). Windbreaks in North American agricultural systems. Agroforestry Systems 61: 65–78.",
+      "evidence_doi": "10.1023/B:AGFO.0000028990.31801.62",
+      "evidence_url": "https://doi.org/10.1023/B:AGFO.0000028990.31801.62",
+      "adaptation_notes": "The cited review is North American; Sahelian windbreaks need grazing protection and species suited to low rainfall (e.g. neem was used in Majjia)."
+    },
+    {
+      "id": "sah-millet-cowpea-08",
+      "region_id": "sahel-pilot",
+      "technique": "Pearl millet – cowpea / groundnut rotation on sandy soils",
+      "category": "rotation",
+      "crops": [
+        "pearl millet",
+        "cowpea",
+        "groundnut"
+      ],
+      "requires": {
+        "aridity_index_min": 0.1,
+        "aridity_index_max": 0.65,
+        "sand_pct_min": 40
+      },
+      "requires_basis": "Tested on sandy soils of the semi-arid West African tropics.",
+      "capital_tier": "low",
+      "documented_effect": "Field study of rotation and nitrogen fertiliser effects on pearl millet, cowpea and groundnut yields and soil chemical properties on a sandy soil in the semi-arid tropics of West Africa.",
+      "evidence_source": "Bationo, A. & Ntare, B.R. (2000). Rotation and nitrogen fertilizer effects on pearl millet, cowpea and groundnut yield and soil chemical properties in a sandy soil in the semi-arid tropics, West Africa. Journal of Agricultural Science 134: 277–284.",
+      "evidence_doi": "10.1017/S0021859699007650",
+      "evidence_url": "https://doi.org/10.1017/S0021859699007650",
+      "adaptation_notes": "Legume yields depend on phosphorus; combine with P micro-dosing on very poor soils."
+    },
+    {
+      "id": "mal-notill-01",
+      "region_id": "australian-mallee",
+      "technique": "No-till seeding with full stubble retention",
+      "category": "mulching_cover_cropping",
+      "crops": [
+        "wheat",
+        "barley",
+        "canola",
+        "lentil"
+      ],
+      "requires": {
+        "aridity_index_min": 0.15,
+        "aridity_index_max": 0.8,
+        "slope_max": 10
+      },
+      "requires_basis": "Adopted widely in rainfed grain regions from semi-arid to dry sub-humid, where conserving stored soil water drives yield.",
+      "capital_tier": "medium",
+      "documented_effect": "Documents the extensive use of no-tillage in grain-growing regions of Australia and the factors behind adoption.",
+      "evidence_source": "Llewellyn, R.S., D'Emden, F.H. & Kuehne, G. (2012). Extensive use of no-tillage in grain growing regions of Australia. Field Crops Research 132: 204–212.",
+      "evidence_doi": "10.1016/j.fcr.2012.03.013",
+      "evidence_url": "https://doi.org/10.1016/j.fcr.2012.03.013",
+      "adaptation_notes": "Relies on herbicide weed control, which risks resistance; needs disc or tine seeders that handle residue."
+    },
+    {
+      "id": "mal-break-crop-02",
+      "region_id": "australian-mallee",
+      "technique": "Break-crop rotations (canola, pulses) in wheat sequences",
+      "category": "rotation",
+      "crops": [
+        "wheat",
+        "canola",
+        "field pea",
+        "lentil",
+        "lupin"
+      ],
+      "requires": {
+        "tmin_coldest_max": 10,
+        "annual_precip_min": 250
+      },
+      "requires_basis": "Break crops in the source region are winter crops in temperate, winter-rainfall or cool-season grain systems.",
+      "capital_tier": "low",
+      "documented_effect": "Reviews break-crop benefits to following wheat crops in temperate production systems, including disease, nitrogen and water effects.",
+      "evidence_source": "Kirkegaard, J., Christen, O., Krupinsky, J. & Layzell, D. (2008). Break crop benefits in temperate wheat production. Field Crops Research 107: 185–195.",
+      "evidence_doi": "10.1016/j.fcr.2008.02.010",
+      "evidence_url": "https://doi.org/10.1016/j.fcr.2008.02.010",
+      "adaptation_notes": "Break-crop profitability depends on local prices; pulses need inoculant where they have not been grown before."
+    },
+    {
+      "id": "mal-clay-spreading-03",
+      "region_id": "australian-mallee",
+      "technique": "Clay spreading and delving on water-repellent sandy soils",
+      "category": "soil_amendment",
+      "crops": [
+        "wheat",
+        "barley",
+        "canola"
+      ],
+      "requires": {
+        "sand_pct_min": 70
+      },
+      "requires_basis": "Only relevant on sands (typically non-wetting) with clay available in the subsoil or nearby.",
+      "capital_tier": "medium",
+      "documented_effect": "Describes clay spreading on water-repellent sands in south-east South Australia as a sustainable-agriculture practice.",
+      "evidence_source": "Cann, M.A. (2000). Clay spreading on water repellent sands in the south east of South Australia — promoting sustainable agriculture. Journal of Hydrology 231–232: 333–341.",
+      "evidence_doi": "10.1016/s0022-1694(00)00205-5",
+      "evidence_url": "https://doi.org/10.1016/s0022-1694(00)00205-5",
+      "adaptation_notes": "Needs a clay source within economic distance or a clay layer reachable by delving; test clay for sodicity and boron first."
+    },
+    {
+      "id": "mal-variable-rate-04",
+      "region_id": "australian-mallee",
+      "technique": "Yield mapping and variable-rate fertiliser by management zone",
+      "category": "low_cost_sensing",
+      "crops": [
+        "wheat",
+        "barley",
+        "canola"
+      ],
+      "requires": {
+        "slope_max": 10
+      },
+      "requires_basis": "Needs mechanised harvest with a yield monitor; works on broadacre fields.",
+      "capital_tier": "medium",
+      "documented_effect": "Reviews the status, issues and prospects of variable-rate fertiliser adoption in the Australian grains industry.",
+      "evidence_source": "Robertson, M.J., Llewellyn, R.S., Mandel, R., Lawes, R., Bramley, R.G.V., Swift, L., Metz, N. & O'Callaghan, C. (2012). Adoption of variable rate fertiliser application in the Australian grains industry: status, issues and prospects. Precision Agriculture 13: 181–199.",
+      "evidence_doi": "10.1007/s11119-011-9236-3",
+      "evidence_url": "https://doi.org/10.1007/s11119-011-9236-3",
+      "adaptation_notes": "Zones should be checked against soil tests; free satellite NDVI can substitute for yield maps in the first seasons."
+    },
+    {
+      "id": "chi-fog-collection-01",
+      "region_id": "chile-norte-chico",
+      "technique": "Fog collectors (atrapanieblas) for water supply on coastal hills",
+      "category": "water_harvesting",
+      "crops": [
+        "small-scale horticulture",
+        "tree establishment",
+        "household water"
+      ],
+      "requires": {
+        "aridity_index_max": 0.2,
+        "elevation_max": 1200
+      },
+      "requires_basis": "Fog harvesting works in arid coastal ranges with frequent advective fog, generally below about 1,200 m. The rule cannot see fog frequency itself (see adaptation notes).",
+      "capital_tier": "low",
+      "documented_effect": "Discusses fog collection's role in water planning for developing countries, drawing on the Chungungo project in northern Chile.",
+      "evidence_source": "Schemenauer, R.S. & Cereceda, P. (1994). Fog collection's role in water planning for developing countries. Natural Resources Forum 18(2): 91–100.",
+      "evidence_doi": "10.1111/j.1477-8947.1994.tb00879.x",
+      "evidence_url": "https://doi.org/10.1111/j.1477-8947.1994.tb00879.x",
+      "adaptation_notes": "Only where persistent fog meets ridges; fog frequency is not in the feature vector, so it must be checked locally before building."
+    },
+    {
+      "id": "chi-hillside-drip-02",
+      "region_id": "chile-norte-chico",
+      "technique": "Drip irrigation of avocado and table grape planted on steep hillsides",
+      "category": "irrigation",
+      "crops": [
+        "avocado",
+        "table grape",
+        "citrus"
+      ],
+      "requires": {
+        "aridity_index_max": 0.4,
+        "tmin_coldest_min": 2,
+        "slope_min": 2
+      },
+      "requires_basis": "Hillside planting uses cold-air drainage for frost protection on otherwise unusable slopes in arid valleys.",
+      "capital_tier": "high",
+      "documented_effect": "not available (no verified source linked for this entry)",
+      "evidence_source": "INIA Chile extension material (no specific trial report linked).",
+      "evidence_doi": null,
+      "evidence_url": null,
+      "adaptation_notes": "Hillside planting on bare slopes can increase erosion; needs pressure-compensating emitters and pumping to height."
+    },
+    {
+      "id": "lem-quesungual-01",
+      "region_id": "lempira-honduras",
+      "technique": "Quesungual slash-and-mulch agroforestry (no burning, pruned trees, permanent mulch)",
+      "category": "agroforestry",
+      "crops": [
+        "maize",
+        "beans",
+        "sorghum"
+      ],
+      "requires": {
+        "annual_precip_min": 800,
+        "slope_min": 2,
+        "tmin_coldest_min": 5
+      },
+      "requires_basis": "Developed for sub-humid, frost-free tropical hillsides with a pronounced dry season, where burning and erosion degrade soils.",
+      "capital_tier": "low",
+      "documented_effect": "Studies soil macrofauna in agricultural landscapes dominated by the Quesungual slash-and-mulch agroforestry system in western Honduras.",
+      "evidence_source": "Pauli, N., Barrios, E., Conacher, A.J. & Oberthür, T. (2011). Soil macrofauna in agricultural landscapes dominated by the Quesungual Slash-and-Mulch Agroforestry System, western Honduras. Applied Soil Ecology 47: 119–132.",
+      "evidence_doi": "10.1016/j.apsoil.2010.11.005",
+      "evidence_url": "https://doi.org/10.1016/j.apsoil.2010.11.005",
+      "adaptation_notes": "Requires native tree regrowth to be present and community agreements against burning."
+    },
+    {
+      "id": "tig-exclosure-01",
+      "region_id": "tigray-ethiopia",
+      "technique": "Area exclosures: degraded hillsides closed to grazing and cutting for regeneration",
+      "category": "agroforestry",
+      "crops": [
+        "fodder grass (cut-and-carry)",
+        "honey",
+        "woodlots"
+      ],
+      "requires": {
+        "slope_min": 3
+      },
+      "requires_basis": "Exclosures target degraded, steep communal land unsuitable for cropping.",
+      "capital_tier": "low",
+      "documented_effect": "Studies sediment deposition and soil development within exclosures in the Tigray highlands.",
+      "evidence_source": "Descheemaeker, K. et al. (2006). Sediment deposition and pedogenesis in exclosures in the Tigray highlands, Ethiopia. Geoderma 132: 291–314.",
+      "evidence_doi": "10.1016/j.geoderma.2005.04.027",
+      "evidence_url": "https://doi.org/10.1016/j.geoderma.2005.04.027",
+      "adaptation_notes": "Only works with community by-laws and an alternative feed source (cut-and-carry) for livestock."
+    },
+    {
+      "id": "tig-swc-02",
+      "region_id": "tigray-ethiopia",
+      "technique": "Stone bunds, check dams and percolation trenches at catchment scale",
+      "category": "water_harvesting",
+      "crops": [
+        "barley",
+        "wheat",
+        "teff",
+        "sorghum"
+      ],
+      "requires": {
+        "slope_min": 1,
+        "aridity_index_min": 0.2
+      },
+      "requires_basis": "Catchment-scale soil and water conservation targets sloping cropland in semi-arid to sub-humid highlands.",
+      "capital_tier": "low",
+      "documented_effect": "Evaluates the impact of soil and water conservation measures on the hydrological response of a catchment in north Ethiopia.",
+      "evidence_source": "Nyssen, J. et al. (2010). Impact of soil and water conservation measures on catchment hydrological response — a case in north Ethiopia. Hydrological Processes 24: 1880–1895.",
+      "evidence_doi": "10.1002/hyp.7628",
+      "evidence_url": "https://doi.org/10.1002/hyp.7628",
+      "adaptation_notes": "Mass mobilisation built these in the source region; bunds need annual repair and stones available on site."
+    },
+    {
+      "id": "cv-deficit-general-06",
+      "region_id": "central-valley-california",
+      "technique": "Deficit irrigation of tree crops at drought-tolerant stages",
+      "category": "irrigation",
+      "crops": [
+        "almond",
+        "pistachio",
+        "olive",
+        "wine grape"
+      ],
+      "requires": {
+        "aridity_index_max": 0.65
+      },
+      "requires_basis": "Deficit irrigation presumes irrigation control in a dry climate.",
+      "capital_tier": "low",
+      "documented_effect": "Reviews deficit irrigation as a strategy for reducing agricultural water use, including crop responses and conditions under which it is viable.",
+      "evidence_source": "Fereres, E. & Soriano, M.A. (2007). Deficit irrigation for reducing agricultural water use. Journal of Experimental Botany 58: 147–159.",
+      "evidence_doi": "10.1093/jxb/erl165",
+      "evidence_url": "https://doi.org/10.1093/jxb/erl165",
+      "adaptation_notes": "Pistachio and olive tolerate stage-specific deficit well; many annual crops do not."
+    },
+    {
+      "id": "neg-salt-tolerant-crops-06",
+      "region_id": "negev-israel",
+      "technique": "Crop and cultivar selection by salt tolerance (threshold EC) for saline soils and water",
+      "category": "salinity_management",
+      "crops": [
+        "date palm",
+        "barley",
+        "cotton",
+        "olive",
+        "pomegranate"
+      ],
+      "requires": {
+        "aridity_index_max": 0.65
+      },
+      "requires_basis": "Salinity problems concentrate in irrigated drylands, where evaporation exceeds rainfall leaching.",
+      "capital_tier": "low",
+      "documented_effect": "FAO water-quality guidance tabulates crop salt tolerance (yield-decline thresholds) for matching crops to saline conditions.",
+      "evidence_source": "Ayers, R.S. & Westcot, D.W. (1985). Water quality for agriculture. FAO Irrigation and Drainage Paper 29 Rev. 1. Rome: FAO.",
+      "evidence_doi": null,
+      "evidence_url": "https://www.fao.org/3/t0234e/t0234e00.htm",
+      "adaptation_notes": "Measure soil ECe and water EC; tolerance tables assume good drainage and steady-state leaching."
+    }
+  ]
+}

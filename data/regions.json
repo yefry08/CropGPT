@@ -1,0 +1,23 @@
+{
+  "_about": "Innovation regions used to bias the reference grid and to join analogs to data/techniques.json. Bounding boxes are [lon_min, lat_min, lon_max, lat_max]. A cell is tagged with a region when its centre falls inside one of the region's boxes; boxes are coarse and include some land that is not farmed — see METHODOLOGY.md limitations. Regions marked added=true are not in the project brief; they were added so humid and sub-humid parcels (e.g. the Dominican Republic fixtures) have documented innovation zones to match against.",
+  "regions": [
+    {"id": "negev-israel", "name": "Negev Desert", "country": "Israel", "bboxes": [[34.2, 29.9, 35.4, 31.5]]},
+    {"id": "jordan-valley", "name": "Jordan Valley", "country": "Jordan / Israel / Palestine", "bboxes": [[35.45, 31.2, 35.75, 32.6]]},
+    {"id": "almeria-spain", "name": "Almería (Campo de Dalías, Níjar)", "country": "Spain", "bboxes": [[-3.1, 36.65, -1.7, 37.4]]},
+    {"id": "murcia-spain", "name": "Murcia (Campo de Cartagena, Segura basin)", "country": "Spain", "bboxes": [[-2.1, 37.5, -0.7, 38.4]]},
+    {"id": "mendoza-argentina", "name": "Mendoza oases", "country": "Argentina", "bboxes": [[-69.4, -34.9, -67.8, -32.5]]},
+    {"id": "san-juan-argentina", "name": "San Juan (Tulum, Ullum-Zonda valleys)", "country": "Argentina", "bboxes": [[-69.2, -32.1, -67.9, -31.1]]},
+    {"id": "central-valley-california", "name": "Central Valley", "country": "United States", "bboxes": [[-122.4, 38.2, -121.4, 40.2], [-121.4, 35.1, -118.9, 38.2]]},
+    {"id": "sonora-mexico", "name": "Sonora (Costa de Hermosillo, Yaqui and Mayo valleys)", "country": "Mexico", "bboxes": [[-111.7, 26.8, -109.2, 29.6]]},
+    {"id": "petrolina-juazeiro-brazil", "name": "Petrolina–Juazeiro (São Francisco valley)", "country": "Brazil", "bboxes": [[-41.0, -9.8, -39.7, -8.8]]},
+    {"id": "rajasthan-india", "name": "Western Rajasthan", "country": "India", "bboxes": [[70.5, 24.8, 75.5, 29.5]]},
+    {"id": "gujarat-india", "name": "Gujarat (Kutch, Saurashtra)", "country": "India", "bboxes": [[68.8, 20.8, 72.5, 24.2]]},
+    {"id": "xinjiang-china", "name": "Xinjiang oases (Tarim and Junggar margins)", "country": "China", "bboxes": [[75.0, 37.0, 89.0, 42.0], [81.0, 43.5, 88.0, 45.5]]},
+    {"id": "kenya-asal", "name": "Kenya ASAL (Machakos, Makueni, Kitui, Laikipia)", "country": "Kenya", "bboxes": [[36.8, -3.0, 39.0, 0.5]]},
+    {"id": "sahel-pilot", "name": "West African Sahel (Yatenga, Maradi, Tahoua, Zinder)", "country": "Burkina Faso / Niger", "bboxes": [[-3.0, 12.5, 0.0, 14.5], [5.0, 13.0, 9.5, 15.5]]},
+    {"id": "australian-mallee", "name": "Mallee (Victoria / South Australia)", "country": "Australia", "bboxes": [[140.5, -36.3, 143.8, -34.0]]},
+    {"id": "chile-norte-chico", "name": "Norte Chico (Copiapó, Huasco, Elqui, Limarí)", "country": "Chile", "bboxes": [[-71.6, -31.6, -69.8, -27.2]]},
+    {"id": "lempira-honduras", "name": "Lempira (Quesungual agroforestry)", "country": "Honduras", "bboxes": [[-88.8, 13.9, -88.2, 14.6]], "added": true},
+    {"id": "tigray-ethiopia", "name": "Tigray highlands", "country": "Ethiopia", "bboxes": [[38.9, 13.0, 39.9, 14.3]], "added": true}
+  ]
+}

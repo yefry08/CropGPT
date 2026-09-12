@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+
+node_modules/
+frontend/dist/
+frontend/dist-static/
+frontend/static-export/
+frontend/static-export-parity/
+
+# Large static rasters and runtime caches are downloaded / regenerated, not versioned.
+data/static/
+data/cache/

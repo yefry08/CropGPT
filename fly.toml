@@ -1,0 +1,32 @@
+# Fly.io config for CropGPT (CropMatch Analog Engine), offline demo mode.
+# First deploy:  flyctl launch --copy-config --name <app-name> --no-deploy   then   flyctl deploy
+# Later:         flyctl deploy
+# Requires `flyctl auth login` (run by you; this agent can't sign in on your behalf).
+
+app = "cropgpt"
+primary_region = "mia"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  DEMO_MODE = "offline"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    grace_period = "30s"
+    interval = "30s"
+    method = "GET"
+    path = "/api/health"
+    timeout = "5s"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 1024

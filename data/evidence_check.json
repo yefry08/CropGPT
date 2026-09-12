@@ -1,0 +1,509 @@
+{
+ "neg-runoff-microcatchment-01": {
+  "status": "doi_verified",
+  "doi": "10.1016/0143-6228(86)90026-3",
+  "registered_title": "Rainwater-harvesting agriculture for food production in arid zones: the challenge of the African famine",
+  "container": "Applied Geography",
+  "year": 1986,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:33+00:00"
+ },
+ "neg-brackish-drip-02": {
+  "status": "url_ok",
+  "http_status": 200,
+  "checked_at": "2026-09-11T16:23:34+00:00"
+ },
+ "neg-limans-03": {
+  "status": "no_link",
+  "checked_at": "2026-09-11T16:23:34+00:00"
+ },
+ "neg-shade-net-04": {
+  "status": "doi_verified",
+  "doi": "10.17660/ActaHortic.2004.659.17",
+  "registered_title": "COLORNETS: CROP PROTECTION AND LIGHT-QUALITY MANIPULATION IN ONE TECHNOLOGY",
+  "container": "Acta Horticulturae",
+  "year": 2004,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:34+00:00"
+ },
+ "neg-fertigation-05": {
+  "status": "no_link",
+  "checked_at": "2026-09-11T16:23:34+00:00"
+ },
+ "jor-treated-wastewater-01": {
+  "status": "url_ok",
+  "http_status": 200,
+  "checked_at": "2026-09-11T16:23:37+00:00"
+ },
+ "jor-pan-scheduling-02": {
+  "status": "url_ok",
+  "http_status": 200,
+  "checked_at": "2026-09-11T16:23:37+00:00"
+ },
+ "alm-enarenado-01": {
+  "status": "doi_verified",
+  "doi": "10.2307/635531",
+  "registered_title": "The Horticulture Industry of Almeria Province, Spain",
+  "container": "The Geographical Journal",
+  "year": 1990,
+  "title_word_overlap": 0.8,
+  "checked_at": "2026-09-11T16:23:38+00:00"
+ },
+ "alm-whitewash-02": {
+  "status": "doi_verified",
+  "doi": "10.1029/2008JD009912",
+  "registered_title": "Surface temperature cooling trends and negative radiative forcing due to land use change toward greenhouse farming in southeastern Spain",
+  "container": "Journal of Geophysical Research: Atmospheres",
+  "year": 2008,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:38+00:00"
+ },
+ "alm-moisture-sensing-03": {
+  "status": "doi_verified",
+  "doi": "10.1016/j.agwat.2007.01.013",
+  "registered_title": "Identification of irrigation and N management practices that contribute to nitrate leaching loss from an intensive vegetable production system by use of a comprehensive survey",
+  "container": "Agricultural Water Management",
+  "year": 2007,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:38+00:00"
+ },
+ "alm-parral-greenhouse-04": {
+  "status": "no_link",
+  "checked_at": "2026-09-11T16:23:38+00:00"
+ },
+ "mur-rdi-01": {
+  "status": "doi_verified",
+  "doi": "10.5424/sjar/201008S2-1343",
+  "registered_title": "Review. Deficit irrigation in fruit trees and vines in Spain",
+  "container": "Spanish Journal of Agricultural Research",
+  "year": 2010,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:38+00:00"
+ },
+ "mur-desal-blend-02": {
+  "status": "doi_verified",
+  "doi": "10.1016/j.desal.2015.11.032",
+  "registered_title": "Seawater desalination for crop irrigation — A review of current experiences and revealed key issues",
+  "container": "Desalination",
+  "year": 2016,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:38+00:00"
+ },
+ "mur-reservoir-shade-03": {
+  "status": "doi_verified",
+  "doi": "10.1016/j.agwat.2006.02.006",
+  "registered_title": "Efficiency of shading materials in reducing evaporation from free water surfaces",
+  "container": "Agricultural Water Management",
+  "year": 2006,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:39+00:00"
+ },
+ "men-hail-net-01": {
+  "status": "no_link",
+  "checked_at": "2026-09-11T16:23:39+00:00"
+ },
+ "men-deficit-vine-02": {
+  "status": "doi_verified",
+  "doi": "10.1093/aob/mcq030",
+  "registered_title": "Grapevine under deficit irrigation: hints from physiological and molecular data",
+  "container": "Annals of Botany",
+  "year": 2010,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:39+00:00"
+ },
+ "men-vine-cover-crop-03": {
+  "status": "no_link",
+  "checked_at": "2026-09-11T16:23:39+00:00"
+ },
+ "sj-drip-conversion-01": {
+  "status": "no_link",
+  "checked_at": "2026-09-11T16:23:39+00:00"
+ },
+ "sj-windbreak-02": {
+  "status": "doi_verified",
+  "doi": "10.1023/B:AGFO.0000028990.31801.62",
+  "registered_title": "Windbreaks in North American agricultural systems",
+  "container": "Agroforestry Systems",
+  "year": 2004,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:39+00:00"
+ },
+ "cv-sdi-01": {
+  "status": "doi_verified",
+  "doi": "10.1016/S0378-3774(99)00025-6",
+  "registered_title": "Subsurface drip irrigation of row crops: a review of 15 years of research at the Water Management Research Laboratory",
+  "container": "Agricultural Water Management",
+  "year": 1999,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:39+00:00"
+ },
+ "cv-cover-notill-02": {
+  "status": "doi_verified",
+  "doi": "10.1016/j.still.2016.09.001",
+  "registered_title": "Cover cropping and no-tillage improve soil health in an arid irrigated cropping system in California’s San Joaquin Valley, USA",
+  "container": "Soil and Tillage Research",
+  "year": 2017,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:39+00:00"
+ },
+ "cv-gypsum-03": {
+  "status": "url_ok",
+  "http_status": 200,
+  "checked_at": "2026-09-11T16:23:40+00:00"
+ },
+ "cv-flood-mar-04": {
+  "status": "doi_verified",
+  "doi": "10.3733/ca.2018a0001",
+  "registered_title": "Managed winter flooding of alfalfa recharges groundwater with minimal crop damage",
+  "container": "California Agriculture",
+  "year": 2018,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:41+00:00"
+ },
+ "cv-pressure-chamber-05": {
+  "status": "doi_verified",
+  "doi": "10.21273/HORTTECH.7.1.23",
+  "registered_title": "Plant Water Status as an Index of Irrigation Need in Deciduous Fruit Trees",
+  "container": "HortTechnology",
+  "year": 1997,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:41+00:00"
+ },
+ "son-sensor-n-01": {
+  "status": "doi_verified_metadata",
+  "doi": "10.1017/S0021859607006995",
+  "registered_title": "PAPER PRESENTED AT INTERNATIONAL WORKSHOP ON INCREASING WHEAT YIELD POTENTIAL, CIMMYT, OBREGON, MEXICO, 20–24 MARCH 2006 Reduced nitrogen and improved farm income for irrigated spring wheat in the Yaqui Valley, Mexico, using sensor based nitrogen management",
+  "container": "The Journal of Agricultural Science",
+  "year": 2007,
+  "title_word_overlap": 0.58,
+  "checked_at": "2026-09-11T16:23:41+00:00"
+ },
+ "son-permanent-beds-02": {
+  "status": "doi_verified",
+  "doi": "10.1007/s11104-010-0618-5",
+  "registered_title": "Soil quality as affected by tillage-residue management in a wheat-maize irrigated bed planting system",
+  "container": "Plant and Soil",
+  "year": 2010,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:41+00:00"
+ },
+ "son-bed-planting-03": {
+  "status": "doi_verified",
+  "doi": "10.2134/agronj2000.922295x",
+  "registered_title": "Wheat and Maize Yields in Response to Straw Management and Nitrogen under a Bed Planting System",
+  "container": "Agronomy Journal",
+  "year": 2000,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:41+00:00"
+ },
+ "pet-underground-dam-01": {
+  "status": "doi_verified",
+  "doi": "10.1590/1983-21252018v31n230rc",
+  "registered_title": "GPR 3D PROFILE OF THE ADEQUATENESS OF UNDERGROUND DAMS IN A SUB-WATERSHED OF THE BRAZILIAN SEMIARID",
+  "container": "Revista Caatinga",
+  "year": 2018,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:41+00:00"
+ },
+ "pet-cistern-02": {
+  "status": "doi_verified",
+  "doi": "10.3389/frsus.2024.1401440",
+  "registered_title": "The One Million Cisterns Programme—a viability assessment of community rainwater management in Brazil",
+  "container": "Frontiers in Sustainability",
+  "year": 2024,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:42+00:00"
+ },
+ "pet-fruit-drip-03": {
+  "status": "no_link",
+  "checked_at": "2026-09-11T16:23:42+00:00"
+ },
+ "raj-khadin-01": {
+  "status": "doi_verified",
+  "doi": "10.1016/s0140-1963(18)31433-2",
+  "registered_title": "‘Khadin—A method of harvesting water for agriculture in the Thar Desert",
+  "container": "Journal of Arid Environments",
+  "year": 1983,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:42+00:00"
+ },
+ "raj-tanka-02": {
+  "status": "no_link",
+  "checked_at": "2026-09-11T16:23:42+00:00"
+ },
+ "raj-khejri-03": {
+  "status": "doi_verified",
+  "doi": "10.1016/j.jaridenv.2006.12.003",
+  "registered_title": "Effect of tree density on productivity of a Prosopis cineraria agroforestry system in North Western India",
+  "container": "Journal of Arid Environments",
+  "year": 2007,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:42+00:00"
+ },
+ "raj-shelterbelt-04": {
+  "status": "doi_verified",
+  "doi": "10.1016/s0140-1963(18)31432-0",
+  "registered_title": "Soil drying and wind erosion as affected by different types of shelterbelts planted in the desert region of Western Rajasthan, India",
+  "container": "Journal of Arid Environments",
+  "year": 1983,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:42+00:00"
+ },
+ "raj-millet-legume-05": {
+  "status": "url_ok",
+  "http_status": 200,
+  "checked_at": "2026-09-11T16:23:44+00:00"
+ },
+ "guj-recharge-01": {
+  "status": "doi_verified",
+  "doi": "10.1111/j.1477-8947.2000.tb00944.x",
+  "registered_title": "Mobilising social energy against environmental challenge: understanding the groundwater recharge movement in western India",
+  "container": "Natural Resources Forum",
+  "year": 2000,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:44+00:00"
+ },
+ "guj-micro-irrigation-02": {
+  "status": "doi_verified",
+  "doi": "10.1007/s00271-007-0065-0",
+  "registered_title": "Economics, adoption determinants, and impacts of micro-irrigation technologies: empirical results from India",
+  "container": "Irrigation Science",
+  "year": 2007,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:44+00:00"
+ },
+ "guj-salinity-ingress-03": {
+  "status": "no_link",
+  "checked_at": "2026-09-11T16:23:44+00:00"
+ },
+ "xj-film-drip-01": {
+  "status": "doi_verified",
+  "doi": "10.1016/j.agwat.2020.106651",
+  "registered_title": "Soil water/salt balance and water productivity of typical irrigation schedules for cotton under film mulched drip irrigation in northern Xinjiang",
+  "container": "Agricultural Water Management",
+  "year": 2021,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:45+00:00"
+ },
+ "xj-salt-leaching-02": {
+  "status": "url_ok",
+  "http_status": 200,
+  "checked_at": "2026-09-11T16:23:45+00:00"
+ },
+ "xj-shelterbelt-03": {
+  "status": "doi_verified",
+  "doi": "10.1023/B:AGFO.0000028990.31801.62",
+  "registered_title": "Windbreaks in North American agricultural systems",
+  "container": "Agroforestry Systems",
+  "year": 2004,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:45+00:00"
+ },
+ "xj-prd-04": {
+  "status": "doi_verified",
+  "doi": "10.1093/jxb/erh249",
+  "registered_title": "Controlled alternate partial root-zone irrigation: its physiological consequences and impact on water use efficiency",
+  "container": "Journal of Experimental Botany",
+  "year": 2004,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:46+00:00"
+ },
+ "ken-sand-dam-01": {
+  "status": "doi_verified",
+  "doi": "10.1016/j.pce.2007.04.009",
+  "registered_title": "Potential for community based adaptation to droughts: Sand dams in Kitui, Kenya",
+  "container": "Physics and Chemistry of the Earth, Parts A/B/C",
+  "year": 2008,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:46+00:00"
+ },
+ "ken-fanya-juu-02": {
+  "status": "doi_verified",
+  "doi": "10.1016/j.geoderma.2016.03.022",
+  "registered_title": "Long-term assessment of soil and water conservation measures (Fanya-juu terraces) on soil organic matter in South Eastern Kenya",
+  "container": "Geoderma",
+  "year": 2016,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:46+00:00"
+ },
+ "ken-conservation-farming-03": {
+  "status": "doi_verified",
+  "doi": "10.1016/j.still.2008.09.013",
+  "registered_title": "Conservation farming strategies in East and Southern Africa: Yields and rain water productivity from on-farm action research",
+  "container": "Soil and Tillage Research",
+  "year": 2009,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:46+00:00"
+ },
+ "ken-pigeonpea-intercrop-04": {
+  "status": "doi_verified",
+  "doi": "10.1007/978-90-481-2543-2_58",
+  "registered_title": "Nitrogen Use in Maize (Zea mays)–Pigeonpea (Cajanus cajans) Intercrop in Semi-arid Conditions of Kenya",
+  "container": "Innovations as Key to the Green Revolution in Africa",
+  "year": 2011,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:46+00:00"
+ },
+ "sah-zai-01": {
+  "status": "doi_verified",
+  "doi": "10.1080/089030699263230",
+  "registered_title": "Zai Practice: A West African Traditional Rehabilitation System for Semiarid Degraded Lands, a Case Study in Burkina Faso",
+  "container": "Arid Soil Research and Rehabilitation",
+  "year": 1999,
+  "title_word_overlap": 0.93,
+  "checked_at": "2026-09-11T16:23:47+00:00"
+ },
+ "sah-demi-lune-02": {
+  "status": "doi_verified",
+  "doi": "10.1016/S0167-1987(03)00050-3",
+  "registered_title": "Role of nutrient amendments in the success of half-moon soil and water conservation practice in semiarid Burkina Faso",
+  "container": "Soil and Tillage Research",
+  "year": 2003,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:47+00:00"
+ },
+ "sah-stone-bunds-03": {
+  "status": "doi_verified",
+  "doi": "10.5539/jas.v15n6p41",
+  "registered_title": "Evaluation of the Effect of Stone Lines and Microdosing Adoption on Sorghum Yield and Income: A Case of Smallholder Farmers in Burkina Faso",
+  "container": "Journal of Agricultural Science",
+  "year": 2023,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:47+00:00"
+ },
+ "sah-fmnr-04": {
+  "status": "doi_verified",
+  "doi": "10.1007/s12571-010-0070-7",
+  "registered_title": "Evergreen Agriculture: a robust approach to sustainable food security in Africa",
+  "container": "Food Security",
+  "year": 2010,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:47+00:00"
+ },
+ "sah-faidherbia-05": {
+  "status": "doi_verified",
+  "doi": "10.1007/s12571-010-0070-7",
+  "registered_title": "Evergreen Agriculture: a robust approach to sustainable food security in Africa",
+  "container": "Food Security",
+  "year": 2010,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:47+00:00"
+ },
+ "sah-microdosing-06": {
+  "status": "doi_verified",
+  "doi": "10.1007/s10705-008-9200-4",
+  "registered_title": "Micro-dosing as a pathway to Africa’s Green Revolution: evidence from broad-scale on-farm trials",
+  "container": "Nutrient Cycling in Agroecosystems",
+  "year": 2008,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:48+00:00"
+ },
+ "sah-windbreak-07": {
+  "status": "doi_verified",
+  "doi": "10.1023/B:AGFO.0000028990.31801.62",
+  "registered_title": "Windbreaks in North American agricultural systems",
+  "container": "Agroforestry Systems",
+  "year": 2004,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:48+00:00"
+ },
+ "sah-millet-cowpea-08": {
+  "status": "doi_verified",
+  "doi": "10.1017/S0021859699007650",
+  "registered_title": "Rotation and nitrogen fertilizer effects on pearl millet, \ncowpea and groundnut yield and soil chemical \nproperties in a sandy soil in the semi-arid tropics, \nWest Africa",
+  "container": "The Journal of Agricultural Science",
+  "year": 2000,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:48+00:00"
+ },
+ "mal-notill-01": {
+  "status": "doi_verified",
+  "doi": "10.1016/j.fcr.2012.03.013",
+  "registered_title": "Extensive use of no-tillage in grain growing regions of Australia",
+  "container": "Field Crops Research",
+  "year": 2012,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:48+00:00"
+ },
+ "mal-break-crop-02": {
+  "status": "doi_verified",
+  "doi": "10.1016/j.fcr.2008.02.010",
+  "registered_title": "Break crop benefits in temperate wheat production",
+  "container": "Field Crops Research",
+  "year": 2008,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:48+00:00"
+ },
+ "mal-clay-spreading-03": {
+  "status": "doi_verified",
+  "doi": "10.1016/s0022-1694(00)00205-5",
+  "registered_title": "Clay spreading on water repellent sands in the south east of South Australia—promoting sustainable agriculture",
+  "container": "Journal of Hydrology",
+  "year": 2000,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:48+00:00"
+ },
+ "mal-variable-rate-04": {
+  "status": "doi_verified",
+  "doi": "10.1007/s11119-011-9236-3",
+  "registered_title": "Adoption of variable rate fertiliser application in the Australian grains industry: status, issues and prospects",
+  "container": "Precision Agriculture",
+  "year": 2011,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:49+00:00"
+ },
+ "chi-fog-collection-01": {
+  "status": "doi_verified",
+  "doi": "10.1111/j.1477-8947.1994.tb00879.x",
+  "registered_title": "Fog collection's role in water planning for developing countries",
+  "container": "Natural Resources Forum",
+  "year": 1994,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:49+00:00"
+ },
+ "chi-hillside-drip-02": {
+  "status": "no_link",
+  "checked_at": "2026-09-11T16:23:49+00:00"
+ },
+ "lem-quesungual-01": {
+  "status": "doi_verified",
+  "doi": "10.1016/j.apsoil.2010.11.005",
+  "registered_title": "Soil macrofauna in agricultural landscapes dominated by the Quesungual Slash-and-Mulch Agroforestry System, western Honduras",
+  "container": "Applied Soil Ecology",
+  "year": 2011,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:49+00:00"
+ },
+ "tig-exclosure-01": {
+  "status": "doi_verified",
+  "doi": "10.1016/j.geoderma.2005.04.027",
+  "registered_title": "Sediment deposition and pedogenesis in exclosures in the Tigray highlands, Ethiopia",
+  "container": "Geoderma",
+  "year": 2006,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:49+00:00"
+ },
+ "tig-swc-02": {
+  "status": "doi_verified",
+  "doi": "10.1002/hyp.7628",
+  "registered_title": "Impact of soil and water conservation measures on catchment hydrological response—a case in north Ethiopia",
+  "container": "Hydrological Processes",
+  "year": 2010,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:49+00:00"
+ },
+ "cv-deficit-general-06": {
+  "status": "doi_verified",
+  "doi": "10.1093/jxb/erl165",
+  "registered_title": "Deficit irrigation for reducing agricultural water use",
+  "container": "Journal of Experimental Botany",
+  "year": 2006,
+  "title_word_overlap": 1.0,
+  "checked_at": "2026-09-11T16:23:50+00:00"
+ },
+ "neg-salt-tolerant-crops-06": {
+  "status": "url_ok",
+  "http_status": 200,
+  "checked_at": "2026-09-11T16:23:50+00:00"
+ }
+}
