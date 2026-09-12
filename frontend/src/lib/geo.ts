@@ -21,7 +21,7 @@ export function circleRing(lat: number, lon: number, radiusKm: number, n = 64): 
  * Dark vector basemap — CARTO Dark Matter (free, no API key, CC BY 3.0).
  * Falls back to inline Natural Earth style if the tile server is unreachable.
  */
-export const BASE_STYLE = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
+export const BASE_STYLE = "https://tiles.openfreemap.com/styles/liberty"
 
 /** Minimal offline fallback: Natural Earth 1:110m countries bundled in public/. */
 export function offlineStyle(): StyleSpecification {

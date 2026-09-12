@@ -3,6 +3,7 @@ import { Circle, LoaderCircle, Pentagon, Play, RotateCcw } from "lucide-react"
 import type { ParcelDraft } from "@/components/parcel-map"
 import { Button } from "@/components/ui/button"
 import type { Fixture, Group } from "@/lib/api"
+import { FEATURED_LOCATIONS, type FeaturedLocation } from "@/lib/featured-locations"
 import { GROUP_COLOR } from "@/lib/format"
 import { cn } from "@/lib/utils"
 
@@ -14,6 +15,7 @@ interface Props {
   onPickFixture: (f: Fixture) => void
   draft: ParcelDraft
   onDraft: (d: ParcelDraft) => void
+  onFlyTo: (loc: FeaturedLocation) => void
   weights: Record<Group, number>
   onWeights: (w: Record<Group, number>) => void
   defaultWeights: Record<Group, number>
@@ -31,6 +33,28 @@ export function QueryPanel(p: Props) {
 
   return (
     <div className="space-y-6">
+      {/* Featured global locations */}
+      <section>
+        <div className="eyebrow mb-2">Explore a location</div>
+        <div className="flex flex-wrap gap-1.5">
+          {FEATURED_LOCATIONS.map((loc) => (
+            <button
+              key={loc.id}
+              type="button"
+              title={loc.note}
+              onClick={() => p.onFlyTo(loc)}
+              className="inline-flex items-center gap-1 rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:border-primary/60 hover:bg-primary/10 hover:text-foreground"
+            >
+              <span>{loc.emoji}</span>
+              <span>{loc.name}</span>
+            </button>
+          ))}
+        </div>
+        <p className="mt-1.5 text-[11px] text-muted-foreground">
+          Click any location to fly the map there and pre-fill coordinates.
+        </p>
+      </section>
+
       {/* Parcel definition */}
       <section>
         <div className="eyebrow mb-2">Define your parcel</div>
@@ -77,14 +101,14 @@ export function QueryPanel(p: Props) {
               </label>
             ))}
             <p className="col-span-3 text-[11px] text-muted-foreground">
-              Search for a place on the map, or click to drop a pin. Adjust the radius in km.
+              Or search the map, or click to drop a pin.
             </p>
           </div>
         ) : (
           <div className="flex items-center justify-between gap-2 text-[12px] text-muted-foreground">
             <span>
               {d.vertices.length} vertices{" "}
-              {d.closed ? "· closed" : "· click the map to add points, double-click to close"}
+              {d.closed ? "· closed" : "· click to add points, double-click to close"}
             </span>
             <Button size="sm" variant="ghost" onClick={() => p.onDraft({ ...d, vertices: [], closed: false })}>
               <RotateCcw /> Clear
@@ -142,8 +166,8 @@ export function QueryPanel(p: Props) {
         <section className="border-t border-border pt-4">
           <div className="eyebrow mb-2">Precomputed examples</div>
           <p className="mb-2 text-[11px] leading-snug text-muted-foreground">
-            This static demo ships three recorded results. Click to load one instantly — matching can still be
-            re-run in your browser with different weights.
+            Three recorded results ship with this static demo. Load one instantly — weights can still be
+            adjusted in your browser.
           </p>
           <div className="flex flex-wrap gap-1.5">
             {p.fixtures.map((f) => (
@@ -163,21 +187,14 @@ export function QueryPanel(p: Props) {
               </button>
             ))}
           </div>
-          {!p.activeFixture && p.mode === "offline" && (
-            <p className="mt-2 text-[11px] text-muted-foreground">
-              For live analysis of any location run{" "}
-              <code className="num">make demo-live</code>.
-            </p>
-          )}
         </section>
       )}
 
-      {/* Offline mode hint (live server, not static) */}
+      {/* Offline mode hint (live server, non-static) */}
       {!p.staticMode && p.mode === "offline" && (
         <p className="text-[11px] text-muted-foreground">
-          Offline mode: recorded responses for{" "}
-          {p.fixtures.map((f) => f.name).join(", ")}. Other parcels need{" "}
-          <code className="num">make demo-live</code>.
+          Offline mode — recorded responses for {p.fixtures.map((f) => f.name).join(", ")}. Other parcels
+          need <code className="num">make demo-live</code>.
         </p>
       )}
     </div>

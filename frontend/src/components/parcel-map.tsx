@@ -5,6 +5,7 @@ import { Search, Loader2 } from "lucide-react"
 
 import type { Fixture } from "@/lib/api"
 import { BASE_STYLE, offlineStyle, circleRing, EMPTY_FC } from "@/lib/geo"
+import { FEATURED_LOCATIONS } from "@/lib/featured-locations"
 
 export interface ParcelDraft {
   mode: "circle" | "polygon"
@@ -47,6 +48,7 @@ export function ParcelMap({ draft, onChange, fixtures, activeFixture, onPickFixt
   const [query, setQuery] = useState("")
   const [searching, setSearching] = useState(false)
   const [geoError, setGeoError] = useState<string | null>(null)
+  const featuredMarkers = useRef<maplibregl.Marker[]>([])
 
   useEffect(() => {
     if (!el.current) return
@@ -134,6 +136,33 @@ export function ParcelMap({ draft, onChange, fixtures, activeFixture, onPickFixt
       return new maplibregl.Marker({ element: node, anchor: "center" }).setLngLat([f.lon, f.lat]).addTo(m)
     })
   }, [fixtures, activeFixture, onPickFixture])
+
+  // Featured global location pins — placed once on mount, never removed.
+  const featuredPlaced = useRef(false)
+  useEffect(() => {
+    const m = map.current
+    if (!m || featuredPlaced.current) return
+    const place = () => {
+      if (featuredPlaced.current) return
+      featuredPlaced.current = true
+      featuredMarkers.current = FEATURED_LOCATIONS.map((loc) => {
+        const node = document.createElement("button")
+        node.type = "button"
+        node.title = `${loc.emoji} ${loc.name} · ${loc.country}\n${loc.note}`
+        node.className =
+          "text-[11px] leading-none rounded-full border border-[#5ec8e5]/50 bg-[#05070d]/80 px-1.5 py-0.5 text-[#5ec8e5] shadow hover:bg-[#5ec8e5]/20 transition-colors"
+        node.textContent = loc.emoji
+        node.addEventListener("click", (ev) => {
+          ev.stopPropagation()
+          latest.current.onChange({ ...latest.current.draft, lat: loc.lat, lon: loc.lon, radiusKm: loc.radiusKm })
+          map.current?.flyTo({ center: [loc.lon, loc.lat], zoom: 9, speed: 1.8 })
+        })
+        return new maplibregl.Marker({ element: node, anchor: "center" }).setLngLat([loc.lon, loc.lat]).addTo(m)
+      })
+    }
+    if (m.isStyleLoaded()) place()
+    else m.once("load", place)
+  }, [])
 
   // Fly to parcel when set from outside the map.
   const lastCenter = useRef<string>("")

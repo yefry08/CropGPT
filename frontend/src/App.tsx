@@ -11,6 +11,7 @@ import AirlockHero from "@/components/ui/airlock-spaceship-hero"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import { api, type Fixture, type GridPoint, type Group, type Meta, type QueryBody, type QueryResult } from "@/lib/api"
+import { type FeaturedLocation } from "@/lib/featured-locations"
 import { fmt } from "@/lib/format"
 
 const FALLBACK_WEIGHTS: Record<Group, number> = { water: 0.3, soil: 0.25, climate: 0.25, terrain: 0.1, vegetation: 0.1 }
@@ -45,6 +46,11 @@ export default function App() {
   const onDraft = useCallback((d: ParcelDraft) => {
     setFixture(null)
     setDraft(d)
+  }, [])
+
+  const onFlyTo = useCallback((loc: FeaturedLocation) => {
+    setFixture(null)
+    setDraft((d) => ({ ...d, mode: "circle", lat: loc.lat, lon: loc.lon, radiusKm: loc.radiusKm }))
   }, [])
 
   const ring = draftRing(draft)
@@ -177,6 +183,7 @@ export default function App() {
                 onPickFixture={pickFixture}
                 draft={draft}
                 onDraft={onDraft}
+                onFlyTo={onFlyTo}
                 weights={weights}
                 onWeights={setWeights}
                 defaultWeights={meta?.default_weights ?? FALLBACK_WEIGHTS}
