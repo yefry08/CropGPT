@@ -13,3 +13,7 @@ frontend/static-export-parity/
 # Large static rasters and runtime caches are downloaded / regenerated, not versioned.
 data/static/
 data/cache/
+
+# ChannelForge: engine clones and runtime data are never committed
+engines/
+channelforge/.channelforge/
