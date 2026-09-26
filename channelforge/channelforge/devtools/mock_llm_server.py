@@ -27,6 +27,9 @@ class MockLLMServer:
         self.cost = cost
         self.modes: deque[str] = deque()
         self.model_modes: dict[str, deque[str]] = {}
+        self.catalog: list[str] = ["channelforge-primary"]     # what GET /v1/models lists
+        self.combos: dict[str, dict] = {}                      # /api/combos store
+        self.connections: list[dict] = []                      # GET /api/providers
         self.requests: list[dict] = []
         self.timeout_sleep = 5.0
         self.port = port
@@ -68,16 +71,27 @@ class MockLLMServer:
                 self.end_headers()
                 self.wfile.write(data)
 
+            def do_PUT(self):
+                self.do_POST()
+
             def do_GET(self):
                 if self.path.startswith("/api/monitoring/health"):
                     return self._json(200, {"status": "ok"})
                 if self.path.startswith("/v1/models"):
-                    return self._json(200, {"data": [{"id": "channelforge-primary"}]})
+                    return self._json(200, {"object": "list", "data": [{"id": m} for m in server.catalog]})
+                if self.path.startswith("/api/providers"):
+                    return self._json(200, {"connections": server.connections, "total": len(server.connections)})
+                if self.path.startswith("/api/combos"):
+                    return self._json(200, {"combos": list(server.combos.values()), "total": len(server.combos)})
                 self._json(404, {"error": "not found"})
 
             def do_POST(self):
                 length = int(self.headers.get("Content-Length") or 0)
                 body = json.loads(self.rfile.read(length) or b"{}")
+                if self.path.startswith("/api/combos"):
+                    cid = self.path.rsplit("/", 1)[-1] if self.path.count("/") > 2 else body["name"]
+                    server.combos[body["name"]] = {**body, "id": cid}
+                    return self._json(201, server.combos[body["name"]])
                 server.requests.append({"path": self.path, "body": body,
                                         "auth": self.headers.get("Authorization")})
                 per_model = server.model_modes.get(body.get("model"))

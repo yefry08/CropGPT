@@ -33,19 +33,28 @@ Bind OmniRoute to loopback: by default `/v1` listens on 0.0.0.0 with no API-key
 requirement. Put `OMNIROUTE_SERVER_HOST=127.0.0.1` in `~/.omniroute/.env`
 (ChannelForge starts it with `omniroute serve --no-open --no-tray --daemon` when it is down).
 
-Then, in the OmniRoute dashboard (http://localhost:20128):
+Then, in the OmniRoute dashboard:
 
-1. **Providers** → connect *Claude Code* (your subscription, OAuth — ids `cc/…`) and
-   *Anthropic* (API key — ids `anthropic/…`), plus any other providers you want as fallback.
-   Everything connected there is what OmniRoute's `auto/…` router can fall back to.
-2. **Endpoints** → create an API key → `channelforge secrets set omniroute_api_key`.
+1. **Providers** (http://localhost:20128/dashboard/providers): connect what you want to use.
+   Paid Claude: *Claude Code* (subscription, OAuth, model prefix `cc/`) and/or *Anthropic*
+   (API key, `anthropic/`). Free: *Kiro AI* (Claude via Kiro, prefix `kr/`), *OpenCode Free*
+   (`oc/`, no auth). OmniRoute's `auto/…` router falls back across everything connected here.
+2. **API Keys** (http://localhost:20128/dashboard/api-manager) → **Create API Key** → name it
+   `channelforge` → **Copy API Key** → `channelforge secrets set omniroute_api_key` (paste; input
+   is hidden). The *Endpoints* page only lists or reveals keys that already exist.
 
 And from the terminal:
 
-3. `channelforge omniroute connect` — asks for your dashboard password once, mints a
+3. `channelforge omniroute connect`: asks for your dashboard password once, mints a
    `write`-scoped access token (`POST /api/cli/connect`) and keeps it in the OS keyring.
-4. `channelforge omniroute setup` — creates/updates the `channelforge-primary` combo and warns
-   about any model id your OmniRoute doesn't list (edit ids in *Settings* if so).
+4. `channelforge omniroute verify`: OmniRoute's quick start check (`GET /v1/models` with your
+   key), plus which providers are connected and which Claude models the combo will use.
+5. `channelforge omniroute setup`: builds the `channelforge-primary` combo from the Claude
+   models of providers you **actually connected**. This comes from `GET /api/providers`, because
+   `/v1/models` lists OmniRoute's whole catalog, 300+ models from providers you never connected.
+   Your configured ids go first (subscription, then API key), then up to 4 other connected
+   Claude models such as Kiro's. With no Claude connected, the combo is left out and every call
+   goes straight to `auto/…`; re-run `setup` after connecting one and it is put back.
 
 Then run `channelforge`. Try `channelforge --demo` first: it wires the whole app to a local
 mock OmniRoute whose Claude combo answers once and then returns HTTP 429, so you can watch

@@ -72,4 +72,5 @@ class RouterPanel(QWidget):
         except Exception as e:   # surfaced to the user verbatim (already redacted by secrets layer)
             QMessageBox.warning(self, "OmniRoute", str(e))
             return
+        self.cfg.save()
         QMessageBox.information(self, "OmniRoute", "\n".join(lines))

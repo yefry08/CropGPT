@@ -4,7 +4,8 @@
   channelforge --demo                launch against local mock gateways (no keys, no spend)
   channelforge omniroute status      is the local OmniRoute gateway up?
   channelforge omniroute connect     password -> scoped access token, stored in the keyring
-  channelforge omniroute setup       create/update the ChannelForge Claude combo in OmniRoute
+  channelforge omniroute verify      list the models your inference key can see (quick start step 4)
+  channelforge omniroute setup       build the Claude combo from connected models; adjust routing
   channelforge secrets set NAME      store a key in the OS keyring (prompted, not echoed)
 """
 
@@ -66,7 +67,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--demo", action="store_true", help="run against local mock gateways")
     sub = p.add_subparsers(dest="cmd")
     o = sub.add_parser("omniroute")
-    o.add_argument("action", choices=["status", "start", "connect", "setup", "combos"])
+    o.add_argument("action", choices=["status", "start", "connect", "verify", "setup", "combos"])
     s = sub.add_parser("secrets")
     s.add_argument("action", choices=["set", "delete", "list"])
     s.add_argument("name", nargs="?")
@@ -87,12 +88,17 @@ def main(argv: list[str] | None = None) -> int:
         if args.action == "connect":
             print(omniroute.connect(cfg.router, getpass.getpass("OmniRoute dashboard password: ")))
             return 0
+        if args.action == "verify":
+            for line in omniroute.verify(cfg.router):
+                print(line)
+            return 0
         if args.action == "combos":
             import json
             print(json.dumps(omniroute.combo_payloads(cfg.router), indent=2))
             return 0
         for line in omniroute.setup_combos(cfg.router):
             print(line)
+        cfg.save()
         return 0
     if args.cmd == "secrets":
         if args.action == "list":

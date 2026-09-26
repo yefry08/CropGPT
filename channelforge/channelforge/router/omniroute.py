@@ -9,11 +9,12 @@ rejected with 403.
 
 from __future__ import annotations
 
+import json
 import logging
 import subprocess
 import threading
 import time
-from typing import Any
+from typing import Any, Callable
 
 import httpx
 
@@ -96,47 +97,126 @@ def list_models(cfg: RouterConfig) -> set[str]:
     return {m["id"] for m in r.json().get("data", [])}
 
 
-def setup_combos(cfg: RouterConfig) -> list[str]:
-    """Create/update the ChannelForge combos. Returns human-readable report lines."""
+def provider_aliases(cfg: RouterConfig) -> dict[str, str]:
+    """provider id -> model-id prefix, from the local catalog (`omniroute providers available --json`),
+    e.g. claude -> cc, kiro -> kr, anthropic -> anthropic. Empty if the CLI is unavailable."""
+    try:
+        out = subprocess.run([cfg.omniroute_bin, "providers", "available", "--json"], capture_output=True,
+                             text=True, timeout=60).stdout
+        data = json.loads(out[out.index("{"):])      # the CLI prints "Loaded env" lines before the JSON
+    except (OSError, subprocess.TimeoutExpired, ValueError):
+        return {}
+    return {p["id"]: p.get("alias") or p["id"] for p in data.get("providers", [])}
+
+
+def connected_prefixes(cfg: RouterConfig, token: str,
+                       aliases: Callable[[RouterConfig], dict[str, str]] = provider_aliases) -> set[str]:
+    """Model-id prefixes of the providers you actually connected (GET /api/providers, management auth).
+
+    /v1/models is NOT usable for this: it lists OmniRoute's whole catalog (hundreds of models from
+    providers that were never connected)."""
+    r = httpx.get(cfg.omniroute_url.rstrip("/") + "/api/providers", timeout=15,
+                  headers={"Authorization": f"Bearer {token}"})
+    r.raise_for_status()
+    ids = {c["provider"] for c in r.json().get("connections", []) if c.get("isActive", True)}
+    alias = aliases(cfg) if ids else {}
+    return ids | {alias[i] for i in ids if i in alias}
+
+
+MAX_EXTRA_CLAUDE = 4
+
+
+def claude_models(cfg: RouterConfig, available: set[str], prefixes: set[str]) -> list[str]:
+    """Claude-family models from connected providers: the configured ids first (in order), then up to
+    MAX_EXTRA_CLAUDE other connected Claude models (e.g. a free Kiro account), opus before sonnet."""
+    def connected(m: str) -> bool:
+        return m in available and m.split("/", 1)[0] in prefixes
+
+    chosen = [m for m in cfg.primary_combo_models if connected(m)]
+    extra = [m for m in available if "claude" in m.lower() and connected(m) and m not in chosen]
+    rank = lambda m: (0 if "opus" in m else 1 if "sonnet" in m else 2, m)  # noqa: E731
+    return chosen + sorted(extra, key=rank)[:MAX_EXTRA_CLAUDE]
+
+
+ROUTING_LISTS = ("agent_models", "general_models", "critic_models", "metadata_models")
+
+
+def setup_combos(cfg: RouterConfig,
+                 aliases: Callable[[RouterConfig], dict[str, str]] = provider_aliases) -> list[str]:
+    """Create/update the Claude combo from the models you actually have connected.
+
+    Mutates ``cfg``: when no Claude model is connected, the combo is dropped from every routing
+    list so jobs go straight to OmniRoute's auto/* router instead of burning retries on an empty
+    combo; when one is connected again, the combo is put back first. Caller saves the config.
+    """
     token = secrets.get_secret(secrets.OMNIROUTE_MANAGEMENT_TOKEN)
     if not token:
-        raise RuntimeError("Set the OmniRoute management token (oma_live_… or manage-scoped key) in Settings first.")
+        raise RuntimeError("No OmniRoute management token — run `channelforge omniroute connect` first.")
     base = cfg.omniroute_url.rstrip("/")
-    headers = {"Authorization": f"Bearer {token}"}
     report: list[str] = []
     try:
         available = list_models(cfg)
     except httpx.HTTPStatusError as e:
-        available = set()
-        hint = (" — /v1/models needs the inference key: `channelforge secrets set omniroute_api_key`"
+        hint = (" — it needs the inference key: `channelforge secrets set omniroute_api_key`"
                 if e.response.status_code == 401 else "")
-        report.append(f"warning: could not list /v1/models (HTTP {e.response.status_code}){hint}; "
-                      "model ids not validated")
-    except httpx.HTTPError as e:
-        available = set()
-        report.append(f"warning: could not list /v1/models ({e}); model ids not validated")
-    with httpx.Client(timeout=15, headers=headers) as c:
+        raise RuntimeError(f"could not list OmniRoute /v1/models (HTTP {e.response.status_code}){hint}") from e
+
+    prefixes = connected_prefixes(cfg, token, aliases)
+    models = claude_models(cfg, available, prefixes)
+    defaults = type(cfg)()
+    if not models:
+        report.append("no Claude model is connected in OmniRoute — routing uses the auto/* router only "
+                      "(connect Claude Code, Anthropic or Kiro under Providers, then re-run setup)")
+        for name in ROUTING_LISTS:
+            kept = [m for m in getattr(cfg, name) if m != cfg.primary_combo]
+            setattr(cfg, name, kept or ["auto"])
+        return report
+
+    for m in cfg.primary_combo_models:
+        if m not in models:
+            report.append(f"skipped '{m}' (provider not connected in OmniRoute)")
+    payload = combo_payloads(cfg)[0]
+    payload["models"] = [{"model": m} for m in models]
+    with httpx.Client(timeout=15, headers={"Authorization": f"Bearer {token}"}) as c:
         existing = {x.get("name"): x for x in _combo_list(c.get(base + "/api/combos"))}
-        for payload in combo_payloads(cfg):
-            missing = [s["model"] for s in payload["models"] if available and s["model"] not in available]
-            for m in missing:
-                report.append(f"warning: {payload['name']}: model '{m}' not in OmniRoute /v1/models — "
-                              "connect that provider or edit the model id in Settings")
-            if payload["name"] in existing:
-                r = c.put(f"{base}/api/combos/{existing[payload['name']]['id']}", json=payload)
-                verb = "updated"
-            else:
-                r = c.post(base + "/api/combos", json=payload)
-                verb = "created"
-            if r.status_code >= 400:
-                raise RuntimeError(f"combo {payload['name']}: HTTP {r.status_code} {r.text[:300]}")
-            report.append(f"{verb} combo {payload['name']}")
-    # Routing targets outside the combo must exist too (auto/* ids resolve on demand).
-    targets = set(cfg.agent_models + cfg.general_models + cfg.critic_models + cfg.metadata_models)
-    for m in sorted(targets - {cfg.primary_combo}):
-        if available and not m.startswith("auto") and m not in available:
-            report.append(f"warning: routing target '{m}' not in OmniRoute /v1/models")
+        if payload["name"] in existing:
+            r = c.put(f"{base}/api/combos/{existing[payload['name']]['id']}", json=payload)
+            verb = "updated"
+        else:
+            r = c.post(base + "/api/combos", json=payload)
+            verb = "created"
+    if r.status_code >= 400:
+        raise RuntimeError(f"combo {payload['name']}: HTTP {r.status_code} {r.text[:300]}")
+    report.append(f"{verb} combo {payload['name']}: " + " -> ".join(models))
+
+    # Put the combo back where the defaults have it, in lists that lost it while no Claude was connected.
+    for name in ROUTING_LISTS:
+        current, default = getattr(cfg, name), getattr(defaults, name)
+        if cfg.primary_combo in current or cfg.primary_combo not in default:
+            continue
+        if current == ["auto"]:
+            setattr(cfg, name, list(default))
+        else:
+            pos = default.index(cfg.primary_combo)
+            setattr(cfg, name, current[:pos] + [cfg.primary_combo] + current[pos:])
+    for m in sorted({m for n in ROUTING_LISTS for m in getattr(cfg, n)} - {cfg.primary_combo}):
+        if not m.startswith("auto") and m not in available:
+            report.append(f"warning: routing target '{m}' is not in OmniRoute /v1/models")
     return report
+
+
+def verify(cfg: RouterConfig, aliases: Callable[[RouterConfig], dict[str, str]] = provider_aliases) -> list[str]:
+    """OmniRoute's quick start step 4 (GET /v1/models with the inference key), plus what is connected."""
+    models = list_models(cfg)
+    lines = [f"OmniRoute {cfg.omniroute_url}: inference key OK ({len(models)} models in the catalog)"]
+    token = secrets.get_secret(secrets.OMNIROUTE_MANAGEMENT_TOKEN)
+    if not token:
+        return lines + ["run `channelforge omniroute connect` to see which providers are connected"]
+    prefixes = connected_prefixes(cfg, token, aliases)
+    claude = claude_models(cfg, models, prefixes)
+    return lines + [
+        "connected providers: " + (", ".join(sorted(prefixes)) or "none — connect some under Providers"),
+        "Claude models for the combo: " + (", ".join(claude) or "none (routing will use the auto/* router)")]
 
 
 def _combo_list(r: httpx.Response) -> list[dict]:
