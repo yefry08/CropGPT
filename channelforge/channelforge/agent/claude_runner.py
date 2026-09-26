@@ -34,7 +34,7 @@ from ..router.errors import FALLBACK_TRIGGERS, Failure, classify
 class AgentTarget:
     """Where the claude subprocess sends its Anthropic Messages traffic."""
     name: str                 # e.g. "omniroute:channelforge-primary"
-    gateway: str              # omniroute | openrouter
+    gateway: str              # always omniroute today
     base_url: str             # gateway ROOT — Claude Code appends /v1/messages
     token_secret: str         # keyring name of the bearer token
     model: str
@@ -171,8 +171,10 @@ def run_claude(prompt: str, *, cwd: Path, target: AgentTarget, claude_bin: str =
         if etype == "system" and sub == "api_retry":
             retry_count += 1
             status = ev.get("error_status")
-            failure = classify(status, str(ev.get("error", "")))
-            if failure in FALLBACK_TRIGGERS and retry_count >= api_retries_before_switch:
+            # No HTTP status means the request never got a response: the gateway is unreachable.
+            failure = Failure.GATEWAY_DOWN if status is None else classify(status, str(ev.get("error", "")))
+            if (failure in FALLBACK_TRIGGERS or failure == Failure.GATEWAY_DOWN) \
+                    and retry_count >= api_retries_before_switch:
                 kill()
                 res.failure = failure
                 res.api_error_status = status

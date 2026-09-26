@@ -21,9 +21,8 @@ SERVICE = "channelforge"
 # Known secret names. Per-channel OAuth tokens use ``oauth:<platform>:<channel>``.
 OMNIROUTE_API_KEY = "omniroute_api_key"            # inference key for /v1/*
 OMNIROUTE_MANAGEMENT_TOKEN = "omniroute_mgmt_token"  # oma_live_… or manage-scoped key
-OPENROUTER_API_KEY = "openrouter_api_key"
 ANTHROPIC_API_KEY = "anthropic_api_key"
-KNOWN_SECRETS = (OMNIROUTE_API_KEY, OMNIROUTE_MANAGEMENT_TOKEN, OPENROUTER_API_KEY, ANTHROPIC_API_KEY)
+KNOWN_SECRETS = (OMNIROUTE_API_KEY, OMNIROUTE_MANAGEMENT_TOKEN, ANTHROPIC_API_KEY)
 
 # Env override (useful for CI / tests): CHANNELFORGE_SECRET_<NAME upper>.
 _ENV_PREFIX = "CHANNELFORGE_SECRET_"
@@ -33,7 +32,6 @@ _known_values: set[str] = set()
 
 # Token shapes redacted even when not registered (defence in depth).
 _PATTERNS = [
-    re.compile(r"sk-or-[A-Za-z0-9_\-]{8,}"),
     re.compile(r"sk-ant-[A-Za-z0-9_\-]{8,}"),
     re.compile(r"sk-[A-Za-z0-9_\-]{16,}"),
     re.compile(r"oma_live_[A-Za-z0-9_\-]{8,}"),

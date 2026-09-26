@@ -38,7 +38,7 @@ def test_generate_switch_approve_done(qtbot, app_window):
     qtbot.waitUntil(lambda: bool(db.approvals("pending")), timeout=30000)
     win.refresh()
     [job] = db.list_jobs()
-    assert job["agent_target"].startswith("openrouter:")          # switched after the mock 429
+    assert job["agent_target"] == "omniroute:auto/coding"          # switched after the mock 429
     assert "Approvals (1)" in win.tabs.tabText(win._approvals_index)
     assert "research_brief" in win.approvals.detail.toPlainText()
 

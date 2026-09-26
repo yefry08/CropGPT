@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS jobs (
   render_backend TEXT NOT NULL,
   budget_cap_usd REAL NOT NULL,
   auto_approve  INTEGER NOT NULL DEFAULT 0,
-  status        TEXT NOT NULL DEFAULT 'queued',   -- queued|running|awaiting_approval|failed|done|cancelled
+  status        TEXT NOT NULL DEFAULT 'queued',   -- queued|running|awaiting_approval|paused|failed|done|cancelled
   current_stage TEXT,
   project_id    TEXT,
   output_dir    TEXT,
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS llm_calls (
   job_id      INTEGER,
   stage       TEXT,
   kind        TEXT NOT NULL,                      -- agent|general|metadata|critic
-  gateway     TEXT NOT NULL,                      -- omniroute|openrouter
+  gateway     TEXT NOT NULL,                      -- omniroute
   target      TEXT NOT NULL,
   model       TEXT,                               -- model actually served, when reported
   tokens_in   INTEGER DEFAULT 0,
@@ -143,6 +143,10 @@ class JobDB:
         cols = ",".join(f"{k}=?" for k in fields)
         with self._conn() as c:
             c.execute(f"UPDATE jobs SET {cols} WHERE id=?", (*fields.values(), job_id))
+
+    def jobs_with_status(self, status: str) -> list[dict[str, Any]]:
+        with self._conn() as c:
+            return [dict(r) for r in c.execute("SELECT * FROM jobs WHERE status=? ORDER BY id", (status,))]
 
     def claim_next_queued(self) -> dict[str, Any] | None:
         """Atomically move the oldest queued job to running and return it."""

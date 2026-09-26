@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from apscheduler.triggers.cron import CronTrigger
-from PySide6.QtWidgets import (QDialog, QDialogButtonBox, QFormLayout, QGroupBox, QLabel, QLineEdit, QMessageBox,
+from PySide6.QtWidgets import (QCheckBox, QDialog, QDialogButtonBox, QFormLayout, QGroupBox, QLabel, QLineEdit, QMessageBox,
                                QPlainTextEdit, QVBoxLayout, QWidget, QScrollArea)
 
 from .. import secrets
@@ -12,7 +12,6 @@ from ..config import AppConfig
 SECRET_LABELS = {
     secrets.OMNIROUTE_API_KEY: "OmniRoute inference API key (sk-…)",
     secrets.OMNIROUTE_MANAGEMENT_TOKEN: "OmniRoute management token (oma_live_… or manage-scoped key)",
-    secrets.OPENROUTER_API_KEY: "OpenRouter API key (sk-or-…)",
     secrets.ANTHROPIC_API_KEY: "Anthropic API key (optional; normally connected inside OmniRoute)",
 }
 
@@ -38,17 +37,25 @@ class SettingsDialog(QDialog):
         rf = QFormLayout(routing)
         r = cfg.router
         self.omni_url = QLineEdit(r.omniroute_url)
+        self.autostart = QCheckBox("Start OmniRoute automatically when it is down")
+        self.autostart.setChecked(r.omniroute_autostart)
         self.primary_models = QPlainTextEdit("\n".join(r.primary_combo_models))
-        self.cheap_models = QPlainTextEdit("\n".join(r.cheap_combo_models))
-        self.or_models = QPlainTextEdit("\n".join(r.openrouter_models))
-        self.or_cheap = QPlainTextEdit("\n".join(r.openrouter_cheap_models))
-        for w in (self.primary_models, self.cheap_models, self.or_models, self.or_cheap):
-            w.setFixedHeight(72)
+        self.agent_models = QPlainTextEdit("\n".join(r.agent_models))
+        self.general_models = QPlainTextEdit("\n".join(r.general_models))
+        self.critic_models = QPlainTextEdit("\n".join(r.critic_models))
+        self.metadata_models = QPlainTextEdit("\n".join(r.metadata_models))
+        for w in (self.primary_models, self.agent_models, self.general_models, self.critic_models,
+                  self.metadata_models):
+            w.setFixedHeight(60)
         rf.addRow("OmniRoute URL (root, no /v1)", self.omni_url)
-        rf.addRow(f"Combo '{r.primary_combo}' steps (priority order)", self.primary_models)
-        rf.addRow(f"Combo '{r.cheap_combo}' steps (metadata only)", self.cheap_models)
-        rf.addRow("OpenRouter direct fallback models", self.or_models)
-        rf.addRow("OpenRouter direct cheap models", self.or_cheap)
+        rf.addRow("", self.autostart)
+        rf.addRow(f"Claude combo '{r.primary_combo}' steps", self.primary_models)
+        rf.addRow("Agent stages — targets in order", self.agent_models)
+        rf.addRow("Script / general — targets in order", self.general_models)
+        rf.addRow("Fact-check critic — targets in order", self.critic_models)
+        rf.addRow("Metadata only — targets in order", self.metadata_models)
+        rf.addRow("", QLabel("Targets are OmniRoute model ids: a combo name, provider/model, or auto/<variant> "
+                             "(auto/coding, auto/cheap, auto/reasoning…)."))
 
         sched = QGroupBox("Posting schedule per channel (cron: minute hour day month weekday — use names like tue,fri; local time)")
         sf = QFormLayout(sched)
@@ -94,10 +101,12 @@ class SettingsDialog(QDialog):
             e.clear()
         r = self.cfg.router
         r.omniroute_url = self.omni_url.text().strip().rstrip("/")
+        r.omniroute_autostart = self.autostart.isChecked()
         r.primary_combo_models = self._lines(self.primary_models)
-        r.cheap_combo_models = self._lines(self.cheap_models)
-        r.openrouter_models = self._lines(self.or_models)
-        r.openrouter_cheap_models = self._lines(self.or_cheap)
+        r.agent_models = self._lines(self.agent_models)
+        r.general_models = self._lines(self.general_models)
+        r.critic_models = self._lines(self.critic_models)
+        r.metadata_models = self._lines(self.metadata_models)
         for cid, e in self.cron.items():
             self.cfg.channels[cid].posting_schedule_cron = e.text().strip()
         self.cfg.save()

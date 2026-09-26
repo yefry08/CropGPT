@@ -42,8 +42,8 @@ def emit(ev):
     print(json.dumps(ev), flush=True)
 
 
-def finish(text, *, error_status=None):
-    is_error = error_status is not None
+def finish(text, *, error_status=None, force_error=False):
+    is_error = error_status is not None or force_error
     if is_error:
         emit({"type": "assistant", "is_api_error_message": True, "error": "unknown",
               "message": {"model": "<synthetic>", "content": [{"type": "text", "text": text}]}})
@@ -57,8 +57,18 @@ def finish(text, *, error_status=None):
 
 def llm(what):
     for attempt in range(1, 11):
-        r = httpx.post(base + "/v1/messages", timeout=60, headers={"Authorization": f"Bearer {token}"},
-                       json={"model": model, "max_tokens": 64, "messages": [{"role": "user", "content": what}]})
+        try:
+            r = httpx.post(base + "/v1/messages", timeout=60, headers={"Authorization": f"Bearer {token}"},
+                           json={"model": model, "max_tokens": 64, "messages": [{"role": "user", "content": what}]})
+        except httpx.TransportError:
+            # What claude 2.1.x does when the gateway is unreachable: status-less retries, then this text.
+            emit({"type": "system", "subtype": "api_retry", "attempt": attempt, "max_retries": 10,
+                  "retry_delay_ms": 50, "error_status": None, "error": "unknown"})
+            time.sleep(0.05)
+            if attempt == 10:
+                finish("API Error: Connection refused — a firewall or proxy may be blocking it (ECONNREFUSED)",
+                       error_status=None, force_error=True)
+            continue
         if r.status_code in (429, 529):
             emit({"type": "system", "subtype": "api_retry", "attempt": attempt, "max_retries": 10,
                   "retry_delay_ms": 50, "error_status": r.status_code,

@@ -1,18 +1,20 @@
 """Against a REAL local OmniRoute (skipped when none is running on :20128).
 
-With the ChannelForge combo present but no upstream providers connected,
-OmniRoute answers 503 ALL_TARGETS_SKIPPED — both the Python router and the
-real claude CLI must treat that as a fallback trigger and move to OpenRouter.
+In this sandbox the ChannelForge combo exists but no upstream provider is
+reachable, so OmniRoute answers the combo with 503 ALL_TARGETS_SKIPPED and
+auto/* with 502 — both must be treated as fallback triggers, walking the
+routing list without ever leaving OmniRoute.
 """
 
 import shutil
+import subprocess
 
 import pytest
 
 from channelforge.agent.claude_runner import AgentTarget, run_claude
 from channelforge.config import RouterConfig
 from channelforge.router import omniroute
-from channelforge.router.errors import Failure
+from channelforge.router.errors import AllTargetsFailed, Failure, LLMError
 from channelforge.router.llm import LLMRouter
 from channelforge.secrets import OMNIROUTE_API_KEY
 
@@ -21,20 +23,18 @@ pytestmark = [pytest.mark.slow,
               pytest.mark.skipif(not omniroute.is_up(LOCAL), reason="no local OmniRoute running")]
 
 
-def test_router_falls_back_when_combo_cannot_serve(openrouter, tmp_path):
-    cfg = LOCAL.model_copy(update={"openrouter_url": openrouter.url})
-    res = LLMRouter(cfg).complete([{"role": "user", "content": "hi"}])
-    assert res.target.gateway == "openrouter"
-    assert res.fallbacks[0][0] == "omniroute:channelforge-primary"
+def test_router_walks_the_whole_list_inside_omniroute():
+    with pytest.raises(AllTargetsFailed) as e:
+        LLMRouter(LOCAL).complete([{"role": "user", "content": "hi"}])
+    assert [(t, f) for t, f, _ in e.value.attempts] == [
+        ("omniroute:channelforge-primary", Failure.UNAVAILABLE), ("omniroute:auto/coding", Failure.UNAVAILABLE)]
 
 
-def test_unknown_model_is_fatal_not_silently_rerouted(openrouter):
-    """A typo'd combo name is a config error: surface it instead of quietly spending on OpenRouter."""
-    cfg = LOCAL.model_copy(update={"openrouter_url": openrouter.url, "primary_combo": "channelforge-typo-xyz"})
-    with pytest.raises(Exception) as e:
+def test_unknown_model_is_fatal_not_silently_rerouted():
+    cfg = LOCAL.model_copy(update={"general_models": ["channelforge-typo-xyz", "auto/coding"]})
+    with pytest.raises(LLMError) as e:
         LLMRouter(cfg).complete([{"role": "user", "content": "hi"}])
-    assert getattr(e.value, "failure", None) == Failure.FATAL
-    assert not openrouter.requests
+    assert e.value.failure == Failure.FATAL
 
 
 @pytest.mark.skipif(shutil.which("claude") is None, reason="claude CLI not installed")
@@ -43,3 +43,11 @@ def test_real_claude_through_real_omniroute_triggers_fallback(tmp_path, monkeypa
     t = AgentTarget("omniroute:x", "omniroute", LOCAL.omniroute_url, OMNIROUTE_API_KEY, "channelforge-primary")
     res = run_claude("say hi", cwd=tmp_path, target=t)
     assert res.should_fallback, (res.failure, res.result_text)
+
+
+@pytest.mark.skipif(shutil.which("omniroute") is None, reason="omniroute CLI not installed")
+def test_autostart_brings_a_stopped_omniroute_back():
+    subprocess.run(["omniroute", "stop"], capture_output=True, timeout=60)
+    assert not omniroute.is_up(LOCAL)
+    assert omniroute.ensure_up(LOCAL.model_copy(update={"omniroute_start_timeout_s": 120}))
+    assert omniroute.is_up(LOCAL)

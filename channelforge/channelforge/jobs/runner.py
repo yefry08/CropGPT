@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import threading
+import time
 from typing import Callable
 
 from ..agent.claude_runner import AgentTarget
@@ -11,19 +12,17 @@ from ..agent.supervisor import AgentSupervisor, Decision, Outcome
 from ..config import AppConfig
 from ..db import JobDB
 from ..router import omniroute
-from ..secrets import OMNIROUTE_API_KEY, OPENROUTER_API_KEY
+from ..secrets import OMNIROUTE_API_KEY
 from .channels import RECIPES, ChannelRecipe, build_engine_job, job_output_dir
 
 log = logging.getLogger(__name__)
 
 
 def agent_targets(cfg: AppConfig) -> list[AgentTarget]:
+    """Every agent target is an OmniRoute model id: the Claude combo first, then auto/<variant>."""
     r = cfg.router
-    targets = [AgentTarget(f"omniroute:{r.primary_combo}", "omniroute", r.omniroute_url, OMNIROUTE_API_KEY,
-                           r.primary_combo)]
-    targets += [AgentTarget(f"openrouter:{m}", "openrouter", r.openrouter_url, OPENROUTER_API_KEY, m)
-                for m in r.openrouter_models]
-    return targets
+    return [AgentTarget(f"omniroute:{m}", "omniroute", r.omniroute_url, OMNIROUTE_API_KEY, m)
+            for m in r.agent_models]
 
 
 class JobRunner:
@@ -36,12 +35,14 @@ class JobRunner:
             db, agent_targets(cfg), claude_bin=cfg.claude_bin, permission_mode=cfg.claude_permission_mode,
             allowed_tools=cfg.claude_allowed_tools,
             api_retries_before_switch=cfg.router.agent_api_retries_before_switch,
-            idle_timeout_s=cfg.router.agent_idle_timeout_s, omniroute_up=lambda: omniroute.is_up(cfg.router))
+            idle_timeout_s=cfg.router.agent_idle_timeout_s,
+            ensure_gateway=lambda: omniroute.ensure_up(cfg.router))
         self.workers = workers
         self._stop = threading.Event()
         self._wake = threading.Event()
         self._threads: list[threading.Thread] = []
         self._cancel: dict[int, threading.Event] = {}
+        self._last_pause_check = 0.0
 
     # -- lifecycle ---------------------------------------------------------
     def start(self) -> None:
@@ -89,8 +90,20 @@ class JobRunner:
         self.poke()
 
     # -- worker ------------------------------------------------------------
+    def _resume_paused(self) -> None:
+        """Re-queue jobs paused by a gateway outage once OmniRoute answers again."""
+        now = time.monotonic()
+        if now - self._last_pause_check < self.cfg.router.gateway_down_retry_s:
+            return
+        self._last_pause_check = now
+        if self.db.jobs_with_status("paused") and self.supervisor.ensure_gateway():
+            for j in self.db.jobs_with_status("paused"):
+                self.db.update_job(j["id"], status="queued")
+                self.db.log_event(j["id"], "OmniRoute is back — resuming from checkpoint")
+
     def _loop(self) -> None:
         while not self._stop.is_set():
+            self._resume_paused()
             job = self.db.claim_next_queued()
             if job is None:
                 self._wake.wait(timeout=2.0)
@@ -113,11 +126,17 @@ class JobRunner:
         pending = self.db.next_unconsumed_decision(job["id"])
         if pending:
             decision = Decision(pending["gate"], pending["status"], pending.get("note"))
-            self.db.mark_consumed(pending["id"])
 
         run_id = self.db.start_stage(job["id"], job.get("current_stage") or ej.stages[0])
         result = self.supervisor.advance(ej, decision, cancel=cancel)
         self.db.finish_stage(run_id, result.outcome.value)
+        # A decision counts as delivered only once the agent acted on it: an approval moves the gate
+        # off awaiting_human; a change request produces a newer awaiting_human checkpoint. If the run
+        # paused or failed first, the decision stays pending and is re-sent on resume.
+        if pending:
+            applied = result.state is not None and result.state.status.get(pending["gate"]) == "completed"
+            if applied or result.outcome not in (Outcome.PAUSED, Outcome.FAILED):
+                self.db.mark_consumed(pending["id"])
 
         if result.outcome == Outcome.AWAITING:
             gate = result.state.awaiting[0]
@@ -130,6 +149,9 @@ class JobRunner:
             else:
                 self.db.update_job(job["id"], status="awaiting_approval")
                 self.db.log_event(job["id"], f"waiting for approval at gate '{gate}'", stage=gate)
+        elif result.outcome == Outcome.PAUSED:
+            self.db.update_job(job["id"], status="paused", error=result.message)
+            self.db.log_event(job["id"], f"paused: {result.message}", level="warn")
         elif result.outcome == Outcome.DONE:
             self.db.update_job(job["id"], status="done")
             self.db.log_event(job["id"], "pipeline complete")

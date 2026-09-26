@@ -1,13 +1,15 @@
 """Python-side LLM router for simple generation (metadata, captions, critic).
 
-Chain per task kind, tried in order:
-  1. OmniRoute combo (OpenAI-compatible /v1/chat/completions). OmniRoute itself
-     walks the combo: Claude subscription -> Claude API -> OpenRouter models.
-  2. OpenRouter directly — used when OmniRoute is down or the whole combo
-     fails with a fallback trigger (429/529, usage/quota messages, timeouts).
+Everything goes through the local OmniRoute gateway (OpenAI-compatible
+/v1/chat/completions). Each task kind has an ordered list of OmniRoute model
+ids — typically the Claude combo, then an `auto/<variant>` target that routes
+across every other connected provider. We move to the next target on a
+fallback trigger (429/529, usage/quota messages, timeouts, 502/503 when the
+combo cannot serve). If OmniRoute itself is unreachable it is (re)started when
+autostart is on; otherwise GatewayDown is raised so the job can pause and later
+resume from its checkpoint.
 
-Every attempt (success or failure) is written to the llm_calls ledger with the
-served model, tokens and cost.
+Every attempt is written to the llm_calls ledger with the served model, tokens and cost.
 """
 
 from __future__ import annotations
@@ -15,25 +17,25 @@ from __future__ import annotations
 import logging
 import time
 from dataclasses import dataclass, field
-from typing import Any, Literal
+from typing import Any, Callable, Literal
 
 import httpx
 
 from .. import secrets
 from ..config import RouterConfig
 from ..db import JobDB
-from .errors import FALLBACK_TRIGGERS, AllTargetsFailed, Failure, LLMError, classify
+from . import omniroute
+from .errors import FALLBACK_TRIGGERS, AllTargetsFailed, Failure, GatewayDown, LLMError, classify
 
 log = logging.getLogger(__name__)
 
 Kind = Literal["general", "metadata", "critic"]
-Gateway = Literal["omniroute", "openrouter"]
 
 
 @dataclass(frozen=True)
 class Target:
-    gateway: Gateway
-    model: str
+    model: str                    # OmniRoute model id: a combo name, provider/model, or auto/<variant>
+    gateway: str = "omniroute"
 
     @property
     def name(self) -> str:
@@ -53,84 +55,78 @@ class LLMResult:
 
 
 def build_chains(cfg: RouterConfig) -> dict[str, list[Target]]:
-    primary = [Target("omniroute", cfg.primary_combo)] + [Target("openrouter", m) for m in cfg.openrouter_models]
-    cheap = [Target("omniroute", cfg.cheap_combo)] + [Target("openrouter", m) for m in cfg.openrouter_cheap_models]
-    return {"general": primary, "critic": primary, "metadata": cheap}
+    return {"general": [Target(m) for m in cfg.general_models],
+            "critic": [Target(m) for m in cfg.critic_models],
+            "metadata": [Target(m) for m in cfg.metadata_models]}
 
 
 class LLMRouter:
     def __init__(self, cfg: RouterConfig, db: JobDB | None = None,
-                 chains: dict[str, list[Target]] | None = None, client: httpx.Client | None = None):
+                 chains: dict[str, list[Target]] | None = None, client: httpx.Client | None = None,
+                 ensure_up: Callable[[RouterConfig], bool] = omniroute.ensure_up):
         self.cfg = cfg
         self.db = db
         self.chains = chains or build_chains(cfg)
+        self.ensure_up = ensure_up
         self._client = client or httpx.Client(timeout=httpx.Timeout(cfg.request_timeout_s, connect=5.0))
 
-    # -- endpoints ---------------------------------------------------------
-    def _endpoint(self, t: Target) -> tuple[str, dict[str, str]]:
-        if t.gateway == "omniroute":
-            key = secrets.get_secret(secrets.OMNIROUTE_API_KEY)
-            url = self.cfg.omniroute_url.rstrip("/") + "/v1/chat/completions"
-            headers = {"x-omniroute-no-memory": "true"}
-        else:
-            key = secrets.get_secret(secrets.OPENROUTER_API_KEY)
-            url = self.cfg.openrouter_url.rstrip("/") + "/v1/chat/completions"
-            headers = {"X-Title": "ChannelForge"}
-            if not key:
-                raise LLMError(Failure.FATAL, "OpenRouter API key not configured")
+    def _call(self, t: Target, messages: list[dict], params: dict[str, Any]) -> LLMResult:
+        url = self.cfg.omniroute_url.rstrip("/") + "/v1/chat/completions"
+        headers = {"x-omniroute-no-memory": "true"}
+        key = secrets.get_secret(secrets.OMNIROUTE_API_KEY)
         if key:
             headers["Authorization"] = f"Bearer {key}"
-        return url, headers
-
-    def _call(self, t: Target, messages: list[dict], params: dict[str, Any]) -> LLMResult:
-        url, headers = self._endpoint(t)
         body = {"model": t.model, "messages": messages, **params}
         t0 = time.monotonic()
         try:
             r = self._client.post(url, json=body, headers=headers)
         except httpx.TimeoutException as e:
             raise LLMError(Failure.TIMEOUT, f"timeout: {e}") from e
-        except httpx.TransportError as e:   # connection refused, DNS, reset
-            raise LLMError(Failure.UNAVAILABLE, f"{t.gateway} unreachable: {e}") from e
+        except httpx.TransportError as e:   # connection refused, reset: the gateway itself is down
+            raise GatewayDown(f"OmniRoute unreachable at {self.cfg.omniroute_url}: {e}") from e
         latency = int((time.monotonic() - t0) * 1000)
         if r.status_code >= 400:
             text = r.text[:2000]
             raise LLMError(classify(r.status_code, text), f"HTTP {r.status_code}: {text}", r.status_code)
         data = r.json()
-        if "error" in data and not data.get("choices"):   # some gateways send 200 + error body
+        if "error" in data and not data.get("choices"):
             msg = str(data["error"])
             raise LLMError(classify(None, msg), msg)
         usage = data.get("usage") or {}
         cost = r.headers.get("X-OmniRoute-Response-Cost")
-        cost_usd = float(cost) if cost is not None else float(usage.get("cost") or 0.0)
         return LLMResult(
             text=data["choices"][0]["message"].get("content") or "",
             target=t,
             served_model=r.headers.get("X-OmniRoute-Model") or data.get("model"),
             tokens_in=int(usage.get("prompt_tokens") or 0),
             tokens_out=int(usage.get("completion_tokens") or 0),
-            cost_usd=cost_usd,
+            cost_usd=float(cost) if cost is not None else float(usage.get("cost") or 0.0),
             latency_ms=latency,
         )
 
-    # -- public API --------------------------------------------------------
     def complete(self, messages: list[dict], *, kind: Kind = "general", job_id: int | None = None,
                  stage: str | None = None, **params: Any) -> LLMResult:
         attempts: list[tuple[str, Failure, str]] = []
-        omniroute_down = False
-        for t in self.chains[kind]:
-            if t.gateway == "omniroute" and omniroute_down:
-                continue
+        restarted = False
+        targets = list(self.chains[kind])
+        i = 0
+        while i < len(targets):
+            t = targets[i]
             try:
                 res = self._call(t, messages, params)
+            except GatewayDown as e:
+                self._ledger(job_id, stage, kind, t, None, ok=False, failure=e.failure.value, error=str(e))
+                if not restarted and self.ensure_up(self.cfg):
+                    restarted = True
+                    continue            # same target again, gateway is back
+                raise
             except LLMError as e:
                 attempts.append((t.name, e.failure, str(e)))
                 self._ledger(job_id, stage, kind, t, None, ok=False, failure=e.failure.value, error=str(e))
                 log.warning("LLM target %s failed (%s): %s", t.name, e.failure.value, e)
                 if e.failure not in FALLBACK_TRIGGERS:
                     raise
-                if t.gateway == "omniroute" and e.failure == Failure.UNAVAILABLE:
-                    omniroute_down = True
+                i += 1
                 continue
             res.fallbacks = [(a[0], a[1].value) for a in attempts]
             self._ledger(job_id, stage, kind, t, res, ok=True)

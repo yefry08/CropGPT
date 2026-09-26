@@ -25,6 +25,7 @@ from .claude_runner import AgentRunResult, AgentTarget, run_claude
 class Outcome(str, Enum):
     DONE = "done"
     AWAITING = "awaiting_approval"
+    PAUSED = "paused"                # OmniRoute down and could not be restarted; resume later
     FAILED = "failed"
 
 
@@ -75,7 +76,7 @@ class AgentSupervisor:
     def __init__(self, db: JobDB, targets: list[AgentTarget], *, claude_bin: str = "claude",
                  permission_mode: str = "acceptEdits", allowed_tools: list[str] | None = None,
                  api_retries_before_switch: int = 2,
-                 idle_timeout_s: float = 900.0, omniroute_up: Callable[[], bool] = lambda: True,
+                 idle_timeout_s: float = 900.0, ensure_gateway: Callable[[], bool] = lambda: True,
                  max_nudges: int = 3, crash_retries: int = 1, extra_env: dict[str, str] | None = None):
         if not targets:
             raise ValueError("at least one agent target is required")
@@ -86,7 +87,7 @@ class AgentSupervisor:
         self.allowed_tools = allowed_tools
         self.api_retries_before_switch = api_retries_before_switch
         self.idle_timeout_s = idle_timeout_s
-        self.omniroute_up = omniroute_up
+        self.ensure_gateway = ensure_gateway
         self.max_nudges = max_nudges
         self.crash_retries = crash_retries
         self.extra_env = extra_env or {}
@@ -126,18 +127,10 @@ class AgentSupervisor:
 
     # -- main loop ---------------------------------------------------------
     def _start_index(self, job_row: dict) -> int:
-        idx = 0
         for i, t in enumerate(self.targets):
             if t.name == job_row.get("agent_target"):
-                idx = i
-                break
-        if self.targets[idx].gateway == "omniroute" and not self.omniroute_up():
-            for i in range(idx, len(self.targets)):
-                if self.targets[i].gateway != "omniroute":
-                    self.db.log_event(job_row["id"], f"OmniRoute is down — going direct to {self.targets[i].name}",
-                                      level="warn")
-                    return i
-        return idx
+                return i
+        return 0
 
     def advance(self, job: EngineJob, decision: Decision | None = None,
                 cancel: threading.Event | None = None) -> SupervisorResult:
@@ -145,6 +138,8 @@ class AgentSupervisor:
         row = db.get_job(job.job_id) or {}
         idx = self._start_index(row)
         state = read_state(job.project_dir, job.stages)
+        if not self.ensure_gateway():
+            return SupervisorResult(Outcome.PAUSED, "OmniRoute is down and could not be started", state, [])
 
         session = row.get("agent_session") if row.get("agent_target") == self.targets[idx].name else None
         if decision and session:
@@ -156,7 +151,7 @@ class AgentSupervisor:
 
         system = HEADLESS_CONTRACT.format(language=job.language) + job.extra_system_prompt
         runs: list[AgentRunResult] = []
-        nudges = crashes = 0
+        nudges = crashes = outages = 0
         last_poll = [0.0]
 
         def on_event(ev: dict) -> None:
@@ -198,6 +193,21 @@ class AgentSupervisor:
                                                             f"(next stage {state.next_stage})", state, runs)
                 db.log_event(job.job_id, f"agent ended its turn mid-pipeline; nudging (#{nudges})", level="warn")
                 prompt, session = self.resume_prompt(job, state, None), res.session_id
+                continue
+
+            if res.failure == Failure.GATEWAY_DOWN:
+                if not self.ensure_gateway():
+                    db.log_event(job.job_id, "OmniRoute went down mid-run and could not be restarted — pausing; "
+                                             "the job resumes from its checkpoint when the gateway is back",
+                                 level="warn", stage=state.current_stage)
+                    return SupervisorResult(Outcome.PAUSED, "OmniRoute down", state, runs)
+                outages += 1
+                if outages > 3:
+                    return SupervisorResult(Outcome.PAUSED, "OmniRoute keeps going down", state, runs)
+                db.log_event(job.job_id, f"OmniRoute was down and is back — resuming on {target.name} from "
+                                         f"checkpoint at stage '{state.next_stage}'", level="warn")
+                carry = decision if (decision and decision.gate in state.awaiting) else None
+                prompt, session = self.resume_prompt(job, state, carry), None
                 continue
 
             if res.should_fallback:

@@ -25,7 +25,7 @@ class RouterPanel(QWidget):
         self.cfg, self.db = cfg, db
         self._last_id = None
         self.status = QLabel("OmniRoute: checking…")
-        self.btn_setup = QPushButton("Create / update OmniRoute combos")
+        self.btn_setup = QPushButton("Create / update OmniRoute combo")
         self.btn_setup.clicked.connect(self._setup)
         top = QHBoxLayout()
         top.addWidget(self.status)
@@ -42,7 +42,7 @@ class RouterPanel(QWidget):
         lay.addWidget(self.table)
         self._probe = _Probe()
         self._probe.done.connect(lambda up: self.status.setText(
-            f"OmniRoute @ {self.cfg.router.omniroute_url}: " + ("● up" if up else "○ down — agent and router go direct to OpenRouter")))
+            f"OmniRoute @ {self.cfg.router.omniroute_url}: " + ("● up" if up else "○ down — jobs pause and resume from checkpoint when it is back")))
 
     def probe(self) -> None:
         cfg, sig = self.cfg.router, self._probe.done

@@ -13,9 +13,10 @@ from channelforge.devtools.mock_llm_server import MockLLMServer  # noqa: E402
 
 OPENMONTAGE = Path(os.environ.get("CHANNELFORGE_ENGINES", Path(__file__).resolve().parents[2] / "engines")) / "OpenMontage"
 FAKE_CLAUDE = Path(__file__).parents[1] / "channelforge" / "devtools" / "fake_claude.py"
+FIXTURE = Path(__file__).parents[1] / "channelforge" / "devtools" / "smoke_artifacts.json"
 
 SECRET_OMNI = "sk-omni-TESTSECRET-0123456789abcdef"
-SECRET_OR = "sk-or-v1-TESTSECRET-fedcba9876543210"
+PRIMARY = "channelforge-primary"
 
 
 class MemoryKeyring(KeyringBackend):
@@ -42,20 +43,12 @@ def mem_keyring(monkeypatch, tmp_path):
     monkeypatch.setenv("CHANNELFORGE_HOME", str(tmp_path / "home"))
     from channelforge import secrets
     secrets.set_secret(secrets.OMNIROUTE_API_KEY, SECRET_OMNI)
-    secrets.set_secret(secrets.OPENROUTER_API_KEY, SECRET_OR)
     yield kr
 
 
 @pytest.fixture
 def omni():
     s = MockLLMServer("omniroute", reply="from-omniroute").start()
-    yield s
-    s.stop()
-
-
-@pytest.fixture
-def openrouter():
-    s = MockLLMServer("openrouter", reply="from-openrouter").start()
     yield s
     s.stop()
 
@@ -73,10 +66,35 @@ def engine_dir(tmp_path):
     return d
 
 
-def dead_port_url() -> str:
+def free_port() -> int:
     import socket
     s = socket.socket()
     s.bind(("127.0.0.1", 0))
     port = s.getsockname()[1]
     s.close()
-    return f"http://127.0.0.1:{port}"
+    return port
+
+
+class Restarter:
+    """Stands in for omniroute.ensure_up: 'starts' a mock gateway on a fixed port on demand."""
+
+    def __init__(self, can_start: bool = True):
+        self.port = free_port()
+        self.url = f"http://127.0.0.1:{self.port}"
+        self.can_start = can_start
+        self.server: MockLLMServer | None = None
+        self.starts = 0
+
+    def __call__(self, *_a) -> bool:
+        if self.server:
+            return True
+        if not self.can_start:
+            return False
+        self.starts += 1
+        self.server = MockLLMServer("omniroute", reply="from-restarted", port=self.port).start()
+        return True
+
+    def stop(self):
+        if self.server:
+            self.server.stop()
+            self.server = None

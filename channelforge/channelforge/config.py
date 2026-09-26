@@ -20,34 +20,31 @@ def app_home() -> Path:
 
 
 class RouterConfig(BaseModel):
+    """All model traffic goes through the local OmniRoute gateway; every fallback lives there."""
     omniroute_url: str = "http://localhost:20128"   # root; /v1 is appended per call
-    openrouter_url: str = "https://openrouter.ai/api"
-    # OmniRoute combos created by `channelforge omniroute setup`.
+    # Start OmniRoute (`omniroute serve --no-open --no-tray --daemon`) when it is found down.
+    omniroute_autostart: bool = True
+    omniroute_bin: str = "omniroute"
+    omniroute_start_timeout_s: float = 90.0
+    # Claude combo created by `channelforge omniroute setup`: subscription first, then API key.
     primary_combo: str = "channelforge-primary"
-    cheap_combo: str = "channelforge-cheap"
-    # Steps inside the primary combo, in priority order (OmniRoute <provider>/<model> ids).
     primary_combo_models: list[str] = Field(default_factory=lambda: [
-        "cc/claude-opus-5-5",             # Claude subscription via OmniRoute's Claude Code OAuth provider
+        "cc/claude-opus-5-5",             # Claude subscription (OmniRoute "Claude Code" OAuth provider)
         "anthropic/claude-opus-5-5",      # Claude API key
-        "openrouter/anthropic/claude-opus-5.5",
-        "openrouter/google/gemini-3-pro",
     ])
-    cheap_combo_models: list[str] = Field(default_factory=lambda: [
-        "openrouter/anthropic/claude-haiku-4.5",
-        "openrouter/google/gemini-3-flash",
-    ])
-    # Direct-to-OpenRouter models used when OmniRoute itself is down.
-    openrouter_models: list[str] = Field(default_factory=lambda: [
-        "anthropic/claude-opus-5.5",
-        "google/gemini-3-pro",
-    ])
-    openrouter_cheap_models: list[str] = Field(default_factory=lambda: [
-        "anthropic/claude-haiku-4.5",
-    ])
+    # Ordered routing targets (OmniRoute model ids). `auto/<variant>` is OmniRoute's zero-config
+    # router over every connected provider; it must be its own target — inside a combo OmniRoute
+    # skips it (verified on 3.8.50: 503 ALL_TARGETS_SKIPPED).
+    agent_models: list[str] = Field(default_factory=lambda: ["channelforge-primary", "auto/coding"])
+    general_models: list[str] = Field(default_factory=lambda: ["channelforge-primary", "auto/coding"])
+    critic_models: list[str] = Field(default_factory=lambda: ["auto/reasoning", "channelforge-primary"])
+    metadata_models: list[str] = Field(default_factory=lambda: ["auto/cheap", "channelforge-primary"])
     request_timeout_s: float = 120.0
     # Claude Code retries 429/529 ten times (~3 min) by itself; switch target after this many.
     agent_api_retries_before_switch: int = 2
     agent_idle_timeout_s: float = 900.0
+    # When OmniRoute stays down, paused jobs are retried after this delay (resume from checkpoint).
+    gateway_down_retry_s: float = 60.0
 
 
 class ChannelSettings(BaseModel):

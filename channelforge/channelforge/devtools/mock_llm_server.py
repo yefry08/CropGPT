@@ -1,12 +1,14 @@
-"""Programmable fake LLM gateway used by the forced-failure tests.
+"""Programmable fake OmniRoute used by the forced-failure tests and the demo.
 
 Speaks just enough of three surfaces to exercise ChannelForge end to end:
-  * OpenAI chat completions   POST /v1/chat/completions   (OmniRoute + OpenRouter)
+  * OpenAI chat completions   POST /v1/chat/completions   (Python router)
   * Anthropic Messages (SSE)  POST /v1/messages           (Claude Code subprocess)
   * OmniRoute health          GET  /api/monitoring/health
 
-Behaviour is scripted per server with ``server.fail_next(mode, n)``; modes are
-``429``, ``529``, ``usage_limit``, ``quota``, ``timeout``, ``500``, ``400``.
+Behaviour is scripted with ``fail_next(mode, n)`` (any model) or
+``fail_model(model, modes)`` (one OmniRoute model id, e.g. the Claude combo);
+modes are ``ok``, ``429``, ``529``, ``usage_limit``, ``quota``, ``timeout``,
+``503`` (combo exhausted), ``500``, ``400``.
 """
 
 from __future__ import annotations
@@ -19,13 +21,15 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 
 class MockLLMServer:
-    def __init__(self, name: str = "mock", reply: str = "ok", cost: float = 0.0012):
+    def __init__(self, name: str = "mock", reply: str = "ok", cost: float = 0.0012, port: int = 0):
         self.name = name
         self.reply = reply
         self.cost = cost
         self.modes: deque[str] = deque()
+        self.model_modes: dict[str, deque[str]] = {}
         self.requests: list[dict] = []
         self.timeout_sleep = 5.0
+        self.port = port
         self._httpd: ThreadingHTTPServer | None = None
 
     # -- scripting -------------------------------------------------------
@@ -34,6 +38,12 @@ class MockLLMServer:
 
     def fail_always(self, mode: str) -> None:
         self.modes.extend([mode] * 10_000)
+
+    def fail_model(self, model: str, modes: list[str]) -> None:
+        self.model_modes.setdefault(model, deque()).extend(modes)
+
+    def models_seen(self) -> list[str]:
+        return [r["body"].get("model") for r in self.requests]
 
     @property
     def url(self) -> str:
@@ -70,7 +80,11 @@ class MockLLMServer:
                 body = json.loads(self.rfile.read(length) or b"{}")
                 server.requests.append({"path": self.path, "body": body,
                                         "auth": self.headers.get("Authorization")})
-                mode = server.modes.popleft() if server.modes else "ok"
+                per_model = server.model_modes.get(body.get("model"))
+                if per_model:
+                    mode = per_model.popleft()
+                else:
+                    mode = server.modes.popleft() if server.modes else "ok"
                 if mode == "timeout":
                     time.sleep(server.timeout_sleep)
                     mode = "ok"
@@ -87,6 +101,10 @@ class MockLLMServer:
                         "message": "Claude AI usage limit reached|1760000000"}})
                 if mode == "quota":
                     return self._json(402, {"error": {"message": "Insufficient credits / quota exceeded"}})
+                if mode == "503":
+                    return self._json(503, {"error": {
+                        "message": "Service temporarily unavailable: all targets were skipped by pre-dispatch filters",
+                        "type": "service_unavailable", "code": "ALL_TARGETS_SKIPPED"}})
                 if mode == "500":
                     return self._json(500, {"error": {"message": "boom"}})
                 if mode == "400":
@@ -101,8 +119,8 @@ class MockLLMServer:
                         "usage": {"prompt_tokens": 11, "completion_tokens": 7,
                                   "total_tokens": 18, "cost": server.cost},
                     }, {"X-OmniRoute-Response-Cost": f"{server.cost:.10f}",
-                        "X-OmniRoute-Model": f"{server.name}/{model}",
-                        "X-OmniRoute-Provider": server.name})
+                        "X-OmniRoute-Model": f"served-by/{model}",
+                        "X-OmniRoute-Provider": "mock"})
                 if self.path.startswith("/v1/messages"):
                     if body.get("stream"):
                         return self._anthropic_stream(model)
@@ -137,7 +155,8 @@ class MockLLMServer:
                                      "usage": {"output_tokens": 7}})
                 ev("message_stop", {"type": "message_stop"})
 
-        self._httpd = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+        ThreadingHTTPServer.allow_reuse_address = True
+        self._httpd = ThreadingHTTPServer(("127.0.0.1", self.port), Handler)
         self._httpd.daemon_threads = True
         threading.Thread(target=self._httpd.serve_forever, daemon=True).start()
         return self
