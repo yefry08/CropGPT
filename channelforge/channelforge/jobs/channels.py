@@ -12,7 +12,7 @@ import time
 from dataclasses import dataclass
 from pathlib import Path
 
-from ..agent.checkpoints import pipeline_stages
+from ..agent.checkpoints import manifest_stages
 from ..agent.supervisor import EngineJob
 from ..config import AppConfig
 
@@ -27,6 +27,17 @@ class ChannelRecipe:
 
     def pipeline_for(self, job: dict) -> str:
         return self.pipeline
+
+    # Non-OpenMontage engines override these three.
+    def manifest_path(self, cfg: AppConfig, job: dict) -> Path:
+        return cfg.openmontage_dir / "pipeline_defs" / f"{self.pipeline_for(job)}.yaml"
+
+    def workspace(self, cfg: AppConfig) -> tuple[Path, Path]:
+        """(cwd for the agent, folder that holds projects/<id>)."""
+        return cfg.openmontage_dir, cfg.openmontage_dir / "projects"
+
+    def add_dirs(self, cfg: AppConfig) -> tuple[Path, ...]:
+        return ()
 
     def brief(self, job: dict) -> str:
         raise NotImplementedError(f"channel '{self.channel}' is implemented in a later milestone")
@@ -126,10 +137,87 @@ TOPIC / NOTES FROM THE HUMAN:
 """
 
 
+CF_PIPELINES = Path(__file__).resolve().parents[1] / "pipelines"
+CF_TOOLS = Path(__file__).resolve().parents[1] / "engine_support"
+
+
+class AiNewsRecipe(ChannelRecipe):
+    """Channel 2 — AI & AI-safety news, hand-drawn canvas animation, research window 7 days."""
+
+    def manifest_path(self, cfg: AppConfig, job: dict) -> Path:
+        return CF_PIPELINES / "hand-drawn-news.yaml"
+
+    def skill_dir(self, cfg: AppConfig) -> Path:
+        return cfg.engines_dir / "tools" / "skills" / "hand-drawn-canvas-animation"
+
+    def workspace(self, cfg: AppConfig) -> tuple[Path, Path]:
+        root = cfg.output_root.parent / "projects"
+        return root, root
+
+    def add_dirs(self, cfg: AppConfig) -> tuple[Path, ...]:
+        return (self.skill_dir(cfg),)
+
+    def brief(self, job: dict) -> str:
+        pid, lang, proj = job["project_id"], LANG_NAMES.get(job["language"], job["language"]), job["project_dir"]
+        created = time.strftime("%Y-%m-%d", time.gmtime(job["created_at"]))
+        start = time.strftime("%Y-%m-%d", time.gmtime(job["created_at"] - 7 * 86400))
+        skill = "{SKILL}"
+        return f"""Produce this week's AI & AI Safety News episode for ChannelForge. Project '{pid}', project folder
+{proj} (already initialised). Write every file inside it. Record progress with the checkpoint tool:
+  python {proj}/tools/cf_checkpoint.py {proj} <stage> <in_progress|awaiting_human|completed> --artifact name=relative/path
+Stages, in order: research → script (human gate) → [narration: ChannelForge] → film (human gate) →
+[compose: ChannelForge]. After you finish a stage whose next stage belongs to ChannelForge, end your turn.
+At a gated stage write awaiting_human and end your turn; when ChannelForge relays APPROVED, re-run the tool
+with `completed --approved` and the same artifacts.
+
+Narration and on-screen text language: {lang}. Visual style: '{job["visual_style"]}'.
+
+1) RESEARCH (window {start} .. {created} only; nothing older)
+- Primary sources first: AI lab and company blogs, arXiv, government and regulator sites; then reputable
+  outlets. Use web search/fetch; open every source; record its real publication date.
+- Write artifacts/research.json: {{"stories": [{{"id": "st1", "headline": "...", "why_it_matters": "...",
+  "sources": [{{"url": "https://...", "publisher": "...", "published_at": "YYYY-MM-DD",
+  "type": "lab_blog|company_blog|arxiv|government|regulator|official|news|other"}}],
+  "no_primary_reason": "only if no primary source exists"}}]}}. List the primary source first in each story.
+  5–8 stories; ChannelForge rejects any source dated outside the window.
+- Checkpoint: research completed --artifact research=artifacts/research.json
+
+2) SCRIPT (gate)
+- Long episode: 8–10 minutes. Write ~1,250–1,450 words at ~150 wpm, one section per story plus intro and
+  outro, in OpenMontage's script shape: artifacts/script.json {{"version": "1.0", "title": "...",
+  "total_duration_seconds": N, "sections": [{{"id": "intro", "text": "...", "start_seconds": 0,
+  "end_seconds": 30}}, ...]}}. Plain spoken text only (no stage directions inside "text").
+- Also write artifacts/sources.json mapping EVERY factual claim to a source URL:
+  {SOURCES_SCHEMA}
+- Accurate, non-sensational safety framing; say when something is a claim by a company, a preprint not yet
+  peer-reviewed, or a proposal rather than law.
+- Checkpoint: script awaiting_human --artifact script=artifacts/script.json. ChannelForge then checks
+  freshness, originality and facts, and a second model critiques the script before a human sees it.
+
+3) FILM (gate) — after ChannelForge writes artifacts/narration.json
+- Read {skill}/SKILL.md fully and follow its workflow and quality gates. Create the film in
+  {proj}/film/ and copy core.js, studio.js, cels.js, materials.js, render.mjs and package.json from
+  {skill}/assets and {skill}/scripts as SKILL.md step 2 describes.
+- 16:9, defineFilm format {{ ar: '16:9', width: 1920 }}, 24 fps. The timeline must total exactly film_s
+  from narration.json, with scene cuts at the section start times listed there (the voice-over is laid
+  over your film afterwards; do not add your own narration audio). Include a quiet score (defineFilm
+  score) that runs to the end, including the final end_card_s-second closing card.
+- Show the key source on screen (publisher + date) when a story starts. Illustrate ideas, labs, papers and
+  policies with drawn metaphors, diagrams and hand lettering. Never draw real people recognisably or
+  photorealistically, and no company logos.
+- Closing card: episode title and "Made with AI tools · Sources in the description".
+- Run the skill's --grid preview yourself and fix what you see, then:
+  film awaiting_human --artifact film=film/<name>.html
+
+TOPIC / NOTES FROM THE HUMAN (optional focus):
+{job["input_text"]}
+""".replace("{SKILL}", str(job.get("skill_dir", "")))
+
+
 RECIPES: dict[str, ChannelRecipe] = {
     "geopolitics": GeopoliticsRecipe("geopolitics", "animated-explainer", final_stage="compose",
                                      script_checks=True, long_video=True),
-    "ai_news": SmokeRecipe("ai_news", "framework-smoke"),
+    "ai_news": AiNewsRecipe("ai_news", "hand-drawn-news", script_checks=True, long_video=True),
     "contractor_ai": SmokeRecipe("contractor_ai", "framework-smoke"),
 }
 
@@ -150,16 +238,21 @@ def project_id_for(job: dict) -> str:
 def build_engine_job(cfg: AppConfig, job: dict, recipes: dict[str, ChannelRecipe] = RECIPES) -> EngineJob:
     recipe = recipes[job["channel"]]
     pipeline = recipe.pipeline_for(job)
-    engine_dir = cfg.openmontage_dir
+    cwd, root = recipe.workspace(cfg)
     job = {**job, "project_id": project_id_for(job)}
-    stages = [s["name"] for s in pipeline_stages(engine_dir, pipeline)]
+    specs = manifest_stages(recipe.manifest_path(cfg, job))
+    stages = [s["name"] for s in specs]
     if recipe.final_stage and recipe.final_stage in stages:
         stages = stages[:stages.index(recipe.final_stage) + 1]
+    project_dir = root / job["project_id"]
     return EngineJob(
-        job_id=job["id"], engine_dir=engine_dir, project_id=job["project_id"],
-        project_dir=engine_dir / "projects" / job["project_id"], pipeline=pipeline, stages=stages,
-        initial_prompt=recipe.brief(job), budget_cap_usd=job["budget_cap_usd"], language=job["language"],
-        directive=job.get("directive"))
+        job_id=job["id"], engine_dir=cwd if cwd != root else project_dir, project_id=job["project_id"],
+        project_dir=project_dir, pipeline=pipeline, stages=stages,
+        initial_prompt=recipe.brief({**job, "project_dir": str(project_dir),
+                                     "skill_dir": str(recipe.add_dirs(cfg)[0]) if recipe.add_dirs(cfg) else ""}),
+        budget_cap_usd=job["budget_cap_usd"],
+        language=job["language"], directive=job.get("directive"),
+        app_stages=frozenset(s["name"] for s in specs if s["owner"] == "app"), add_dirs=recipe.add_dirs(cfg))
 
 
 def job_output_dir(cfg: AppConfig, job: dict) -> Path:

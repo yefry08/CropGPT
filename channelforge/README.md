@@ -5,11 +5,10 @@ Desktop app (PySide6) that runs three automated YouTube channels end to end on t
 [stickman-video-director](https://github.com/yefry08/stickman-video-director) and
 [hand-drawn-canvas-animation](https://github.com/alesha-pro/tools/tree/main/skills/hand-drawn-canvas-animation).
 
-**Status: milestone M2**: app skeleton, SQLite job queue, approval gates, the OmniRoute-only
-model router (M1), and **Channel 3 end to end** (M2). A Geopolitics job:
-reference ingest → OpenMontage `animated-explainer` → script-gate checks (originality + facts)
-→ render → ffprobe duration gate → `long.mp4` + `sources.json`. Channels 2 and 1 arrive in
-M3/M4; until then their tabs run OpenMontage's `framework-smoke` pipeline.
+**Status: milestone M3**: app skeleton, job queue, approval gates and the OmniRoute-only
+router (M1); **Channel 3** end to end on OpenMontage (M2); **Channel 2** end to end on the
+hand-drawn-canvas-animation skill (M3). Channel 1 arrives in M4; until then its tab runs
+OpenMontage's `framework-smoke` pipeline.
 
 ## Setup
 
@@ -143,6 +142,25 @@ channelforge secrets set engine_env:PIXABAY_API_KEY        # royalty-free music 
 
 The list of variables passed through is `engine_env_vars` in `config.json`.
 
+## Channel 2 (M3): AI & AI Safety News, hand-drawn
+
+This channel is not an OpenMontage pipeline, so ChannelForge ships its own manifest
+(`channelforge/pipelines/hand-drawn-news.yaml`) using OpenMontage's checkpoint format. The
+agent records progress with `tools/cf_checkpoint.py`, which enforces the same gate rule
+(a gated stage can't be `completed` without an approval).
+
+| Stage | Who | What |
+|---|---|---|
+| research | agent | stories from the last 7 days only, primary sources first (lab/company blogs, arXiv, government, regulators) → `artifacts/research.json` |
+| script (gate) | agent | ~1,300 words + `sources.json`; ChannelForge checks research freshness (dates in the window, arXiv ids by YYMM, primary source listed first), originality and facts before you see it |
+| narration | ChannelForge | TTS per section through OpenMontage's `tts_selector`, joined with short pauses; if voice + 3 s end card isn't 480–600 s, the script goes back with a word target, **before** any drawing or rendering |
+| film (gate) | agent | follows the skill's SKILL.md: a 16:9 24 fps film whose scenes cut at the narration's section times, with a quiet score; ChannelForge renders the skill's `--grid` preview for the gate |
+| compose | ChannelForge | the skill's `render.mjs` at 1920 wide, then voice + score mixed with ffmpeg → ffprobe duration gate → `long.mp4`, `sources.json` |
+
+Projects live in `~/.channelforge/projects/<id>/`. The agent gets read access to the skill folder
+(`--add-dir`). Rendering needs Chrome and Node; as root on Linux ChannelForge wraps Chrome with
+`--no-sandbox`. A 9-minute film is ~13,000 frames: expect roughly 10–15 minutes of render time.
+
 ## Approvals
 
 OpenMontage gates (`human_approval_default: true` in the pipeline manifest) show up in
@@ -154,7 +172,7 @@ never be auto-approved (enforced in the DB layer).
 ## Tests
 
 ```bash
-cd channelforge && QT_QPA_PLATFORM=offscreen pytest -q          # 77 tests
+cd channelforge && QT_QPA_PLATFORM=offscreen pytest -q          # 87 tests
 ```
 
 Includes: fallback for 429/529/usage-limit/quota/timeout/503; the acceptance test

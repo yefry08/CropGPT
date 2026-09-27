@@ -79,7 +79,7 @@ def build_env(target: AgentTarget, extra: dict[str, str] | None = None) -> dict[
 
 def run_claude(prompt: str, *, cwd: Path, target: AgentTarget, claude_bin: str = "claude",
                resume_session: str | None = None, permission_mode: str = "acceptEdits",
-               allowed_tools: list[str] | None = None,
+               allowed_tools: list[str] | None = None, add_dirs: tuple[Path, ...] | list[Path] = (),
                append_system_prompt: str | None = None, on_event: EventCallback | None = None,
                api_retries_before_switch: int = 2, idle_timeout_s: float = 900.0,
                extra_env: dict[str, str] | None = None,
@@ -92,6 +92,8 @@ def run_claude(prompt: str, *, cwd: Path, target: AgentTarget, claude_bin: str =
         cmd += ["--append-system-prompt", append_system_prompt]
     if allowed_tools:
         cmd += ["--allowedTools", ",".join(allowed_tools)]
+    for d in add_dirs:
+        cmd += ["--add-dir", str(d)]
 
     cmd[0] = shutil.which(claude_bin) or claude_bin     # resolves claude.cmd on Windows
     group_kw: dict[str, Any] = ({"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP} if os.name == "nt"

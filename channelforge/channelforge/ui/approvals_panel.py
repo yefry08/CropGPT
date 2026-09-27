@@ -7,6 +7,7 @@ import time
 from pathlib import Path
 
 from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import (QHBoxLayout, QLabel, QLineEdit, QListWidget, QListWidgetItem, QMessageBox,
                                QPlainTextEdit, QPushButton, QSplitter, QVBoxLayout, QWidget)
 
@@ -41,6 +42,9 @@ class ApprovalsPanel(QWidget):
         self.title.setStyleSheet("font-weight: 600;")
         self.summary = QPlainTextEdit(readOnly=True)
         self.detail = QPlainTextEdit(readOnly=True)
+        self.preview = QLabel()
+        self.preview.setAlignment(Qt.AlignCenter)
+        self.preview.hide()
         self.note = QLineEdit()
         self.note.setPlaceholderText("Note for the agent (required for 'Request changes')")
 
@@ -62,6 +66,7 @@ class ApprovalsPanel(QWidget):
         rl.addWidget(QLabel("Agent summary"))
         rl.addWidget(self.summary, 1)
         rl.addWidget(QLabel("Artifact under review"))
+        rl.addWidget(self.preview, 3)
         rl.addWidget(self.detail, 3)
         rl.addLayout(buttons)
 
@@ -118,6 +123,13 @@ class ApprovalsPanel(QWidget):
                       + f"  script words: {c.get('script_words')}\n\n")
         self.detail.setPlainText(checks + (artifact_preview(payload["checkpoint"]) if payload.get("checkpoint")
                                            else json.dumps(payload, indent=2)))
+        img = payload.get("preview_image")
+        if img and Path(img).exists():
+            self.preview.setPixmap(QPixmap(img).scaledToWidth(760, Qt.SmoothTransformation))
+            self.preview.show()
+        else:
+            self.preview.clear()
+            self.preview.hide()
         self.btn_edit.setVisible(gate != "publish")
         self._set_enabled(True)
 

@@ -17,10 +17,15 @@ from typing import Any
 import yaml
 
 
+def manifest_stages(path: Path) -> list[dict[str, Any]]:
+    """Stages of a pipeline manifest: name, gated, owner (agent | app; OpenMontage stages are all agent)."""
+    manifest = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
+    return [{"name": s["name"], "gated": bool(s.get("human_approval_default", False)),
+             "owner": s.get("owner", "agent")} for s in manifest.get("stages", [])]
+
+
 def pipeline_stages(openmontage_dir: Path, pipeline: str) -> list[dict[str, Any]]:
-    manifest = yaml.safe_load((openmontage_dir / "pipeline_defs" / f"{pipeline}.yaml").read_text(encoding="utf-8"))
-    return [{"name": s["name"], "gated": bool(s.get("human_approval_default", False))}
-            for s in manifest.get("stages", [])]
+    return manifest_stages(openmontage_dir / "pipeline_defs" / f"{pipeline}.yaml")
 
 
 @dataclass

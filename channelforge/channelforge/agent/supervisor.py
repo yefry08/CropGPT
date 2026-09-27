@@ -42,6 +42,8 @@ class EngineJob:
     language: str = "es"
     extra_system_prompt: str = ""
     directive: str | None = None     # ChannelForge instruction (e.g. a duration re-plan) for this run
+    app_stages: frozenset[str] = frozenset()   # stages ChannelForge runs itself; the agent hands off before them
+    add_dirs: tuple[Path, ...] = ()            # extra read access for the agent (e.g. a skill folder)
 
 
 @dataclass
@@ -103,10 +105,10 @@ class AgentSupervisor:
             "interrupted by a model switch or a crash. Do NOT restart and do NOT redo completed stages.",
             f"Completed stages: {', '.join(state.completed) or 'none'}.",
             f"Resume at stage: {state.next_stage}.",
-            f"Follow the Resume Protocol in skills/meta/checkpoint-protocol.md: read "
-            f"projects/{job.project_id}/checkpoint_*.json (including metadata.partial_progress of any "
-            "in_progress checkpoint) and the artifacts under projects/"
-            f"{job.project_id}/artifacts/, then continue from exactly where the work stopped.",
+            f"Read {job.project_dir}/checkpoint_*.json (including metadata.partial_progress of any "
+            f"in_progress checkpoint) and the artifacts under {job.project_dir}/artifacts/, then continue "
+            "from exactly where the work stopped (for OpenMontage projects this is the Resume Protocol in "
+            "skills/meta/checkpoint-protocol.md).",
         ]
         if decision:
             parts.append(AgentSupervisor.decision_prompt(job, decision))
@@ -117,7 +119,7 @@ class AgentSupervisor:
 
     @staticmethod
     def decision_prompt(job: EngineJob, d: Decision) -> str:
-        where = f"(OpenMontage project '{job.project_id}', pipeline '{job.pipeline}') "
+        where = f"(project '{job.project_id}' in {job.project_dir}, pipeline '{job.pipeline}') "
         if d.verdict == "approved":
             msg = (f"ChannelForge decision {where}for gate '{d.gate}': APPROVED by the human. Re-write "
                    f"checkpoint '{d.gate}' with status='completed' and human_approved=True, then continue "
@@ -143,6 +145,8 @@ class AgentSupervisor:
         row = db.get_job(job.job_id) or {}
         idx = self._start_index(row)
         state = read_state(job.project_dir, job.stages)
+        if not state.awaiting and (state.done or state.next_stage in job.app_stages) and not decision:
+            return SupervisorResult(Outcome.DONE, "handoff to ChannelForge", state, [])
         if not self.ensure_gateway():
             return SupervisorResult(Outcome.PAUSED, "OmniRoute is down and could not be started", state, [])
 
@@ -169,7 +173,7 @@ class AgentSupervisor:
                          stage=state.current_stage)
             res = run_claude(prompt, cwd=job.engine_dir, target=target, claude_bin=self.claude_bin,
                              resume_session=session, permission_mode=self.permission_mode,
-                             allowed_tools=self.allowed_tools,
+                             allowed_tools=self.allowed_tools, add_dirs=job.add_dirs,
                              append_system_prompt=system, on_event=on_event,
                              api_retries_before_switch=self.api_retries_before_switch,
                              idle_timeout_s=self.idle_timeout_s,
@@ -192,7 +196,7 @@ class AgentSupervisor:
             if res.ok:
                 if state.awaiting:
                     return SupervisorResult(Outcome.AWAITING, res.result_text, state, runs)
-                if state.done:
+                if state.done or state.next_stage in job.app_stages:
                     return SupervisorResult(Outcome.DONE, res.result_text, state, runs)
                 nudges += 1
                 if nudges > self.max_nudges:

@@ -70,7 +70,9 @@ def default_channels() -> dict[str, ChannelSettings]:
             budget_cap_usd=15.0),
         "ai_news": ChannelSettings(
             id="ai_news", display_name="AI & AI Safety News",
-            visual_style="sketchbook", visual_styles=["sketchbook", "ink-on-paper", "paper3d", "sand"],
+            # the skill's looks (references/style.md); "doodle" is left out: it draws on photos, which
+            # would need per-image licences for a news channel
+            visual_style="ink", visual_styles=["ink", "pencil", "riso", "screen"],
             render_backend="hand_drawn_canvas", render_backends=["hand_drawn_canvas"],
             budget_cap_usd=3.0),
         "geopolitics": ChannelSettings(

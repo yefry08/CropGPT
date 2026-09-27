@@ -1,0 +1,27 @@
+# ChannelForge pipeline for Channel 2 (AI & AI Safety News), rendered with the
+# hand-drawn-canvas-animation skill. Checkpoints use OpenMontage's checkpoint JSON shape
+# (projects/<id>/checkpoint_<stage>.json) so the same supervisor, gates and Backlot-style
+# tooling apply. owner: agent = Claude Code does the stage; app = ChannelForge does it.
+name: hand-drawn-news
+version: "1.0"
+stages:
+  - name: research
+    owner: agent
+    produces: [research]          # artifacts/research.json
+    human_approval_default: false
+  - name: script
+    owner: agent
+    produces: [script]            # artifacts/script.json (OpenMontage script shape) + artifacts/sources.json
+    human_approval_default: true
+  - name: narration
+    owner: app                    # TTS per section, timings, pre-render duration check
+    produces: [narration]
+    human_approval_default: false
+  - name: film
+    owner: agent
+    produces: [film]              # film/<name>.html following the skill, timed to narration.json
+    human_approval_default: true
+  - name: compose
+    owner: app                    # render.mjs + mix narration and score → render_report
+    produces: [render_report]
+    human_approval_default: false
