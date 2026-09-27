@@ -17,3 +17,7 @@ data/cache/
 # ChannelForge: engine clones and runtime data are never committed
 engines/
 channelforge/.channelforge/
+
+# Portfolio renders and dependencies
+portfolio/**/node_modules/
+portfolio/**/out/

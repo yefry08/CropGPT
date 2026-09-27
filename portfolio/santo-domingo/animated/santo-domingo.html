@@ -1,0 +1,323 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Santo Domingo: a city drawn in ink</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{height:min(86vh,960px);width:auto;background:#000;box-shadow:0 0 0 1px #333}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center}
+  button{background:#222;color:#ddd;border:1px solid #444;padding:4px 10px;cursor:pointer;font:inherit}
+  input[type=range]{width:320px}
+</style>
+<canvas id="c"></canvas>
+<script src="core.js"></script>
+<script>
+/* ============================================================
+BRIEF (hand-drawn-canvas-animation/references/brief-template.md)
+Subject: Santo Domingo's Ciudad Colonial, drawn line by line as a heritage walk.
+  Emotional beat: curiosity -> pride; the city as layers (Taíno, African, European).
+Duration ~60 s; primary aspect 9:16 (Reels/Shorts/TikTok); delivery 1080x1920.
+Look: ink on warm paper. Techniques: self-drawing architectural line art, form hatching
+  on the shadow side only, hand-lettered captions. No characters, no photos.
+Palette: paperInk base; one accent (coral-stone red) for highlights, blue for water.
+Mark language: pressured contours for silhouettes, thin interior lines, hatching on the
+  right-hand (shadow) planes, quiet paper elsewhere.
+Exposure: 24 fps; line reveals on ones; camera a slow push per shot (1.00 -> 1.05).
+Beat sheet (start, dur, focus, caption):
+  0   5  title lettering                        "Santo Domingo / Ciudad Colonial / founded 1498"
+  5   6  sea, sun, palm, petroglyph-style face   Taíno homeland
+  11  7  street grid + plaza drawing itself      grid as a model for the Americas (UNESCO)
+  18  7  Fortaleza Ozama keep over the river     oldest European fortress in the Americas
+  25  6  Calle Las Damas in perspective          "known as" the first street
+  31  7  Catedral Primada facade                 first cathedral, hospital, university (UNESCO)
+  38  6  Alcázar de Colón double arcade          begun 1510, home of governor Diego Colón
+  44  8  güira + tambora, notes on the beat      merengue 2016 / bachata 2019 (UNESCO ICH)
+  52  8  three landmarks in a row, credits       roots + AI/sources disclosure
+Sources: UNESCO WHC 526 (Colonial City of Santo Domingo, 1990); UNESCO ICH merengue (2016),
+  bachata (2019). Fortaleza dates 1502–1508; Alcázar begun 1510 (completion 1512–1514 varies
+  by source, so not stated). Calle Las Damas "first street" is tradition, worded "known as".
+Font: Comic Neue (SIL Open Font License), installed on the render host.
+Known limitations: simplified architecture (recognisable silhouettes, not survey drawings).
+============================================================ */
+
+usePalette(makePalette({ paperBand: null, accents: ['#c8473f', '#2b5fb8', '#e79256', '#1e1630'] }, 'paperInk'));
+const RED = '#c8473f', BLUE = '#2b5fb8', FONT = '"Comic Neue", "Comic Sans MS", cursive';
+const ART_Y = 700;            // centre of the drawing area; captions sit at ~1230-1420, above the
+                              // Reels/TikTok/Shorts UI overlay on the bottom ~25% of the frame
+
+// ---------- lettering ----------
+function sdText(c, s, x, y, o = {}) {
+  const { size = 58, weight = 700, color = PAL.ink, align = 'center', prog = 1 } = o;
+  const n = Math.ceil(s.length * clamp(prog, 0, 1)); if (!n) return;
+  c.save(); c.font = `${weight} ${size}px ${FONT}`; c.textAlign = align; c.textBaseline = 'alphabetic';
+  c.fillStyle = color; c.fillText(s.slice(0, n), x, y); c.restore();
+}
+// caption: lines revealed in order between t0 and t0+dur, bottom third
+function caption(c, lines, tau, t0 = .6, dur = 2.4, o = {}) {
+  const { size = 64, y0 = 1250, color = PAL.ink } = o, lh = size * 1.28;
+  const total = lines.reduce((a, l) => a + l.length, 0); let acc = 0;
+  resetT(c);
+  const shown = sm(t0 - .25, t0, tau);                         // paper band so line art never runs under the text
+  if (shown > 0) { c.save(); c.globalAlpha = .92 * shown; c.fillStyle = PAL.paper; c.fillRect(0, y0 - size * 1.15, W, lh * lines.length + size * .55); c.restore(); }
+  lines.forEach((l, k) => {
+    const a = acc / total, b = (acc + l.length) / total; acc += l.length;
+    sdText(c, l, CX, y0 + k * lh, { size, color, prog: sm(t0 + a * dur, t0 + b * dur, tau, x => x) });
+  });
+}
+
+// ---------- line art ----------
+// A drawing is a list of strokes {p: [[x,y]...], close, w, col}; progress 0..1 reveals them
+// in order, length-weighted, so a long wall takes longer than a window.
+const T = (pts, ox, oy, s = 1) => pts.map(([x, y]) => [ox + x * s, oy + y * s]);
+function lenOf(st) { return pathLength(st.p, st.close); }
+function drawArt(c, strokes, prog, seed, o = {}) {
+  const { amp = 1.4, width = 3.2 } = o, L = strokes.map(lenOf), tot = L.reduce((a, b) => a + b, 0);
+  let acc = 0; c.save(); c.lineCap = 'round'; c.lineJoin = 'round';
+  strokes.forEach((st, k) => {
+    const a = acc / tot, b = (acc + L[k]) / tot; acc += L[k];
+    const p = clamp((prog - a) / Math.max(1e-6, b - a), 0, 1); if (p <= 0) return;
+    c.strokeStyle = st.col || PAL.ink; c.lineWidth = st.w || width;
+    if (p >= 1) wob(c, st.p, amp, seed + k, !!st.close, { pressure: st.w && st.w < 2.2 ? 0 : .45 });
+    else selfDraw(c, st.p, p, seed + k, amp, !!st.close);
+  });
+  c.restore();
+}
+const S_ = (p, o = {}) => ({ p, ...o });
+const box = (x, y, w, h, o) => S_(rectPts(x, y, w, h), { close: true, ...o });
+function archPts(cx, base, w, h, n = 14) {   // round-headed opening: jambs + semicircle
+  const r = w / 2, spring = base - (h - r), p = [[cx - r, base], [cx - r, spring]];
+  for (let i = 1; i < n; i++) { const a = Math.PI + i / n * Math.PI; p.push([cx + r * Math.cos(a), spring + r * Math.sin(a)]); }
+  p.push([cx + r, spring], [cx + r, base]); return p;
+}
+function shadeRect(c, x, y, w, h, prog, seed, o = {}) {   // hatching appears after the lines
+  if (prog <= 0) return; hatch(c, rectPath(x, y, w, h), [x, y, w, h],
+    { angle: o.angle ?? 1.05, gap: o.gap ?? 9, len: 18, color: PAL.ink, alpha: .32 * prog, width: 1.3, seed });
+}
+function push(c, tau, dur, cy = ART_Y, z0 = 1, z1 = 1.05) {  // gentle camera push, world = screen units
+  cam(c, CX, cy, lerp(z0, z1, sm(0, dur, tau, easeInOutSine)));
+}
+const waves = (y, x0, x1, amp, seed, col = BLUE, w = 2.4) => {
+  const p = []; for (let x = x0; x <= x1; x += 12) p.push([x, y + Math.sin(x / 38 + seed) * amp]); return S_(p, { col, w });
+};
+
+// ---------- drawings (world units, centred on CX / ART_Y) ----------
+const X0 = CX, Y0 = ART_Y;
+
+function taino() {
+  const s = [];
+  s.push(S_(ellPts(X0 + 250, Y0 - 330, 70, 70, 0, 36), { close: true, col: RED }));        // sun
+  for (let k = 0; k < 10; k++) { const a = k / 10 * TAU; s.push(S_([[X0 + 250 + Math.cos(a) * 95, Y0 - 330 + Math.sin(a) * 95], [X0 + 250 + Math.cos(a) * 130, Y0 - 330 + Math.sin(a) * 130]], { col: RED, w: 2.4 })); }
+  // palm: curved trunk + fronds
+  const trunk = []; for (let t = 0; t <= 1; t += .05) trunk.push([X0 + 150 + Math.sin(t * 1.6) * 90, Y0 + 230 - t * 430]);
+  s.push(S_(trunk, { w: 4.2 }));
+  const top = trunk[trunk.length - 1];
+  [[-1, -.2], [-1, .35], [1, -.25], [1, .3], [-.3, -1], [.4, -.95]].forEach(([dx, dy], k) => {
+    const f = []; for (let t = 0; t <= 1; t += .1) f.push([top[0] + dx * 170 * t, top[1] + dy * 90 * t + 70 * t * t * (1 - Math.abs(dy))]); s.push(S_(f, { w: 3 }));
+  });
+  // petroglyph-style face: round head, eyes, mouth, spiral
+  s.push(S_(ellPts(X0 - 220, Y0 - 60, 120, 130, 0, 40), { close: true, w: 4 }));
+  s.push(S_(ellPts(X0 - 262, Y0 - 90, 20, 20, 0, 20), { close: true }), S_(ellPts(X0 - 178, Y0 - 90, 20, 20, 0, 20), { close: true }));
+  s.push(S_(ellPts(X0 - 220, Y0 - 5, 36, 16, 0, 24), { close: true }));
+  const sp = []; for (let a = 0; a < 5.2 * Math.PI; a += .2) sp.push([X0 - 220 + Math.cos(a) * a * 5.2, Y0 - 290 + Math.sin(a) * a * 5.2]); s.push(S_(sp, { w: 2.6 }));
+  // sea
+  for (let k = 0; k < 4; k++) s.push(waves(Y0 + 250 + k * 38, X0 - 470, X0 + 470, 9 - k, k * 1.7));
+  return s;
+}
+
+function grid() {
+  const s = [], N = 7, cell = 110, g0x = X0 - (N * cell) / 2, g0y = Y0 - (N * cell) / 2 - 40;
+  for (let k = 0; k <= N; k++) s.push(S_([[g0x, g0y + k * cell], [g0x + N * cell, g0y + k * cell]], { w: 2.8 }));
+  for (let k = 0; k <= N; k++) s.push(S_([[g0x + k * cell, g0y], [g0x + k * cell, g0y + N * cell]], { w: 2.8 }));
+  const px = g0x + 3 * cell, py = g0y + 3 * cell;                 // plaza: the central block
+  s.push(box(px + 16, py + 16, cell - 32, cell - 32, { col: RED, w: 3.4 }));
+  for (let k = 0; k < 4; k++) s.push(S_(ellPts(px + 30 + (k % 2) * 50, py + 30 + (k > 1) * 50, 9, 9, 0, 14), { close: true, col: RED, w: 2 }));
+  const river = []; for (let y = g0y - 60; y <= g0y + N * cell + 60; y += 12) river.push([g0x + N * cell + 60 + Math.sin(y / 60) * 16, y]);
+  s.push(S_(river, { col: BLUE, w: 4 }));
+  return { s, g0x, g0y, cell, N };
+}
+
+function fortress() {
+  const s = [], tx = X0 - 60, top = Y0 - 400, base = Y0 + 170, w = 260;
+  s.push(S_([[X0 - 470, base + 70], [X0 + 470, base + 70]], { w: 3.4 }));                      // ground
+  s.push(box(X0 - 470, base - 80, 940, 150));                                                     // curtain wall
+  for (let k = 0; k < 13; k++) s.push(box(X0 - 460 + k * 72, base - 118, 38, 38, { w: 2.4 })); // low merlons
+  s.push(box(tx - w / 2, top, w, base - 80 - top));                                               // the keep
+  for (let k = 0; k < 5; k++) s.push(box(tx - w / 2 + 6 + k * 52, top - 46, 38, 46, { w: 2.6 }));   // merlons
+  s.push(S_(archPts(tx, top + 190, 54, 96), { w: 2.4 }));
+  s.push(S_([[tx - 70, top + 300], [tx - 70, top + 360]], { w: 2.2 }), S_([[tx + 70, top + 300], [tx + 70, top + 360]], { w: 2.2 }));
+  s.push(S_([[tx + 80, top - 46], [tx + 80, top - 190]], { w: 2.6 }), S_([[tx + 80, top - 190], [tx + 170, top - 160], [tx + 80, top - 130]], { col: RED, w: 3 }));
+  s.push(S_(archPts(X0 + 280, base + 70, 110, 140), { w: 2.8 }));                                   // gate
+  for (let k = 0; k < 3; k++) s.push(waves(base + 130 + k * 36, X0 - 470, X0 + 470, 8 - k * 2, k * 2.1)); // Ozama river
+  return { s, shade: [tx + w / 2 - 80, top, 80, base - 80 - top] };
+}
+
+function street() {
+  const s = [], vp = [X0, Y0 - 160];
+  const along = (a, t) => [lerp(a[0], vp[0], t), lerp(a[1], vp[1], t)];
+  const LB = [X0 - 520, Y0 + 380], RB = [X0 + 520, Y0 + 380], LT = [X0 - 520, Y0 - 460], RT = [X0 + 520, Y0 - 460];
+  s.push(S_([LB, along(LB, .82)], { w: 3.4 }), S_([RB, along(RB, .82)], { w: 3.4 }));             // kerbs
+  s.push(S_([LT, along(LT, .82)], { w: 3.4 }), S_([RT, along(RT, .82)], { w: 3.4 }));             // rooflines
+  [.18, .4, .58, .72].forEach(t => {
+    const l0 = along(LT, t), l1 = along([LB[0], LB[1] - 90], t), r0 = along(RT, t), r1 = along([RB[0], RB[1] - 90], t);
+    s.push(S_([l0, l1], { w: 2.6 }), S_([r0, r1], { w: 2.6 }));
+  });
+  [[.05, .15], [.26, .34], [.46, .53]].forEach(([a, b], k) => {                                 // doors
+    const dl = [along([LB[0], LB[1] - 90], a), along([LB[0], LB[1] - 90], b)], h = 1 - a * .9, hb = 1 - b * .9;
+    s.push(S_([dl[0], [dl[0][0], dl[0][1] - 230 * h], [dl[1][0], dl[1][1] - 230 * hb], dl[1]], { w: 2.4 }));
+    const dr = [along([RB[0], RB[1] - 90], a), along([RB[0], RB[1] - 90], b)];
+    s.push(S_([dr[0], [dr[0][0], dr[0][1] - 230 * h], [dr[1][0], dr[1][1] - 230 * hb], dr[1]], { w: 2.4 }));
+  });
+  [.12, .36, .56].forEach(t => {                                                                 // lanterns
+    const p = along([RB[0] - 40, RB[1] - 380], t), k = 1 - t * .9;
+    s.push(S_([[p[0], p[1]], [p[0] - 40 * k, p[1]]], { w: 2.2 }), box(p[0] - 58 * k, p[1], 36 * k, 50 * k, { col: RED, w: 2.4 }));
+  });
+  for (let k = 0; k < 7; k++) { const t = .08 + k * .1; s.push(S_([along([X0 - 160, Y0 + 380], t), along([X0 + 160, Y0 + 380], t)], { w: 1.6 })); } // paving
+  const eL = along(LT, .82), eR = along(RT, .82), eB = along(LB, .82);                        // the street's end: a facade
+  s.push(S_([eL, eR, [eR[0], eB[1]], [eL[0], eB[1]]], { close: true, w: 2.6 }));
+  s.push(S_(archPts(X0, eB[1], 34, 60, 10), { w: 2, col: RED }));
+  return s;
+}
+
+function cathedral() {
+  const s = [], L = X0 - 330, R = X0 + 330, top = Y0 - 250, base = Y0 + 230;
+  s.push(S_([[X0 - 480, base], [X0 + 480, base]], { w: 3.4 }), S_([[X0 - 420, base + 40], [X0 + 420, base + 40]], { w: 2 }), S_([[X0 - 380, base + 80], [X0 + 380, base + 80]], { w: 2 }));
+  s.push(box(L, top, R - L, base - top));
+  s.push(box(L - 50, top - 40, 50, base - top + 40), box(R, top - 40, 50, base - top + 40));      // buttresses
+  s.push(S_([[L, top + 60], [R, top + 60]], { w: 2.2 }));                                          // frieze
+  s.push(S_(archPts(X0, base, 300, 380, 18), { w: 3.6, col: RED }));                              // great arch
+  s.push(S_(archPts(X0 - 70, base, 110, 220), { w: 2.6 }), S_(archPts(X0 + 70, base, 110, 220), { w: 2.6 }));
+  s.push(S_(ellPts(X0, top + 140, 34, 34, 0, 26), { close: true, w: 2.4 }));
+  s.push(box(L + 10, top - 170, 140, 170, { w: 3 }));                                             // bell gable
+  s.push(S_(archPts(L + 45, top - 30, 40, 90), { w: 2.2 }), S_(archPts(L + 115, top - 30, 40, 90), { w: 2.2 }));
+  s.push(S_([[L + 80, top - 170], [L + 80, top - 230]], { w: 2.4 }), S_([[L + 60, top - 210], [L + 100, top - 210]], { w: 2.4 }));
+  return { s, shade: [R, top - 40, 50, base - top + 40] };
+}
+
+function alcazar() {
+  const s = [], L = X0 - 450, R = X0 + 450, top = Y0 - 250, mid = Y0 - 20, base = Y0 + 210;
+  s.push(S_([[X0 - 500, base], [X0 + 500, base]], { w: 3.4 }));
+  s.push(box(L, top, R - L, base - top));
+  s.push(S_([[L, mid], [R, mid]], { w: 2.6 }), S_([[L, top + 22], [R, top + 22]], { w: 2 }));
+  s.push(S_([[L + 170, top], [L + 170, base]], { w: 2.4 }), S_([[R - 170, top], [R - 170, base]], { w: 2.4 }));
+  for (let k = 0; k < 5; k++) {                                                                   // the double loggia
+    const cx = L + 170 + 56 + k * 112;
+    s.push(S_(archPts(cx, base, 80, 180), { w: 2.6, col: k === 2 ? RED : undefined }));
+    s.push(S_(archPts(cx, mid, 80, 160), { w: 2.6 }));
+  }
+  [[L + 85, mid + 110], [R - 85, mid + 110], [L + 85, top + 110], [R - 85, top + 110]].forEach(([x, y]) => s.push(box(x - 32, y - 45, 64, 90, { w: 2.2 })));
+  return { s, shade: [R - 170, top, 170, base - top] };
+}
+
+function drums() {
+  const s = [];
+  const gx = X0 - 230, gy = Y0 - 230;                                                               // güira: metal cylinder
+  s.push(S_(ellPts(gx, gy, 70, 22, 0, 30), { close: true }), S_([[gx - 70, gy], [gx - 70, gy + 420]], {}), S_([[gx + 70, gy], [gx + 70, gy + 420]], {}));
+  s.push(S_(ellPts(gx, gy + 420, 70, 22, 0, 30), { close: true }));
+  s.push(S_([[gx - 70, gy + 150], [gx - 120, gy + 150], [gx - 120, gy + 270], [gx - 70, gy + 270]], { w: 3 }));   // handle
+  s.push(S_([[gx + 140, gy + 40], [gx + 110, gy + 330]], { w: 4, col: RED }));                                   // scraper
+  const tx = X0 + 200, ty = Y0 + 20;                                                                // tambora: horizontal drum
+  s.push(S_(ellPts(tx - 150, ty, 50, 120, 0, 34), { close: true }), S_(ellPts(tx + 150, ty, 50, 120, 0, 34), { close: true }));
+  s.push(S_([[tx - 150, ty - 120], [tx + 150, ty - 120]], {}), S_([[tx - 150, ty + 120], [tx + 150, ty + 120]], {}));
+  const zig = []; for (let k = 0; k <= 8; k++) zig.push([tx - 150 + k * 37.5, ty + (k % 2 ? 110 : -110)]); s.push(S_(zig, { w: 2.2, col: RED }));
+  return { s, gx, gy, tx, ty };
+}
+
+// ---------- scenes ----------
+function sceneTitle(c, tau) {
+  paper(c); resetT(c);
+  sdText(c, 'Santo', CX, 720, { size: 190, prog: sm(-.25, 1.2, tau, x => x) });
+  sdText(c, 'Domingo', CX, 900, { size: 190, prog: sm(.8, 2.2, tau, x => x) });
+  c.strokeStyle = RED; c.lineWidth = 7; c.lineCap = 'round';
+  selfDraw(c, [[CX - 330, 950], [CX, 972], [CX + 330, 948]], sm(2.0, 2.8, tau), 11, 3);
+  sdText(c, 'Ciudad Colonial', CX, 1110, { size: 72, weight: 400, prog: sm(2.6, 3.4, tau, x => x) });
+  sdText(c, 'founded 1498', CX, 1200, { size: 58, weight: 400, color: RED, prog: sm(3.3, 3.9, tau, x => x) });
+}
+function sceneTaino(c, tau) {
+  paper(c); push(c, tau, 6); drawArt(c, taino(), sm(.1, 4.4, tau, easeOut), 100);
+  caption(c, ['Long before 1498,', 'this was the home', 'of the Taíno people.'], tau, .8, 2.6);
+}
+const GRID = grid();
+function sceneGrid(c, tau) {
+  paper(c); push(c, tau, 7); const g = GRID;
+  drawArt(c, g.s, sm(.1, 3.6, tau, easeOut), 200);
+  const f = sm(3.4, 4.6, tau);                                      // blocks fill in, plaza stays open
+  for (let r = 0; r < g.N; r++) for (let q = 0; q < g.N; q++) { if (r === 3 && q === 3) continue;
+    const x = g.g0x + q * g.cell + 14, y = g.g0y + r * g.cell + 14; shadeRect(c, x, y, g.cell - 28, g.cell - 28, f, 300 + r * 9 + q, { gap: 11 }); }
+  caption(c, ['Its streets and plaza', 'became a model for', 'cities across the Americas.'], tau, .9, 3);
+}
+const FORT = fortress();
+function sceneFortress(c, tau) {
+  paper(c); push(c, tau, 7); drawArt(c, FORT.s, sm(.1, 4.2, tau, easeOut), 400);
+  const [x, y, w, h] = FORT.shade; shadeRect(c, x, y, w, h, sm(4.0, 5.0, tau), 401);
+  caption(c, ['Fortaleza Ozama, 1502–1508:', 'the oldest European-built', 'fortress in the Americas.'], tau, .8, 3.2);
+}
+const STREET = street();
+function sceneStreet(c, tau) {
+  paper(c); push(c, tau, 6, ART_Y - 40, 1, 1.08); drawArt(c, STREET, sm(.1, 3.8, tau, easeOut), 500, { width: 3 });
+  caption(c, ['Calle Las Damas,', 'known as the first street', 'of the Americas.'], tau, .8, 2.8);
+}
+const CATH = cathedral();
+function sceneCathedral(c, tau) {
+  paper(c); push(c, tau, 7); drawArt(c, CATH.s, sm(.1, 4.2, tau, easeOut), 600);
+  const [x, y, w, h] = CATH.shade; shadeRect(c, x, y, w, h, sm(4.0, 5.0, tau), 601);
+  caption(c, ['Here rose the first cathedral,', 'hospital and university', 'of the Americas.'], tau, .8, 3.2, { size: 56 });
+}
+const ALC = alcazar();
+function sceneAlcazar(c, tau) {
+  paper(c); push(c, tau, 6); drawArt(c, ALC.s, sm(.1, 3.8, tau, easeOut), 700);
+  const [x, y, w, h] = ALC.shade; shadeRect(c, x, y, w, h, sm(3.7, 4.6, tau), 701);
+  caption(c, ['Alcázar de Colón, begun 1510:', 'home of governor', 'Diego Colón.'], tau, .8, 2.8, { size: 56 });
+}
+const DRUM = drums(), BPM = 132, BEAT = 60 / BPM;
+function guiraHoles(c, prog) {   // the punched holes that make a güira a güira
+  if (prog <= 0) return; const { gx, gy } = DRUM; c.save(); c.fillStyle = PAL.ink; c.globalAlpha = .7 * prog;
+  for (let r = 0; r < 16; r++) for (let q = 0; q < 6; q++) { const x = gx - 52 + q * 21 + (r % 2) * 10, y = gy + 40 + r * 22; if (x > gx + 60) continue; c.beginPath(); c.arc(x, y, 3.2, 0, TAU); c.fill(); }
+  c.restore(); }
+function sceneMusic(c, tau) {
+  paper(c);
+  const beat = (tau / BEAT) % 1, bump = 1 + .025 * Math.exp(-beat * 6) * sm(1.2, 1.6, tau);
+  cam(c, CX, ART_Y, bump); drawArt(c, DRUM.s, sm(.1, 2.4, tau, easeOut), 800); guiraHoles(c, sm(2.2, 2.8, tau));
+  const r = rng(801);                                                   // notes rising on the beat
+  for (let k = 0; k < 9; k++) { const born = 1.4 + k * BEAT * 2, age = tau - born; if (age < 0 || age > 2.6) continue;
+    const x = CX - 300 + r() * 600, y = ART_Y - 200 - age * 140, a = clamp(1 - age / 2.6, 0, 1);
+    c.save(); c.globalAlpha = a; c.strokeStyle = k % 2 ? RED : PAL.ink; c.fillStyle = c.strokeStyle; c.lineWidth = 4;
+    c.beginPath(); c.ellipse(x, y, 18, 13, -.4, 0, TAU); c.fill(); c.beginPath(); c.moveTo(x + 16, y - 4); c.lineTo(x + 16, y - 90); c.lineTo(x + 46, y - 70); c.stroke(); c.restore(); }
+  caption(c, ['Its rhythms are heritage too:', 'merengue (UNESCO, 2016)', 'and bachata (UNESCO, 2019).'], tau, .8, 3.2, { size: 56 });
+}
+function sceneClose(c, tau) {
+  paper(c); resetT(c);
+  const row = [[FORT.s, X0 - 330, 400], [CATH.s, X0, 600], [ALC.s, X0 + 330, 700]];
+  row.forEach(([s, x, seed], k) => { c.save(); cam(c, CX, ART_Y, 1); c.translate(x, ART_Y - 180); c.scale(.3, .3); c.translate(-X0, -Y0);
+    drawArt(c, s, sm(.1 + k * .4, 2.2 + k * .4, tau, easeOut), seed, { width: 7, amp: 3 }); c.restore(); });
+  caption(c, ['Taíno, African and European roots.', 'One living city.'], tau, 1.2, 2.2, { size: 60, y0: 940 });
+  resetT(c);
+  sdText(c, 'Animation made with AI (Claude)', CX, 1300, { size: 36, weight: 400, prog: sm(4.2, 4.8, tau, x => x) });
+  sdText(c, 'Illustration, not photography · Facts: UNESCO', CX, 1360, { size: 36, weight: 400, prog: sm(4.6, 5.3, tau, x => x) });
+}
+
+// ---------- score: soft plucks, then güira + tambora for the merengue beat ----------
+const STARTS = [0, 5, 11, 18, 25, 31, 38, 44, 52], MUSIC_AT = 44;
+function score(ac, t0, dest) {
+  const m = ac.createGain(); m.gain.value = .5; m.connect(dest);
+  for (let t = .3; t < 59; t += .5) { const k = Math.round(t * 2); if (t >= MUSIC_AT && t < 52) continue;
+    note(ac, m, pentHz(0, [0, 2, 4, 3, 1, 4, 2, 0][k % 8], 262), t0, t, 1.2, 'triangle', k % 4 ? .07 : .11); }
+  STARTS.slice(1).forEach(t => note(ac, m, 131, t0, t, 1.6, 'sine', .16));                        // soft cue on each cut
+  for (let t = MUSIC_AT + 1.2, n = 0; t < 52; t += BEAT / 2, n++) {
+    noiseBurst(ac, m, t0, t, n % 2 ? .05 : .09, n % 2 ? .05 : .09, 900 + n);                     // güira
+    if (n % 4 === 0 || n % 8 === 3) note(ac, m, n % 8 === 3 ? 98 : 73, t0, t, .25, 'sine', .3);    // tambora
+    if (n % 2 === 0) note(ac, m, pentHz(1, [0, 2, 4, 2][n / 2 % 4], 262), t0, t, .3, 'square', .025);
+  }
+  [262, 330, 392].forEach(f => note(ac, m, f, t0, 52.4, 5, 'triangle', .07));                      // closing chord
+}
+
+defineFilm({ format: { ar: '9:16', width: 1080 }, fps: 24, score, timeline: [
+  { name: 'title', dur: 5, fn: sceneTitle },
+  { name: 'taino', dur: 6, fn: sceneTaino },
+  { name: 'grid', dur: 7, fn: sceneGrid },
+  { name: 'fortaleza', dur: 7, fn: sceneFortress },
+  { name: 'las-damas', dur: 6, fn: sceneStreet },
+  { name: 'catedral', dur: 7, fn: sceneCathedral },
+  { name: 'alcazar', dur: 6, fn: sceneAlcazar },
+  { name: 'merengue', dur: 8, fn: sceneMusic },
+  { name: 'close', dur: 8, fn: sceneClose },
+] });
+</script>
