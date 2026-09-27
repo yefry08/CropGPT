@@ -107,8 +107,17 @@ class ApprovalsPanel(QWidget):
                            f"  ·  waiting since {time.strftime('%H:%M:%S', time.localtime(a['created_at']))}")
         self.summary.setPlainText(a["summary"] or "")
         payload = json.loads(a["payload"] or "{}")
-        self.detail.setPlainText(artifact_preview(payload["checkpoint"]) if payload.get("checkpoint")
-                                 else json.dumps(payload, indent=2))
+        checks = ""
+        if payload.get("checks"):
+            c = payload["checks"]
+            o, f = c.get("originality", {}), c.get("facts", {})
+            flags = f.get("rule_violations", []) + f.get("critic_flags", [])
+            checks = (f"CHANNELFORGE CHECKS\n  originality: {o.get('summary')}\n"
+                      f"  facts: {f.get('claims_checked')} claims, {'passed' if f.get('passed') else 'FLAGGED'}\n"
+                      + "".join(f"    - {x.get('claim_id') or x.get('section_id')}: {x.get('problem')}\n" for x in flags)
+                      + f"  script words: {c.get('script_words')}\n\n")
+        self.detail.setPlainText(checks + (artifact_preview(payload["checkpoint"]) if payload.get("checkpoint")
+                                           else json.dumps(payload, indent=2)))
         self.btn_edit.setVisible(gate != "publish")
         self._set_enabled(True)
 

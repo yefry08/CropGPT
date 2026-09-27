@@ -14,7 +14,7 @@ from channelforge.agent.claude_runner import AgentTarget
 from channelforge.agent.supervisor import AgentSupervisor, Outcome
 from channelforge.config import AppConfig, RouterConfig
 from channelforge.db import JobDB
-from channelforge.jobs.channels import RECIPES
+from channelforge.jobs.channels import SMOKE_RECIPES
 from channelforge.jobs.runner import JobRunner
 from channelforge.secrets import OMNIROUTE_API_KEY
 from conftest import FAKE_CLAUDE, FIXTURE, PRIMARY, SECRET_OMNI, Restarter
@@ -30,7 +30,7 @@ def setup(tmp_path, engine_dir, url, *, ensure_gateway=lambda: True, idle=30.0):
     sup = AgentSupervisor(db, targets, claude_bin=str(FAKE_CLAUDE), api_retries_before_switch=2,
                           idle_timeout_s=idle, ensure_gateway=ensure_gateway,
                           extra_env={"FAKE_ARTIFACTS": str(FIXTURE), "PYTHONPATH": ""})
-    runner = JobRunner(cfg, db, supervisor=sup, recipes=RECIPES)
+    runner = JobRunner(cfg, db, supervisor=sup, recipes=SMOKE_RECIPES)
     job_id = db.create_job(channel="geopolitics", input_text="World Cup hosting and soft power",
                            language="es", visual_style="clean-professional", render_backend="animated-explainer",
                            budget_cap_usd=5.0, auto_approve=False)
@@ -195,3 +195,24 @@ def test_no_secret_in_db_logs_or_files(tmp_path, engine_dir, omni):
     for p in [p for p in tmp_path.rglob("*") if p.is_file() and not p.is_symlink()]:
         assert SECRET_OMNI.encode() not in p.read_bytes(), p
     assert any("***" in e["message"] for e in db.events(job_id))
+
+
+def test_engine_provider_keys_go_from_keyring_to_agent_env_only(tmp_path, engine_dir, omni, monkeypatch):
+    """OpenMontage tool keys are injected into the agent process from the keyring, never written to disk."""
+    from channelforge import secrets
+    key = "AIzaTESTKEY-0123456789abcdefghij"
+    secrets.set_secret(secrets.ENGINE_ENV_PREFIX + "GOOGLE_TTS_API_KEY", key)
+    seen = {}
+    import channelforge.agent.supervisor as sv
+    real = sv.run_claude
+
+    def spy(*a, **kw):
+        seen.update(kw["extra_env"])
+        return real(*a, **kw)
+    monkeypatch.setattr(sv, "run_claude", spy)
+    _, db, runner, job_id = setup(tmp_path, engine_dir, omni.url)
+    runner.supervisor.env_provider = lambda: secrets.engine_env(["GOOGLE_TTS_API_KEY", "OPENAI_API_KEY"])
+    step(db, runner)
+    assert seen["GOOGLE_TTS_API_KEY"] == key and "OPENAI_API_KEY" not in seen
+    for p in [p for p in tmp_path.rglob("*") if p.is_file() and not p.is_symlink()]:
+        assert key.encode() not in p.read_bytes(), p

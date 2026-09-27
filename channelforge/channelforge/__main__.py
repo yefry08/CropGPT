@@ -52,7 +52,8 @@ def run_gui(demo: bool) -> int:
         from .devtools import demo as demo_mod
         db = JobDB(__import__("pathlib").Path(tempfile.mkdtemp(prefix="channelforge-demo-db-")) / "jobs.db")
         cfg, sup, servers = demo_mod.prepare(cfg, db)
-        runner = JobRunner(cfg, db, supervisor=sup)
+        from .jobs.channels import SMOKE_RECIPES
+        runner = JobRunner(cfg, db, supervisor=sup, recipes=SMOKE_RECIPES)
     else:
         db = JobDB(app_home() / "jobs.db")
         runner = JobRunner(cfg, db)

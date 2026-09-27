@@ -5,10 +5,11 @@ Desktop app (PySide6) that runs three automated YouTube channels end to end on t
 [stickman-video-director](https://github.com/yefry08/stickman-video-director) and
 [hand-drawn-canvas-animation](https://github.com/alesha-pro/tools/tree/main/skills/hand-drawn-canvas-animation).
 
-**Status: milestone M1** — app skeleton, SQLite job queue, approval gates, and the
-OmniRoute-only model router with forced-failure tests. The channel pipelines
-arrive in M2–M4 (the channel tabs currently run OpenMontage's `framework-smoke`
-pipeline so the plumbing can be exercised end to end).
+**Status: milestone M2**: app skeleton, SQLite job queue, approval gates, the OmniRoute-only
+model router (M1), and **Channel 3 end to end** (M2). A Geopolitics job:
+reference ingest → OpenMontage `animated-explainer` → script-gate checks (originality + facts)
+→ render → ffprobe duration gate → `long.mp4` + `sources.json`. Channels 2 and 1 arrive in
+M3/M4; until then their tabs run OpenMontage's `framework-smoke` pipeline.
 
 ## Setup
 
@@ -93,6 +94,55 @@ Every attempt lands in the *Model routing* tab (target, model served, tokens, co
 Agent-stage cost is Claude Code's estimate (`cost_basis=claude_code_estimate`); Python calls
 use OmniRoute's `X-OmniRoute-Response-Cost`.
 
+## Channel 3 (M2): what a job does
+
+1. **Input**: paste a topic/notes block, one reference URL, or several. References are read
+   for analysis only: `yt-dlp --dump-single-json --skip-download` for metadata, platform
+   subtitles (`--write-subs`, then `--write-auto-subs`), and `faster-whisper` on a temporary
+   audio download only when there are no subtitles (the audio is deleted afterwards). Files
+   land in `<job>/reference/`.
+2. **Production**: Claude Code drives OpenMontage's `animated-explainer` pipeline with a brief
+   that fixes the delivery: 16:9 1920×1080, 480–600 s (≈1,200–1,500 words at 150 wpm),
+   Remotion for maps/charts/stat reveals/timelines, citable datasets only, no photorealistic
+   real people, music covering the full length, a budget cap, and stop after `compose`
+   (publishing belongs to ChannelForge). `documentary-montage` is not offered for this
+   channel: it has no script stage for the mandatory fact layer and cuts real footage of real
+   people.
+3. **Script gate**: before you see the script, ChannelForge checks it:
+   - **originality**: share of the script's 5-word sequences that also occur in the reference
+     transcript; over 10% fails;
+   - **facts**: `artifacts/sources.json` must map every claim to a source URL; allegations
+     against named parties need a court ruling, an official audit or 2+ reputable outlets,
+     plus an accurate legal status; then a second model (`critic_models`, by default
+     `auto/reasoning`) flags unsupported or overstated statements.
+
+   A failure goes back to the agent automatically (up to 3 times) with the exact problems;
+   after that the gate shows you the report. The Approvals panel always shows these checks.
+4. **Duration gate**: after `compose`, `ffprobe` measures the render. It must be 480–600 s at
+   1920×1080 with no trailing silence (`silencedetect`). Otherwise ChannelForge archives the
+   checkpoints from `script` onwards (`history/channelforge-replan-N/`, nothing deleted) and
+   re-opens the job with a word target, e.g. "~1,350 words", so the scenes are re-planned
+   and re-rendered. It never pads. Up to 3 re-plans.
+5. **Outputs** in the job folder: `long.mp4`, `sources.json`, `reports/script_gate.json`,
+   `reports/duration.json`, `reference/`.
+
+### What the engine needs on your machine for a real Channel 3 render
+
+```bash
+cd engines/OpenMontage/remotion-composer && npm install   # Remotion (maps, charts)
+pip install piper-tts                                      # free local voice, or use a TTS key below
+```
+
+Provider keys for OpenMontage tools (TTS, music, images) stay in the keyring and are injected
+into the agent process only, never written to a `.env`:
+
+```bash
+channelforge secrets set engine_env:GOOGLE_TTS_API_KEY     # or OPENAI_API_KEY, ELEVENLABS_API_KEY, …
+channelforge secrets set engine_env:PIXABAY_API_KEY        # royalty-free music search
+```
+
+The list of variables passed through is `engine_env_vars` in `config.json`.
+
 ## Approvals
 
 OpenMontage gates (`human_approval_default: true` in the pipeline manifest) show up in
@@ -104,7 +154,7 @@ never be auto-approved (enforced in the DB layer).
 ## Tests
 
 ```bash
-cd channelforge && QT_QPA_PLATFORM=offscreen pytest -q          # 47 tests
+cd channelforge && QT_QPA_PLATFORM=offscreen pytest -q          # 77 tests
 ```
 
 Includes: fallback for 429/529/usage-limit/quota/timeout/503; the acceptance test

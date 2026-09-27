@@ -41,6 +41,7 @@ class EngineJob:
     budget_cap_usd: float
     language: str = "es"
     extra_system_prompt: str = ""
+    directive: str | None = None     # ChannelForge instruction (e.g. a duration re-plan) for this run
 
 
 @dataclass
@@ -77,7 +78,8 @@ class AgentSupervisor:
                  permission_mode: str = "acceptEdits", allowed_tools: list[str] | None = None,
                  api_retries_before_switch: int = 2,
                  idle_timeout_s: float = 900.0, ensure_gateway: Callable[[], bool] = lambda: True,
-                 max_nudges: int = 3, crash_retries: int = 1, extra_env: dict[str, str] | None = None):
+                 max_nudges: int = 3, crash_retries: int = 1, extra_env: dict[str, str] | None = None,
+                 env_provider: Callable[[], dict[str, str]] | None = None):
         if not targets:
             raise ValueError("at least one agent target is required")
         self.db = db
@@ -91,6 +93,7 @@ class AgentSupervisor:
         self.max_nudges = max_nudges
         self.crash_retries = crash_retries
         self.extra_env = extra_env or {}
+        self.env_provider = env_provider      # read per run, so keys added in Settings apply without restart
 
     # -- prompts -----------------------------------------------------------
     @staticmethod
@@ -107,6 +110,8 @@ class AgentSupervisor:
         ]
         if decision:
             parts.append(AgentSupervisor.decision_prompt(job, decision))
+        if job.directive:
+            parts.append("ChannelForge INSTRUCTION (takes priority over earlier plans): " + job.directive)
         parts.append("Original brief, for context only:\n" + job.initial_prompt)
         return "\n".join(parts)
 
@@ -142,9 +147,9 @@ class AgentSupervisor:
             return SupervisorResult(Outcome.PAUSED, "OmniRoute is down and could not be started", state, [])
 
         session = row.get("agent_session") if row.get("agent_target") == self.targets[idx].name else None
-        if decision and session:
+        if decision and session and not job.directive:
             prompt = self.decision_prompt(job, decision)
-        elif decision or state.started:
+        elif decision or state.started or job.directive:
             prompt, session = self.resume_prompt(job, state, decision), None
         else:
             prompt = job.initial_prompt
@@ -167,7 +172,9 @@ class AgentSupervisor:
                              allowed_tools=self.allowed_tools,
                              append_system_prompt=system, on_event=on_event,
                              api_retries_before_switch=self.api_retries_before_switch,
-                             idle_timeout_s=self.idle_timeout_s, extra_env=self.extra_env, cancel=cancel)
+                             idle_timeout_s=self.idle_timeout_s,
+                             extra_env={**(self.env_provider() if self.env_provider else {}), **self.extra_env},
+                             cancel=cancel)
             runs.append(res)
             self._ledger(job, target, res, state.current_stage)
             if res.session_id:

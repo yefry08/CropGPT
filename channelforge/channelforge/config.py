@@ -77,7 +77,10 @@ def default_channels() -> dict[str, ChannelSettings]:
             id="geopolitics", display_name="Geopolitics · Sports × Politics · Data",
             visual_style="clean-professional",
             visual_styles=["clean-professional", "premium-minimalist", "minimalist-diagram"],
-            render_backend="animated-explainer", render_backends=["animated-explainer", "documentary-montage"],
+            # documentary-montage is not offered: it has no script stage (so the mandatory fact layer
+            # cannot run), does not accept reference input, and cuts real archival footage that can
+            # show real people photorealistically.
+            render_backend="animated-explainer", render_backends=["animated-explainer"],
             budget_cap_usd=5.0),
     }
 
@@ -93,6 +96,12 @@ class AppConfig(BaseModel):
     claude_permission_mode: str = "acceptEdits"
     claude_allowed_tools: list[str] = Field(default_factory=lambda: [
         "Bash", "Read", "Write", "Edit", "Glob", "Grep", "WebFetch", "WebSearch", "Skill"])
+    # Provider env vars OpenMontage tools read (see its registry install_instructions). Values live in the
+    # keyring as engine_env:<VAR> (`channelforge secrets set engine_env:GOOGLE_TTS_API_KEY`).
+    engine_env_vars: list[str] = Field(default_factory=lambda: [
+        "GOOGLE_TTS_API_KEY", "GOOGLE_API_KEY", "GEMINI_API_KEY", "OPENAI_API_KEY", "ELEVENLABS_API_KEY",
+        "FAL_KEY", "AZURE_SPEECH_KEY", "AZURE_SPEECH_REGION", "PIXABAY_API_KEY", "PEXELS_API_KEY",
+        "FREESOUND_API_KEY"])
     router: RouterConfig = Field(default_factory=RouterConfig)
     channels: dict[str, ChannelSettings] = Field(default_factory=default_channels)
 

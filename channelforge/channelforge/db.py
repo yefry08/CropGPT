@@ -31,6 +31,9 @@ CREATE TABLE IF NOT EXISTS jobs (
   output_dir    TEXT,
   agent_session TEXT,                             -- last claude session id (for --resume)
   agent_target  TEXT,                             -- last routing target name
+  directive     TEXT,                             -- ChannelForge instruction for the next agent run
+  check_attempts INTEGER NOT NULL DEFAULT 0,      -- automatic fact/originality send-backs
+  replan_count  INTEGER NOT NULL DEFAULT 0,       -- duration re-plans
   error         TEXT,
   created_at    REAL NOT NULL,
   updated_at    REAL NOT NULL
@@ -98,6 +101,20 @@ class JobDB:
         with self._conn() as c:
             c.execute("PRAGMA journal_mode=WAL")
             c.executescript(SCHEMA)
+            self._migrate(c)
+
+    # Columns added after M1: ALTER existing databases in place (CREATE TABLE IF NOT EXISTS won't).
+    _ADDED = {"jobs": {"directive": "TEXT", "check_attempts": "INTEGER NOT NULL DEFAULT 0",
+                       "replan_count": "INTEGER NOT NULL DEFAULT 0"},
+              "approvals": {"consumed": "INTEGER NOT NULL DEFAULT 0"},
+              "llm_calls": {"cost_basis": "TEXT"}}
+
+    def _migrate(self, c: sqlite3.Connection) -> None:
+        for table, cols in self._ADDED.items():
+            have = {r["name"] for r in c.execute(f"PRAGMA table_info({table})")}
+            for name, decl in cols.items():
+                if name not in have:
+                    c.execute(f"ALTER TABLE {table} ADD COLUMN {name} {decl}")
 
     @contextmanager
     def _conn(self) -> Iterator[sqlite3.Connection]:
@@ -131,7 +148,7 @@ class JobDB:
         return [dict(r) for r in rows]
 
     _JOB_COLUMNS = {"status", "current_stage", "project_id", "output_dir", "agent_session",
-                    "agent_target", "error", "auto_approve"}
+                    "agent_target", "error", "auto_approve", "directive", "check_attempts", "replan_count"}
 
     def update_job(self, job_id: int, **fields: Any) -> None:
         bad = set(fields) - self._JOB_COLUMNS

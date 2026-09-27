@@ -20,7 +20,8 @@ def app_window(qtbot, tmp_path):
         pytest.skip("engines/OpenMontage not cloned")
     db = JobDB(tmp_path / "jobs.db")
     cfg, sup, servers = demo.prepare(AppConfig(engines_dir=OPENMONTAGE.parent), db)
-    runner = JobRunner(cfg, db, supervisor=sup)
+    from channelforge.jobs.channels import SMOKE_RECIPES
+    runner = JobRunner(cfg, db, supervisor=sup, recipes=SMOKE_RECIPES)
     runner.start()
     win = MainWindow(cfg, db, runner, demo=True)
     qtbot.addWidget(win)

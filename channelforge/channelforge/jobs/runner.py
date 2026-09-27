@@ -5,13 +5,18 @@ from __future__ import annotations
 import logging
 import threading
 import time
+from pathlib import Path
 from typing import Callable
 
 from ..agent.claude_runner import AgentTarget
 from ..agent.supervisor import AgentSupervisor, Decision, Outcome
 from ..config import AppConfig
 from ..db import JobDB
+from ..pipeline import gates
+from ..pipeline.ingest import ingest as default_ingest
 from ..router import omniroute
+from ..router.llm import LLMRouter
+from .. import secrets
 from ..secrets import OMNIROUTE_API_KEY
 from .channels import RECIPES, ChannelRecipe, build_engine_job, job_output_dir
 
@@ -27,16 +32,20 @@ def agent_targets(cfg: AppConfig) -> list[AgentTarget]:
 
 class JobRunner:
     def __init__(self, cfg: AppConfig, db: JobDB, supervisor: AgentSupervisor | None = None,
-                 recipes: dict[str, ChannelRecipe] = RECIPES, workers: int = 1):
+                 recipes: dict[str, ChannelRecipe] = RECIPES, workers: int = 1, router: LLMRouter | None = None,
+                 ingest_fn=default_ingest):
         self.cfg = cfg
         self.db = db
         self.recipes = recipes
+        self.router = router if router is not None else LLMRouter(cfg.router, db)
+        self.ingest_fn = ingest_fn
         self.supervisor = supervisor or AgentSupervisor(
             db, agent_targets(cfg), claude_bin=cfg.claude_bin, permission_mode=cfg.claude_permission_mode,
             allowed_tools=cfg.claude_allowed_tools,
             api_retries_before_switch=cfg.router.agent_api_retries_before_switch,
             idle_timeout_s=cfg.router.agent_idle_timeout_s,
-            ensure_gateway=lambda: omniroute.ensure_up(cfg.router))
+            ensure_gateway=lambda: omniroute.ensure_up(cfg.router),
+            env_provider=lambda: secrets.engine_env(cfg.engine_env_vars))
         self.workers = workers
         self._stop = threading.Event()
         self._wake = threading.Event()
@@ -117,10 +126,22 @@ class JobRunner:
                 self.db.log_event(job["id"], f"job failed: {type(e).__name__}: {e}", level="error")
 
     def run_job(self, job: dict) -> Outcome:
+        recipe = self.recipes[job["channel"]]
+        if not job.get("output_dir"):
+            out = job_output_dir(self.cfg, job)
+            self.db.update_job(job["id"], output_dir=str(out))
+            job = {**job, "output_dir": str(out)}
+        out_dir = Path(job["output_dir"])
+        if recipe.script_checks and not (out_dir / "reference" / "input.json").exists():
+            self.db.log_event(job["id"], "reading the input (reference metadata + transcript, analysis only)")
+            ji = self.ingest_fn(job["input_text"], out_dir)
+            for r in ji.references:
+                self.db.log_event(job["id"], f"reference: {r.title or r.url} — transcript via "
+                                  f"{r.transcript_source or 'none'}" + (f" ({r.error})" if r.error else ""),
+                                  level="warn" if r.error else "info")
         ej = build_engine_job(self.cfg, job, self.recipes)
         if not job.get("project_id"):
-            self.db.update_job(job["id"], project_id=ej.project_id,
-                               output_dir=str(job_output_dir(self.cfg, job)))
+            self.db.update_job(job["id"], project_id=ej.project_id)
         cancel = self._cancel.setdefault(job["id"], threading.Event())
         decision = None
         pending = self.db.next_unconsumed_decision(job["id"])
@@ -140,22 +161,62 @@ class JobRunner:
 
         if result.outcome == Outcome.AWAITING:
             gate = result.state.awaiting[0]
-            appr_id = self.db.create_approval(job["id"], gate, result.message,
-                                              {"checkpoint": str(ej.project_dir / f"checkpoint_{gate}.json")})
+            payload = {"checkpoint": str(ej.project_dir / f"checkpoint_{gate}.json")}
+            summary = result.message
+            if recipe.script_checks and gate == "script":
+                g = gates.script_gate(ej, out_dir, self.router)
+                payload["checks"] = g.reports
+                fresh = self.db.get_job(job["id"]) or job
+                if not g.passed and fresh["check_attempts"] < gates.MAX_AUTO_SENDBACKS:
+                    self.db.update_job(job["id"], check_attempts=fresh["check_attempts"] + 1,
+                                       status="awaiting_approval")
+                    appr = self.db.create_approval(job["id"], gate, summary, payload)
+                    self.db.log_event(job["id"], f"script checks failed (attempt {fresh['check_attempts'] + 1}/"
+                                      f"{gates.MAX_AUTO_SENDBACKS}) — sending back to the agent", level="warn",
+                                      stage=gate)
+                    self.decide(appr, "edited", g.note, auto=True)
+                    return result.outcome
+                summary = (summary + "\n\nChannelForge checks: "
+                           + ("PASSED" if g.passed else "STILL FAILING after automatic retries — review:\n" + g.note))
+            appr_id = self.db.create_approval(job["id"], gate, summary, payload)
             fresh = self.db.get_job(job["id"]) or job
-            if fresh["auto_approve"] and gate != "publish":
-                self.db.update_job(job["id"], status="awaiting_approval")
+            self.db.update_job(job["id"], status="awaiting_approval")
+            if fresh["auto_approve"] and gate != "publish" and "STILL FAILING" not in summary:
                 self.decide(appr_id, "approved", "auto-approve creative gates is ON", auto=True)
             else:
-                self.db.update_job(job["id"], status="awaiting_approval")
                 self.db.log_event(job["id"], f"waiting for approval at gate '{gate}'", stage=gate)
+        elif result.outcome == Outcome.DONE:
+            if recipe.long_video:
+                return self._finish_long(job, ej, out_dir)
+            self.db.update_job(job["id"], status="done")
+            self.db.log_event(job["id"], "pipeline complete")
         elif result.outcome == Outcome.PAUSED:
             self.db.update_job(job["id"], status="paused", error=result.message)
             self.db.log_event(job["id"], f"paused: {result.message}", level="warn")
-        elif result.outcome == Outcome.DONE:
-            self.db.update_job(job["id"], status="done")
-            self.db.log_event(job["id"], "pipeline complete")
         elif (self.db.get_job(job["id"]) or {}).get("status") != "cancelled":
             self.db.update_job(job["id"], status="failed", error=result.message)
             self.db.log_event(job["id"], f"job failed: {result.message}", level="error")
         return result.outcome
+
+    def _finish_long(self, job: dict, ej, out_dir: Path) -> Outcome:
+        g, render = gates.duration_gate(ej, out_dir)
+        fresh = self.db.get_job(job["id"]) or job
+        if g.passed:
+            files = gates.collect_long(ej, out_dir, render)
+            self.db.update_job(job["id"], status="done", directive=None)
+            d = g.reports["duration"]
+            self.db.log_event(job["id"], f"long video OK: {d['duration_s']:.1f} s at {d['resolution']} "
+                                         f"(ffprobe) → {', '.join(files)}")
+            return Outcome.DONE
+        if fresh["replan_count"] >= gates.MAX_REPLANS:
+            self.db.update_job(job["id"], status="failed", directive=None,
+                               error=f"duration gate still failing after {gates.MAX_REPLANS} re-plans: {g.note}")
+            self.db.log_event(job["id"], "duration gate failed too many times", level="error")
+            return Outcome.FAILED
+        n = fresh["replan_count"] + 1
+        moved = gates.reopen_from(ej, "script", f"channelforge-replan-{n}")
+        self.db.update_job(job["id"], status="queued", directive=g.note, replan_count=n, agent_session=None)
+        self.db.log_event(job["id"], f"DURATION GATE: {g.note} — re-planning (#{n}); reopened {', '.join(moved)}",
+                          level="warn")
+        self.poke()
+        return Outcome.AWAITING

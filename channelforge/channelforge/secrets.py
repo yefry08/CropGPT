@@ -24,6 +24,20 @@ OMNIROUTE_MANAGEMENT_TOKEN = "omniroute_mgmt_token"  # oma_live_… or manage-sc
 ANTHROPIC_API_KEY = "anthropic_api_key"
 KNOWN_SECRETS = (OMNIROUTE_API_KEY, OMNIROUTE_MANAGEMENT_TOKEN, ANTHROPIC_API_KEY)
 
+# Engine provider keys (TTS, image, music…) OpenMontage reads from the environment. They are kept in
+# the keyring as "engine_env:<VAR>" and injected into the agent subprocess only, never written to .env.
+ENGINE_ENV_PREFIX = "engine_env:"
+
+
+def engine_env(names: list[str]) -> dict[str, str]:
+    out = {}
+    for n in names:
+        v = get_secret(ENGINE_ENV_PREFIX + n)
+        if v:
+            out[n] = v
+    return out
+
+
 # Env override (useful for CI / tests): CHANNELFORGE_SECRET_<NAME upper>.
 _ENV_PREFIX = "CHANNELFORGE_SECRET_"
 
