@@ -55,8 +55,11 @@ def run_gui(demo: bool) -> int:
         from .jobs.channels import SMOKE_RECIPES
         runner = JobRunner(cfg, db, supervisor=sup, recipes=SMOKE_RECIPES)
     else:
+        from .publish.scheduler import PublishScheduler, default_factory
         db = JobDB(app_home() / "jobs.db")
-        runner = JobRunner(cfg, db)
+        publisher = PublishScheduler(cfg, db, default_factory(cfg, db))
+        runner = JobRunner(cfg, db, publisher=publisher)
+        publisher.start()
     runner.start()
     win = MainWindow(cfg, db, runner, demo=demo)
     win.show()

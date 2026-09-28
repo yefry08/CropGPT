@@ -211,7 +211,9 @@ def test_channel3_end_to_end(tmp_path, engine_dir, omni, monkeypatch):
         db.decide_approval(pub["id"], "approved", auto=True)
     runner.decide(pub["id"], "approved")
     j = db.get_job(jid)
-    assert j["status"] == "done", (j["error"], events[-6:])
+    assert j["status"] == "scheduled", (j["error"], events[-6:])
+    items = db.publish_items(jid)
+    assert len(items) == 16 and {i["platform"] for i in items} == {"youtube", "tiktok", "instagram"}
     out = Path(j["output_dir"])
     dc = duration.check(out / "long.mp4")
     assert dc.passed and 480 <= dc.duration_s <= 600

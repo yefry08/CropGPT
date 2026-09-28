@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from apscheduler.triggers.cron import CronTrigger
-from PySide6.QtWidgets import (QCheckBox, QDialog, QDialogButtonBox, QFormLayout, QGroupBox, QLabel, QLineEdit, QMessageBox,
+from PySide6.QtWidgets import (QCheckBox, QComboBox, QHBoxLayout, QPushButton, QDialog, QDialogButtonBox, QFormLayout, QGroupBox, QLabel, QLineEdit, QMessageBox,
                                QPlainTextEdit, QVBoxLayout, QWidget, QScrollArea)
 
 from .. import secrets
@@ -64,9 +64,7 @@ class SettingsDialog(QDialog):
             self.cron[cid] = QLineEdit(ch.posting_schedule_cron)
             sf.addRow(ch.display_name, self.cron[cid])
 
-        oauth = QGroupBox("Platform connections (per channel)")
-        of = QVBoxLayout(oauth)
-        of.addWidget(QLabel("YouTube / TikTok / Instagram OAuth connections arrive in milestone M6."))
+        oauth = self._connections(cfg)
 
         body = QWidget()
         bl = QVBoxLayout(body)
@@ -82,6 +80,113 @@ class SettingsDialog(QDialog):
         lay = QVBoxLayout(self)
         lay.addWidget(scroll)
         lay.addWidget(bb)
+
+    # ------------------------------------------------------------------ connections
+    def _connections(self, cfg: AppConfig) -> QGroupBox:
+        from ..publish import instagram, tiktok, youtube
+        box = QGroupBox("Platform connections — tokens are kept in the OS keyring")
+        lay = QVBoxLayout(box)
+        pub = cfg.publish
+
+        yt = QFormLayout()
+        self.yt_audited: dict[str, QCheckBox] = {}
+        for name, proj in pub.youtube_projects.items():
+            row = QHBoxLayout()
+            imp = QPushButton("Import OAuth client JSON…")
+            imp.clicked.connect(lambda _=False, n=name: self._import_client(n))
+            cb = QCheckBox("project passed YouTube's API audit (else uploads stay private)")
+            cb.setChecked(proj.audited)
+            self.yt_audited[name] = cb
+            state = QLabel("client ✔" if secrets.has_secret(youtube.client_key(name)) else "no client yet")
+            row.addWidget(imp)
+            row.addWidget(state)
+            row.addWidget(cb)
+            w = QWidget()
+            w.setLayout(row)
+            yt.addRow(f"Google Cloud project '{name}'", w)
+        lay.addLayout(yt)
+
+        self.tt_audited = QCheckBox("TikTok API client passed TikTok's content-sharing audit (else posts are private)")
+        self.tt_audited.setChecked(pub.tiktok_audited)
+        lay.addWidget(self.tt_audited)
+        self.ig_mode = QComboBox()
+        self.ig_mode.addItems(["resumable", "video_url"])
+        self.ig_mode.setCurrentText(pub.instagram_mode)
+        igm = QFormLayout()
+        igm.addRow("Instagram upload mode (video_url needs an S3-compatible temporary host)", self.ig_mode)
+        lay.addLayout(igm)
+
+        self.tt_tokens: dict[str, QLineEdit] = {}
+        self.ig_tokens: dict[str, tuple[QLineEdit, QLineEdit]] = {}
+        for cid, ch in cfg.channels.items():
+            g = QGroupBox(ch.display_name)
+            f = QFormLayout(g)
+            con = QPushButton("Connect YouTube (opens the browser)")
+            status = QLabel("connected ✔" if secrets.has_secret(youtube.token_key(cid)) else "not connected")
+            con.clicked.connect(lambda _=False, c=cid, lab=status: self._connect_youtube(c, lab))
+            row = QHBoxLayout()
+            row.addWidget(con)
+            row.addWidget(status)
+            w = QWidget()
+            w.setLayout(row)
+            f.addRow("YouTube", w)
+            tt = QLineEdit()
+            tt.setEchoMode(QLineEdit.Password)
+            tt.setPlaceholderText("stored ✔" if secrets.has_secret(tiktok.token_key(cid)) else
+                                  '{"client_key","client_secret","access_token","refresh_token","expires_in"}')
+            self.tt_tokens[cid] = tt
+            f.addRow("TikTok tokens (JSON)", tt)
+            ig_tok, ig_user = QLineEdit(), QLineEdit()
+            ig_tok.setEchoMode(QLineEdit.Password)
+            has_ig = secrets.has_secret(instagram.token_key(cid))
+            ig_tok.setPlaceholderText("stored ✔" if has_ig else "long-lived access token")
+            ig_user.setPlaceholderText("Instagram business/creator user id")
+            self.ig_tokens[cid] = (ig_tok, ig_user)
+            f.addRow("Instagram token", ig_tok)
+            f.addRow("Instagram user id", ig_user)
+            lay.addWidget(g)
+        return box
+
+    def _import_client(self, project: str) -> None:
+        from PySide6.QtWidgets import QFileDialog
+        from ..publish import youtube
+        path, _ = QFileDialog.getOpenFileName(self, "Google OAuth client (Desktop app) JSON", "", "JSON (*.json)")
+        if path:
+            import json
+            raw = open(path, encoding="utf-8").read()
+            json.loads(raw)
+            secrets.set_secret(youtube.client_key(project), raw)
+            QMessageBox.information(self, "YouTube", f"OAuth client stored for project '{project}'. You can delete "
+                                    "the downloaded file now.")
+
+    def _connect_youtube(self, channel: str, label: QLabel) -> None:
+        from ..publish import youtube
+        try:
+            youtube.connect(channel, self.cfg.channels[channel].youtube_project)
+            label.setText("connected ✔")
+        except Exception as e:
+            QMessageBox.warning(self, "YouTube", str(e))
+
+    def _save_connections(self) -> None:
+        import json
+        import time as _t
+        from ..publish import instagram, tiktok
+        pub = self.cfg.publish
+        for name, cb in self.yt_audited.items():
+            pub.youtube_projects[name].audited = cb.isChecked()
+        pub.tiktok_audited = self.tt_audited.isChecked()
+        pub.instagram_mode = self.ig_mode.currentText()
+        for cid, e in self.tt_tokens.items():
+            if e.text().strip():
+                d = json.loads(e.text())
+                d.setdefault("expires_at", _t.time() + int(d.pop("expires_in", 86400)))
+                secrets.set_secret(tiktok.token_key(cid), json.dumps(d))
+                e.clear()
+        for cid, (tok, user) in self.ig_tokens.items():
+            if tok.text().strip() and user.text().strip():
+                secrets.set_secret(instagram.token_key(cid), json.dumps({"access_token": tok.text().strip(),
+                                                                        "ig_user_id": user.text().strip()}))
+                tok.clear()
 
     @staticmethod
     def _lines(w: QPlainTextEdit) -> list[str]:
@@ -109,5 +214,10 @@ class SettingsDialog(QDialog):
         r.metadata_models = self._lines(self.metadata_models)
         for cid, e in self.cron.items():
             self.cfg.channels[cid].posting_schedule_cron = e.text().strip()
+        try:
+            self._save_connections()
+        except ValueError as err:
+            QMessageBox.warning(self, "Connections", f"Could not read the tokens JSON: {err}")
+            return
         self.cfg.save()
         self.accept()

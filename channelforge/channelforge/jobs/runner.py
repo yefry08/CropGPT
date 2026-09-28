@@ -39,13 +39,15 @@ def agent_targets(cfg: AppConfig) -> list[AgentTarget]:
 class JobRunner:
     def __init__(self, cfg: AppConfig, db: JobDB, supervisor: AgentSupervisor | None = None,
                  recipes: dict[str, ChannelRecipe] = RECIPES, workers: int = 1, router: LLMRouter | None = None,
-                 ingest_fn=default_ingest, app_stages: AppStages | None = None, transcribe=transcribe_words):
+                 ingest_fn=default_ingest, app_stages: AppStages | None = None, transcribe=transcribe_words,
+                 publisher=None):
         self.cfg = cfg
         self.db = db
         self.recipes = recipes
         self.router = router if router is not None else LLMRouter(cfg.router, db)
         self.ingest_fn = ingest_fn
         self.transcribe = transcribe
+        self.publisher = publisher            # PublishScheduler (M6); None in tests that stop at the gate
         engine_env = lambda: {**os.environ, **secrets.engine_env(cfg.engine_env_vars)}  # noqa: E731
         self.app_stages = app_stages or AppStages(
             lambda: openmontage_synth(cfg.openmontage_dir, cfg.engine_python, engine_env()),
@@ -108,9 +110,14 @@ class JobRunner:
         self.poke()
 
     def on_publish_approved(self, job_id: int, note: str | None) -> None:
-        """Replaced by the publisher in M6."""
-        self.db.update_job(job_id, status="done")
-        self.db.log_event(job_id, "approved for publishing")
+        """The human's publish click: plan every post onto the channel's schedule and hand it to the scheduler."""
+        from ..publish.scheduler import plan
+        job = self.db.get_job(job_id)
+        meta = json.loads((Path(job["output_dir"]) / "metadata.json").read_text(encoding="utf-8"))
+        plan(self.db, self.cfg, job, meta)
+        self.db.update_job(job_id, status="scheduled", current_stage="publish")
+        if self.publisher is not None:
+            threading.Thread(target=self.publisher.tick, daemon=True).start()
 
     def retry(self, job_id: int) -> None:
         """Retry the failed/stuck stage — the supervisor resumes from the last checkpoint."""

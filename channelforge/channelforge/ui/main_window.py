@@ -12,6 +12,7 @@ from ..jobs.runner import JobRunner
 from .approvals_panel import ApprovalsPanel
 from .channel_tab import ChannelTab
 from .jobs_panel import JobsPanel
+from .publish_panel import PublishPanel
 from .router_panel import RouterPanel
 from .settings_dialog import SettingsDialog
 
@@ -28,12 +29,15 @@ class MainWindow(QMainWindow):
             tab = ChannelTab(cfg, ch)
             tab.generate_requested.connect(self._enqueue)
             self.tabs.addTab(tab, ch.display_name.replace("&", "&&"))
-        self.approvals = ApprovalsPanel(db)
+        self.approvals = ApprovalsPanel(db, warnings_fn=self._platform_warnings)
         self.approvals.decided.connect(self._decide)
         self.approvals.pending_count_changed.connect(self._badge)
         self._approvals_index = self.tabs.addTab(self.approvals, "Approvals")
         self.router = RouterPanel(cfg, db)
         self.tabs.addTab(self.router, "Model routing")
+        self.publishing = PublishPanel(db)
+        self.publishing.retry_requested.connect(self._retry_publish)
+        self.tabs.addTab(self.publishing, "Publishing")
 
         self.jobs = JobsPanel(cfg, db)
         self.jobs.retry_requested.connect(self.runner.retry)
@@ -63,6 +67,35 @@ class MainWindow(QMainWindow):
         self.jobs.refresh()
         self.approvals.refresh()
         self.router.refresh()
+        self.publishing.refresh()
+
+    def _platform_warnings(self, job: dict) -> list[str]:
+        from .. import secrets
+        from ..publish import instagram, tiktok, youtube
+        ch = self.cfg.channels.get(job.get("channel", ""))
+        if not ch:
+            return []
+        out = []
+        proj = self.cfg.publish.youtube_projects.get(ch.youtube_project)
+        if "youtube" in ch.platforms:
+            if not secrets.has_secret(youtube.token_key(ch.id)):
+                out.append(f"YouTube is not connected for {ch.display_name} (Settings → Connections).")
+            if not proj or not proj.audited:
+                out.append(f"Google Cloud project '{ch.youtube_project}' is not marked audited: YouTube keeps uploads "
+                           "from unverified API projects PRIVATE until the project passes the API compliance audit.")
+        if "tiktok" in ch.platforms:
+            if not secrets.has_secret(tiktok.token_key(ch.id)):
+                out.append(f"TikTok is not connected for {ch.display_name}.")
+            if not self.cfg.publish.tiktok_audited:
+                out.append("TikTok client is not audited: posts will be PRIVATE (SELF_ONLY) until TikTok's audit passes.")
+        if "instagram" in ch.platforms and not secrets.has_secret(instagram.token_key(ch.id)):
+            out.append(f"Instagram is not connected for {ch.display_name}.")
+        return out
+
+    def _retry_publish(self, job_id: int) -> None:
+        if self.runner.publisher is not None:
+            n = self.runner.publisher.retry_failed(job_id)
+            self.statusBar().showMessage(f"{n} post(s) re-queued", 5000)
 
     def _badge(self, n: int) -> None:
         self.tabs.setTabText(self._approvals_index, f"Approvals ({n})" if n else "Approvals")

@@ -119,7 +119,7 @@ def test_channel1_omni_end_to_end_with_cost_block(tmp_path, omni, monkeypatch):
     drain(db, runner)
     j = db.get_job(jid)
     ev = [e["message"] for e in db.events(jid)]
-    assert j["status"] == "done", (j["error"], ev[-6:])
+    assert j["status"] == "scheduled", (j["error"], ev[-6:])
     out = Path(j["output_dir"])
     dc = duration.check(out / "long.mp4")
     assert dc.passed, dc
@@ -142,7 +142,7 @@ def test_clip_generation_resumes_after_a_provider_failure(tmp_path, omni):
     runner.retry(jid)
     drain(db, runner)
     j = db.get_job(jid)
-    assert j["status"] == "done", j["error"]
+    assert j["status"] == "scheduled", j["error"]
     # clips 1-4 were reused: the retry only generated what was missing
     assert len(prov.calls) - made < 60 and prov.calls.count(prov.calls[0]) == 1
 

@@ -86,6 +86,31 @@ CREATE TABLE IF NOT EXISTS approvals (
   created_at REAL NOT NULL,
   decided_at REAL
 );
+CREATE TABLE IF NOT EXISTS publish_items (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  job_id     INTEGER NOT NULL,
+  platform   TEXT NOT NULL,                       -- youtube|tiktok|instagram
+  kind       TEXT NOT NULL,                       -- long|short
+  idx        INTEGER NOT NULL DEFAULT 0,          -- short number (1..5), 0 for the long video
+  file       TEXT NOT NULL,
+  meta       TEXT NOT NULL,                       -- JSON: title/description/caption/tags/thumbnail…
+  publish_at REAL NOT NULL,                       -- when it should go live (epoch)
+  run_at     REAL NOT NULL,                       -- when the scheduler should next try
+  status     TEXT NOT NULL DEFAULT 'queued',      -- queued|running|waiting_quota|done|failed
+  attempts   INTEGER NOT NULL DEFAULT 0,
+  remote_id  TEXT,
+  url        TEXT,
+  warning    TEXT,
+  error      TEXT,
+  updated_at REAL NOT NULL
+);
+CREATE TABLE IF NOT EXISTS quota_usage (
+  project TEXT NOT NULL,
+  day     TEXT NOT NULL,                          -- Pacific-time day the quota resets on
+  bucket  TEXT NOT NULL,                          -- units|uploads
+  used    INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (project, day, bucket)
+);
 CREATE INDEX IF NOT EXISTS idx_events_job ON events(job_id, id);
 CREATE INDEX IF NOT EXISTS idx_llm_job ON llm_calls(job_id);
 CREATE INDEX IF NOT EXISTS idx_appr_status ON approvals(status);
@@ -284,6 +309,63 @@ class JobDB:
     def mark_consumed(self, approval_id: int) -> None:
         with self._conn() as c:
             c.execute("UPDATE approvals SET consumed=1 WHERE id=?", (approval_id,))
+
+    # -- publishing ----------------------------------------------------------
+    def add_publish_item(self, *, job_id: int, platform: str, kind: str, idx: int, file: str, meta: dict,
+                         publish_at: float, run_at: float | None = None) -> int:
+        now = time.time()
+        with self._conn() as c:
+            cur = c.execute("INSERT INTO publish_items(job_id,platform,kind,idx,file,meta,publish_at,run_at,updated_at) "
+                            "VALUES (?,?,?,?,?,?,?,?,?)", (job_id, platform, kind, idx, file, json.dumps(meta),
+                                                           publish_at, publish_at if run_at is None else run_at, now))
+            return int(cur.lastrowid)
+
+    _PUB_COLUMNS = {"status", "run_at", "attempts", "remote_id", "url", "warning", "error"}
+
+    def update_publish_item(self, item_id: int, **fields: Any) -> None:
+        if set(fields) - self._PUB_COLUMNS:
+            raise ValueError(set(fields) - self._PUB_COLUMNS)
+        if fields.get("error"):
+            fields["error"] = redact(str(fields["error"]))[:2000]
+        fields["updated_at"] = time.time()
+        with self._conn() as c:
+            c.execute(f"UPDATE publish_items SET {','.join(f'{k}=?' for k in fields)} WHERE id=?",
+                      (*fields.values(), item_id))
+
+    def claim_due_publish_items(self, now: float | None = None) -> list[dict[str, Any]]:
+        now = time.time() if now is None else now
+        with self._conn() as c:
+            c.execute("BEGIN IMMEDIATE")
+            rows = [dict(r) for r in c.execute("SELECT * FROM publish_items WHERE status IN ('queued','waiting_quota') "
+                                               "AND run_at<=? ORDER BY run_at, id", (now,))]
+            for r in rows:
+                c.execute("UPDATE publish_items SET status='running', updated_at=? WHERE id=?", (now, r["id"]))
+            c.execute("COMMIT")
+        for r in rows:
+            r["meta"] = json.loads(r["meta"])
+        return rows
+
+    def publish_items(self, job_id: int | None = None) -> list[dict[str, Any]]:
+        with self._conn() as c:
+            q = "SELECT * FROM publish_items" + (" WHERE job_id=?" if job_id is not None else "") + " ORDER BY publish_at, id"
+            rows = [dict(r) for r in c.execute(q, (job_id,) if job_id is not None else ())]
+        for r in rows:
+            r["meta"] = json.loads(r["meta"])
+        return rows
+
+    def reset_running_publish_items(self) -> int:
+        with self._conn() as c:
+            return c.execute("UPDATE publish_items SET status='queued' WHERE status='running'").rowcount
+
+    def quota_used(self, project: str, day: str, bucket: str) -> int:
+        with self._conn() as c:
+            r = c.execute("SELECT used FROM quota_usage WHERE project=? AND day=? AND bucket=?", (project, day, bucket)).fetchone()
+        return int(r["used"]) if r else 0
+
+    def quota_add(self, project: str, day: str, bucket: str, n: int) -> None:
+        with self._conn() as c:
+            c.execute("INSERT INTO quota_usage(project,day,bucket,used) VALUES (?,?,?,?) ON CONFLICT(project,day,bucket) "
+                      "DO UPDATE SET used=used+excluded.used", (project, day, bucket, n))
 
     def get_approval(self, approval_id: int) -> dict[str, Any] | None:
         with self._conn() as c:

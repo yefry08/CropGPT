@@ -168,7 +168,7 @@ def test_channel2_end_to_end(tmp_path, omni, monkeypatch):
     assert j["status"] == "awaiting_approval", (j["error"], ev[-8:])
     runner.decide(db.approvals("pending", job_id=jid)[0]["id"], "approved")
     j = db.get_job(jid)
-    assert j["status"] == "done", (j["error"], ev[-8:])
+    assert j["status"] == "scheduled" and len(db.publish_items(jid)) == 16, (j["error"], ev[-8:])
     assert any("RESEARCH:" in m or "script checks failed" in m for m in ev)
     assert any(m.startswith("NARRATION CHECK: The synthesised narration runs 242 s") for m in ev)   # 240 s + 4 pauses
     assert not any("crashed" in m for m in ev), ev

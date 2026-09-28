@@ -5,11 +5,11 @@ Desktop app (PySide6) that runs three automated YouTube channels end to end on t
 [stickman-video-director](https://github.com/yefry08/stickman-video-director) and
 [hand-drawn-canvas-animation](https://github.com/alesha-pro/tools/tree/main/skills/hand-drawn-canvas-animation).
 
-**Status: milestone M5**: app skeleton, job queue, approval gates and the OmniRoute-only
+**Status: milestone M6**: app skeleton, job queue, approval gates and the OmniRoute-only
 router (M1); **Channel 3** on OpenMontage (M2); **Channel 2** on the hand-drawn-canvas-animation
 skill (M3); **Channel 1** on the stickman-video-director skill with both render backends (M4).
-Every job then gets 5 shorts, metadata and a thumbnail (M5) and stops at the publish gate;
-publishing arrives in M6.
+Every job then gets 5 shorts, metadata and a thumbnail (M5), stops at the publish gate, and
+after your click is scheduled and published to YouTube, TikTok and Instagram (M6).
 
 ## Setup
 
@@ -234,6 +234,47 @@ Then the job waits at the **publish gate**, which is never automatic (enforced i
 Its payload lists the long video, the 5 shorts, the metadata, the thumbnail and the
 flagged-claims report.
 
+## Publishing (M6)
+
+**The publish gate** (Approvals tab) shows a preview player for the long video and each short,
+all metadata, the flagged-claims report and platform warnings (not connected, unaudited). Nothing
+is planned or uploaded before you click **PUBLISH**, and the database refuses an automatic
+approval of this gate.
+
+**Scheduling**: the next fire time of the channel's posting cron (Settings; weekday names), at least
+`publish.min_lead_minutes` away. The long video goes out at the slot; short *k* at slot + *k* ×
+`shorts_spacing_hours` (default 24 h), on every platform in the channel's `platforms` list.
+YouTube items upload immediately as `private` with `status.publishAt`, so YouTube releases them.
+TikTok and Instagram have no scheduled-publish parameter, so ChannelForge posts them at the slot
+(the app must be running). An APScheduler job checks the queue every 30 s. Failures retry with
+exponential backoff (1, 2, 4… min, `publish.max_attempts`). A quota overrun waits for the reset
+without counting as an attempt. A missing or expired connection fails immediately with a clear
+message. Every result is written to the job log and the **Publishing** tab, which also retries
+failed posts.
+
+| Platform | How | AI disclosure | Unaudited app |
+|---|---|---|---|
+| YouTube | Data API v3 `videos.insert` (resumable), `thumbnails.set`; one OAuth token per channel; quota ledger per Google Cloud project (`publish.youtube_projects`) | `status.containsSyntheticMedia: true` (field verified in Google's discovery document) | uploads from unverified projects stay **private** until the API audit passes; warned at the gate and detected after upload |
+| TikTok | Content Posting API Direct Post: `creator_info` → `video/init` (FILE_UPLOAD) → chunked PUT → `status/fetch` | `post_info.is_aigc: true` (retried without it, with a warning, if TikTok rejects it) | only `SELF_ONLY` (private) until TikTok's audit; detected and warned |
+| Instagram | Graph API Reels: container with `upload_type=resumable` → `rupload.facebook.com` → poll `status_code` → `media_publish` | none in the API (you are reminded to label it in the app) | n/a |
+
+Instagram's API now accepts the file directly (resumable upload), so no public URL is needed. The
+older `video_url` mode is available (`publish.instagram_mode = "video_url"`) with a temporary
+S3-compatible host (presigned URL, deleted after publishing; needs `pip install boto3` and the
+keyring entries `s3_access_key_id` / `s3_secret_access_key`).
+
+**Connections** (Settings → Platform connections; everything in the OS keyring):
+- YouTube: create a *Desktop app* OAuth client in your Google Cloud project, **Import OAuth client
+  JSON…**, then **Connect YouTube** per channel (browser consent; scopes `youtube.upload` +
+  `youtube`). Tick "passed YouTube's API audit" once Google approves your project.
+- TikTok: paste the tokens JSON per channel (`client_key`, `client_secret`, `access_token`,
+  `refresh_token`, `expires_in`); ChannelForge refreshes the access token itself.
+- Instagram: long-lived access token + Instagram business/creator user id per channel.
+
+Quota defaults (`daily_units` 10,000; `videos.insert` 100 units; 100 uploads/day) follow the
+most recent public reporting of YouTube's 2025–26 quota changes; I could not reach Google's quota
+page from the build machine, so compare with your Cloud console and edit if they differ.
+
 ## Approvals
 
 OpenMontage gates (`human_approval_default: true` in the pipeline manifest) show up in
@@ -245,7 +286,7 @@ never be auto-approved (enforced in the DB layer).
 ## Tests
 
 ```bash
-cd channelforge && QT_QPA_PLATFORM=offscreen pytest -q          # 106 tests (pytest -m 'not slow' for the fast ones)
+cd channelforge && QT_QPA_PLATFORM=offscreen pytest -q          # 119 tests (pytest -m 'not slow' for the fast 107)
 ```
 
 Includes: fallback for 429/529/usage-limit/quota/timeout/503; the acceptance test

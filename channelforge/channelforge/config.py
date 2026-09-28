@@ -47,6 +47,27 @@ class RouterConfig(BaseModel):
     gateway_down_retry_s: float = 60.0
 
 
+class YouTubeProject(BaseModel):
+    # Uploads from unverified API projects (created after 2020-07-28) are locked private until audited.
+    audited: bool = False
+    daily_units: int = 10_000
+    # Recent public reports: videos.insert ~100 units (was ~1,600) with a separate 100 uploads/day bucket.
+    # Edit if your Cloud console shows otherwise; a real quotaExceeded from YouTube always wins.
+    daily_uploads: int = 100
+    costs: dict[str, int] = Field(default_factory=lambda: {"videos.insert": 100, "thumbnails.set": 50})
+
+
+class PublishConfig(BaseModel):
+    youtube_projects: dict[str, YouTubeProject] = Field(default_factory=lambda: {"default": YouTubeProject()})
+    tiktok_audited: bool = False            # unaudited TikTok clients can only post privately (SELF_ONLY)
+    instagram_graph_version: str = "v25.0"
+    instagram_mode: str = "resumable"       # or "video_url" with the S3-compatible temporary host below
+    instagram_s3: dict[str, str] = Field(default_factory=dict)   # bucket, endpoint_url, region_name (keys in keyring)
+    min_lead_minutes: int = 60              # never schedule sooner than this after the publish click
+    max_attempts: int = 6
+    backoff_base_s: int = 60                # 1, 2, 4, 8, 16, 32 minutes
+
+
 class ChannelSettings(BaseModel):
     id: ChannelId
     display_name: str
@@ -63,6 +84,9 @@ class ChannelSettings(BaseModel):
     cta_url: str = ""
     # Use weekday names: APScheduler 3 numbers weekdays from mon=0, unlike standard cron.
     posting_schedule_cron: str = "0 15 * * tue,fri"   # local time
+    platforms: list[str] = Field(default_factory=lambda: ["youtube", "tiktok", "instagram"])
+    youtube_project: str = "default"                    # which Google Cloud project's quota/client this channel uses
+    shorts_spacing_hours: float = 24.0                  # short k goes live k × this after the long video
 
 
 def default_channels() -> dict[str, ChannelSettings]:
@@ -114,6 +138,7 @@ class AppConfig(BaseModel):
         "FAL_KEY", "AZURE_SPEECH_KEY", "AZURE_SPEECH_REGION", "PIXABAY_API_KEY", "PEXELS_API_KEY",
         "FREESOUND_API_KEY"])
     router: RouterConfig = Field(default_factory=RouterConfig)
+    publish: PublishConfig = Field(default_factory=PublishConfig)
     channels: dict[str, ChannelSettings] = Field(default_factory=default_channels)
 
     @property

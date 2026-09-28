@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (QHBoxLayout, QLabel, QLineEdit, QListWidget, QLis
                                QPlainTextEdit, QPushButton, QSplitter, QVBoxLayout, QWidget)
 
 from ..db import JobDB
+from .publish_gate import PublishGate
 
 
 def artifact_preview(checkpoint_path: str, limit: int = 20000) -> str:
@@ -31,9 +32,14 @@ class ApprovalsPanel(QWidget):
     decided = Signal(int, str, str)          # approval id, verdict, note
     pending_count_changed = Signal(int)
 
-    def __init__(self, db: JobDB, parent=None):
+    def __init__(self, db: JobDB, parent=None, warnings_fn=lambda job: []):
         super().__init__(parent)
         self.db = db
+        self.warnings_fn = warnings_fn          # platform audit/verification warnings for the publish gate
+        self.publish_gate = PublishGate()
+        self.publish_gate.hide()
+        self.publish_gate.publish_clicked.connect(lambda aid: self.decided.emit(aid, "approved", "published by the human"))
+        self.publish_gate.reject_clicked.connect(lambda aid: self._decide_reject(aid))
         self._ids: list[int] = []
 
         self.list = QListWidget()
@@ -63,11 +69,15 @@ class ApprovalsPanel(QWidget):
         right = QWidget()
         rl = QVBoxLayout(right)
         rl.addWidget(self.title)
-        rl.addWidget(QLabel("Agent summary"))
+        self.lbl_summary, self.lbl_artifact = QLabel("Agent summary"), QLabel("Artifact under review")
+        rl.addWidget(self.lbl_summary)
         rl.addWidget(self.summary, 1)
-        rl.addWidget(QLabel("Artifact under review"))
+        rl.addWidget(self.lbl_artifact)
         rl.addWidget(self.preview, 3)
         rl.addWidget(self.detail, 3)
+        rl.addWidget(self.publish_gate, 6)
+        self._creative = [self.lbl_summary, self.lbl_artifact, self.summary, self.detail, self.note, self.btn_approve,
+                          self.btn_edit, self.btn_reject]
         rl.addLayout(buttons)
 
         split = QSplitter(Qt.Horizontal)
@@ -108,6 +118,16 @@ class ApprovalsPanel(QWidget):
         a = self.db.get_approval(self._ids[row])
         job = self.db.get_job(a["job_id"]) or {}
         gate = a["gate"]
+        is_pub = gate == "publish"
+        for w in self._creative:
+            w.setVisible(not is_pub)
+        self.publish_gate.setVisible(is_pub)
+        if is_pub:
+            self.title.setText(f"Job #{a['job_id']} ({job.get('channel')}) — PUBLISH GATE: review, then publish")
+            self.preview.hide()
+            self.publish_gate.show_approval(a, self.warnings_fn(job))
+            return
+        self.publish_gate.clear()
         self.title.setText(f"Job #{a['job_id']} ({job.get('channel')}) — gate: {gate}"
                            f"  ·  waiting since {time.strftime('%H:%M:%S', time.localtime(a['created_at']))}")
         self.summary.setPlainText(a["summary"] or "")
@@ -132,6 +152,10 @@ class ApprovalsPanel(QWidget):
             self.preview.hide()
         self.btn_edit.setVisible(gate != "publish")
         self._set_enabled(True)
+
+    def _decide_reject(self, approval_id: int) -> None:
+        if QMessageBox.question(self, "Reject", "Reject publishing this job?") == QMessageBox.StandardButton.Yes:
+            self.decided.emit(approval_id, "rejected", "rejected at the publish gate")
 
     def _decide(self, verdict: str) -> None:
         row = self.list.currentRow()
