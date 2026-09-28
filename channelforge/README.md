@@ -5,10 +5,11 @@ Desktop app (PySide6) that runs three automated YouTube channels end to end on t
 [stickman-video-director](https://github.com/yefry08/stickman-video-director) and
 [hand-drawn-canvas-animation](https://github.com/alesha-pro/tools/tree/main/skills/hand-drawn-canvas-animation).
 
-**Status: milestone M4**: app skeleton, job queue, approval gates and the OmniRoute-only
+**Status: milestone M5**: app skeleton, job queue, approval gates and the OmniRoute-only
 router (M1); **Channel 3** on OpenMontage (M2); **Channel 2** on the hand-drawn-canvas-animation
 skill (M3); **Channel 1** on the stickman-video-director skill with both render backends (M4).
-Shorts, metadata and thumbnails arrive in M5; publishing in M6.
+Every job then gets 5 shorts, metadata and a thumbnail (M5) and stops at the publish gate;
+publishing arrives in M6.
 
 ## Setup
 
@@ -206,6 +207,33 @@ check `python -c "from tools.tool_registry import registry; registry.discover();
 The CTA text per language and the CTA URL (used in the description at M5) are
 `cta_title`, `cta_line` and `cta_url` of the channel in `config.json`.
 
+## Shorts, metadata, thumbnail (M5)
+
+After the long video passes its duration gate, for every channel:
+
+- **Transcript with word timings**: faster-whisper (`word_timestamps=True`) on `long.mp4`
+  (the model downloads from Hugging Face on first use).
+- **5 shorts, 1080×1920, 30–60 s**: a model picks the strongest self-contained passages from
+  the numbered sentences. ChannelForge snaps them to sentence boundaries and 30–60 s, drops
+  overlaps, and fills any gap with evenly spaced passages. Each short opens on a complete sentence
+  with a ≤8-word hook burned in for the first 2.5 s, and word-level captions (ASS, current word
+  highlighted, above the platforms' bottom UI band). Reframing is never a centre crop: Channel 3
+  uses a *stacked* layout (the whole 16:9 frame over a blurred fill, so charts and maps keep their
+  edges); Channels 1–2 use a *tracked* 9:16 window that pans smoothly toward motion and detail.
+  Each short is checked with ffprobe (1080×1920, 30–60 s), and there must be exactly 5.
+- **`metadata.json`**: the model writes the wording (title, summary, chapter names, tags,
+  thumbnail words, TikTok / YT Shorts / IG Reels captions and hashtags). ChannelForge assembles
+  the facts: chapter timestamps (0:00 first, ≥3, each ≥10 s), the de-duplicated sources list
+  from `sources.json`, the CTA link (Channel 1), and an AI-disclosure line. It enforces platform
+  limits: title 100, description 5,000, tags 500 chars total, IG ≤30 hashtags, `#Shorts` on
+  Shorts titles. `contains_synthetic_media: true` is carried to the uploader (M6).
+- **`thumbnail.jpg`**: 1280×720, under YouTube's 2 MB limit; a frame from our own video (so
+  never a real person) with 2–5 bold words sized to fit.
+
+Then the job waits at the **publish gate**, which is never automatic (enforced in the database).
+Its payload lists the long video, the 5 shorts, the metadata, the thumbnail and the
+flagged-claims report.
+
 ## Approvals
 
 OpenMontage gates (`human_approval_default: true` in the pipeline manifest) show up in
@@ -217,7 +245,7 @@ never be auto-approved (enforced in the DB layer).
 ## Tests
 
 ```bash
-cd channelforge && QT_QPA_PLATFORM=offscreen pytest -q          # 94 tests (pytest -m 'not slow' for the fast 82)
+cd channelforge && QT_QPA_PLATFORM=offscreen pytest -q          # 106 tests (pytest -m 'not slow' for the fast ones)
 ```
 
 Includes: fallback for 429/529/usage-limit/quota/timeout/503; the acceptance test

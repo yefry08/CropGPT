@@ -24,6 +24,7 @@ class MockLLMServer:
     def __init__(self, name: str = "mock", reply: str = "ok", cost: float = 0.0012, port: int = 0):
         self.name = name
         self.reply = reply
+        self.reply_fn = None      # optional callable(request_body) -> reply text
         self.cost = cost
         self.modes: deque[str] = deque()
         self.model_modes: dict[str, deque[str]] = {}
@@ -125,11 +126,12 @@ class MockLLMServer:
                     return self._json(400, {"error": {"message": "bad request: messages missing"}})
 
                 model = body.get("model", "unknown")
+                reply = server.reply_fn(body) if server.reply_fn else server.reply
                 if self.path.startswith("/v1/chat/completions") or self.path.startswith("/api/v1/chat/completions"):
                     return self._json(200, {
                         "id": "chatcmpl-1", "object": "chat.completion", "model": model,
                         "choices": [{"index": 0, "finish_reason": "stop",
-                                     "message": {"role": "assistant", "content": server.reply}}],
+                                     "message": {"role": "assistant", "content": reply}}],
                         "usage": {"prompt_tokens": 11, "completion_tokens": 7,
                                   "total_tokens": 18, "cost": server.cost},
                     }, {"X-OmniRoute-Response-Cost": f"{server.cost:.10f}",

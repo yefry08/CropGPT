@@ -180,7 +180,8 @@ def test_replan_note_gives_a_word_target():
 def test_channel3_end_to_end(tmp_path, engine_dir, omni, monkeypatch):
     """Copied script + unsourced claim → sent back automatically; too-short render → re-plan
     from the script with a word target; finally a 1920x1080 long.mp4 in range + sources.json."""
-    omni.reply = '{"flags": []}'                                      # critic finds nothing extra
+    from conftest import fake_words, smart_reply
+    omni.reply_fn = smart_reply                                        # critic, shorts picker, metadata writer
     monkeypatch.setenv("FAKE_COPY_TEXT", REF)
     monkeypatch.setenv("FAKE_WORDS", "800")                            # 800 words → 320 s: too short
     cfg = AppConfig(engines_dir=engine_dir.parent, output_root=tmp_path / "out", claude_bin=str(FAKE),
@@ -192,7 +193,7 @@ def test_channel3_end_to_end(tmp_path, engine_dir, omni, monkeypatch):
     def fake_ingest(text, out_dir):
         return ingest.ingest(text, out_dir, run=FakeYtDlp(subs=True))
     runner = JobRunner(cfg, db, supervisor=sup, recipes=RECIPES, router=LLMRouter(cfg.router, db),
-                       ingest_fn=fake_ingest)
+                       ingest_fn=fake_ingest, transcribe=fake_words)
     jid = db.create_job(channel="geopolitics", input_text="https://youtu.be/ref World Cup hosting and public money",
                         language="es", visual_style="clean-professional", render_backend="animated-explainer",
                         budget_cap_usd=5.0, auto_approve=True)
@@ -203,6 +204,13 @@ def test_channel3_end_to_end(tmp_path, engine_dir, omni, monkeypatch):
         runner.run_job(job)
     j = db.get_job(jid)
     events = [e["message"] for e in db.events(jid)]
+    assert j["status"] == "awaiting_approval" and j["current_stage"] == "publish", (j["error"], events[-6:])
+    [pub] = db.approvals("pending", job_id=jid)
+    assert pub["gate"] == "publish"
+    with pytest.raises(PermissionError):                               # never automatic
+        db.decide_approval(pub["id"], "approved", auto=True)
+    runner.decide(pub["id"], "approved")
+    j = db.get_job(jid)
     assert j["status"] == "done", (j["error"], events[-6:])
     out = Path(j["output_dir"])
     dc = duration.check(out / "long.mp4")
@@ -216,6 +224,9 @@ def test_channel3_end_to_end(tmp_path, engine_dir, omni, monkeypatch):
     assert (engine_dir / "projects" / j["project_id"] / "history" / "channelforge-replan-1" / "checkpoint_compose.json").exists()
     assert (out / "reference" / "ref01" / "transcript.txt").read_text() == REF
     assert not list(out.rglob("*.m4a"))                              # no reference media kept
+    meta = json.loads((out / "metadata.json").read_text())
+    assert len(meta["shorts"]) == 5 and all((out / m["file"]).exists() for m in meta["shorts"])
+    assert meta["youtube"]["chapters"][0].startswith("0:00") and "data.worldbank.org" in meta["youtube"]["description"]
 
 
 def test_documentary_montage_is_refused_for_channel3():

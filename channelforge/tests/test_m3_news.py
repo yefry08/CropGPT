@@ -143,7 +143,8 @@ class FakeRenderer:
 def test_channel2_end_to_end(tmp_path, omni, monkeypatch):
     """Stale research + too-short narration are caught before any render; then preview gate, render,
     mix, ffprobe duration gate, outputs."""
-    omni.reply = '{"flags": []}'
+    from conftest import fake_words, smart_reply
+    omni.reply_fn = smart_reply
     monkeypatch.setenv("FAKE_STALE_FIRST", "1")
     monkeypatch.setenv("FAKE_WORDS", "600")                   # 600 words → 240 s narration: too short
     engines = tmp_path / "engines"
@@ -154,7 +155,7 @@ def test_channel2_end_to_end(tmp_path, omni, monkeypatch):
                                            "channelforge-primary")], claude_bin=str(FAKE))
     FakeRenderer.calls = []
     runner = JobRunner(cfg, db, supervisor=sup, recipes=RECIPES, router=LLMRouter(cfg.router, db),
-                       app_stages=AppStages(fake_synth, renderer=FakeRenderer))
+                       app_stages=AppStages(fake_synth, renderer=FakeRenderer), transcribe=fake_words)
     jid = db.create_job(channel="ai_news", input_text="This week in AI safety", language="es", visual_style="sketchbook",
                         render_backend="hand_drawn_canvas", budget_cap_usd=3.0, auto_approve=True)
     for _ in range(40):
@@ -164,6 +165,9 @@ def test_channel2_end_to_end(tmp_path, omni, monkeypatch):
         runner.run_job(job)
     j = db.get_job(jid)
     ev = [e["message"] for e in db.events(jid)]
+    assert j["status"] == "awaiting_approval", (j["error"], ev[-8:])
+    runner.decide(db.approvals("pending", job_id=jid)[0]["id"], "approved")
+    j = db.get_job(jid)
     assert j["status"] == "done", (j["error"], ev[-8:])
     assert any("RESEARCH:" in m or "script checks failed" in m for m in ev)
     assert any(m.startswith("NARRATION CHECK: The synthesised narration runs 242 s") for m in ev)   # 240 s + 4 pauses

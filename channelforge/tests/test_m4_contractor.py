@@ -76,24 +76,29 @@ def setup(tmp_path, omni_srv, provider, cap=80.0, auto=True, words="1300"):
     db = JobDB(tmp_path / "jobs.db")
     sup = AgentSupervisor(db, [AgentTarget("omniroute:channelforge-primary", "omniroute", omni_srv.url, OMNIROUTE_API_KEY,
                                            "channelforge-primary")], claude_bin=str(FAKE))
+    from conftest import fake_words, smart_reply
+    omni_srv.reply_fn = smart_reply
     runner = JobRunner(cfg, db, supervisor=sup, recipes=RECIPES, router=LLMRouter(cfg.router, db),
-                       app_stages=AppStages(fake_synth, omni_tools=provider))
+                       app_stages=AppStages(fake_synth, omni_tools=provider), transcribe=fake_words)
     jid = db.create_job(channel="contractor_ai", input_text="Licitaciones infladas: cómo detectarlas con datos abiertos",
                         language="es", visual_style="1B", render_backend="omni_flash", budget_cap_usd=cap, auto_approve=auto)
     return cfg, db, runner, jid
 
 
-def drain(db, runner, n=60):
+def drain(db, runner, n=60, publish=True):
     for _ in range(n):
         job = db.claim_next_queued()
         if job is None:
-            return
+            break
         runner.run_job(job)
+    if publish:                                   # the human's publish click
+        for a in db.approvals("pending"):
+            if a["gate"] == "publish":
+                runner.decide(a["id"], "approved")
 
 
 @pytest.mark.slow          # encodes a full 9-minute 1080p video
 def test_channel1_omni_end_to_end_with_cost_block(tmp_path, omni, monkeypatch):
-    omni.reply = '{"flags": []}'
     monkeypatch.setenv("FAKE_BAD_PROMPTS_FIRST", "1")
     prov = FakeProvider(per_clip=1.0)
     cfg, db, runner, jid = setup(tmp_path, omni, prov, cap=20.0)
@@ -128,7 +133,6 @@ def test_channel1_omni_end_to_end_with_cost_block(tmp_path, omni, monkeypatch):
 
 @pytest.mark.slow          # encodes a full 9-minute 1080p video
 def test_clip_generation_resumes_after_a_provider_failure(tmp_path, omni):
-    omni.reply = '{"flags": []}'
     prov = FakeProvider(per_clip=1.0, fail_at=4)
     cfg, db, runner, jid = setup(tmp_path, omni, prov)
     drain(db, runner)
@@ -145,7 +149,6 @@ def test_clip_generation_resumes_after_a_provider_failure(tmp_path, omni):
 
 @pytest.mark.slow          # encodes a full 9-minute 1080p video
 def test_spend_stops_at_the_cap_even_if_the_provider_charges_more(tmp_path, omni):
-    omni.reply = '{"flags": []}'
     prov = FakeProvider(per_clip=1.0, charged=1.8)                       # estimate $1, real charge $1.80
     cfg, db, runner, jid = setup(tmp_path, omni, prov, cap=60.0)
     drain(db, runner)

@@ -98,3 +98,30 @@ class Restarter:
         if self.server:
             self.server.stop()
             self.server = None
+
+
+# ---- M5 helpers: a stand-in transcriber and a prompt-aware mock reply ----------------------------
+def fake_words(media, language=None):
+    """Evenly timed words over the whole video, a sentence every 12 words (Whisper needs a model download)."""
+    import subprocess
+    d = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0",
+                              str(media)], capture_output=True, text=True).stdout)
+    n = int(d * 2.4)
+    return [{"start": k * d / n, "end": (k + .8) * d / n, "word": f"w{k}" + ("." if k % 12 == 11 else "")}
+            for k in range(n)]
+
+
+def smart_reply(body):
+    import json as _j
+    sysmsg = next((m["content"] for m in body.get("messages", []) if m["role"] == "system"), "")
+    if "fact-checker" in sysmsg:
+        return '{"flags": []}'
+    if "cut vertical shorts" in sysmsg:
+        return _j.dumps({"segments": [{"first": 2 + 20 * k, "last": 9 + 20 * k, "hook": f"Hook {k + 1}"} for k in range(5)]})
+    if "publishing metadata" in sysmsg:
+        return _j.dumps({"title": "Where the money went", "summary": "A data story.",
+                         "chapter_titles": [f"Part {k}" for k in range(80)], "tags": ["procurement", "data", "#open"],
+                         "thumbnail_text": "Follow the money", "thumbnail_chapter": 1,
+                         "shorts": [{"tiktok": "Watch #data #money", "yt_shorts_title": f"Short {k}",
+                                     "ig": "Look " + " ".join(f"#t{i}" for i in range(40))} for k in range(5)]})
+    return "ok"

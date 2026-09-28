@@ -15,7 +15,8 @@ from ..agent.claude_runner import AgentTarget
 from ..agent.supervisor import AgentSupervisor, Decision, Outcome
 from ..config import AppConfig
 from ..db import JobDB
-from ..pipeline import gates, news, omni
+from ..pipeline import deliverables, gates, news, omni
+from ..pipeline.shorts import transcribe_words
 from ..pipeline.app_stages import AppStages, JobContext, init_project
 from ..pipeline.narration import openmontage_synth
 from ..pipeline.ingest import ingest as default_ingest
@@ -38,12 +39,13 @@ def agent_targets(cfg: AppConfig) -> list[AgentTarget]:
 class JobRunner:
     def __init__(self, cfg: AppConfig, db: JobDB, supervisor: AgentSupervisor | None = None,
                  recipes: dict[str, ChannelRecipe] = RECIPES, workers: int = 1, router: LLMRouter | None = None,
-                 ingest_fn=default_ingest, app_stages: AppStages | None = None):
+                 ingest_fn=default_ingest, app_stages: AppStages | None = None, transcribe=transcribe_words):
         self.cfg = cfg
         self.db = db
         self.recipes = recipes
         self.router = router if router is not None else LLMRouter(cfg.router, db)
         self.ingest_fn = ingest_fn
+        self.transcribe = transcribe
         engine_env = lambda: {**os.environ, **secrets.engine_env(cfg.engine_env_vars)}  # noqa: E731
         self.app_stages = app_stages or AppStages(
             lambda: openmontage_synth(cfg.openmontage_dir, cfg.engine_python, engine_env()),
@@ -98,8 +100,17 @@ class JobRunner:
             return
         self.db.log_event(appr["job_id"], f"gate {appr['gate']} {verdict.upper()}"
                           + (" (auto)" if auto else "") + (f": {note}" if note else ""))
+        if appr["gate"] == "publish":
+            self.db.mark_consumed(approval_id)
+            self.on_publish_approved(appr["job_id"], note)
+            return
         self.db.update_job(appr["job_id"], status="queued")
         self.poke()
+
+    def on_publish_approved(self, job_id: int, note: str | None) -> None:
+        """Replaced by the publisher in M6."""
+        self.db.update_job(job_id, status="done")
+        self.db.log_event(job_id, "approved for publishing")
 
     def retry(self, job_id: int) -> None:
         """Retry the failed/stuck stage — the supervisor resumes from the last checkpoint."""
@@ -315,16 +326,49 @@ class JobRunner:
         self.poke()
         return Outcome.AWAITING
 
+    def _ask(self, kind: str, job_id: int, stage: str):
+        def ask(system: str, user: str) -> str:
+            return self.router.complete([{"role": "system", "content": system}, {"role": "user", "content": user}],
+                                        kind=kind, job_id=job_id, stage=stage, temperature=0.4).text
+        return ask
+
+    def _deliverables(self, job: dict, ej, out_dir: Path) -> Outcome:
+        """5 shorts + metadata + thumbnail, then the PUBLISH gate (always a human click)."""
+        self.db.update_job(job["id"], current_stage="deliverables")
+        self.db.log_event(job["id"], "making shorts, metadata and thumbnail")
+        rep = deliverables.make(ej, job, out_dir, self._ask("general", job["id"], "shorts"),
+                                self._ask("metadata", job["id"], "metadata"), self.transcribe,
+                                cta_fields(self.cfg, job), lambda m: self.db.log_event(job["id"], m, stage="deliverables"))
+        if rep["problems"]:
+            raise RuntimeError("deliverables failed their checks: " + "; ".join(rep["problems"]))
+        gate_report = out_dir / "reports" / "script_gate.json"
+        flagged = json.loads(gate_report.read_text()) if gate_report.exists() else {}
+        payload = {"output_dir": str(out_dir), "long": str(out_dir / "long.mp4"),
+                   "shorts": [str(out_dir / s["file"]) for s in rep["shorts"]],
+                   "thumbnail": str(out_dir / "thumbnail.jpg"), "metadata": str(out_dir / "metadata.json"),
+                   "sources": str(out_dir / "sources.json"), "preview_image": str(out_dir / "thumbnail.jpg"),
+                   "flagged_claims": (flagged.get("facts") or {})}
+        meta = json.loads((out_dir / "metadata.json").read_text())
+        fl = (flagged.get("facts") or {})
+        n_flags = len(fl.get("rule_violations", [])) + len(fl.get("critic_flags", []))
+        summary = (f"READY TO PUBLISH — {meta['youtube']['title']}\n"
+                   f"Long video {meta['long']['duration_s']:.0f} s · 5 shorts · thumbnail · "
+                   f"{len(meta['youtube']['chapters'])} chapters · flagged claims still open: {n_flags}")
+        self.db.create_approval(job["id"], "publish", summary, payload)
+        self.db.update_job(job["id"], status="awaiting_approval", current_stage="publish")
+        self.db.log_event(job["id"], "waiting for the PUBLISH click (never automatic)", stage="publish")
+        return Outcome.AWAITING
+
     def _finish_long(self, job: dict, ej, out_dir: Path) -> Outcome:
         g, render = gates.duration_gate(ej, out_dir)
         fresh = self.db.get_job(job["id"]) or job
         if g.passed:
             files = gates.collect_long(ej, out_dir, render)
-            self.db.update_job(job["id"], status="done", directive=None)
+            self.db.update_job(job["id"], directive=None)
             d = g.reports["duration"]
             self.db.log_event(job["id"], f"long video OK: {d['duration_s']:.1f} s at {d['resolution']} "
                                          f"(ffprobe) → {', '.join(files)}")
-            return Outcome.DONE
+            return self._deliverables(job, ej, out_dir)
         if fresh["replan_count"] >= gates.MAX_REPLANS:
             self.db.update_job(job["id"], status="failed", directive=None,
                                error=f"duration gate still failing after {gates.MAX_REPLANS} re-plans: {g.note}")
