@@ -15,12 +15,22 @@ from pathlib import Path
 from ..config import app_home
 
 CHROME_CANDIDATES = ["google-chrome", "google-chrome-stable", "chromium", "chromium-browser"]
+CHROME_PATHS = [                                    # standard installs that are not on PATH
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    os.path.expandvars(r"%ProgramFiles%\Google\Chrome\Application\chrome.exe"),
+    os.path.expandvars(r"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe"),
+    os.path.expandvars(r"%LocalAppData%\Google\Chrome\Application\chrome.exe"),
+]
 
 
 def chrome_env(chrome_bin: str = "") -> dict[str, str]:
     """render.mjs reads CHROME. As root on Linux Chrome needs --no-sandbox, so wrap it."""
     env = dict(os.environ)
-    chrome = chrome_bin or next((shutil.which(c) for c in CHROME_CANDIDATES if shutil.which(c)), "")
+    chrome = (chrome_bin or os.environ.get("CHROME", "")
+              or next((shutil.which(c) for c in CHROME_CANDIDATES if shutil.which(c)), "")
+              or next((c for c in CHROME_PATHS if "%" not in c and Path(c).exists()), ""))
+    if chrome.endswith("chrome-nosandbox"):          # our own wrapper, already exported earlier
+        return env
     if not chrome and Path("/opt/pw-browsers").exists():
         found = sorted(Path("/opt/pw-browsers").glob("chromium-*/chrome-linux/chrome"))
         chrome = str(found[-1]) if found else ""

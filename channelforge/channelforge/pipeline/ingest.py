@@ -76,7 +76,18 @@ def vtt_to_text(vtt: str) -> str:
 Runner = Callable[[list[str], Path], subprocess.CompletedProcess]
 
 
+def yt_dlp_cmd() -> list[str]:
+    """yt-dlp as a command: the bundled copy inside a packaged app, else the CLI or the module."""
+    import sys
+    if getattr(sys, "frozen", False):
+        return [sys.executable, "yt-dlp"]           # channelforge.__main__ passes this through to yt_dlp.main
+    exe = shutil.which("yt-dlp")
+    return [exe] if exe else [sys.executable, "-m", "yt_dlp"]
+
+
 def _run(cmd: list[str], cwd: Path) -> subprocess.CompletedProcess:
+    if cmd and cmd[0] == "yt-dlp":
+        cmd = yt_dlp_cmd() + cmd[1:]
     return subprocess.run(cmd, cwd=cwd, capture_output=True, text=True, timeout=600)
 
 

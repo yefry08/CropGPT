@@ -7,6 +7,7 @@
   channelforge omniroute verify      list the models your inference key can see (quick start step 4)
   channelforge omniroute setup       build the Claude combo from connected models; adjust routing
   channelforge secrets set NAME      store a key in the OS keyring (prompted, not echoed)
+  channelforge doctor                check prerequisites (ffmpeg, node, claude, omniroute, engines, …)
 """
 
 from __future__ import annotations
@@ -36,6 +37,7 @@ def setup_logging() -> None:
     root.addHandler(sh)
     secrets.install_redaction(root)
     logging.getLogger("httpx").setLevel(logging.WARNING)   # httpx logs full URLs at INFO
+    logging.getLogger("apscheduler").setLevel(logging.WARNING)   # the 30 s publish tick would flood the log
 
 
 def run_gui(demo: bool) -> int:
@@ -67,16 +69,26 @@ def run_gui(demo: bool) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
+    argv = sys.argv[1:] if argv is None else argv
+    from dotenv import find_dotenv, load_dotenv
+    load_dotenv(find_dotenv(usecwd=True))           # non-secret overrides (.env.example); never overrides real env
+    if argv[:1] == ["yt-dlp"]:                      # packaged app: run the bundled yt-dlp
+        import yt_dlp
+        return yt_dlp.main(argv[1:]) or 0
     p = argparse.ArgumentParser(prog="channelforge")
     p.add_argument("--demo", action="store_true", help="run against local mock gateways")
     sub = p.add_subparsers(dest="cmd")
     o = sub.add_parser("omniroute")
     o.add_argument("action", choices=["status", "start", "connect", "verify", "setup", "combos"])
+    sub.add_parser("doctor", help="check prerequisites and configuration")
     s = sub.add_parser("secrets")
     s.add_argument("action", choices=["set", "delete", "list"])
     s.add_argument("name", nargs="?")
     args = p.parse_args(argv)
     setup_logging()
+    if args.cmd == "doctor":
+        from .doctor import run_doctor
+        return run_doctor(AppConfig.load())
 
     if args.cmd == "omniroute":
         from .router import omniroute

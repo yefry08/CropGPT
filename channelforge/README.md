@@ -5,11 +5,52 @@ Desktop app (PySide6) that runs three automated YouTube channels end to end on t
 [stickman-video-director](https://github.com/yefry08/stickman-video-director) and
 [hand-drawn-canvas-animation](https://github.com/alesha-pro/tools/tree/main/skills/hand-drawn-canvas-animation).
 
-**Status: milestone M6**: app skeleton, job queue, approval gates and the OmniRoute-only
-router (M1); **Channel 3** on OpenMontage (M2); **Channel 2** on the hand-drawn-canvas-animation
-skill (M3); **Channel 1** on the stickman-video-director skill with both render backends (M4).
-Every job then gets 5 shorts, metadata and a thumbnail (M5), stops at the publish gate, and
-after your click is scheduled and published to YouTube, TikTok and Instagram (M6).
+**Status: all milestones (M1–M7) built.** App skeleton, job queue, approval gates and the
+OmniRoute-only router (M1); **Channel 3** on OpenMontage (M2); **Channel 2** on the
+hand-drawn-canvas-animation skill (M3); **Channel 1** on the stickman-video-director skill with
+both render backends (M4). Every job then gets 5 shorts, metadata and a thumbnail (M5), stops at
+the publish gate, and after your click is scheduled and published to YouTube, TikTok and
+Instagram (M6). Packaging with PyInstaller, `channelforge doctor`, this README and
+`.env.example` (M7).
+
+## Prerequisites
+
+ChannelForge orchestrates tools that are installed separately (the packaged app does not bundle them):
+
+| Tool | Needed for | Install |
+|---|---|---|
+| FFmpeg + ffprobe (with libass) | every render, duration gate, shorts | Windows: `winget install Gyan.FFmpeg` · macOS: `brew install ffmpeg` |
+| Node.js ≥ 22.22 | OmniRoute, Claude Code, Remotion, HyperFrames, the hand-drawn renderer | https://nodejs.org |
+| Claude Code CLI | agent stages | `npm install -g @anthropic-ai/claude-code` |
+| OmniRoute | the only model gateway | `npm install -g omniroute` |
+| Python 3.11+ | the OpenMontage engine (and ChannelForge itself from source) | https://python.org |
+| Google Chrome | Channel 2 renders (puppeteer-core) | https://google.com/chrome — or set `CHROME` to its path |
+| The three engine repos | all channels | cloned into the engines folder (below) |
+
+Run **`channelforge doctor`** (packaged: `channelforge-cli doctor`) at any point. It checks
+each item above, the engine's Python dependencies, Remotion, a TTS voice, the OmniRoute keys and
+the OS keyring, and prints the exact command that fixes anything missing.
+
+## Install
+
+**Packaged app (Windows / macOS).** Build it once on the target OS (PyInstaller does not
+cross-compile):
+
+```bash
+cd channelforge
+powershell -ExecutionPolicy Bypass -File packaging\build_windows.ps1   # Windows → dist\ChannelForge\
+bash packaging/build_macos.sh                                          # macOS  → dist/ChannelForge.app
+```
+
+The bundle holds two executables: **ChannelForge** (the desktop app) and **channelforge-cli**
+(`doctor`, `omniroute …`, `secrets …`; Windows GUI programs have no console, so the CLI is
+separate). The macOS build is unsigned: right-click → Open the first time, or sign it with the
+`codesign` line in the script. The packaged app keeps its data and the engines folder in
+`~/.channelforge/` (override with `CHANNELFORGE_HOME` / `CHANNELFORGE_ENGINES`). `--demo` works
+from source only (it runs the fake agents as Python scripts).
+
+**From source** (any OS): follow *Setup* below; the engines folder is `../engines` next to
+`channelforge/`.
 
 ## Setup
 
@@ -24,6 +65,7 @@ cd ..
 
 # 2. app
 cd channelforge && pip install -e ".[dev]"
+channelforge doctor
 
 # 3. OmniRoute — the only model gateway (Node >= 22.22)
 npm install -g omniroute
@@ -286,7 +328,7 @@ never be auto-approved (enforced in the DB layer).
 ## Tests
 
 ```bash
-cd channelforge && QT_QPA_PLATFORM=offscreen pytest -q          # 119 tests (pytest -m 'not slow' for the fast 107)
+cd channelforge && QT_QPA_PLATFORM=offscreen pytest -q          # pytest -m 'not slow' skips the real-CLI / real-render tests
 ```
 
 Includes: fallback for 429/529/usage-limit/quota/timeout/503; the acceptance test
@@ -296,3 +338,42 @@ re-delivered; app-crash resume; auto-approve; publish-gate guard; a secret-leak 
 file the app writes; the real `claude` CLI against a mock gateway (including a dead one); and,
 when a local OmniRoute is running, the real CLI and router against it plus a real
 stop → auto-start cycle.
+
+## Acceptance tests
+
+| Requirement | Enforced by | Test |
+|---|---|---|
+| Every long video is 480–600 s by ffprobe | duration gate after `compose`; re-plan with a word target, never padding; trailing silence rejected | `test_m2_pipeline.py::test_duration_range_by_ffprobe`, `test_silence_padding_is_rejected`, `test_channel3_end_to_end` |
+| Exactly 5 shorts, 9:16, 30–60 s | `shorts.check_short` (ffprobe 1080×1920, 30–60 s) and a count check before the publish gate | `test_m5_deliverables.py::test_render_short_is_vertical_captioned_and_in_range`, `test_snap_grows_and_shrinks_to_30_60_seconds`, `test_channel3_end_to_end` |
+| Simulated 429 on Claude → switch mid-job → completes from checkpoint | router + agent supervisor (the spec's OpenRouter fallback is OmniRoute's `auto/coding`, per your change) | `test_failover_resume.py::test_429_on_claude_switches_mid_job_and_resumes_from_checkpoint`, `test_real_claude_cli.py` |
+| Overlap with the reference transcript ≤ 10 % | 5-gram overlap at the script gate | `test_m2_pipeline.py::test_copied_script_fails_and_paraphrase_passes` |
+| Every claim has a source | `sources.json` check + allegation rules + critic model | `test_every_claim_needs_a_source`, `test_allegation_needs_strong_or_multiple_sources_and_legal_status`, `test_critic_flags_come_through_the_router` |
+| Nothing published without the approval click | publish gate refuses `auto=True` in the DB; publishing is planned only in `on_publish_approved` | `test_publish_gate_can_never_be_auto_approved`, `test_ui.py::test_publish_gate_previews_and_publishes_on_click` |
+| No secret in logs or files | keyring only; redaction filter on every log handler and DB write; env injection only into child processes | `test_no_secret_in_db_logs_or_files`, `test_m6_publish.py::test_publish_tokens_never_reach_logs_or_db` |
+
+## Security
+
+- Every API key, OAuth token and client secret lives in the OS keyring (Windows Credential
+  Manager, macOS Keychain, Secret Service on Linux), under the service name `channelforge`.
+  `config.json` holds only non-secret settings.
+- Engine keys (`engine_env:*`) are injected into the agent's process environment and never written
+  to OpenMontage's `.env`.
+- Log files (`~/.channelforge/logs/`) and the job database pass through a redaction filter that
+  removes every stored secret value plus common token shapes (`sk-…`, `oma_live_…`, `ya29.…`,
+  bearer headers).
+- OmniRoute should listen on 127.0.0.1 only (see Setup).
+- Headless CI may use `CHANNELFORGE_SECRET_<NAME>` environment variables instead of the keyring
+  (see `.env.example`); never put them in a committed file.
+
+## Known limits and things to confirm on your side
+
+- Real renders were not run on the build machine (no TTS/video keys there); every stage runs in
+  tests against fake agents/providers with real ffmpeg, and the hand-drawn renderer ran for real.
+- YouTube quota numbers (see Publishing) could not be checked against Google's page from the
+  build machine; confirm them in your Cloud console.
+- The spec asked for a temporary public URL for Instagram; the Graph API now also accepts direct
+  resumable uploads, which is the default. `video_url` mode with a temporary S3 host remains available.
+- Unverified Google projects and unaudited TikTok apps post privately; the app warns you at the
+  gate, but only the platforms' audits lift that.
+- Gemini Omni Flash chooses 3–10 s per clip, so Channel 1 backend (a) may need spare prompts to
+  reach 8 minutes; the cost estimate at the prompts gate accounts for that.

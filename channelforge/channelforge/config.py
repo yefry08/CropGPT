@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 from pathlib import Path
 from typing import Literal
 
@@ -120,9 +121,16 @@ def default_channels() -> dict[str, ChannelSettings]:
     }
 
 
+def default_engines_dir() -> Path:
+    if os.environ.get("CHANNELFORGE_ENGINES"):
+        return Path(os.environ["CHANNELFORGE_ENGINES"])
+    if getattr(sys, "frozen", False):              # packaged app: engines live next to the user data
+        return app_home() / "engines"
+    return Path(__file__).resolve().parents[2] / "engines"
+
+
 class AppConfig(BaseModel):
-    engines_dir: Path = Field(default_factory=lambda: Path(os.environ.get(
-        "CHANNELFORGE_ENGINES", Path(__file__).resolve().parents[2] / "engines")))
+    engines_dir: Path = Field(default_factory=default_engines_dir)
     output_root: Path = Field(default_factory=lambda: app_home() / "jobs")
     claude_bin: str = "claude"
     engine_python: str = Field(default_factory=lambda: "python" if os.name == "nt" else "python3")
