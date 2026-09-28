@@ -56,7 +56,7 @@ class NarrationResult:
         return duration.LONG_MIN_S <= self.film_s <= duration.LONG_MAX_S
 
 
-def build(project_dir: Path, script: dict, synth: Synth) -> NarrationResult:
+def build(project_dir: Path, script: dict, synth: Synth, end_card_s: float = END_CARD_S) -> NarrationResult:
     audio_dir = project_dir / "audio"
     audio_dir.mkdir(parents=True, exist_ok=True)
     sections, parts, t = [], [], 0.0
@@ -84,9 +84,9 @@ def build(project_dir: Path, script: dict, synth: Synth) -> NarrationResult:
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(listing), "-c", "copy",
                     str(out)], cwd=audio_dir, check=True)
     total = audio_seconds(out)
-    res = NarrationResult(total, total + END_CARD_S, out, sections)
+    res = NarrationResult(total, total + end_card_s, out, sections)
     (project_dir / "artifacts").mkdir(exist_ok=True)
     (project_dir / "artifacts" / "narration.json").write_text(json.dumps({
-        "total_s": round(total, 3), "film_s": round(res.film_s, 3), "end_card_s": END_CARD_S,
+        "total_s": round(total, 3), "film_s": round(res.film_s, 3), "end_card_s": end_card_s,
         "audio": str(out.relative_to(project_dir)), "sections": sections}, indent=1, ensure_ascii=False))
     return res

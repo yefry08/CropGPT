@@ -147,6 +147,11 @@ class AgentSupervisor:
         state = read_state(job.project_dir, job.stages)
         if not state.awaiting and (state.done or state.next_stage in job.app_stages) and not decision:
             return SupervisorResult(Outcome.DONE, "handoff to ChannelForge", state, [])
+        if state.awaiting and not decision and not job.directive:
+            # a gate is still pending (e.g. a job blocked by budget was retried): re-evaluate it, no agent run
+            cp = state.checkpoints.get(state.awaiting[0], {})
+            return SupervisorResult(Outcome.AWAITING, (cp.get("metadata") or {}).get("summary", "awaiting approval"),
+                                    state, [])
         if not self.ensure_gateway():
             return SupervisorResult(Outcome.PAUSED, "OmniRoute is down and could not be started", state, [])
 

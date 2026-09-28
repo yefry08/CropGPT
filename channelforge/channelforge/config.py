@@ -57,6 +57,10 @@ class ChannelSettings(BaseModel):
     render_backends: list[str]
     budget_cap_usd: float = 5.0
     auto_approve_creative_gates: bool = False
+    # Channel 1 brand call to action (overlaid on the last seconds; the URL goes in the description)
+    cta_title: str = ""
+    cta_line: dict[str, str] = Field(default_factory=dict)
+    cta_url: str = ""
     # Use weekday names: APScheduler 3 numbers weekdays from mon=0, unlike standard cron.
     posting_schedule_cron: str = "0 15 * * tue,fri"   # local time
 
@@ -66,8 +70,13 @@ def default_channels() -> dict[str, ChannelSettings]:
         "contractor_ai": ChannelSettings(
             id="contractor_ai", display_name="Contractor AI (stickman)",
             visual_style="1B", visual_styles=["1B", "2A"],
-            render_backend="omni_flash", render_backends=["omni_flash", "character_animation"],
-            budget_cap_usd=15.0),
+            render_backend="omni_flash", render_backends=["omni_flash", "veo", "character_animation"],
+            # Omni Flash is ~$0.10/s (OpenMontage estimate_cost): a 9-minute video is ~54 clips ≈ $54.
+            budget_cap_usd=60.0,
+            cta_title="Contractor AI",
+            cta_line={"es": "IA multilingüe que detecta anomalías en la contratación pública",
+                      "en": "Multilingual AI that detects anomalies in public procurement",
+                      "pt": "IA multilíngue que detecta anomalias em compras públicas"}),
         "ai_news": ChannelSettings(
             id="ai_news", display_name="AI & AI Safety News",
             # the skill's looks (references/style.md); "doodle" is left out: it draws on photos, which
@@ -119,10 +128,35 @@ class AppConfig(BaseModel):
     def load(cls) -> "AppConfig":
         p = cls.path()
         if p.exists():
-            return cls.model_validate_json(p.read_text(encoding="utf-8"))
+            cfg = cls.model_validate_json(p.read_text(encoding="utf-8"))
+            if cfg._upgrade_channels():
+                cfg.save()
+            return cfg
         cfg = cls()
         cfg.save()
         return cfg
+
+    def _upgrade_channels(self) -> bool:
+        """Bring a config saved by an older version up to date without touching the user's choices:
+        add new channels, new backend/style options and brand fields; drop options that no longer exist."""
+        changed = False
+        for cid, d in default_channels().items():
+            ch = self.channels.get(cid)
+            if ch is None:
+                self.channels[cid] = d
+                changed = True
+                continue
+            for attr in ("render_backends", "visual_styles"):
+                if getattr(ch, attr) != getattr(d, attr):
+                    setattr(ch, attr, list(getattr(d, attr)))
+                    changed = True
+            if ch.render_backend not in ch.render_backends:
+                ch.render_backend, changed = d.render_backend, True
+            if ch.visual_style not in ch.visual_styles:
+                ch.visual_style, changed = d.visual_style, True
+            if not ch.cta_title and d.cta_title:
+                ch.cta_title, ch.cta_line, changed = d.cta_title, dict(d.cta_line), True
+        return changed
 
     def save(self) -> None:
         self.path().write_text(json.dumps(self.model_dump(mode="json"), indent=2), encoding="utf-8")

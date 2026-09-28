@@ -17,12 +17,14 @@ from ..config import AppConfig
 from ..db import JobDB
 
 COLUMNS = ["#", "Channel", "Status", "Stage", "Model target", "Cost $", "Input", "Updated"]
-STATUS_ICON = {"queued": "⏳", "running": "▶", "awaiting_approval": "✋", "failed": "✖", "done": "✔", "cancelled": "⊘"}
+STATUS_ICON = {"queued": "⏳", "running": "▶", "awaiting_approval": "✋", "paused": "⏸", "blocked": "⛔",
+               "failed": "✖", "done": "✔", "cancelled": "⊘"}
 
 
 class JobsPanel(QWidget):
     retry_requested = Signal(int)
     cancel_requested = Signal(int)
+    budget_requested = Signal(int, float)
 
     def __init__(self, cfg: AppConfig, db: JobDB, parent=None):
         super().__init__(parent)
@@ -47,13 +49,15 @@ class JobsPanel(QWidget):
         self.btn_folder = QPushButton("Open output folder")
         self.btn_retry = QPushButton("Retry stage")
         self.btn_cancel = QPushButton("Cancel job")
+        self.btn_budget = QPushButton("Budget…")
+        self.btn_budget.clicked.connect(self._budget)
         self.btn_board.clicked.connect(self._open_board)
         self.btn_folder.clicked.connect(self._open_folder)
         self.btn_retry.clicked.connect(lambda: self._selected and self.retry_requested.emit(self._selected))
         self.btn_cancel.clicked.connect(lambda: self._selected and self.cancel_requested.emit(self._selected))
 
         buttons = QHBoxLayout()
-        for b in (self.btn_board, self.btn_folder, self.btn_retry, self.btn_cancel):
+        for b in (self.btn_board, self.btn_folder, self.btn_retry, self.btn_budget, self.btn_cancel):
             buttons.addWidget(b)
         buttons.addStretch(1)
 
@@ -118,7 +122,8 @@ class JobsPanel(QWidget):
         j = self._job()
         self.btn_board.setEnabled(bool(j and j["project_id"]))
         self.btn_folder.setEnabled(bool(j and j["output_dir"]))
-        self.btn_retry.setEnabled(bool(j and j["status"] in ("failed", "cancelled")))
+        self.btn_retry.setEnabled(bool(j and j["status"] in ("failed", "cancelled", "blocked", "paused")))
+        self.btn_budget.setEnabled(bool(j and j["status"] not in ("done", "cancelled")))
         self.btn_cancel.setEnabled(bool(j and j["status"] in ("queued", "running", "awaiting_approval")))
 
     # -- actions -----------------------------------------------------------
@@ -132,6 +137,16 @@ class JobsPanel(QWidget):
                              cwd=str(self.cfg.openmontage_dir), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         except OSError as e:
             QMessageBox.warning(self, "Backlot", f"Could not start the Backlot board: {e}")
+
+    def _budget(self) -> None:
+        j = self._job()
+        if not j:
+            return
+        from PySide6.QtWidgets import QInputDialog
+        cap, ok = QInputDialog.getDouble(self, "Per-video budget cap", f"Job #{j['id']} cap (USD); spent so far "
+                                         f"${self.db.job_cost(j['id']):.2f}:", j["budget_cap_usd"], 0, 10000, 2)
+        if ok:
+            self.budget_requested.emit(j["id"], cap)
 
     def _open_folder(self) -> None:
         j = self._job()

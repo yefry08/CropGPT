@@ -9,8 +9,10 @@ from PySide6.QtWidgets import (QCheckBox, QComboBox, QDoubleSpinBox, QFormLayout
 from ..config import AppConfig, ChannelSettings
 
 BACKEND_LABELS = {
-    "omni_flash": "Gemini Omni Flash / Veo (paid)",
-    "character_animation": "Character animation — SVG rig + GSAP (free)",
+    "omni_flash": "Gemini Omni Flash (paid, ~$0.10/s)",
+    "omni_flash_fal": "Gemini Omni Flash via fal.ai (paid)",
+    "veo": "Veo 3.1 (paid, ~$0.40/s, 8 s clips)",
+    "character_animation": "Character animation: SVG rig + GSAP + HyperFrames (free, local)",
     "hand_drawn_canvas": "Hand-drawn canvas animation",
     "animated-explainer": "OpenMontage animated-explainer",
     "documentary-montage": "OpenMontage documentary-montage",

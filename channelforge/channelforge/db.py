@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS jobs (
   render_backend TEXT NOT NULL,
   budget_cap_usd REAL NOT NULL,
   auto_approve  INTEGER NOT NULL DEFAULT 0,
-  status        TEXT NOT NULL DEFAULT 'queued',   -- queued|running|awaiting_approval|paused|failed|done|cancelled
+  status        TEXT NOT NULL DEFAULT 'queued',   -- queued|running|awaiting_approval|paused|blocked|failed|done|cancelled
   current_stage TEXT,
   project_id    TEXT,
   output_dir    TEXT,
@@ -148,7 +148,8 @@ class JobDB:
         return [dict(r) for r in rows]
 
     _JOB_COLUMNS = {"status", "current_stage", "project_id", "output_dir", "agent_session",
-                    "agent_target", "error", "auto_approve", "directive", "check_attempts", "replan_count"}
+                    "agent_target", "error", "auto_approve", "directive", "check_attempts", "replan_count",
+                    "budget_cap_usd"}
 
     def update_job(self, job_id: int, **fields: Any) -> None:
         bad = set(fields) - self._JOB_COLUMNS
@@ -202,6 +203,11 @@ class JobDB:
             return [dict(r) for r in c.execute("SELECT * FROM stage_runs WHERE job_id=? ORDER BY id", (job_id,))]
 
     # -- LLM ledger --------------------------------------------------------
+    def record_media_spend(self, job_id: int, stage: str, tool: str, usd: float) -> None:
+        """Paid media generation (video/image/TTS) counts toward the same per-video budget."""
+        self.log_llm_call(job_id=job_id, stage=stage, kind="media", gateway="openmontage", target=tool,
+                          model=tool, cost_usd=usd, cost_basis="tool_estimate", ok=True)
+
     def log_llm_call(self, *, job_id: int | None, stage: str | None, kind: str, gateway: str, target: str,
                      model: str | None, tokens_in: int = 0, tokens_out: int = 0, cost_usd: float = 0.0,
                      latency_ms: int = 0, ok: bool, failure: str | None = None, error: str | None = None,

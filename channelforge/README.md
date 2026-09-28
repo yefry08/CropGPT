@@ -5,10 +5,10 @@ Desktop app (PySide6) that runs three automated YouTube channels end to end on t
 [stickman-video-director](https://github.com/yefry08/stickman-video-director) and
 [hand-drawn-canvas-animation](https://github.com/alesha-pro/tools/tree/main/skills/hand-drawn-canvas-animation).
 
-**Status: milestone M3**: app skeleton, job queue, approval gates and the OmniRoute-only
-router (M1); **Channel 3** end to end on OpenMontage (M2); **Channel 2** end to end on the
-hand-drawn-canvas-animation skill (M3). Channel 1 arrives in M4; until then its tab runs
-OpenMontage's `framework-smoke` pipeline.
+**Status: milestone M4**: app skeleton, job queue, approval gates and the OmniRoute-only
+router (M1); **Channel 3** on OpenMontage (M2); **Channel 2** on the hand-drawn-canvas-animation
+skill (M3); **Channel 1** on the stickman-video-director skill with both render backends (M4).
+Shorts, metadata and thumbnails arrive in M5; publishing in M6.
 
 ## Setup
 
@@ -161,6 +161,51 @@ Projects live in `~/.channelforge/projects/<id>/`. The agent gets read access to
 (`--add-dir`). Rendering needs Chrome and Node; as root on Linux ChannelForge wraps Chrome with
 `--no-sandbox`. A 9-minute film is ~13,000 frames: expect roughly 10–15 minutes of render time.
 
+## Channel 1 (M4): Contractor AI, stickman
+
+Direction always follows the stickman-video-director skill: its Phase A director proposal
+(5-stage arc: hook → disrupt assumptions → insider secrets → truth → discussion) is a human
+gate. Its setup gate is answered from the channel tab: 16:9, style **1B** (Style 1, dark canvas)
+or **2A** (Studio Tech), 8–10 minutes, voice-over in the channel language instead of the skill's
+English default. The last narration section is always the Contractor AI call to action, and
+the fact layer applies with the allegation rules (court ruling / official audit / 2+ outlets,
+accurate legal status). Stick figures only, never a real likeness.
+
+**Backend (a): Gemini Omni Flash / Veo** (ChannelForge pipeline `stickman-omni.yaml`)
+
+| Stage | Who | What |
+|---|---|---|
+| direction (gate) | agent | Phase A: `proposal.md`, `script.json` (one section per ~10 s clip), `sources.json` |
+| narration | ChannelForge | one continuous voice-over (TTS); length must fit 8–10 min including a 6 s CTA ending |
+| prompts (gate) | agent | Phase B: one standalone prompt per ~10 s + 3 spares, all contract locks; clip audio = SFX only |
+| clips | ChannelForge | OpenMontage's `gemini_omni_video` / `veo_video` / `gemini_omni_fal` tool, clip by clip |
+| compose | ChannelForge | conform to 1920×1080 24 fps, stitch, voice + BGM + ducked SFX, CTA text overlay |
+
+- **Cost**: at the prompts gate ChannelForge checks the Phase B contract (timed beats, style
+  locks, no colour codes, "16:9", no speech bubbles, SFX-only audio), then estimates cost with the
+  provider tool's own `estimate_cost`. If spent + estimate exceeds the job's cap the job is
+  **blocked**: no approval is offered until you raise that job's cap (Jobs → Budget…, then Retry)
+  or switch to the free backend. During generation the cap is checked before every clip with the
+  real charges, so it holds even if a provider charges more than estimated. Every clip lands in
+  the Model routing ledger as `media` spend.
+- **Typical cost**: Omni Flash ≈ $0.10/s, so a 9-minute video ≈ 54–55 clips ≈ **$55**; Veo on Google
+  ≈ $0.40/s (8 s clips) ≈ **$220**. The channel's default cap is $60.
+- **Clip lengths vary** (Omni Flash chooses 3–10 s): each clip is retimed into its 10 s slot when
+  within 0.85–1.18×; otherwise it keeps its length and the next clips follow. Spares cover a shortfall.
+- **Resume**: each clip has a sidecar with its prompt's hash. A retry after a failure, or an
+  extension with continuation prompts, reuses clips made from identical prompts and never pays twice.
+- **Keys**: `channelforge secrets set engine_env:GEMINI_API_KEY` (Omni Flash / Veo on Google) or
+  `engine_env:FAL_KEY` (fal.ai).
+
+**Backend (b): character animation (free, local).** OpenMontage's `character-animation` pipeline
+(SVG rig + GSAP + HyperFrames), driven by the same skill: its proposal stage is the Phase A
+proposal and its character design is the skill's stick figure. Same script-gate checks, the
+ffprobe duration gate and stop-after-compose as Channel 3. Needs HyperFrames (Node ≥ 22):
+check `python -c "from tools.tool_registry import registry; registry.discover(); print(registry.provider_menu_summary()['composition_runtimes'])"` in `engines/OpenMontage`.
+
+The CTA text per language and the CTA URL (used in the description at M5) are
+`cta_title`, `cta_line` and `cta_url` of the channel in `config.json`.
+
 ## Approvals
 
 OpenMontage gates (`human_approval_default: true` in the pipeline manifest) show up in
@@ -172,7 +217,7 @@ never be auto-approved (enforced in the DB layer).
 ## Tests
 
 ```bash
-cd channelforge && QT_QPA_PLATFORM=offscreen pytest -q          # 87 tests
+cd channelforge && QT_QPA_PLATFORM=offscreen pytest -q          # 94 tests (pytest -m 'not slow' for the fast 82)
 ```
 
 Includes: fallback for 429/529/usage-limit/quota/timeout/503; the acceptance test

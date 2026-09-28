@@ -38,6 +38,7 @@ class MainWindow(QMainWindow):
         self.jobs = JobsPanel(cfg, db)
         self.jobs.retry_requested.connect(self.runner.retry)
         self.jobs.cancel_requested.connect(self.runner.cancel)
+        self.jobs.budget_requested.connect(self.runner.set_budget)
 
         split = QSplitter(Qt.Vertical)
         split.addWidget(self.tabs)

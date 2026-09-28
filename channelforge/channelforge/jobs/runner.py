@@ -15,15 +15,15 @@ from ..agent.claude_runner import AgentTarget
 from ..agent.supervisor import AgentSupervisor, Decision, Outcome
 from ..config import AppConfig
 from ..db import JobDB
-from ..pipeline import gates, news
-from ..pipeline.app_stages import AppStages, init_project
+from ..pipeline import gates, news, omni
+from ..pipeline.app_stages import AppStages, JobContext, init_project
 from ..pipeline.narration import openmontage_synth
 from ..pipeline.ingest import ingest as default_ingest
 from ..router import omniroute
 from ..router.llm import LLMRouter
 from .. import secrets
 from ..secrets import OMNIROUTE_API_KEY
-from .channels import RECIPES, ChannelRecipe, build_engine_job, job_output_dir
+from .channels import RECIPES, ChannelRecipe, build_engine_job, cta_fields, job_output_dir
 
 log = logging.getLogger(__name__)
 
@@ -44,8 +44,10 @@ class JobRunner:
         self.recipes = recipes
         self.router = router if router is not None else LLMRouter(cfg.router, db)
         self.ingest_fn = ingest_fn
-        self.app_stages = app_stages or AppStages(lambda: openmontage_synth(
-            cfg.openmontage_dir, cfg.engine_python, {**os.environ, **secrets.engine_env(cfg.engine_env_vars)}))
+        engine_env = lambda: {**os.environ, **secrets.engine_env(cfg.engine_env_vars)}  # noqa: E731
+        self.app_stages = app_stages or AppStages(
+            lambda: openmontage_synth(cfg.openmontage_dir, cfg.engine_python, engine_env()),
+            omni_tools=lambda backend: omni.openmontage_tool(cfg.openmontage_dir, cfg.engine_python, engine_env(), backend))
         self.supervisor = supervisor or AgentSupervisor(
             db, agent_targets(cfg), claude_bin=cfg.claude_bin, permission_mode=cfg.claude_permission_mode,
             allowed_tools=cfg.claude_allowed_tools,
@@ -170,11 +172,14 @@ class JobRunner:
 
         if result.outcome == Outcome.AWAITING:
             gate = result.state.awaiting[0]
-            if job.get("directive") and gate == "script":      # the agent has produced a new script: consumed
+            script_gate = recipe.script_stage(job)
+            if job.get("directive") and gate == script_gate:   # the agent has produced a new script: consumed
                 self.db.update_job(job["id"], directive=None)
             payload = {"checkpoint": str(ej.project_dir / f"checkpoint_{gate}.json")}
             summary = result.message
-            if recipe.script_checks and gate == "script":
+            if gate == "prompts" and ej.pipeline == "stickman-omni":
+                return self._prompts_gate(job, ej, summary, payload)
+            if recipe.script_checks and gate == script_gate:
                 g = gates.script_gate(ej, out_dir, self.router)
                 if (ej.project_dir / "artifacts" / "research.json").exists() or ej.pipeline == "hand-drawn-news":
                     probs = news.check_research(ej.project_dir / "artifacts" / "research.json",
@@ -232,12 +237,62 @@ class JobRunner:
             self.db.log_event(job["id"], f"job failed: {result.message}", level="error")
         return result.outcome
 
+    def _context(self, job: dict) -> JobContext:
+        cta = cta_fields(self.cfg, job)
+
+        def left() -> float:
+            fresh = self.db.get_job(job["id"]) or job
+            return fresh["budget_cap_usd"] - self.db.job_cost(job["id"])
+        return JobContext(job=self.db.get_job(job["id"]) or job, budget_left=left,
+                          record_spend=lambda tool, stage, usd: self.db.record_media_spend(job["id"], stage, tool, usd),
+                          cta_title=cta.get("cta_title", ""), cta_line=cta.get("cta_line", ""))
+
+    def _prompts_gate(self, job: dict, ej, summary: str, payload: dict) -> Outcome:
+        """Phase B checks, then the cost estimate. Over the cap → blocked (no approval offered)."""
+        fresh = self.db.get_job(job["id"]) or job
+        clips, film_s = self.app_stages.omni_plan(ej)
+        style = fresh["visual_style"]
+        probs = omni.check_prompts(clips, style, "16:9", omni.planned_clips(film_s, omni.PROVIDERS[fresh["render_backend"]][2]))
+        if probs and fresh["check_attempts"] < gates.MAX_AUTO_SENDBACKS:
+            self.db.update_job(job["id"], check_attempts=fresh["check_attempts"] + 1, status="awaiting_approval")
+            appr = self.db.create_approval(job["id"], "prompts", summary, payload)
+            self.db.log_event(job["id"], f"prompt checks failed ({len(probs)} issues) — sending back", level="warn")
+            self.decide(appr, "edited", "PROMPT CONTRACT: fix these and resubmit clips.json:\n- " + "\n- ".join(probs[:40]),
+                        auto=True)
+            return Outcome.AWAITING
+        est = self.app_stages.omni_estimate(ej, fresh["render_backend"])
+        spent = self.db.job_cost(job["id"])
+        text = est.summary(fresh["render_backend"], fresh["budget_cap_usd"], spent)
+        payload["cost_estimate"] = {"per_clip": est.per_clip, "expected": est.expected, "maximum": est.maximum,
+                                    "expected_clips": est.expected_clips, "reusable_clips": est.reusable_clips,
+                                    "prompts": est.max_clips, "spent": spent, "cap": fresh["budget_cap_usd"]}
+        (Path(fresh["output_dir"]) / "reports").mkdir(parents=True, exist_ok=True)
+        (Path(fresh["output_dir"]) / "reports" / "cost_estimate.json").write_text(json.dumps(payload["cost_estimate"], indent=1))
+        if spent + est.expected > fresh["budget_cap_usd"]:
+            self.db.update_job(job["id"], status="blocked",
+                               error=f"cost estimate exceeds the per-video cap — {text}. Raise this job's cap "
+                                     "(Jobs → Budget…) or switch to the free character-animation backend.")
+            self.db.log_event(job["id"], f"BLOCKED by budget: {text}", level="error", stage="prompts")
+            return Outcome.FAILED
+        summary = f"{summary}\n\nCOST ESTIMATE: {text}" + (f"\nPrompt checks still failing: {probs[:5]}" if probs else "")
+        appr_id = self.db.create_approval(job["id"], "prompts", summary, payload)
+        self.db.update_job(job["id"], status="awaiting_approval")
+        self.db.log_event(job["id"], f"cost estimate: {text}", stage="prompts")
+        if fresh["auto_approve"] and not probs:
+            self.decide(appr_id, "approved", "auto-approve creative gates is ON (cost within cap)", auto=True)
+        return Outcome.AWAITING
+
+    def set_budget(self, job_id: int, cap: float) -> None:
+        self.db.update_job(job_id, budget_cap_usd=float(cap))
+        self.db.log_event(job_id, f"per-video budget cap set to ${cap:.2f}")
+
     def _run_app_stage(self, job: dict, ej, stage: str) -> Outcome:
         self.db.update_job(job["id"], current_stage=stage)
         run_id = self.db.start_stage(job["id"], stage)
         self.db.log_event(job["id"], f"ChannelForge stage '{stage}' started", stage=stage)
         try:
-            so = self.app_stages.run(stage, ej, lambda m: self.db.log_event(job["id"], m, stage=stage))
+            so = self.app_stages.run(stage, ej, lambda m: self.db.log_event(job["id"], m, stage=stage),
+                                     self._context(job))
         except Exception as e:
             self.db.finish_stage(run_id, "failed")
             self.db.update_job(job["id"], status="failed", error=f"{stage}: {type(e).__name__}: {e}")
@@ -276,7 +331,7 @@ class JobRunner:
             self.db.log_event(job["id"], "duration gate failed too many times", level="error")
             return Outcome.FAILED
         n = fresh["replan_count"] + 1
-        moved = gates.reopen_from(ej, "script", f"channelforge-replan-{n}")
+        moved = gates.reopen_from(ej, self.recipes[job["channel"]].script_stage(job), f"channelforge-replan-{n}")
         self.db.update_job(job["id"], status="queued", directive=g.note, replan_count=n, agent_session=None)
         self.db.log_event(job["id"], f"DURATION GATE: {g.note} — re-planning (#{n}); reopened {', '.join(moved)}",
                           level="warn")

@@ -41,8 +41,12 @@ def _artifact(ej: EngineJob, cp: dict, name: str) -> dict | None:
 
 
 def script_text(ej: EngineJob) -> tuple[str, int]:
-    cp = _checkpoint(ej, "script")
-    script = _artifact(ej, cp, "script") if cp else None
+    script = None
+    for stage in ej.stages:                     # "script" in OpenMontage, "direction" in stickman-omni
+        cp = _checkpoint(ej, stage)
+        if cp and "script" in (cp.get("artifacts") or {}):
+            script = _artifact(ej, cp, "script")
+            break
     if not script:
         return "", 0
     text = "\n".join(s.get("text", "") for s in script.get("sections", []))

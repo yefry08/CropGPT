@@ -1,0 +1,26 @@
+# ChannelForge pipeline for Channel 1 (Contractor AI) with generated clips (Gemini Omni Flash / Veo)
+# through OpenMontage's provider tools. Direction follows the stickman-video-director skill
+# (Phase A → approval → Phase B). owner: agent = Claude Code; app = ChannelForge.
+name: stickman-omni
+version: "1.0"
+stages:
+  - name: direction
+    owner: agent
+    produces: [proposal, script]   # artifacts/proposal.md (Phase A), artifacts/script.json, artifacts/sources.json
+    human_approval_default: true
+  - name: narration
+    owner: app                     # continuous external VO in the channel language; length check
+    produces: [narration]
+    human_approval_default: false
+  - name: prompts
+    owner: agent
+    produces: [clips]              # Phase B: artifacts/clips.json, one standalone prompt per ~10 s
+    human_approval_default: true   # shown with the cost estimate; blocked if it exceeds the cap
+  - name: clips
+    owner: app                     # generate clips (resumable, budget-enforced per clip)
+    produces: [clip_manifest]
+    human_approval_default: false
+  - name: compose
+    owner: app                     # conform, stitch, VO + BGM + SFX, Contractor AI CTA overlay
+    produces: [render_report]
+    human_approval_default: false
