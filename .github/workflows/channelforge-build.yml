@@ -1,0 +1,82 @@
+# Builds the ChannelForge desktop app for Windows, macOS and Linux with PyInstaller
+# (it cannot cross-compile, so each OS builds on its own runner). Download the zips from the
+# run's "Artifacts" section; pushing a tag channelforge-v* also attaches them to a GitHub release.
+name: ChannelForge build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/ecstatic-hopper-zfk36h]
+    tags: ["channelforge-v*"]
+    paths: ["channelforge/**", ".github/workflows/channelforge-build.yml"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            name: windows-x64
+            cli: dist/ChannelForge/channelforge-cli.exe
+          - os: macos-14
+            name: macos-arm64
+            cli: dist/ChannelForge.app/Contents/MacOS/channelforge-cli
+          - os: ubuntu-22.04
+            name: linux-x64
+            cli: dist/ChannelForge/channelforge-cli
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: channelforge
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install ".[packaging]"
+      - name: Build
+        run: pyinstaller --noconfirm --clean packaging/channelforge.spec
+      - name: Smoke test the bundle
+        env:
+          CHANNELFORGE_HOME: ${{ runner.temp }}/cfhome
+        run: |
+          "${{ matrix.cli }}" --help
+          "${{ matrix.cli }}" yt-dlp --version
+          "${{ matrix.cli }}" doctor || true      # prerequisites are not installed on the runner
+      - name: Zip
+        run: |
+          cd dist
+          if [ "${{ runner.os }}" = "Windows" ]; then
+            7z a "../ChannelForge-${{ matrix.name }}.zip" ChannelForge > /dev/null
+          elif [ "${{ runner.os }}" = "macOS" ]; then
+            ditto -c -k --keepParent ChannelForge.app "../ChannelForge-${{ matrix.name }}.zip"
+          else
+            zip -qry "../ChannelForge-${{ matrix.name }}.zip" ChannelForge
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ChannelForge-${{ matrix.name }}
+          path: channelforge/ChannelForge-${{ matrix.name }}.zip
+          retention-days: 30
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/channelforge-v')
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: out
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: out/*.zip
+          body: "ChannelForge desktop builds (unsigned). Run `channelforge-cli doctor` after unzipping."

@@ -49,6 +49,11 @@ separate). The macOS build is unsigned: right-click → Open the first time, or 
 `~/.channelforge/` (override with `CHANNELFORGE_HOME` / `CHANNELFORGE_ENGINES`). `--demo` works
 from source only (it runs the fake agents as Python scripts).
 
+**Prebuilt (GitHub Actions).** `.github/workflows/channelforge-build.yml` builds all three
+(Windows x64, macOS arm64, Linux x64) on every push to the ChannelForge folder, or on demand
+(Actions → ChannelForge build → Run workflow). Download the zips from the run's *Artifacts*.
+Pushing a tag `channelforge-v*` also publishes them as a GitHub release.
+
 **From source** (any OS): follow *Setup* below; the engines folder is `../engines` next to
 `channelforge/`.
 
