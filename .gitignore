@@ -19,5 +19,5 @@ engines/
 channelforge/.channelforge/
 
 # Portfolio renders and dependencies
-portfolio/**/node_modules/
+portfolio/**/node_modules
 portfolio/**/out/

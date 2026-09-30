@@ -1,0 +1,293 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Contractor AI: tus contratos, dibujados en tinta</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{height:min(86vh,960px);width:auto;background:#000;box-shadow:0 0 0 1px #333}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center}
+  button{background:#222;color:#ddd;border:1px solid #444;padding:4px 10px;cursor:pointer;font:inherit}
+  input[type=range]{width:320px}
+</style>
+<canvas id="c"></canvas>
+<script src="core.js"></script>
+<script>
+/* ============================================================
+BRIEF (hand-drawn-canvas-animation/references/brief-template.md)
+Subject: Contractor AI, a contract-management tool, explained feature by feature as ink drawings.
+  Emotional beat: overwhelm (a pile of paper) -> clarity (everything organised, a new offer written).
+Duration 60 s; primary aspect 9:16 (Shorts/Reels/TikTok); delivery 1080x1920; Spanish.
+Look: ink on warm paper. Self-drawing line art, hatching on shadow planes only, hand-lettered
+  captions. No characters, no photos, no screenshots of the product (illustration of the ideas).
+Palette: paperInk base; accent teal for "the AI" (highlights, arrows, checks), red for risk.
+Exposure: 24 fps; line reveals on ones; slow camera push per shot (1.00 -> 1.05).
+Beat sheet (start, dur, focus, caption):
+  0   5  title lettering                         Contractor AI / tus contratos, entendidos
+  5   6  a pile of contracts, a clock            the problem: pages and deadlines
+  11  7  dashboard: two KPI cards + panel        contracts processed, value managed
+  18  9  document scanned; clause/date/risk tags detection of clauses, expiries, critical points
+  27  6  tags flow into a table                  structured data
+  33  6  line + bar chart drawing itself         trends and workload over time
+  39  9  workflow map with a decision diamond    AI-guided approvals and states
+  48  6  pen writing a new proposal              drafting new offers from the data
+  54  6  logo + disclosure                       close
+Content source: the product demo as described by the channel owner (dashboard 0:00-0:20,
+  analysis 0:21-0:56, charts 0:57-1:05, workflows 1:06-1:20, offers 1:21-1:35). Only those
+  features are stated; no metrics, prices or performance claims are invented. KPI cards show
+  labels without numbers for that reason. Script wording is original (not the demo's narration).
+Font: Comic Neue (SIL Open Font License), installed on the render host.
+============================================================ */
+
+usePalette(makePalette({ paperBand: null, accents: ['#1f8a86', '#c8473f', '#e79256', '#1e1630'] }, 'paperInk'));
+const AI = '#1f8a86', RED = '#c8473f', FONT = '"Comic Neue", "Comic Sans MS", cursive';
+const ART_Y = 700;            // drawing area centre; captions at ~1250-1420, above the platforms' bottom UI
+
+// ---------- lettering ----------
+function sdText(c, s, x, y, o = {}) {
+  const { size = 58, weight = 700, color = PAL.ink, align = 'center', prog = 1, bg = false } = o;
+  const n = Math.ceil(s.length * clamp(prog, 0, 1)); if (!n) return;
+  c.save(); c.font = `${weight} ${size}px ${FONT}`; c.textAlign = align; c.textBaseline = 'alphabetic';
+  if (bg) { const w = c.measureText(s.slice(0, n)).width, x0 = align === 'right' ? x - w : align === 'center' ? x - w / 2 : x;
+    c.fillStyle = PAL.paper; c.fillRect(x0 - 10, y - size * .95, w + 20, size * 1.25); }
+  c.fillStyle = color; c.fillText(s.slice(0, n), x, y); c.restore();
+}
+function caption(c, lines, tau, t0 = .6, dur = 2.4, o = {}) {
+  const { size = 62, y0 = 1250, color = PAL.ink } = o, lh = size * 1.28;
+  const total = lines.reduce((a, l) => a + l.length, 0); let acc = 0;
+  resetT(c);
+  const shown = sm(t0 - .25, t0, tau);
+  if (shown > 0) { c.save(); c.globalAlpha = .92 * shown; c.fillStyle = PAL.paper; c.fillRect(0, y0 - size * 1.15, W, lh * lines.length + size * .55); c.restore(); }
+  lines.forEach((l, k) => {
+    const a = acc / total, b = (acc + l.length) / total; acc += l.length;
+    sdText(c, l, CX, y0 + k * lh, { size, color, prog: sm(t0 + a * dur, t0 + b * dur, tau, x => x) });
+  });
+}
+
+// ---------- line art ----------
+function lenOf(st) { return pathLength(st.p, st.close); }
+function drawArt(c, strokes, prog, seed, o = {}) {
+  const { amp = 1.4, width = 3.2 } = o, L = strokes.map(lenOf), tot = L.reduce((a, b) => a + b, 0);
+  let acc = 0; c.save(); c.lineCap = 'round'; c.lineJoin = 'round';
+  strokes.forEach((st, k) => {
+    const a = acc / tot, b = (acc + L[k]) / tot; acc += L[k];
+    const p = clamp((prog - a) / Math.max(1e-6, b - a), 0, 1); if (p <= 0) return;
+    c.strokeStyle = st.col || PAL.ink; c.lineWidth = st.w || width;
+    if (p >= 1) wob(c, st.p, amp, seed + k, !!st.close, { pressure: st.w && st.w < 2.2 ? 0 : .45 });
+    else selfDraw(c, st.p, p, seed + k, amp, !!st.close);
+  });
+  c.restore();
+}
+const S_ = (p, o = {}) => ({ p, ...o });
+const box = (x, y, w, h, o) => S_(rectPts(x, y, w, h), { close: true, ...o });
+const line = (x0, y0, x1, y1, o) => S_([[x0, y0], [x1, y1]], o);
+function shadeRect(c, x, y, w, h, prog, seed, o = {}) {
+  if (prog <= 0) return; hatch(c, rectPath(x, y, w, h), [x, y, w, h],
+    { angle: o.angle ?? 1.05, gap: o.gap ?? 9, len: 18, color: o.color ?? PAL.ink, alpha: (o.alpha ?? .32) * prog, width: 1.3, seed });
+}
+// cam() puts (x, y) at the screen centre (H/2 = 960), so aim at CY: world units then equal screen units
+// and the art stays centred on ART_Y, clear of the caption band.
+function push(c, tau, dur, dy = 0, z0 = 1, z1 = 1.05) { cam(c, CX, CY + dy, lerp(z0, z1, sm(0, dur, tau, easeInOutSine))); }
+function label(c, s, x, y, prog, o = {}) { sdText(c, s, x, y, { size: o.size ?? 40, weight: o.weight ?? 700, color: o.color ?? PAL.ink, align: o.align ?? 'center', prog }); }
+function arrowPts(x0, y0, x1, y1, head = 26) {
+  const a = Math.atan2(y1 - y0, x1 - x0);
+  return [[x0, y0], [x1, y1], [x1 - head * Math.cos(a - .45), y1 - head * Math.sin(a - .45)], [x1, y1], [x1 - head * Math.cos(a + .45), y1 - head * Math.sin(a + .45)]];
+}
+// a page of "text": ruled lines of varying length inside a sheet
+function pageLines(x, y, w, h, seed, rows = 9, o = {}) {
+  const r = rng(seed), s = [];
+  for (let k = 0; k < rows; k++) { const yy = y + 60 + k * (h - 100) / rows; s.push(line(x + 36, yy, x + 36 + (w - 72) * (.55 + .45 * r()), yy, { w: 1.8, ...o })); }
+  return s;
+}
+const X0 = CX, Y0 = ART_Y;
+
+// ---------- drawings ----------
+function pile() {
+  const s = [];
+  for (let k = 0; k < 7; k++) {                                  // stacked contracts, slightly skewed
+    const y = Y0 + 260 - k * 34, dx = Math.sin(k * 1.7) * 26;
+    s.push(S_([[X0 - 300 + dx, y], [X0 + 260 + dx, y - 6], [X0 + 270 + dx, y + 26], [X0 - 290 + dx, y + 30]], { close: true, w: 2.6 }));
+  }
+  const top = Y0 + 260 - 7 * 34;                                 // the top sheet, flat and readable
+  s.push(box(X0 - 250, top - 420, 460, 420, { w: 3.2 }), ...pageLines(X0 - 250, top - 420, 460, 420, 11, 8));
+  s.push(S_(ellPts(X0 + 340, Y0 - 330, 110, 110, 0, 40), { close: true, w: 3.4 }));   // clock
+  s.push(line(X0 + 340, Y0 - 330, X0 + 340, Y0 - 400, { w: 3.4 }), line(X0 + 340, Y0 - 330, X0 + 395, Y0 - 300, { w: 3.4, col: RED }));
+  return s;
+}
+
+function dashboard() {
+  const s = [], L = X0 - 440, R = X0 + 440, T = Y0 - 430, B = Y0 + 330;
+  s.push(box(L, T, R - L, B - T, { w: 3.6 }));                                    // screen
+  s.push(line(L, T + 70, R, T + 70, { w: 2.4 }));
+  [0, 1, 2].forEach(k => s.push(S_(ellPts(L + 40 + k * 34, T + 35, 11, 11, 0, 16), { close: true, w: 2 })));
+  s.push(box(L + 40, T + 110, 380, 230, { w: 3, col: AI }), box(R - 420, T + 110, 380, 230, { w: 3, col: AI })); // KPI cards
+  const bars = [.35, .55, .45, .75, .6, .9, .7];                                  // lower panel: a small bar chart
+  bars.forEach((h, k) => { const x = L + 70 + k * 112, hh = h * 280; s.push(box(x, B - 40 - hh, 70, hh, { w: 2.4 })); });
+  s.push(line(L + 40, B - 40, R - 40, B - 40, { w: 2.6 }));
+  return { s, L, R, T, B, bars };
+}
+
+function scanDoc() {
+  const s = [], x = X0 - 300, y = Y0 - 470, w = 600, h = 800;
+  s.push(box(x, y, w, h, { w: 3.4 }), S_([[x + w - 90, y], [x + w, y + 90]], { w: 2.4 }));   // sheet + folded corner
+  s.push(...pageLines(x, y, w, h, 21, 12));
+  return { s, x, y, w, h };
+}
+
+function tableArt() {
+  const s = [], x = X0 - 420, y = Y0 - 120, w = 840, rh = 90, cols = [0, 300, 560, 840];
+  for (let k = 0; k <= 4; k++) s.push(line(x, y + k * rh, x + w, y + k * rh, { w: k < 2 ? 3 : 2.2 }));
+  cols.forEach(cx => s.push(line(x + cx, y, x + cx, y + 4 * rh, { w: 2.4 })));
+  return { s, x, y, w, rh, cols };
+}
+
+function chartArt() {
+  const s = [], L = X0 - 420, R = X0 + 420, T = Y0 - 420, B = Y0 + 300;
+  s.push(line(L, B, R, B, { w: 3.4 }), line(L, B, L, T, { w: 3.4 }));
+  const vals = [.3, .38, .34, .5, .56, .52, .68, .74, .82], pts = vals.map((v, k) => [L + 40 + k * 95, B - v * (B - T - 40)]);
+  const bars = [.2, .28, .25, .36, .4, .38, .5, .55, .6].map((v, k) => box(L + 22 + k * 95, B - v * 300, 36, v * 300, { w: 2 }));
+  return { s, bars, trend: S_(pts, { w: 5, col: AI }), pts };
+}
+
+function workflow() {
+  const s = [], nodes = {
+    in: [X0, Y0 - 400], ai: [X0, Y0 - 190], dec: [X0, Y0 + 40], ok: [X0 - 280, Y0 + 290], chg: [X0 + 280, Y0 + 290] };
+  const nb = (p, w = 300, h = 110, col) => box(p[0] - w / 2, p[1] - h / 2, w, h, { w: 3, col });
+  s.push(nb(nodes.in), line(nodes.in[0], nodes.in[1] + 55, nodes.ai[0], nodes.ai[1] - 55, { w: 2.6 }));
+  s.push(nb(nodes.ai, 300, 110, AI), line(nodes.ai[0], nodes.ai[1] + 55, nodes.dec[0], nodes.dec[1] - 90, { w: 2.6 }));
+  const [dx, dy] = nodes.dec;
+  s.push(S_([[dx, dy - 90], [dx + 150, dy], [dx, dy + 90], [dx - 150, dy]], { close: true, w: 3.2, col: AI }));
+  s.push(S_(arrowPts(dx - 150, dy, nodes.ok[0], nodes.ok[1] - 60), { w: 2.6 }), S_(arrowPts(dx + 150, dy, nodes.chg[0], nodes.chg[1] - 60), { w: 2.6 }));
+  s.push(nb(nodes.ok, 260), nb(nodes.chg, 260));
+  return { s, nodes };
+}
+
+function proposal() {
+  const s = [], x = X0 - 280, y = Y0 - 440, w = 560, h = 740;
+  s.push(box(x, y, w, h, { w: 3.4 }));
+  return { s, x, y, w, h, lines: pageLines(x, y + 120, w, h - 120, 41, 9, { w: 2.2 }) };
+}
+
+// ---------- scenes ----------
+function sceneTitle(c, tau) {
+  paper(c); resetT(c);
+  sdText(c, 'Contractor', CX, 700, { size: 170, prog: sm(-.25, 1.1, tau, x => x) });
+  sdText(c, 'AI', CX, 880, { size: 190, color: AI, prog: sm(.9, 1.5, tau, x => x) });
+  c.strokeStyle = AI; c.lineWidth = 7; c.lineCap = 'round';
+  selfDraw(c, [[CX - 320, 930], [CX, 950], [CX + 320, 928]], sm(1.6, 2.4, tau), 11, 3);
+  sdText(c, 'tus contratos,', CX, 1090, { size: 72, weight: 400, prog: sm(2.3, 3.1, tau, x => x) });
+  sdText(c, 'entendidos por IA', CX, 1180, { size: 72, weight: 400, color: AI, prog: sm(3.0, 3.8, tau, x => x) });
+}
+const PILE = pile();
+function scenePile(c, tau) {
+  paper(c); push(c, tau, 6); drawArt(c, PILE, sm(.1, 3.6, tau, easeOut), 100);
+  caption(c, ['Cientos de páginas.', 'Fechas que se escapan.'], tau, .8, 2.2);
+}
+const DASH = dashboard();
+function sceneDashboard(c, tau) {
+  paper(c); push(c, tau, 7); drawArt(c, DASH.s, sm(.1, 3.4, tau, easeOut), 200);
+  const { L, R, T } = DASH, p = sm(3.0, 4.2, tau, x => x);
+  label(c, 'Contratos', L + 230, T + 200, p, { size: 44 }); label(c, 'procesados', L + 230, T + 255, p, { size: 44 });
+  label(c, 'Valor', R - 230, T + 200, p, { size: 44 }); label(c, 'gestionado', R - 230, T + 255, p, { size: 44 });
+  caption(c, ['Un panel central:', 'todo tu trabajo', 'de un vistazo.'], tau, .9, 2.6);
+}
+const DOC = scanDoc();
+function sceneAnalysis(c, tau) {
+  paper(c); push(c, tau, 9); drawArt(c, DOC.s, sm(.1, 2.2, tau, easeOut), 300);
+  const { x, y, w, h } = DOC, sy = y + lerp(20, h - 20, sm(2.2, 4.6, tau, easeInOutSine)), scan = sm(2.1, 2.3, tau) * (1 - sm(4.6, 4.8, tau));
+  if (scan > 0) { c.save(); c.globalAlpha = scan; c.strokeStyle = AI; c.lineWidth = 6; c.beginPath(); c.moveTo(x - 30, sy); c.lineTo(x + w + 30, sy); c.stroke(); c.restore(); }
+  // three findings, each circled as the scan passes, with its tag in the margin
+  const hits = [[.22, 'Cláusula', AI], [.5, 'Vence: 30 días', PAL.ink], [.76, 'Punto crítico', RED]];
+  hits.forEach(([f, txt, col], k) => {
+    const yy = y + 60 + Math.round(f * 12) * (h - 100) / 12, t = lerp(2.2, 4.6, f);
+    const ring = S_(ellPts(x + w / 2 - 20, yy, w / 2 - 20, 34, 0, 40), { close: true, w: 3.6, col });
+    drawArt(c, [ring], sm(t, t + .6, tau, easeOut), 310 + k);
+    sdText(c, txt, x + w - 30, yy - 48, { size: 40, color: col, align: 'right', bg: true, prog: sm(t + .4, t + 1.1, tau, x => x) });
+  });
+  caption(c, ['La IA encuentra cláusulas,', 'vencimientos y', 'puntos críticos.'], tau, .9, 3.4);
+}
+const TAB = tableArt();
+function sceneTable(c, tau) {
+  paper(c); push(c, tau, 6); drawArt(c, TAB.s, sm(.1, 2.0, tau, easeOut), 400);
+  const { x, y, rh, cols } = TAB, head = ['Cláusula', 'Vence', 'Riesgo'];
+  head.forEach((hd, k) => label(c, hd, x + (cols[k] + cols[k + 1]) / 2, y + 60, sm(1.6, 2.4, tau, x => x), { size: 42 }));
+  const rows = [['Pago', '30 días', 'bajo'], ['Penalidad', '90 días', 'alto'], ['Renovación', '1 año', 'medio']];
+  rows.forEach((r, i) => r.forEach((v, k) => label(c, v, x + (cols[k] + cols[k + 1]) / 2, y + (i + 1) * rh + 60,
+    sm(2.3 + i * .5, 2.9 + i * .5, tau, x => x), { size: 38, weight: 400, color: k === 2 && v === 'alto' ? RED : PAL.ink })));
+  caption(c, ['...y lo ordena en', 'datos estructurados.'], tau, .8, 2.0);
+  resetT(c); sdText(c, 'ejemplo ilustrativo', CX, Y0 + 330, { size: 32, weight: 400, prog: sm(3.6, 4.2, tau, x => x) });
+}
+const CH = chartArt();
+function sceneCharts(c, tau) {
+  paper(c); push(c, tau, 6); drawArt(c, CH.s, sm(.1, 1.2, tau, easeOut), 500);
+  drawArt(c, CH.bars, sm(1.0, 2.6, tau, easeOut), 510, { width: 2 });
+  drawArt(c, [CH.trend], sm(2.2, 3.8, tau, easeInOutSine), 520);
+  caption(c, ['Gráficos de tendencias', 'y volumen de trabajo', 'en el tiempo.'], tau, .8, 2.6);
+}
+const WF = workflow();
+function sceneWorkflow(c, tau) {
+  paper(c); push(c, tau, 9); drawArt(c, WF.s, sm(.1, 4.2, tau, easeOut), 600);
+  const n = WF.nodes, p = k => sm(.6 + k * .8, 1.3 + k * .8, tau, x => x);
+  label(c, 'Recibido', n.in[0], n.in[1] + 14, p(0)); label(c, 'Revisión IA', n.ai[0], n.ai[1] + 14, p(1), { color: AI });
+  label(c, '¿Aprobar?', n.dec[0], n.dec[1] + 14, p(2), { size: 36 });
+  label(c, 'Aprobado', n.ok[0], n.ok[1] + 14, p(3)); label(c, 'Cambios', n.chg[0], n.chg[1] + 14, p(3));
+  // a token travels the approved path; a check appears
+  const tp = sm(4.4, 6.4, tau, easeInOutSine);
+  if (tp > 0 && tp < 1) {
+    const path = [n.in, n.ai, n.dec, n.ok], seg = Math.min(2, Math.floor(tp * 3)), f = tp * 3 - seg;
+    const [ax, ay] = path[seg], [bx, by] = path[seg + 1];
+    c.save(); c.fillStyle = AI; c.beginPath(); c.arc(lerp(ax, bx, f), lerp(ay, by, f), 20, 0, TAU); c.fill(); c.restore();
+  }
+  c.save(); c.strokeStyle = AI; c.lineWidth = 9; c.lineCap = 'round';
+  selfDraw(c, [[n.ok[0] - 150, n.ok[1] - 110], [n.ok[0] - 120, n.ok[1] - 80], [n.ok[0] - 70, n.ok[1] - 150]], sm(6.4, 6.9, tau), 650, 2); c.restore();
+  caption(c, ['Flujos visuales: la IA', 'te guía en cada', 'decisión y aprobación.'], tau, .9, 3.4);
+}
+const PROP = proposal();
+function sceneProposal(c, tau) {
+  paper(c); push(c, tau, 6); drawArt(c, PROP.s, sm(.1, 1.0, tau, easeOut), 700);
+  resetT(c); push(c, tau, 6);
+  sdText(c, 'Nueva oferta', CX, PROP.y + 100, { size: 60, color: AI, prog: sm(.8, 1.6, tau, x => x) });
+  const wp = sm(1.4, 4.2, tau, x => x); drawArt(c, PROP.lines, wp, 710, { width: 2.2 });
+  // the pen follows the line being written
+  const L = PROP.lines, k = Math.min(L.length - 1, Math.floor(wp * L.length)), f = wp * L.length - k;
+  if (wp > 0 && wp < 1) {
+    const [[ax, ay], [bx]] = L[k].p, px = lerp(ax, bx, f), py = ay;
+    c.save(); c.strokeStyle = PAL.ink; c.lineWidth = 4; c.lineCap = 'round';
+    c.beginPath(); c.moveTo(px, py); c.lineTo(px + 60, py - 150); c.lineTo(px + 90, py - 138); c.lineTo(px + 14, py + 2); c.closePath(); c.stroke(); c.restore();
+  }
+  caption(c, ['Y te ayuda a redactar', 'nuevas ofertas con', 'tus propios datos.'], tau, .8, 2.8);
+}
+function sceneClose(c, tau) {
+  paper(c); resetT(c);
+  const mini = [[DASH.s, X0 - 330, 200], [DOC.s, X0, 300], [WF.s, X0 + 330, 600]];
+  mini.forEach(([s, x, seed], k) => { c.save(); cam(c, CX, CY, 1); c.translate(x, ART_Y - 180); c.scale(.28, .28); c.translate(-X0, -Y0);
+    drawArt(c, s, sm(.1 + k * .3, 1.8 + k * .3, tau, easeOut), seed, { width: 8, amp: 3 }); c.restore(); });
+  resetT(c);
+  sdText(c, 'Contractor AI', CX, 900, { size: 110, prog: sm(1.2, 2.2, tau, x => x) });
+  c.strokeStyle = AI; c.lineWidth = 6; c.lineCap = 'round'; selfDraw(c, [[CX - 330, 940], [CX + 330, 936]], sm(2.1, 2.7, tau), 901, 3);
+  sdText(c, 'Menos papeleo. Más decisiones.', CX, 1050, { size: 54, weight: 400, prog: sm(2.5, 3.5, tau, x => x) });
+  sdText(c, 'Animación hecha con IA (Claude)', CX, 1300, { size: 34, weight: 400, prog: sm(3.6, 4.2, tau, x => x) });
+  sdText(c, 'Ilustración, no capturas del producto', CX, 1355, { size: 34, weight: 400, prog: sm(3.9, 4.5, tau, x => x) });
+}
+
+// ---------- score: soft plucks, a low cue on each cut, a brighter figure for the "clarity" half ----------
+const STARTS = [0, 5, 11, 18, 27, 33, 39, 48, 54];
+function score(ac, t0, dest) {
+  const m = ac.createGain(); m.gain.value = .5; m.connect(dest);
+  for (let t = .3; t < 58; t += .5) { const k = Math.round(t * 2), hi = t >= 18 ? 1 : 0;
+    note(ac, m, pentHz(hi, [0, 2, 4, 3, 1, 4, 2, 0][k % 8], 262), t0, t, 1.1, 'triangle', k % 4 ? .06 : .1); }
+  STARTS.slice(1).forEach(t => note(ac, m, 131, t0, t, 1.6, 'sine', .16));
+  for (let t = 18.4; t < 27; t += 1.2) noiseBurst(ac, m, t0, t, .03, .04, 900 + Math.round(t * 10));   // scanner ticks
+  [262, 330, 392].forEach(f => note(ac, m, f, t0, 54.4, 5, 'triangle', .07));
+}
+
+defineFilm({ format: { ar: '9:16', width: 1080 }, fps: 24, score, timeline: [
+  { name: 'title', dur: 5, fn: sceneTitle },
+  { name: 'pile', dur: 6, fn: scenePile },
+  { name: 'dashboard', dur: 7, fn: sceneDashboard },
+  { name: 'analysis', dur: 9, fn: sceneAnalysis },
+  { name: 'table', dur: 6, fn: sceneTable },
+  { name: 'charts', dur: 6, fn: sceneCharts },
+  { name: 'workflow', dur: 9, fn: sceneWorkflow },
+  { name: 'proposal', dur: 6, fn: sceneProposal },
+  { name: 'close', dur: 6, fn: sceneClose },
+] });
+</script>
