@@ -1,0 +1,320 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Palantir: la empresa que quiere verlo todo</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{width:min(96vw,1280px);height:auto;background:#000;box-shadow:0 0 0 1px #333}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center}
+  button{background:#222;color:#ddd;border:1px solid #444;padding:4px 10px;cursor:pointer;font:inherit}
+  input[type=range]{width:320px}
+</style>
+<canvas id="c"></canvas>
+<script src="timing.js"></script>
+<script src="core.js"></script>
+<script>
+/* ============================================================
+BRIEF (hand-drawn-canvas-animation/references/brief-template.md)
+Subject: Palantir Technologies explained: origin, products, listing, defence work, results, criticism.
+Duration ~5 min, 16:9, 1920x1080, Spanish. Narrated (Gemini TTS, see narrate.py); each scene lasts as
+  long as its narration section (timing.js, written by narrate.py from the measured audio).
+Look: ink on warm paper, self-drawing line art, one accent (violet, "the stone that sees"), red for
+  risk/criticism. Hand-lettered on-screen key facts; the narration carries the full sentences.
+No real person is drawn: founders and executives appear as names in text only. No logos.
+Sources (as of 30 Sep 2026): Palantir 10-K / Wikipedia (founding 2003, founders, In-Q-Tel ~$2M 2004,
+  Gotham/Foundry/Apollo/AIP); Business Wire 22 Sep 2020 (NYSE trading 30 Sep 2020, direct listing);
+  CNBC 6 Sep 2024 (S&P 500 from 23 Sep 2024); CNBC 15 Nov 2024 (Nasdaq move, 26 Nov 2024);
+  DefenseScoop 23 May 2025 (Maven ceiling $480M (May 2024) -> ~$1.3B); DefenseScoop 31 Jul 2025 /
+  Breaking Defense Aug 2025 (Army EA up to $10B / 10 yrs, ~75 contracts, not committed spend);
+  Palantir Q2 2026 results, 3 Aug 2026 (rev $1.94B +93%, US commercial +149%, US gov +90% $809M,
+  net income $1.06B, FY26 guide $8.15-8.16B); The Register 21 Apr 2025 + ICE justification (ImmigrationOS
+  $30M, sole source); Digital Health 21 Nov 2023 (NHS FDP up to £330M / 7 yrs); Foxglove 30 Nov 2023
+  (legal action); The Guardian via TNW (44,000+ objections); The Register 29 Jul 2026 (NHS England
+  admitted an inaccurate data-protection document). Criticism is worded as criticism; no court ruling
+  against Palantir is claimed.
+============================================================ */
+
+usePalette(makePalette({ paperBand: null, accents: ['#5b3fa8', '#c8473f', '#2b5fb8', '#1e1630'] }, 'paperInk'));
+const VIO = '#5b3fa8', RED = '#c8473f', BLUE = '#2b5fb8', FONT = '"Comic Neue", "Comic Sans MS", cursive';
+const DUR = window.SECTION_DURS;
+const D = id => DUR[id];
+
+// ---------- lettering ----------
+function txt(c, s, x, y, o = {}) {
+  const { size = 56, weight = 700, color = PAL.ink, align = 'center', prog = 1, bg = false } = o;
+  const n = Math.ceil(s.length * clamp(prog, 0, 1)); if (!n) return;
+  c.save(); c.font = `${weight} ${size}px ${FONT}`; c.textAlign = align; c.textBaseline = 'alphabetic';
+  if (bg) { const w = c.measureText(s.slice(0, n)).width, x0 = align === 'right' ? x - w : align === 'center' ? x - w / 2 : x;
+    c.fillStyle = PAL.paper; c.fillRect(x0 - 12, y - size * .95, w + 24, size * 1.25); }
+  c.fillStyle = color; c.fillText(s.slice(0, n), x, y); c.restore();
+}
+const type = (tau, t0, t1) => sm(t0, t1, tau, x => x);
+// caption band at the bottom: a key fact, not the full narration
+function caption(c, lines, tau, t0, dur = 1.8, t1 = Infinity, o = {}) {
+  if (tau < t0 - .3 || tau > t1) return;
+  const { size = 50, y0 = 948 } = o, lh = size * 1.25, total = lines.reduce((a, l) => a + l.length, 0);
+  resetT(c);
+  const fade = sm(t0 - .3, t0, tau) * (1 - sm(t1 - .3, t1, tau));
+  c.save(); c.globalAlpha = fade;
+  c.fillStyle = PAL.paper; c.globalAlpha = .93 * fade; c.fillRect(0, y0 - size * 1.1, W, lh * lines.length + size * .5);
+  c.globalAlpha = fade; let acc = 0;
+  lines.forEach((l, k) => { const a = acc / total, b = (acc + l.length) / total; acc += l.length;
+    txt(c, l, CX, y0 + k * lh, { size, prog: sm(t0 + a * dur, t0 + b * dur, tau, x => x) }); });
+  c.restore();
+}
+
+// ---------- line art ----------
+function drawArt(c, strokes, prog, seed, o = {}) {
+  const { amp = 1.4, width = 3.2 } = o, L = strokes.map(s => pathLength(s.p, s.close)), tot = L.reduce((a, b) => a + b, 0) || 1;
+  let acc = 0; c.save(); c.lineCap = 'round'; c.lineJoin = 'round';
+  strokes.forEach((st, k) => {
+    const a = acc / tot, b = (acc + L[k]) / tot; acc += L[k];
+    const p = clamp((prog - a) / Math.max(1e-6, b - a), 0, 1); if (p <= 0) return;
+    c.strokeStyle = st.col || PAL.ink; c.lineWidth = st.w || width;
+    if (st.dash) c.setLineDash(st.dash); else c.setLineDash([]);
+    if (p >= 1) wob(c, st.p, amp, seed + k, !!st.close, { pressure: st.w && st.w < 2.2 ? 0 : .45 });
+    else selfDraw(c, st.p, p, seed + k, amp, !!st.close);
+  });
+  c.setLineDash([]); c.restore();
+}
+const S_ = (p, o = {}) => ({ p, ...o });
+const box = (x, y, w, h, o) => S_(rectPts(x, y, w, h), { close: true, ...o });
+const ln = (x0, y0, x1, y1, o) => S_([[x0, y0], [x1, y1]], o);
+const circ = (x, y, r, o) => S_(ellPts(x, y, r, r, 0, 40), { close: true, ...o });
+function arrow(x0, y0, x1, y1, o = {}) { const h = o.head ?? 22, a = Math.atan2(y1 - y0, x1 - x0);
+  return S_([[x0, y0], [x1, y1], [x1 - h * Math.cos(a - .45), y1 - h * Math.sin(a - .45)], [x1, y1], [x1 - h * Math.cos(a + .45), y1 - h * Math.sin(a + .45)]], o); }
+function hatchRect(c, x, y, w, h, prog, seed, o = {}) {
+  if (prog <= 0) return; hatch(c, rectPath(x, y, w, h), [x, y, w, h],
+    { angle: o.angle ?? 1.05, gap: o.gap ?? 10, len: 18, color: o.color ?? PAL.ink, alpha: (o.alpha ?? .35) * prog, width: 1.4, seed });
+}
+function push(c, tau, dur, z1 = 1.04) { cam(c, CX, CY, lerp(1, z1, sm(0, dur, tau, easeInOutSine))); }
+// the seeing stone: orb + inner swirl + stand; the film's recurring motif
+function orb(x, y, r, stand = true) {
+  const s = [circ(x, y, r, { w: 4.4 })], sw = [];
+  for (let a = 0; a < 4.6 * Math.PI; a += .18) sw.push([x + Math.cos(a) * a * r / 16, y + Math.sin(a) * a * r / 16]);
+  s.push(S_(sw, { col: VIO, w: 3 }));
+  s.push(S_(ellPts(x - r * .35, y - r * .4, r * .18, r * .1, -.6, 20), { close: true, w: 2 }));
+  if (stand) s.push(S_([[x - r * .7, y + r * .78], [x - r * .45, y + r * 1.15], [x + r * .45, y + r * 1.15], [x + r * .7, y + r * .78]], { w: 3.6 }),
+    ln(x - r * .9, y + r * 1.15, x + r * .9, y + r * 1.15, { w: 4 }));
+  return s;
+}
+function glow(c, x, y, r, a) { if (a <= 0) return; c.save(); const g = c.createRadialGradient(x, y, r * .2, x, y, r * 1.6);
+  g.addColorStop(0, `rgba(91,63,168,${.22 * a})`); g.addColorStop(1, 'rgba(91,63,168,0)'); c.fillStyle = g; c.beginPath(); c.arc(x, y, r * 1.6, 0, TAU); c.fill(); c.restore(); }
+
+// ---------- icons ----------
+function shield(x, y, s = 1) { return [S_([[x - 60 * s, y - 70 * s], [x + 60 * s, y - 70 * s], [x + 60 * s, y], [x, y + 80 * s], [x - 60 * s, y]], { close: true, w: 3.4 }),
+  S_([[x - 25 * s, y - 5 * s], [x - 5 * s, y + 18 * s], [x + 30 * s, y - 30 * s]], { w: 3 })]; }
+function idCard(x, y) { return [box(x - 85, y - 55, 170, 110, { w: 3.2 }), circ(x - 45, y - 10, 22, { w: 2.4 }), ln(x - 10, y - 20, x + 60, y - 20, { w: 2 }), ln(x - 10, y + 5, x + 50, y + 5, { w: 2 }), ln(x - 60, y + 35, x + 60, y + 35, { w: 2 })]; }
+function cross(x, y, s = 1, col) { const a = 22 * s, b = 60 * s; return [S_([[x - a, y - b], [x + a, y - b], [x + a, y - a], [x + b, y - a], [x + b, y + a], [x + a, y + a], [x + a, y + b], [x - a, y + b], [x - a, y + a], [x - b, y + a], [x - b, y - a], [x - a, y - a]], { close: true, w: 3.4, col })]; }
+function factory(x, y) { return [S_([[x - 90, y + 60], [x - 90, y - 10], [x - 45, y - 40], [x - 45, y - 10], [x, y - 40], [x, y - 10], [x + 45, y - 40], [x + 45, y - 10], [x + 90, y - 40], [x + 90, y + 60]], { close: true, w: 3.2 }),
+  box(x + 55, y - 110, 22, 70, { w: 2.6 }), box(x - 60, y + 15, 30, 30, { w: 2 }), box(x - 10, y + 15, 30, 30, { w: 2 })]; }
+function db(x, y) { return [S_(ellPts(x, y - 30, 40, 13, 0, 24), { close: true, w: 2.4 }), ln(x - 40, y - 30, x - 40, y + 30, { w: 2.4 }), ln(x + 40, y - 30, x + 40, y + 30, { w: 2.4 }),
+  S_(ellPts(x, y + 30, 40, 13, 0, 24).slice(0, 13), { w: 2.4 })]; }
+function sheet(x, y) { const s = [box(x - 36, y - 46, 72, 92, { w: 2.4 })]; for (let k = 0; k < 4; k++) s.push(ln(x - 22, y - 26 + k * 18, x + 14 + (k % 2) * 8, y - 26 + k * 18, { w: 1.6 })); return s; }
+function sensor(x, y) { const s = [circ(x, y, 10, { w: 2.4 })]; for (let k = 1; k <= 3; k++) { const p = []; for (let a = -.9; a <= .9; a += .15) p.push([x + Math.cos(a) * k * 20, y + Math.sin(a) * k * 20]); s.push(S_(p, { w: 2 })); } return s; }
+function satellite(x, y) { return [box(x - 30, y - 22, 60, 44, { w: 3 }), box(x - 150, y - 18, 110, 36, { w: 2.6 }), box(x + 40, y - 18, 110, 36, { w: 2.6 }),
+  ln(x - 95, y - 18, x - 95, y + 18, { w: 1.6 }), ln(x + 95, y - 18, x + 95, y + 18, { w: 1.6 }), ln(x, y + 22, x, y + 50, { w: 2.4 }), circ(x, y + 58, 9, { w: 2.4 })]; }
+function drone(x, y) { return [S_([[x - 70, y], [x + 70, y]], { w: 3.4 }), S_([[x - 18, y], [x, y - 14], [x + 18, y]], { w: 3 }),
+  S_(ellPts(x - 70, y - 10, 34, 7, 0, 20), { close: true, w: 2 }), S_(ellPts(x + 70, y - 10, 34, 7, 0, 20), { close: true, w: 2 })]; }
+function folder(x, y) { return [S_([[x - 130, y - 90], [x - 40, y - 90], [x - 20, y - 70], [x + 130, y - 70], [x + 130, y + 90], [x - 130, y + 90]], { close: true, w: 3.4 })]; }
+function lens(x, y, r = 55) { return [circ(x, y, r, { w: 4, col: RED }), ln(x + r * .72, y + r * .72, x + r * 1.7, y + r * 1.7, { w: 7, col: RED })]; }
+function padlock(x, y) { const arc = []; for (let a = Math.PI; a <= TAU + .01; a += .15) arc.push([x + Math.cos(a) * 34, y - 30 + Math.sin(a) * 40]);
+  return [box(x - 50, y - 30, 100, 80, { w: 3.2 }), S_(arc, { w: 3.2 }), circ(x, y + 5, 9, { w: 2.4 })]; }
+
+// ---------- scenes (tau = seconds into the scene) ----------
+function sGancho(c, tau) {
+  const d = D('gancho'); paper(c); push(c, tau, d);
+  const ox = CX, oy = 430;
+  const icons = [[shield(430, 230), 430, 230], [idCard(1490, 230), 1490, 230], [cross(430, 640, .9, RED), 430, 640], [factory(1490, 650), 1490, 650]];
+  icons.forEach(([s, x, y], k) => { const t = .4 + k * 1.3; drawArt(c, s, sm(t, t + 1.2, tau, easeOut), 10 + k * 20);
+    drawArt(c, [ln(x + (x < ox ? 110 : -110), y, ox + (x < ox ? -150 : 150), oy + (y < oy ? -60 : 60), { w: 2, col: VIO, dash: [10, 12] })], sm(t + 1, t + 2, tau), 90 + k); });
+  const lab = [['ejércitos', 430, 360], ['inmigración', 1490, 355], ['salud', 430, 770], ['empresas', 1490, 770]];
+  lab.forEach(([s, x, y], k) => txt(c, s, x, y, { size: 42, weight: 400, prog: type(tau, 1 + k * 1.3, 1.8 + k * 1.3) }));
+  glow(c, ox, oy, 150, sm(5, 7, tau)); drawArt(c, orb(ox, oy, 150), sm(5, 8, tau, easeOut), 3);
+  const b = d * .52;
+  txt(c, 'PALANTIR', CX, 200, { size: 120, color: VIO, prog: type(tau, b, b + 1.6), bg: true });
+  caption(c, ['Un software que casi nadie ve,', 'pero que ayuda a decidir a gobiernos y empresas'], tau, 1, 2.6, b + 2.5);
+  caption(c, ['¿Qué hace, cómo gana dinero', 'y por qué genera tanta polémica?'], tau, b + 3, 2.2);
+}
+function sOrigen(c, tau) {
+  const d = D('origen'), b = d * .3; paper(c); push(c, tau, d);
+  const k = 1 - sm(b - .6, b + .8, tau, easeInOutSine), ox = lerp(560, CX, k), sc = lerp(.7, 1, k);
+  c.save(); c.translate(ox, 430); c.scale(sc, sc); c.translate(-CX, -430);
+  glow(c, CX, 430, 170, 1); drawArt(c, orb(CX, 430, 170), sm(.2, 3, tau, easeOut), 30); c.restore();
+  caption(c, ['Palantír: las «piedras videntes»', 'de El Señor de los Anillos (Tolkien)'], tau, .8, 2.2, b);
+  // timeline
+  const x0 = 900, x1 = 1760, y = 560, p = sm(b, b + 1.6, tau, easeOut);
+  drawArt(c, [arrow(x0, y, x1, y, { w: 3.4 })], p, 40);
+  [[1000, '2003', 'fundación (mayo)', b + 1.2], [1520, '2004', 'In-Q-Tel (fondo de la CIA)', d * .72]].forEach(([x, yr, s, t], k) => {
+    drawArt(c, [ln(x, y - 26, x, y + 26, { w: 4, col: VIO })], sm(t, t + .4, tau), 50 + k);
+    txt(c, yr, x, y - 50, { size: 64, color: VIO, prog: type(tau, t + .2, t + .8) });
+    txt(c, s, x, y + 80, { size: 38, weight: 400, prog: type(tau, t + .6, t + 1.6) });
+  });
+  txt(c, 'Peter Thiel · Alex Karp', 1000, y + 140, { size: 36, weight: 400, prog: type(tau, d * .42, d * .42 + 1.2) });
+  txt(c, 'y otros cofundadores', 1000, y + 188, { size: 36, weight: 400, prog: type(tau, d * .42 + 1, d * .42 + 2) });
+  txt(c, '≈ 2 millones de dólares', 1520, y + 140, { size: 40, color: VIO, prog: type(tau, d * .78, d * .78 + 1.2) });
+  caption(c, ['Primer objetivo: ayudar a la inteligencia', 'de EE. UU. en investigaciones antiterroristas'], tau, d * .58, 2.4, d * .72 - .1);
+  caption(c, ['2004: inversión temprana de In-Q-Tel,', 'el fondo de capital de riesgo de la CIA'], tau, d * .74, 2.2);
+}
+const SOURCES = (() => { const r = rng(77), s = [], out = [];
+  for (let k = 0; k < 14; k++) { const a = k / 14 * TAU + r() * .3, rr = 330 + r() * 90, x = 560 + Math.cos(a) * rr * 1.25, y = 440 + Math.sin(a) * rr * .95;
+    out.push([x, y]); s.push(...[sheet, db, sensor][k % 3](x, y)); }
+  return { s, out }; })();
+function sProducto(c, tau) {
+  const d = D('producto'), b = d * .5; paper(c); push(c, tau, d);
+  if (tau < b + .5) {
+    const f = 1 - sm(b - .4, b + .5, tau); c.save(); c.globalAlpha = f;
+    drawArt(c, SOURCES.s, sm(.2, 4, tau, easeOut), 100, { width: 2.4 });
+    const hub = sm(4, 5.2, tau, easeOut);
+    SOURCES.out.forEach(([x, y], k) => drawArt(c, [ln(x, y, lerp(x, 560, .78), lerp(y, 440, .78), { w: 1.8, col: VIO })], sm(4 + k * .08, 5 + k * .08, tau), 200 + k));
+    drawArt(c, [box(470, 390, 180, 100, { w: 4, col: VIO })], hub, 230); txt(c, 'Palantir', 560, 452, { size: 40, color: VIO, prog: type(tau, 5, 5.8) });
+    drawArt(c, [arrow(1060, 440, 1330, 440, { w: 4 })], sm(6.5, 7.5, tau), 240);
+    drawArt(c, [box(1350, 360, 360, 160, { w: 3.6 })], sm(7.3, 8.4, tau), 250); txt(c, 'decisiones', 1530, 458, { size: 56, prog: type(tau, 8.2, 9.2) });
+    c.restore();
+    caption(c, ['Datos repartidos en cientos de sistemas', '→ un solo lugar → decisiones'], tau, 1, 2.6, b);
+  }
+  const cards = [['Gotham', 'gobiernos, defensa', 'e inteligencia'], ['Foundry', 'empresas', 'de todo tipo'], ['Apollo', 'instala y actualiza', 'en cualquier nube'], ['AIP (2023)', 'IA generativa', 'sobre sus datos']];
+  cards.forEach(([h, l1, l2], k) => { const t = b + .4 + k * (d - b - 4) / 4, x = 150 + k * 420;
+    drawArt(c, [box(x, 250, 360, 420, { w: 3.6, col: k === 3 ? VIO : undefined }), ln(x + 30, 360, x + 330, 360, { w: 2.2 })], sm(t, t + 1, tau, easeOut), 300 + k * 7);
+    txt(c, h, x + 180, 330, { size: 58, color: k === 3 ? VIO : PAL.ink, prog: type(tau, t + .6, t + 1.3) });
+    txt(c, l1, x + 180, 470, { size: 40, weight: 400, prog: type(tau, t + 1.1, t + 1.9) });
+    txt(c, l2, x + 180, 525, { size: 40, weight: 400, prog: type(tau, t + 1.5, t + 2.3) }); });
+  caption(c, ['Cuatro plataformas principales'], tau, b + .4, 1.2, d - 5);
+  caption(c, ['Convertir datos dispersos en decisiones'], tau, d - 4.6, 1.8);
+}
+function sBolsa(c, tau) {
+  const d = D('bolsa'); paper(c); push(c, tau, d);
+  const y = 520, x0 = 180, x1 = 1760;
+  drawArt(c, [arrow(x0, y, x1, y, { w: 4 })], sm(.2, 2, tau, easeOut), 400);
+  txt(c, '2003–2020: empresa privada', 470, y - 60, { size: 40, weight: 400, prog: type(tau, .8, 2.4) });
+  const ms = [[820, '30 sep 2020', 'Bolsa de Nueva York', '(salida directa)', d * .18], [1130, 'hoy', 'sede en Denver', '(Colorado)', d * .5],
+              [1400, 'sep 2024', 'entra al S&P 500', '', d * .7], [1660, 'nov 2024', 'pasa al Nasdaq', '', d * .84]];
+  ms.forEach(([x, t1, a, b2, t], k) => {
+    drawArt(c, [ln(x, y - 30, x, y + 30, { w: 4.4, col: VIO }), S_([[x, y - 30], [x, y - 150], [x + 70, y - 128], [x, y - 106]], { w: 3, col: k === 0 ? VIO : PAL.ink })], sm(t, t + .8, tau, easeOut), 410 + k * 5);
+    txt(c, t1, x, y + 85, { size: 44, color: VIO, prog: type(tau, t + .4, t + 1.1) });
+    txt(c, a, x, y + 140, { size: 34, weight: 400, prog: type(tau, t + .8, t + 1.8) });
+    if (b2) txt(c, b2, x, y + 185, { size: 30, weight: 400, prog: type(tau, t + 1.2, t + 2) }); });
+  caption(c, ['Casi dos décadas en privado y en silencio'], tau, .6, 1.8, d * .18 - .2);
+  caption(c, ['Empezó a cotizar sin la clásica oferta pública inicial'], tau, d * .2, 2.2, d * .68);
+  caption(c, ['2024: S&P 500 y cambio al Nasdaq'], tau, d * .72, 1.6);
+}
+function sDefensa(c, tau) {
+  const d = D('defensa'), b1 = d * .4, b2 = d * .68; paper(c); push(c, tau, d);
+  if (tau < b1 + .5) { const f = 1 - sm(b1 - .4, b1 + .5, tau); c.save(); c.globalAlpha = f;
+    drawArt(c, satellite(620, 170), sm(.2, 2, tau, easeOut), 500); drawArt(c, drone(1320, 250), sm(1, 2.6, tau, easeOut), 510);
+    const g = []; for (let k = 0; k <= 8; k++) g.push(ln(260 + k * 175, 520, 110 + k * 212, 840, { w: 1.6 })); for (let k = 0; k < 4; k++) { const yy = 520 + k * 107, sh = k * 50; g.push(ln(260 - sh, yy, 1660 + sh, yy, { w: 1.6 })); }
+    drawArt(c, g, sm(1.6, 3.6, tau), 520, { width: 1.6 });
+    drawArt(c, [ln(620, 230, 700, 600, { w: 1.8, col: VIO, dash: [8, 10] }), ln(1320, 262, 1180, 660, { w: 1.8, col: VIO, dash: [8, 10] })], sm(3.4, 4.4, tau), 530);
+    drawArt(c, [box(640, 560, 130, 90, { w: 4, col: RED }), box(1110, 620, 140, 90, { w: 4, col: RED })], sm(4.4, 5.6, tau, easeOut), 540);
+    c.restore(); caption(c, ['Maven Smart System: IA del Pentágono que analiza', 'imágenes de satélites y drones'], tau, .8, 2.6, b1); }
+  if (tau > b1 - .2 && tau < b2 + .5) { const f = sm(b1 - .2, b1 + .3, tau) * (1 - sm(b2 - .4, b2 + .5, tau)); c.save(); c.globalAlpha = f;
+    const base = 780, u = 540 / 1300;
+    drawArt(c, [ln(360, base, 1560, base, { w: 3.6 })], sm(b1, b1 + .8, tau), 600);
+    const h1 = 480 * u * sm(b1 + .6, b1 + 1.6, tau, easeOut), h2 = 1300 * u * sm(b1 + 3, b1 + 4.6, tau, easeOut);
+    if (h1 > 1) drawArt(c, [box(560, base - h1, 220, h1, { w: 3.4 })], 1, 601); if (h2 > 1) drawArt(c, [box(1140, base - h2, 220, h2, { w: 3.6, col: VIO })], 1, 602);
+    hatchRect(c, 1140, base - h2, 220, h2, sm(b1 + 4.6, b1 + 5.4, tau), 603, { color: VIO });
+    txt(c, '480 M$', 670, base - h1 - 24, { size: 50, prog: type(tau, b1 + 1.4, b1 + 2) }); txt(c, '≈ 1.300 M$', 1250, base - 1300 * u - 24, { size: 50, color: VIO, prog: type(tau, b1 + 4.4, b1 + 5.2) });
+    txt(c, 'mayo 2024', 670, base + 60, { size: 38, weight: 400, prog: type(tau, b1 + 1, b1 + 1.8) }); txt(c, '2025 (techo)', 1250, base + 60, { size: 38, weight: 400, prog: type(tau, b1 + 3.4, b1 + 4.2) });
+    c.restore(); caption(c, ['Techo del contrato Maven'], tau, b1 + .4, 1.4, b2); }
+  if (tau > b2 - .2) {
+    const r = rng(640), m = sm(b2 + 3, b2 + 5.5, tau, easeInOutSine), cx = CX, cy = 430;
+    for (let k = 0; k < 75; k++) { const q = k % 15, row = Math.floor(k / 15), sx = 330 + q * 90 + (r() - .5) * 20, sy = 180 + row * 90 + (r() - .5) * 20;
+      const x = lerp(sx, cx - 20 + (q - 7) * 4, m), y = lerp(sy, cy - 20 + (row - 2) * 4, m), a = sm(b2 + k * .02, b2 + .6 + k * .02, tau) * (1 - sm(b2 + 5, b2 + 5.8, tau));
+      if (a > 0) { c.save(); c.globalAlpha = a; c.strokeStyle = PAL.ink; c.lineWidth = 2; c.strokeRect(x, y, 44, 44); c.restore(); } }
+    drawArt(c, [box(cx - 330, cy - 150, 660, 300, { w: 5, col: VIO })], sm(b2 + 5.2, b2 + 6.4, tau, easeOut), 650);
+    txt(c, 'Ejército de EE. UU.', cx, cy - 55, { size: 50, prog: type(tau, b2 + 6, b2 + 7) });
+    txt(c, 'hasta 10.000 M$', cx, cy + 25, { size: 70, color: VIO, prog: type(tau, b2 + 6.6, b2 + 7.6) });
+    txt(c, '10 años · ~75 contratos en uno', cx, cy + 95, { size: 40, weight: 400, prog: type(tau, b2 + 7.2, b2 + 8.2) });
+    caption(c, ['Verano de 2025: un solo acuerdo empresarial'], tau, b2 + .4, 1.8, d - 4.2);
+    caption(c, ['Ojo: es un techo de gasto, no un pago garantizado'], tau, d - 3.8, 1.8);
+  }
+}
+function sNegocio(c, tau) {
+  const d = D('negocio'), b = d * .42, e = d * .75; paper(c); push(c, tau, d);
+  const base = 760, u = 440 / 1940;
+  drawArt(c, [ln(240, base, 900, base, { w: 3.6 })], sm(.2, 1, tau), 700);
+  const h1 = 1000 * u * sm(.8, 1.8, tau, easeOut), h2 = 1940 * u * sm(2, 3.6, tau, easeOut);
+  if (h1 > 1) drawArt(c, [box(300, base - h1, 220, h1, { w: 3.4 })], 1, 701); if (h2 > 1) drawArt(c, [box(620, base - h2, 220, h2, { w: 3.8, col: VIO })], 1, 702);
+  hatchRect(c, 620, base - h2, 220, h2, sm(3.6, 4.4, tau), 703, { color: VIO });
+  txt(c, '≈ 1.000 M$', 410, base - h1 - 24, { size: 44, prog: type(tau, 1.6, 2.2) }); txt(c, '1.940 M$', 730, base - 1940 * u - 24, { size: 50, color: VIO, prog: type(tau, 3.4, 4.1) });
+  txt(c, 'T2 2025', 410, base + 55, { size: 36, weight: 400, prog: type(tau, 1, 1.6) }); txt(c, 'T2 2026', 730, base + 55, { size: 36, weight: 400, prog: type(tau, 2.2, 2.8) });
+  txt(c, '+93 %', 1000, 300, { size: 110, color: VIO, prog: type(tau, 4.2, 5), bg: true });
+  const tiles = [['+149 %', 'ventas a empresas', 'en EE. UU.'], ['+90 %', 'ventas al gobierno', 'de EE. UU.'], ['1.060 M$', 'beneficio neto', 'en el trimestre']];
+  tiles.forEach(([big, l1, l2], k) => { const t = b + k * 2.2, x = 1060 + (k % 2) * 400, y = 380 + Math.floor(k / 2) * 260;
+    drawArt(c, [box(x, y, 360, 220, { w: 3.2 })], sm(t, t + .8, tau, easeOut), 710 + k);
+    txt(c, big, x + 180, y + 85, { size: 64, color: k < 2 ? VIO : PAL.ink, prog: type(tau, t + .5, t + 1.1) });
+    txt(c, l1, x + 180, y + 145, { size: 34, weight: 400, prog: type(tau, t + .9, t + 1.6) });
+    txt(c, l2, x + 180, y + 188, { size: 34, weight: 400, prog: type(tau, t + 1.2, t + 1.9) }); });
+  drawArt(c, [box(1460, 640, 360, 220, { w: 3.6, col: VIO })], sm(e, e + .8, tau, easeOut), 720);
+  txt(c, 'previsión 2026', 1640, 710, { size: 36, weight: 400, prog: type(tau, e + .4, e + 1.1) });
+  txt(c, '≈ 8.150 M$', 1640, 790, { size: 58, color: VIO, prog: type(tau, e + .8, e + 1.6) });
+  caption(c, ['Ingresos del segundo trimestre de 2026'], tau, .6, 1.6, b - .2);
+  caption(c, ['Resultados publicados el 3 de agosto de 2026'], tau, b, 1.6, e - .2);
+  caption(c, ['Su apuesta: la IA necesita primero datos en orden'], tau, e + 1.6, 2);
+}
+function sPolemica(c, tau) {
+  const d = D('polemica'), b = d * .45, e = d * .86; paper(c); push(c, tau, d);
+  if (tau < b + .5) { const f = 1 - sm(b - .4, b + .5, tau); c.save(); c.globalAlpha = f;
+    drawArt(c, folder(560, 430), sm(.3, 1.6, tau, easeOut), 800); txt(c, 'ImmigrationOS', 560, 445, { size: 44, prog: type(tau, 1.4, 2.4) });
+    drawArt(c, lens(700, 330), sm(2.2, 3.2, tau, easeOut), 810);
+    const fx = [['ICE · abril 2025', 3.4], ['30 M$', 5], ['adjudicado sin concurso', d * .2]];
+    fx.forEach(([s, t], k) => txt(c, s, 1300, 330 + k * 110, { size: k === 1 ? 80 : 46, color: k === 1 ? RED : PAL.ink, prog: type(tau, t, t + 1) }));
+    c.restore();
+    caption(c, ['Un sistema para seleccionar y localizar', 'a personas en procesos de deportación'], tau, 1, 2.6, d * .2 - .2);
+    caption(c, ['ICE alegó urgencia y que Palantir', 'era el único proveedor capaz'], tau, d * .2 + .2, 2.4, d * .32);
+    caption(c, ['Organizaciones de derechos civiles', 'critican la vigilancia que permite'], tau, d * .33, 2.2, b); }
+  if (tau > b - .2 && tau < e + .5) { const f = sm(b - .2, b + .3, tau) * (1 - sm(e - .4, e + .5, tau)); c.save(); c.globalAlpha = f;
+    drawArt(c, cross(480, 380, 1.4, BLUE), sm(b, b + 1.2, tau, easeOut), 900); drawArt(c, padlock(620, 530), sm(b + 1, b + 2, tau, easeOut), 910);
+    txt(c, 'NHS (Reino Unido)', 1250, 250, { size: 52, prog: type(tau, b + .6, b + 1.6) });
+    txt(c, 'Plataforma Federada de Datos', 1250, 320, { size: 42, weight: 400, prog: type(tau, b + 1.4, b + 2.4) });
+    txt(c, 'hasta 330 M£ · 7 años (2023)', 1250, 400, { size: 44, color: BLUE, prog: type(tau, b + 2.4, b + 3.4) });
+    txt(c, 'acciones legales', 1250, 520, { size: 42, weight: 400, prog: type(tau, b + (e - b) * .4, b + (e - b) * .4 + 1) });
+    txt(c, '44.000+ objeciones formales', 1250, 590, { size: 46, color: RED, prog: type(tau, b + (e - b) * .5, b + (e - b) * .5 + 1.2) });
+    const tally = []; for (let k = 0; k < 20; k++) tally.push(ln(1010 + k * 24 + (k % 5 === 4 ? 0 : 0), 640, 1010 + k * 24 + 8, 700, { w: 3, col: RED }));
+    drawArt(c, tally, sm(b + (e - b) * .5 + .8, b + (e - b) * .5 + 2.6, tau), 920);
+    c.restore();
+    caption(c, ['2026: NHS England reconoció que un documento', 'describía mal quién podía acceder a los datos'], tau, b + (e - b) * .7, 2.8, e); }
+  if (tau > e - .2) { const f = sm(e - .2, e + .4, tau); c.save(); c.globalAlpha = f;
+    drawArt(c, [box(260, 300, 1400, 280, { w: 4.4 })], sm(e, e + 1, tau, easeOut), 950);
+    txt(c, 'Críticas, demandas y debates abiertos', CX, 420, { size: 64, prog: type(tau, e + .6, e + 1.8) });
+    txt(c, 'no condenas judiciales contra la empresa', CX, 505, { size: 54, weight: 400, color: RED, prog: type(tau, e + 1.6, e + 2.8) });
+    c.restore(); }
+}
+function sCierre(c, tau) {
+  const d = D('cierre'), end = d - 7.5; paper(c); push(c, tau, d, 1.06);
+  const L = [340, 430], R = [1580, 430];
+  drawArt(c, [box(L[0] - 220, 240, 440, 330, { w: 3.4 }), box(R[0] - 220, 240, 440, 330, { w: 3.4, col: RED })], sm(.3, 1.6, tau, easeOut), 1000);
+  txt(c, 'para sus clientes', L[0], 320, { size: 40, weight: 400, prog: type(tau, .8, 1.6) });
+  txt(c, 'datos → decisiones', L[0], 400, { size: 44, prog: type(tau, 1.4, 2.4) }); txt(c, 'más rápidas', L[0], 460, { size: 44, prog: type(tau, 2, 2.8) });
+  txt(c, 'para sus críticos', R[0], 320, { size: 40, weight: 400, prog: type(tau, d * .22, d * .22 + .8) });
+  txt(c, 'vigilancia con', R[0], 400, { size: 44, color: RED, prog: type(tau, d * .22 + .6, d * .22 + 1.4) }); txt(c, 'demasiado poder', R[0], 460, { size: 44, color: RED, prog: type(tau, d * .22 + 1.2, d * .22 + 2) });
+  glow(c, CX, 400, 150, sm(d * .4, d * .5, tau)); drawArt(c, orb(CX, 400, 150), sm(d * .38, d * .5, tau, easeOut), 1010);
+  caption(c, ['Si existe una piedra que lo ve todo,', '¿quién decide hacia dónde mira?'], tau, d * .5, 2.6, end);
+  resetT(c);
+  if (tau > end) { c.save(); c.globalAlpha = sm(end, end + .6, tau); c.fillStyle = PAL.paper; c.fillRect(0, 840, W, 240); c.restore(); }
+  txt(c, 'Narración: voz sintética (Gemini TTS) · Animación hecha con IA (Claude)', CX, 920, { size: 34, weight: 400, prog: type(tau, end + .2, end + 1.4) });
+  txt(c, 'Ilustración, no imágenes reales · Fuentes en la descripción · Datos a 30 sep 2026', CX, 975, { size: 34, weight: 400, prog: type(tau, end + 1, end + 2.2) });
+}
+
+// ---------- score: a quiet bed under the narration (mixed low at mux) ----------
+const ORDER = ['gancho', 'origen', 'producto', 'bolsa', 'defensa', 'negocio', 'polemica', 'cierre'];
+function score(ac, t0, dest) {
+  const m = ac.createGain(); m.gain.value = .5; m.connect(dest);
+  const total = ORDER.reduce((a, k) => a + D(k), 0); let at = 0;
+  const starts = ORDER.map(k => { const s = at; at += D(k); return s; });
+  for (let t = .4; t < total - 2; t += 1) { const k = Math.round(t), mood = starts.findIndex((s, i) => t >= s && (i === 7 || t < starts[i + 1]));
+    note(ac, m, pentHz(mood === 6 ? 0 : 1, [0, 2, 4, 3, 1, 4, 2, 0][k % 8], mood === 6 ? 220 : 262), t0, t, 1.8, 'triangle', k % 4 ? .045 : .07); }
+  starts.slice(1).forEach(t => note(ac, m, 131, t0, t, 2, 'sine', .14));
+  [262, 330, 392].forEach(f => note(ac, m, f, t0, total - 7, 6, 'triangle', .06));
+}
+
+defineFilm({ format: { ar: '16:9', width: 1920 }, fps: 24, score, timeline: [
+  { name: 'gancho', dur: D('gancho'), fn: sGancho },
+  { name: 'origen', dur: D('origen'), fn: sOrigen },
+  { name: 'producto', dur: D('producto'), fn: sProducto },
+  { name: 'bolsa', dur: D('bolsa'), fn: sBolsa },
+  { name: 'defensa', dur: D('defensa'), fn: sDefensa },
+  { name: 'negocio', dur: D('negocio'), fn: sNegocio },
+  { name: 'polemica', dur: D('polemica'), fn: sPolemica },
+  { name: 'cierre', dur: D('cierre'), fn: sCierre },
+] });
+</script>

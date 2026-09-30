@@ -21,3 +21,6 @@ channelforge/.channelforge/
 # Portfolio renders and dependencies
 portfolio/**/node_modules
 portfolio/**/out/
+portfolio/palantir/audio/
+portfolio/palantir/*.mp4
+portfolio/palantir/out-build.log
