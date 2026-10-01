@@ -84,6 +84,8 @@ def main() -> None:
     ap.add_argument("--max-pause", type=float, default=0.35, help="shorten pauses longer than this (s)")
     ap.add_argument("--tempo", type=float, default=1.0, help="speed factor (atempo, pitch kept)")
     ap.add_argument("--reuse", action="store_true", help="re-time the existing audio/raw takes, no API call")
+    ap.add_argument("--gap", type=float, default=GAP_S, help="pause between sections (s)")
+    ap.add_argument("--tail", type=float, default=TAIL_S, help="hold after the last line (s)")
     ap.add_argument("--spec", default="sections.json")
     ap.add_argument("--audio", default="audio")
     ap.add_argument("--timing", default="timing.js")
@@ -120,12 +122,12 @@ def main() -> None:
     # join with pauses; the film's scene k lasts voice_k + gap (the last one also holds the end card)
     lst = out / "concat.txt"
     silence = out / "gap.wav"
-    write_wav(silence, b"\0\0" * int(rate * GAP_S), rate)
+    write_wav(silence, b"\0\0" * int(rate * a.gap), rate)
     lst.write_text("".join(f"file '{s['id']}.wav'\nfile 'gap.wav'\n" for s in spec["sections"]))
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst),
                     "-c:a", "pcm_s16le", str(out / "narration.wav")], check=True)
-    scenes = [round(d + GAP_S, 3) for d in durs]
-    scenes[-1] = round(scenes[-1] + TAIL_S, 3)
+    scenes = [round(d + a.gap, 3) for d in durs]
+    scenes[-1] = round(scenes[-1] + a.tail, 3)
     (HERE / a.timing).write_text(
         "// written by narrate.py: scene durations = measured voice + pause\n"
         f"window.SECTION_DURS = {json.dumps(dict(zip([s['id'] for s in spec['sections']], scenes)))};\n")
