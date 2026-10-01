@@ -1,0 +1,11 @@
+{
+  "title": "Reel: ¿la IA resolvió un Problema del Milenio?",
+  "language": "es",
+  "sections": [
+    {"id": "hook", "text": "¿Una inteligencia artificial resolvió uno de los Problemas del Milenio? OpenAI dice que sí: diez mil agentes, ochenta y ocho horas, y una demostración sobre Navier-Stokes, las ecuaciones de los fluidos."},
+    {"id": "prueba", "text": "Según OpenAI, esas ecuaciones pueden explotar: volverse infinitas en un tiempo finito. Publicó ciento sesenta y cinco páginas y una versión verificable en Lean. Pero aún falta la revisión independiente."},
+    {"id": "acusacion", "text": "Horas antes, el matemático Tristan Buckmaster acusó a OpenAI de inspirarse en su trabajo con Levent Alpöge, y relató presiones para publicar sin su colega, que trabaja en Anthropic."},
+    {"id": "respuesta", "text": "OpenAI lo niega: dice que su método es distinto. Sébastien Bubeck pidió disculpas por un comentario, y Sam Altman afirma que ofrecieron a los matemáticos publicar primero."},
+    {"id": "cierre", "text": "Entonces, cuando una inteligencia artificial resuelve un problema, ¿de quién es el descubrimiento? Este video se hizo con Claude, de Anthropic. ¿Tú qué opinas?"}
+  ]
+}
