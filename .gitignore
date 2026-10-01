@@ -26,3 +26,7 @@ portfolio/palantir/*.mp4
 portfolio/palantir/out-build.log
 portfolio/palantir/audio-short/
 portfolio/palantir/narrate-*.log
+portfolio/ia-hackers/audio/
+portfolio/ia-hackers/*.mp4
+portfolio/ia-hackers/*.log
+portfolio/ia-hackers/out-build.log
