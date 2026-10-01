@@ -31,3 +31,6 @@ portfolio/ia-hackers/*.mp4
 portfolio/ia-hackers/*.log
 portfolio/ia-hackers/out-build.log
 portfolio/ia-hackers/audio-reel/
+portfolio/navier-stokes/audio/
+portfolio/navier-stokes/*.mp4
+portfolio/navier-stokes/*.log
