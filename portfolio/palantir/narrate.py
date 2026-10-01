@@ -78,20 +78,37 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--voice", default="Charon")
     ap.add_argument("--model", default=os.environ.get("CF_TTS_MODEL", ""))
+    ap.add_argument("--max-pause", type=float, default=0.35, help="shorten pauses longer than this (s)")
+    ap.add_argument("--tempo", type=float, default=1.0, help="speed factor (atempo, pitch kept)")
+    ap.add_argument("--reuse", action="store_true", help="re-time the existing audio/raw takes, no API call")
     a = ap.parse_args()
-    key = os.environ.get("GEMINI_API_KEY")
-    if not key:
-        sys.exit("Set GEMINI_API_KEY (Google AI Studio key) in the environment.")
     spec = json.loads((HERE / "sections.json").read_text())
-    out = HERE / "audio"; out.mkdir(exist_ok=True)
-    with httpx.Client(headers={"x-goog-api-key": key}, timeout=300) as client:
-        model = a.model or pick_model(client)
-        print(f"model {model}, voice {a.voice}")
-        durs, rate = [], 24000
-        for s in spec["sections"]:
-            pcm, rate = synth(client, model, a.voice, spec.get("voice_style", ""), s["text"])
-            d = write_wav(out / f"{s['id']}.wav", pcm, rate)
-            durs.append(d); print(f"  {s['id']:10s} {d:6.1f} s")
+    out = HERE / "audio"; raw = out / "raw"; raw.mkdir(parents=True, exist_ok=True)
+    rate = 24000
+    if not a.reuse:
+        key = os.environ.get("GEMINI_API_KEY")
+        if not key:
+            sys.exit("Set GEMINI_API_KEY (Google AI Studio key) in the environment.")
+        with httpx.Client(headers={"x-goog-api-key": key}, timeout=300) as client:
+            model = a.model or pick_model(client)
+            print(f"model {model}, voice {a.voice}")
+            for s in spec["sections"]:
+                pcm, rate = synth(client, model, a.voice, spec.get("voice_style", ""), s["text"])
+                d = write_wav(raw / (s["id"] + ".wav"), pcm, rate)
+                print(f"  {s['id']:10s} {d:6.1f} s raw")
+    # tighten the delivery: long pauses down to --max-pause, optional tempo; pitch is preserved
+    durs = []
+    for s in spec["sections"]:
+        dst = out / f"{s['id']}.wav"
+        flt = (f"silenceremove=start_periods=1:start_threshold=-45dB,"
+               f"silenceremove=stop_periods=-1:stop_duration={a.max_pause}:stop_threshold=-40dB:stop_silence={a.max_pause}")
+        if a.tempo != 1.0:
+            flt += f",atempo={a.tempo}"
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(raw / f"{s['id']}.wav"), "-af", flt,
+                        "-ar", str(rate), "-ac", "1", "-c:a", "pcm_s16le", str(dst)], check=True)
+        with wave.open(str(dst)) as w:
+            rate = w.getframerate(); d = w.getnframes() / rate
+        durs.append(d); print(f"  {s['id']:10s} {d:6.1f} s")
     # join with pauses; the film's scene k lasts voice_k + gap (the last one also holds the end card)
     lst = out / "concat.txt"
     silence = out / "gap.wav"
@@ -103,7 +120,7 @@ def main() -> None:
     scenes[-1] = round(scenes[-1] + TAIL_S, 3)
     (HERE / "timing.js").write_text(
         "// written by narrate.py: scene durations = measured voice + pause\n"
-        f"window.SECTION_DURS = {json.dumps(dict(zip([s['id'] for s in spec['sections']], scenes)))};\n"
+        f"window.SECTION_DURS = {json.dumps(dict(zip([s['id'] for s in spec['sections']], scenes)))};\n")
     total = sum(scenes)
     print(f"narration {sum(durs):.1f} s, film {total:.1f} s ({total/60:.2f} min) → timing.js")
 
