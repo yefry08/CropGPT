@@ -4,17 +4,17 @@
 
 **Descripción (YouTube):**
 
-Palantir casi no se ve, pero lo usan ejércitos, agencias de inmigración, sistemas de salud y grandes empresas. En 5 minutos: de dónde viene su nombre, qué venden sus cuatro plataformas (Gotham, Foundry, Apollo y AIP), su salto a la bolsa, sus contratos con el Pentágono, sus resultados de 2026 y las críticas por ICE y el NHS.
+Palantir casi no se ve, pero lo usan ejércitos, agencias de inmigración, sistemas de salud y grandes empresas. En unos 4 minutos y medio: de dónde viene su nombre, qué venden sus cuatro plataformas (Gotham, Foundry, Apollo y AIP), su salto a la bolsa, sus contratos con el Pentágono, sus resultados de 2026 y las críticas por ICE y el NHS.
 
-Capítulos (se ajustan a la duración final):
+Capítulos:
 0:00 ¿Qué es Palantir?
-— El nombre y el origen
-— Qué vende
-— De empresa secreta a Wall Street
-— Defensa: Maven y el Ejército
-— El negocio en 2026
-— La polémica: ICE y el NHS
-— ¿Quién decide hacia dónde mira?
+0:24 El nombre y el origen
+0:53 Qué vende
+1:36 De empresa secreta a Wall Street
+2:00 Defensa: Maven y el Ejército
+2:37 El negocio en 2026
+3:07 La polémica: ICE y el NHS
+4:01 ¿Quién decide hacia dónde mira?
 
 Datos a 30 de septiembre de 2026. Las críticas y demandas mencionadas no son condenas judiciales contra la empresa.
 
