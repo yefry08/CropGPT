@@ -1,0 +1,11 @@
+{
+  "title": "Palantir y la seguridad de la IA (short)",
+  "language": "es",
+  "sections": [
+    {"id": "ia", "text": "Una inteligencia artificial que analiza imágenes de satélites y drones para señalar posibles amenazas. No es ciencia ficción: es Maven Smart System, la plataforma de Palantir para el Pentágono."},
+    {"id": "escala", "text": "En 2025, el Departamento de Defensa elevó el techo de ese contrato a unos 1.300 millones de dólares, por la creciente demanda."},
+    {"id": "datos", "text": "Y esa misma idea, unir datos de todas partes, también se usa lejos del campo de batalla: en inmigración, con ICE en Estados Unidos, y en la salud pública del Reino Unido."},
+    {"id": "preguntas", "text": "Para la seguridad de la inteligencia artificial, hay tres preguntas clave. ¿Quién supervisa lo que el sistema señala? ¿Qué datos usa, y quién puede verlos? ¿Y quién responde cuando se equivoca?"},
+    {"id": "cierre", "text": "Una inteligencia artificial que lo ve todo necesita reglas que también se vean. ¿Tú qué opinas?"}
+  ]
+}

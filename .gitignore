@@ -24,3 +24,5 @@ portfolio/**/out/
 portfolio/palantir/audio/
 portfolio/palantir/*.mp4
 portfolio/palantir/out-build.log
+portfolio/palantir/audio-short/
+portfolio/palantir/narrate-*.log

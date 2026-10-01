@@ -1,0 +1,154 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Palantir y la seguridad de la IA</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{height:min(86vh,960px);width:auto;background:#fff;box-shadow:0 0 0 1px #333}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center}
+  button{background:#222;color:#ddd;border:1px solid #444;padding:4px 10px;cursor:pointer;font:inherit}
+  input[type=range]{width:320px}
+</style>
+<canvas id="c"></canvas>
+<script src="timing-short.js"></script>
+<script src="core.js"></script>
+<script>
+/* ============================================================
+BRIEF: short (9:16, ~60 s, Spanish, narrated with Gemini TTS) cut from the Palantir explainer,
+  angle: AI safety. Facts reused from the long video's verified set only (Maven Smart System analyses
+  satellite/drone imagery to flag possible threats; ceiling raised to ~$1.3B in 2025; ImmigrationOS for
+  ICE; NHS Federated Data Platform). The safety part is framed as open questions, not accusations.
+Look: ink lines on WHITE paper, flat colour fills in six inks (blue, pink, yellow, green, orange, violet),
+  multicoloured hand lettering. No real people drawn, no logos.
+============================================================ */
+usePalette(makePalette({ paper: '#ffffff', paperBand: null }, 'paperInk'));
+const C = { blue: '#1f6fd1', pink: '#ff3d8b', yellow: '#ffc61a', green: '#16a86a', orange: '#ff7a1a', violet: '#7a4fd8' };
+const RAINBOW = [C.blue, C.pink, C.yellow, C.green, C.orange, C.violet];
+const FONT = '"Comic Neue", "Comic Sans MS", cursive';
+const D = id => window.SECTION_DURS[id];
+const ART_Y = 720;
+
+// ---------- lettering ----------
+function txt(c, s, x, y, o = {}) {
+  const { size = 60, weight = 700, color = PAL.ink, align = 'center', prog = 1, rainbow = false } = o;
+  const n = Math.ceil(s.length * clamp(prog, 0, 1)); if (!n) return;
+  c.save(); c.font = `${weight} ${size}px ${FONT}`; c.textBaseline = 'alphabetic';
+  if (!rainbow) { c.textAlign = align; c.fillStyle = color; c.fillText(s.slice(0, n), x, y); c.restore(); return; }
+  const w = c.measureText(s).width; let cx = align === 'center' ? x - w / 2 : x; c.textAlign = 'left';
+  for (let i = 0; i < n; i++) { c.fillStyle = s[i] === ' ' ? PAL.ink : RAINBOW[i % RAINBOW.length]; c.fillText(s[i], cx, y); cx += c.measureText(s[i]).width; }
+  c.restore();
+}
+const type = (tau, a, b) => sm(a, b, tau, x => x);
+function caption(c, lines, tau, t0, dur = 1.6, t1 = Infinity, o = {}) {
+  if (tau < t0 - .3 || tau > t1) return;
+  const { size = 60, y0 = 1330 } = o, lh = size * 1.25, total = lines.reduce((a, l) => a + l.length, 0);
+  resetT(c); const f = sm(t0 - .3, t0, tau) * (1 - sm(t1 - .3, t1, tau));
+  c.save(); c.globalAlpha = .95 * f; c.fillStyle = '#ffffff'; c.fillRect(0, y0 - size * 1.15, W, lh * lines.length + size * .55);
+  c.globalAlpha = f; let acc = 0;
+  lines.forEach((l, k) => { const a = acc / total, b = (acc + l.length) / total; acc += l.length;
+    txt(c, l, CX, y0 + k * lh, { size, prog: sm(t0 + a * dur, t0 + b * dur, tau, x => x) }); });
+  c.restore();
+}
+
+// ---------- line art with flat colour fills ----------
+function drawArt(c, strokes, prog, seed, o = {}) {
+  const { amp = 1.4, width = 3.4 } = o, L = strokes.map(s => pathLength(s.p, s.close)), tot = L.reduce((a, b) => a + b, 0) || 1;
+  let acc = 0; c.save(); c.lineCap = 'round'; c.lineJoin = 'round';
+  strokes.forEach((st, k) => {
+    const a = acc / tot, b = (acc + L[k]) / tot; acc += L[k];
+    const p = clamp((prog - a) / Math.max(1e-6, b - a), 0, 1); if (p <= 0) return;
+    if (st.fill && st.close) {                                   // colour floods in once the outline is closed
+      const fp = sm(.75, 1, p); if (fp > 0) { c.save(); c.globalAlpha = .9 * fp; c.fillStyle = st.fill; c.beginPath();
+        st.p.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); c.closePath(); c.fill(); c.restore(); } }
+    c.strokeStyle = st.col || PAL.ink; c.lineWidth = st.w || width;
+    if (st.dash) c.setLineDash(st.dash); else c.setLineDash([]);
+    if (p >= 1) wob(c, st.p, amp, seed + k, !!st.close, { pressure: .45 }); else selfDraw(c, st.p, p, seed + k, amp, !!st.close);
+  });
+  c.setLineDash([]); c.restore();
+}
+const S_ = (p, o = {}) => ({ p, ...o });
+const box = (x, y, w, h, o) => S_(rectPts(x, y, w, h), { close: true, ...o });
+const ln = (x0, y0, x1, y1, o) => S_([[x0, y0], [x1, y1]], o);
+const circ = (x, y, r, o) => S_(ellPts(x, y, r, r, 0, 40), { close: true, ...o });
+function push(c, tau, dur) { cam(c, CX, CY, lerp(1, 1.04, sm(0, dur, tau, easeInOutSine))); }
+
+function satellite(x, y) { return [box(x - 150, y - 20, 110, 40, { fill: C.blue }), box(x + 40, y - 20, 110, 40, { fill: C.blue }), box(x - 32, y - 26, 64, 52, { fill: C.yellow }),
+  ln(x, y + 26, x, y + 56), circ(x, y + 64, 10, { fill: C.pink })]; }
+function drone(x, y) { return [ln(x - 80, y, x + 80, y, { w: 4 }), S_([[x - 26, y], [x, y - 22], [x + 26, y]], { close: true, fill: C.orange }),
+  S_(ellPts(x - 80, y - 12, 40, 9, 0, 20), { close: true, fill: C.green }), S_(ellPts(x + 80, y - 12, 40, 9, 0, 20), { close: true, fill: C.green })]; }
+function shield(x, y) { return [S_([[x - 90, y - 100], [x + 90, y - 100], [x + 90, y], [x, y + 120], [x - 90, y]], { close: true, fill: C.blue, w: 4 }),
+  S_([[x - 35, y - 5], [x - 8, y + 25], [x + 45, y - 45]], { w: 6, col: '#ffffff' })]; }
+function idCard(x, y) { return [box(x - 120, y - 80, 240, 160, { fill: C.orange, w: 4 }), circ(x - 60, y - 15, 32, { fill: '#ffffff' }),
+  ln(x - 10, y - 30, x + 85, y - 30, { w: 4 }), ln(x - 10, y + 5, x + 70, y + 5, { w: 4 }), ln(x - 85, y + 50, x + 85, y + 50, { w: 4 })]; }
+function cross(x, y) { const a = 32, b = 90; return [S_([[x - a, y - b], [x + a, y - b], [x + a, y - a], [x + b, y - a], [x + b, y + a], [x + a, y + a], [x + a, y + b], [x - a, y + b], [x - a, y + a], [x - b, y + a], [x - b, y - a], [x - a, y - a]], { close: true, fill: C.green, w: 4 })]; }
+function orb(x, y, r) { const sw = []; for (let a = 0; a < 4.6 * Math.PI; a += .18) sw.push([x + Math.cos(a) * a * r / 16, y + Math.sin(a) * a * r / 16]);
+  return [circ(x, y, r, { fill: '#efe6ff', w: 5 }), S_(sw, { col: C.violet, w: 4 }), S_(ellPts(x - r * .35, y - r * .4, r * .18, r * .1, -.6, 20), { close: true, fill: '#ffffff', w: 2 })]; }
+
+// ---------- scenes ----------
+function sIA(c, tau) {
+  const d = D('ia'); paper(c); push(c, tau, d);
+  txt(c, 'AI SAFETY', CX, 260, { size: 150, rainbow: true, prog: type(tau, .1, 1.2) });
+  drawArt(c, satellite(360, 470), sm(.4, 2, tau, easeOut), 10); drawArt(c, drone(760, 560), sm(1, 2.6, tau, easeOut), 20);
+  const g = []; for (let k = 0; k <= 6; k++) g.push(ln(170 + k * 123, 820, 70 + k * 157, 1130, { w: 2, col: '#9aa3b5' }));
+  for (let k = 0; k < 4; k++) { const y = 820 + k * 103, sh = k * 33; g.push(ln(170 - sh, y, 908 + sh, y, { w: 2, col: '#9aa3b5' })); }
+  drawArt(c, g, sm(1.6, 3.4, tau), 30, { width: 2 });
+  drawArt(c, [ln(360, 540, 400, 900, { w: 3, col: C.blue, dash: [10, 12] }), ln(760, 570, 660, 1000, { w: 3, col: C.orange, dash: [10, 12] })], sm(3, 4, tau), 40);
+  drawArt(c, [box(330, 880, 150, 100, { w: 6, col: C.pink }), box(580, 960, 170, 100, { w: 6, col: C.pink })], sm(4, 5.2, tau, easeOut), 50);
+  txt(c, '¿amenaza?', 405, 865, { size: 40, color: C.pink, prog: type(tau, 5, 5.8) });
+  caption(c, ['IA que analiza imágenes', 'de satélites y drones'], tau, .6, 1.8, d * .5);
+  caption(c, ['Maven Smart System:', 'Palantir para el Pentágono'], tau, d * .52, 1.6);
+}
+function sEscala(c, tau) {
+  const d = D('escala'); paper(c); push(c, tau, d);
+  const base = 1080, u = 620 / 1300;
+  drawArt(c, [ln(160, base, 920, base, { w: 4 })], sm(.1, .7, tau), 100);
+  const h1 = 480 * u * sm(.5, 1.5, tau, easeOut), h2 = 1300 * u * sm(1.8, 3.4, tau, easeOut);
+  if (h1 > 2) drawArt(c, [box(240, base - h1, 240, h1, { fill: C.blue, w: 4 })], 1, 101);
+  if (h2 > 2) drawArt(c, [box(600, base - h2, 240, h2, { fill: C.pink, w: 4 })], 1, 102);
+  txt(c, '480 M$', 360, base - h1 - 30, { size: 60, color: C.blue, prog: type(tau, 1.3, 1.9) });
+  txt(c, '≈1.300 M$', 720, base - 1300 * u - 30, { size: 66, color: C.pink, prog: type(tau, 3.2, 4) });
+  txt(c, '2024', 360, base + 70, { size: 48, weight: 400, prog: type(tau, .8, 1.3) }); txt(c, '2025', 720, base + 70, { size: 48, weight: 400, prog: type(tau, 2, 2.5) });
+  caption(c, ['Techo del contrato:', '≈ 1.300 millones de dólares'], tau, .8, 1.8);
+}
+function sDatos(c, tau) {
+  const d = D('datos'); paper(c); push(c, tau, d);
+  drawArt(c, orb(CX, 760, 150), sm(.2, 2, tau, easeOut), 200);
+  const it = [[shield(270, 400), 270, 400, 'defensa', C.blue, .6], [idCard(810, 410), 810, 410, 'inmigración (ICE)', C.orange, d * .45], [cross(CX, 1110), CX, 1110, 'salud (Reino Unido)', C.green, d * .68]];
+  it.forEach(([s, x, y, lab, col, t], k) => { drawArt(c, s, sm(t, t + 1.2, tau, easeOut), 210 + k * 10);
+    drawArt(c, [ln(x, y + (y < 760 ? 110 : -110), lerp(x, CX, .7), lerp(y, 760, .7), { w: 4, col, dash: [12, 12] })], sm(t + .8, t + 1.6, tau), 260 + k);
+    txt(c, lab, x, y + (y < 760 ? -130 : 160), { size: 46, color: col, prog: type(tau, t + .6, t + 1.6) }); });
+  caption(c, ['Unir datos de todas partes,', 'también lejos del campo de batalla'], tau, .6, 2.2, d - .4, { y0: 1440 });
+}
+function sPreguntas(c, tau) {
+  const d = D('preguntas'); paper(c); push(c, tau, d);
+  txt(c, '3 preguntas clave', CX, 230, { size: 80, rainbow: true, prog: type(tau, .1, 1.2) });
+  const q = [['¿Quién supervisa', 'lo que señala?', C.blue], ['¿Qué datos usa', 'y quién los ve?', C.green], ['¿Quién responde', 'si se equivoca?', C.pink]];
+  q.forEach(([a, b, col], k) => { const t = d * (.22 + k * .24), y = 330 + k * 300;
+    drawArt(c, [box(110, y, 860, 250, { fill: col, w: 5 })], sm(t, t + .8, tau, easeOut), 300 + k);
+    txt(c, a, CX, y + 105, { size: 66, color: '#ffffff', prog: type(tau, t + .5, t + 1.2) });
+    txt(c, b, CX, y + 185, { size: 66, color: '#ffffff', prog: type(tau, t + .9, t + 1.6) }); });
+}
+function sCierre(c, tau) {
+  const d = D('cierre'); paper(c); push(c, tau, d);
+  drawArt(c, orb(CX, 560, 210), sm(.1, 1.6, tau, easeOut), 400);
+  const r = rng(9); for (let k = 0; k < 12; k++) { const a = k / 12 * TAU, p = sm(1 + k * .06, 1.6 + k * .06, tau);
+    drawArt(c, [ln(CX + Math.cos(a) * 240, 560 + Math.sin(a) * 240, CX + Math.cos(a) * (270 + r() * 60), 560 + Math.sin(a) * (270 + r() * 60), { w: 6, col: RAINBOW[k % 6] })], p, 410 + k); }
+  txt(c, 'Una IA que lo ve todo', CX, 960, { size: 72, prog: type(tau, 1.2, 2.4) });
+  txt(c, 'necesita reglas', CX, 1050, { size: 72, prog: type(tau, 2.2, 3.2) });
+  txt(c, 'que también se vean', CX, 1140, { size: 72, rainbow: true, prog: type(tau, 3, 4.2) });
+  txt(c, '¿Tú qué opinas?', CX, 1280, { size: 60, color: C.violet, prog: type(tau, d * .6, d * .6 + 1) });
+  resetT(c);                                   // credits outside the camera push, never cropped
+  txt(c, 'Voz sintética (Gemini TTS) · Animación hecha con IA (Claude)', CX, 1420, { size: 30, weight: 400, prog: type(tau, d - 3.2, d - 2.2) });
+  txt(c, 'Ilustración, no imágenes reales · Datos a 30 sep 2026', CX, 1470, { size: 30, weight: 400, prog: type(tau, d - 2.8, d - 1.8) });
+}
+
+const ORDER = ['ia', 'escala', 'datos', 'preguntas', 'cierre'];
+function score(ac, t0, dest) {
+  const m = ac.createGain(); m.gain.value = .5; m.connect(dest);
+  const total = ORDER.reduce((a, k) => a + D(k), 0); let at = 0; const starts = ORDER.map(k => { const s = at; at += D(k); return s; });
+  for (let t = .3; t < total - 1.5; t += .5) { const k = Math.round(t * 2); note(ac, m, pentHz(1, [0, 2, 4, 3, 1, 4, 2, 0][k % 8], 262), t0, t, 1, 'triangle', k % 4 ? .045 : .075); }
+  starts.slice(1).forEach(t => note(ac, m, 131, t0, t, 1.6, 'sine', .14));
+  [262, 330, 392].forEach(f => note(ac, m, f, t0, total - 4, 4, 'triangle', .06));
+}
+defineFilm({ format: { ar: '9:16', width: 1080 }, fps: 24, score, timeline: ORDER.map((id, k) =>
+  ({ name: id, dur: D(id), fn: [sIA, sEscala, sDatos, sPreguntas, sCierre][k] })) });
+</script>

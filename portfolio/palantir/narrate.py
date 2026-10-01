@@ -47,18 +47,21 @@ def pick_model(client: httpx.Client) -> str:
     return sorted(full, key=lambda n: (("preview" not in n), ver(n)))[-1]
 
 
-def synth(client: httpx.Client, model: str, voice: str, style: str, text: str) -> tuple[bytes, int]:
+def synth(client: httpx.Client, model: str, voice: str, text: str) -> tuple[bytes, int]:
+    # Only the words to speak: an instruction placed before them gets read aloud as part of the narration.
     body = {
-        "contents": [{"parts": [{"text": f"{style}\n\n{text}"}]}],
+        "contents": [{"parts": [{"text": text}]}],
         "generationConfig": {
             "responseModalities": ["AUDIO"],
             "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voice}}},
         },
     }
-    for attempt in range(5):
+    for attempt in range(8):
         r = client.post(f"{API}/models/{model}:generateContent", json=body)
         if r.status_code in (429, 500, 502, 503, 504):
-            time.sleep(10 * (attempt + 1))
+            wait = int(r.headers.get("retry-after", 0) or 0) or 20 * (attempt + 1)
+            print(f"    HTTP {r.status_code}, retry in {wait} s", flush=True)
+            time.sleep(wait)
             continue
         if r.status_code != 200:
             sys.exit(f"TTS failed: HTTP {r.status_code}: {r.text[:400]}")
@@ -81,9 +84,12 @@ def main() -> None:
     ap.add_argument("--max-pause", type=float, default=0.35, help="shorten pauses longer than this (s)")
     ap.add_argument("--tempo", type=float, default=1.0, help="speed factor (atempo, pitch kept)")
     ap.add_argument("--reuse", action="store_true", help="re-time the existing audio/raw takes, no API call")
+    ap.add_argument("--spec", default="sections.json")
+    ap.add_argument("--audio", default="audio")
+    ap.add_argument("--timing", default="timing.js")
     a = ap.parse_args()
-    spec = json.loads((HERE / "sections.json").read_text())
-    out = HERE / "audio"; raw = out / "raw"; raw.mkdir(parents=True, exist_ok=True)
+    spec = json.loads((HERE / a.spec).read_text())
+    out = HERE / a.audio; raw = out / "raw"; raw.mkdir(parents=True, exist_ok=True)
     rate = 24000
     if not a.reuse:
         key = os.environ.get("GEMINI_API_KEY")
@@ -93,7 +99,9 @@ def main() -> None:
             model = a.model or pick_model(client)
             print(f"model {model}, voice {a.voice}")
             for s in spec["sections"]:
-                pcm, rate = synth(client, model, a.voice, spec.get("voice_style", ""), s["text"])
+                if (raw / (s["id"] + ".wav")).exists():          # resume: keep takes already made
+                    print(f"  {s['id']:10s} (kept)"); continue
+                pcm, rate = synth(client, model, a.voice, s["text"])
                 d = write_wav(raw / (s["id"] + ".wav"), pcm, rate)
                 print(f"  {s['id']:10s} {d:6.1f} s raw")
     # tighten the delivery: long pauses down to --max-pause, optional tempo; pitch is preserved
@@ -118,7 +126,7 @@ def main() -> None:
                     "-c:a", "pcm_s16le", str(out / "narration.wav")], check=True)
     scenes = [round(d + GAP_S, 3) for d in durs]
     scenes[-1] = round(scenes[-1] + TAIL_S, 3)
-    (HERE / "timing.js").write_text(
+    (HERE / a.timing).write_text(
         "// written by narrate.py: scene durations = measured voice + pause\n"
         f"window.SECTION_DURS = {json.dumps(dict(zip([s['id'] for s in spec['sections']], scenes)))};\n")
     total = sum(scenes)
