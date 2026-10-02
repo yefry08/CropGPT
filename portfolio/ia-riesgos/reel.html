@@ -1,0 +1,37 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>TITLE</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{height:min(86vh,960px);width:auto;background:#fff;box-shadow:0 0 0 1px #333}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center}
+  button{background:#222;color:#ddd;border:1px solid #444;padding:4px 10px;cursor:pointer;font:inherit}
+  input[type=range]{width:320px}
+</style>
+<canvas id="c"></canvas>
+<script src="timing-reel.js"></script>
+<script src="core.js"></script>
+<script src="kit.js"></script>
+<script>
+/* BRIEF: topic, length, palette, facts used (with sources in descripcion.md), facts left out and why.
+   One scene per section in sections.json; each lasts exactly as long as its voice (timing.js).
+   Coordinates are screen pixels (1080x1920); keep art above y≈1300, captions use the bottom band. */
+setPalette('blue-red');                       // 'rainbow' | 'blue-red' | 'ink'
+
+function sIntro(c, tau) {
+  const d = D('intro'); paper(c); push(c, tau, d);
+  txt(c, 'Título', CX, 260, { size: 120, rainbow: true, prog: type(tau, .2, 1.4) });
+  vortex(c, CX, 700, 200, tau, sm(1.2, 4, tau), C.blue);
+  card(c, 240, 1000, 600, 200, C.lred, C.red, sm(d * .3, d * .3 + 1, tau, easeOut), 10);
+  txt(c, 'dato clave', CX, 1120, { size: 70, color: C.red, prog: type(tau, d * .32, d * .32 + 1) });
+  caption(c, ['Una frase corta que resume la sección'], tau, .8, 1.8);
+}
+function sCierre(c, tau) {
+  const d = D('cierre'), end = d - 6; paper(c); push(c, tau, d);
+  txt(c, '¿Tú qué opinas?', CX, 800, { size: 90, color: C.violet || C.blue, prog: type(tau, .4, 1.6) });
+  resetT(c);
+  txt(c, 'Voz sintética (Gemini TTS) · Animación hecha con IA (Claude)', CX, 1400, { size: 30, weight: 400, prog: type(tau, end, end + 1.4) });
+  txt(c, 'Ilustración · Fuentes en la descripción · Datos a FECHA', CX, 1450, { size: 30, weight: 400, prog: type(tau, end + .8, end + 2.2) });
+}
+socialFilm('9:16', [['intro', sIntro], ['cierre', sCierre]]);
+</script>

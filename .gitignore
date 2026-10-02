@@ -35,3 +35,8 @@ portfolio/navier-stokes/audio/
 portfolio/navier-stokes/*.mp4
 portfolio/navier-stokes/*.log
 portfolio/navier-stokes/audio-reel/
+portfolio/ia-riesgos/audio
+portfolio/ia-riesgos/audio-reel
+portfolio/ia-riesgos/*.mp4
+portfolio/ia-riesgos/*.log
+portfolio/ia-riesgos/out

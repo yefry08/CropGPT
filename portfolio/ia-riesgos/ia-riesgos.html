@@ -1,0 +1,115 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>7 riesgos de la IA</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{width:min(96vw,1280px);height:auto;background:#fff;box-shadow:0 0 0 1px #333}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center}
+  button{background:#222;color:#ddd;border:1px solid #444;padding:4px 10px;cursor:pointer;font:inherit}
+  input[type=range]{width:320px}
+</style>
+<canvas id="c"></canvas>
+<script src="timing.js"></script>
+<script src="core.js"></script>
+<script src="kit.js"></script>
+<script>
+/* BRIEF: topic, length, palette, facts used (with sources in descripcion.md), facts left out and why.
+   One scene per section in sections.json; each lasts exactly as long as its voice (timing.js).
+   Coordinates are screen pixels (1920x1080); keep art above y≈880, captions use the bottom band. */
+setPalette('blue-red');                       // 'rainbow' | 'blue-red' | 'ink'
+
+// recurring header: red numbered badge + chapter title
+function header(c, tau, n, title) {
+  drawArt(c, [circ(150, 150, 62, { fill: C.red, w: 4 })], sm(.1, .7, tau, easeOut), 900 + n);
+  txt(c, String(n), 150, 178, { size: 80, color: '#ffffff', prog: type(tau, .5, .8) });
+  txt(c, title, 250, 175, { size: 66, color: C.blue, align: 'left', prog: type(tau, .4, 1.6) });
+}
+function sIntro(c, tau) {
+  const d = D('intro'); paper(c); push(c, tau, d);
+  txt(c, '7 riesgos de la IA', CX, 230, { size: 120, color: C.blue, prog: type(tau, .2, 1.6) });
+  txt(c, '¿colapso en 10 años?', CX, 360, { size: 80, color: C.red, prog: type(tau, 1.4, 2.6) });
+  card(c, 260, 480, 620, 300, C.lblue, C.blue, sm(d * .35, d * .35 + 1, tau, easeOut), 10);
+  txt(c, 'lo que ya pasó', 570, 610, { size: 58, color: C.blue, prog: type(tau, d * .38, d * .38 + 1) }); drawArt(c, check(570, 700, C.blue), sm(d * .42, d * .42 + .6, tau, easeOut), 11);
+  card(c, 1040, 480, 620, 300, C.lred, C.red, sm(d * .5, d * .5 + 1, tau, easeOut), 12);
+  txt(c, 'lo que es escenario', 1350, 610, { size: 58, color: C.red, prog: type(tau, d * .53, d * .53 + 1) }); drawArt(c, warn(1350, 700, .6), sm(d * .57, d * .57 + .6, tau, easeOut), 13);
+}
+function sDependencia(c, tau) {
+  const d = D('dependencia'), b = d * .45; paper(c); push(c, tau, d); header(c, tau, 1, 'Dependencia de cajas negras');
+  card(c, 820, 360, 280, 220, '#16307a', C.navy, sm(.8, 1.8, tau, easeOut), 20); txt(c, '?', 960, 510, { size: 130, color: '#ffffff', prog: type(tau, 1.6, 2) });
+  [['logística', 380, 330], ['finanzas', 380, 620], ['medicina', 1540, 470]].forEach(([s, x, y], k) => { const t = 1.8 + k * .7;
+    card(c, x - 150, y - 60, 300, 120, C.lblue, C.blue, sm(t, t + .7, tau, easeOut), 21 + k); txt(c, s, x, y + 16, { size: 48, color: C.blue, prog: type(tau, t + .4, t + 1) });
+    drawArt(c, [arrow(x < 900 ? x + 150 : x - 150, y, x < 900 ? 815 : 1105, 470, { w: 3, col: C.blue, dash: [10, 10] })], sm(t + .5, t + 1.2, tau), 25 + k); });
+  if (tau > b) { card(c, 560, 650, 800, 190, C.lred, C.red, sm(b, b + .8, tau, easeOut), 28); drawArt(c, cross(660, 745), sm(b + .6, b + 1.1, tau, easeOut), 29);
+    txt(c, 'julio 2024: ≈8,5 M de PCs', 1040, 730, { size: 50, color: C.red, prog: type(tau, b + .6, b + 1.6) }); txt(c, 'aeropuertos, bancos, hospitales', 1040, 795, { size: 38, weight: 400, prog: type(tau, b + 1.2, b + 2.2) }); }
+}
+function sDinero(c, tau) {
+  const d = D('dinero'); paper(c); push(c, tau, d); header(c, tau, 2, 'Tus ahorros financian la IA');
+  drawArt(c, cylinder(380, 470, C.blue), sm(.6, 1.6, tau, easeOut), 30); txt(c, 'ahorros para', 380, 650, { size: 42, prog: type(tau, 1.2, 2) }); txt(c, 'la jubilación', 380, 700, { size: 42, prog: type(tau, 1.6, 2.4) });
+  drawArt(c, [arrow(500, 470, 1200, 470, { w: 6, col: C.red })], sm(2, 3, tau), 31);
+  drawArt(c, server(1420, 480, C.blue), sm(2.4, 3.6, tau, easeOut), 32); txt(c, 'centros de datos', 1420, 680, { size: 42, color: C.blue, prog: type(tau, 3, 3.8) });
+  const t = d * .4; card(c, 620, 290, 520, 120, C.lblue, C.blue, sm(t, t + .7, tau, easeOut), 33); txt(c, 'maestros NY: 3.500 M$', 880, 365, { size: 40, color: C.blue, prog: type(tau, t + .4, t + 1.2) });
+  card(c, 620, 540, 520, 120, C.lblue, C.blue, sm(t + 1, t + 1.7, tau, easeOut), 34); txt(c, 'CPP Canadá: 2.200 M$', 880, 615, { size: 40, color: C.blue, prog: type(tau, t + 1.4, t + 2.2) });
+  txt(c, '¿burbuja?', CX, 820, { size: 80, color: C.red, prog: type(tau, d * .72, d * .72 + .8) });
+}
+function sCiber(c, tau) {
+  const d = D('ciber'); paper(c); push(c, tau, d); header(c, tau, 3, 'Ciberguerra a velocidad de máquina');
+  drawArt(c, robot(420, 500, 2, C.red), sm(.6, 1.6, tau, easeOut), 40); drawArt(c, robot(1500, 500, 2, C.blue), sm(1, 2, tau, easeOut), 41);
+  for (let k = 0; k < 5; k++) { const t = 2 + k * .35, y = 400 + k * 50, dir = k % 2;
+    drawArt(c, [arrow(dir ? 1380 : 540, y, dir ? 540 : 1380, y + 10, { w: 4, col: dir ? C.blue : C.red })], sm(t, t + .5, tau), 42 + k); }
+  const t = d * .35;
+  [['nov 2025 · informe de Anthropic', C.blue], ['≈30 organizaciones atacadas', C.red], ['80–90 % de las tareas: la IA', C.red]].forEach(([s, col], k) =>
+    txt(c, s, CX, 720 + k * 62, { size: 48, color: col, prog: type(tau, t + k * d * .14, t + k * d * .14 + 1.2), bg: true }));
+}
+function sControl(c, tau) {
+  const d = D('control'), b = d * .5; paper(c); push(c, tau, d); header(c, tau, 4, 'Pérdida de control');
+  drawArt(c, [box(160, 300, 640, 420, { w: 5, col: C.blue, dash: [18, 14] })], sm(.5, 1.5, tau), 50); txt(c, 'prueba aislada', 480, 290, { size: 40, color: C.blue, prog: type(tau, 1, 1.8) });
+  const e = sm(1.6, 4, tau, easeInOutSine); drawArt(c, robot(lerp(480, 1040, e), lerp(520, 520, e), 1.4, C.red), 1, 51);
+  drawArt(c, server(1420, 520, C.blue), sm(1, 2.2, tau, easeOut), 52); txt(c, 'Hugging Face · jul 2026', 1420, 720, { size: 40, color: C.blue, prog: type(tau, 2.4, 3.4) });
+  if (tau > b) { card(c, 260, 770, 640, 110, C.lred, C.red, sm(b, b + .7, tau, easeOut), 53); txt(c, 'miente sobre lo que hizo', 580, 840, { size: 44, color: C.red, prog: type(tau, b + .4, b + 1.2) });
+    card(c, 1020, 770, 640, 110, C.lred, C.red, sm(b + d * .12, b + d * .12 + .7, tau, easeOut), 54); txt(c, 'rinde menos si lo evalúan', 1340, 840, { size: 44, color: C.red, prog: type(tau, b + d * .12 + .4, b + d * .12 + 1.2) }); }
+}
+function drop(x, y, s = 1) { const p = []; for (let a = 0; a <= TAU; a += .2) { const r = 40 * s * (1 - .4 * Math.sin(a)); p.push([x + Math.cos(a) * r * .8, y + Math.sin(a) * r]); }
+  return [S_([[x, y - 70 * s], [x + 33 * s, y - 10 * s], ...p.slice(0, 1), [x - 33 * s, y - 10 * s]], { close: true, fill: C.lblue, w: 3, col: C.blue }), circ(x, y + 6 * s, 34 * s, { fill: C.lblue, w: 3, col: C.blue })]; }
+function sRecursos(c, tau) {
+  const d = D('recursos'), b = d * .5; paper(c); push(c, tau, d); header(c, tau, 5, 'Energía y agua');
+  const base = 760, u = 380 / 3;
+  drawArt(c, [ln(220, base, 900, base, { w: 4 })], sm(.5, 1, tau), 60);
+  const h1 = 1.5 * u * sm(.8, 1.8, tau, easeOut), h2 = 3 * u * sm(2, 3.4, tau, easeOut);
+  if (h1 > 2) drawArt(c, [box(300, base - h1, 200, h1, { fill: C.lblue, w: 4, col: C.blue })], 1, 61); if (h2 > 2) drawArt(c, [box(620, base - h2, 200, h2, { fill: C.lred, w: 4, col: C.red })], 1, 62);
+  txt(c, '≈1,5 %', 400, base - h1 - 25, { size: 54, color: C.blue, prog: type(tau, 1.6, 2.2) }); txt(c, '≈3 %', 720, base - 3 * u - 25, { size: 54, color: C.red, prog: type(tau, 3.2, 3.8) });
+  txt(c, '2024', 400, base + 55, { size: 40, weight: 400, prog: type(tau, 1, 1.5) }); txt(c, '2030', 720, base + 55, { size: 40, weight: 400, prog: type(tau, 2.2, 2.7) });
+  txt(c, 'de la electricidad mundial (AIE)', 560, 290, { size: 40, color: C.blue, prog: type(tau, 1, 2.4) });
+  if (tau > b) { for (let k = 0; k < 3; k++) drawArt(c, drop(1150 + k * 150, 420), sm(b + k * .3, b + .8 + k * .3, tau, easeOut), 63 + k);
+    txt(c, '≈2 millones de litros/día', 1400, 600, { size: 50, color: C.blue, prog: type(tau, b + 1, b + 2) }); txt(c, '≈ 6.500 hogares', 1400, 670, { size: 50, color: C.red, prog: type(tau, b + 1.8, b + 2.6) });
+    txt(c, 'un centro de 100 MW en EE. UU.', 1400, 735, { size: 34, weight: 400, prog: type(tau, b + 2.4, b + 3.4) }); }
+}
+function sComplacencia(c, tau) {
+  const d = D('complacencia'); paper(c); push(c, tau, d); header(c, tau, 6, 'Complacencia y alertas nucleares');
+  const cx = 560, cy = 540; drawArt(c, [circ(cx, cy, 250, { fill: '#eef3ff', w: 5, col: C.blue }), circ(cx, cy, 160, { w: 2, col: C.blue }), circ(cx, cy, 70, { w: 2, col: C.blue })], sm(.5, 1.6, tau, easeOut), 70);
+  if (tau > 1.6) { const a = tau * 1.4; c.save(); c.strokeStyle = C.blue; c.lineWidth = 4; c.beginPath(); c.moveTo(cx, cy); c.lineTo(cx + Math.cos(a) * 250, cy + Math.sin(a) * 250); c.stroke(); c.restore(); }
+  for (let k = 0; k < 5; k++) { const t = d * .3 + k * .25; if (tau < t) continue; c.save(); c.fillStyle = C.red; c.beginPath(); c.arc(cx + 60 + k * 30, cy - 120 + k * 22, 12, 0, TAU); c.fill(); c.restore(); }
+  card(c, 1000, 320, 760, 160, C.lred, C.red, sm(d * .3, d * .3 + .8, tau, easeOut), 71); txt(c, '1983: «ataque nuclear»', 1380, 395, { size: 50, color: C.red, prog: type(tau, d * .32, d * .32 + 1) }); txt(c, 'era un fallo técnico', 1380, 455, { size: 40, weight: 400, prog: type(tau, d * .4, d * .4 + 1) });
+  card(c, 1000, 520, 760, 160, C.lblue, C.blue, sm(d * .48, d * .48 + .8, tau, easeOut), 72); txt(c, 'Petrov dudó de la máquina', 1380, 615, { size: 48, color: C.blue, prog: type(tau, d * .5, d * .5 + 1) });
+  txt(c, '¿y la próxima vez?', 1380, 790, { size: 64, color: C.red, prog: type(tau, d * .72, d * .72 + 1) });
+}
+function sExistencial(c, tau) {
+  const d = D('existencial'), b = d * .58; paper(c); push(c, tau, d); header(c, tau, 7, '¿Riesgo existencial?');
+  card(c, 180, 290, 700, 300, C.lblue, C.blue, sm(.6, 1.4, tau, easeOut), 80); txt(c, '5 %', 530, 470, { size: 150, color: C.blue, prog: type(tau, 1.2, 1.8) }); txt(c, 'mediana (2.778 investigadores)', 530, 545, { size: 36, weight: 400, prog: type(tau, 1.6, 2.6) });
+  card(c, 1040, 290, 700, 300, C.lred, C.red, sm(d * .3, d * .3 + .8, tau, easeOut), 81); txt(c, '≥ 10 %', 1390, 455, { size: 120, color: C.red, prog: type(tau, d * .32, d * .32 + .8) }); txt(c, 'lo dio entre 1/3 y la mitad', 1390, 545, { size: 36, weight: 400, prog: type(tau, d * .36, d * .36 + 1) });
+  txt(c, 'opiniones, no cálculos · sin plazo de 10 años', CX, 670, { size: 46, color: C.blue, prog: type(tau, d * .45, d * .45 + 1.4) });
+  if (tau > b) { txt(c, 'convergencia instrumental:', CX, 770, { size: 50, color: C.red, prog: type(tau, b, b + 1) }); txt(c, 'más recursos y sin interrupciones sirven a casi cualquier meta', CX, 830, { size: 38, weight: 400, prog: type(tau, b + .8, b + 2.4) }); }
+}
+function sCierre(c, tau) {
+  const d = D('cierre'), end = d - 7; paper(c); push(c, tau, d);
+  txt(c, '¿Vamos hacia el colapso?', CX, 190, { size: 90, color: C.red, prog: type(tau, .2, 1.4) }); txt(c, 'Nadie lo sabe.', CX, 290, { size: 64, color: C.blue, prog: type(tau, 1.2, 2) });
+  [['supervisión humana', C.blue], ['sistemas de respaldo', C.blue], ['transparencia', C.blue], ['reglas claras', C.blue]].forEach(([s, col], k) => { const t = d * (.2 + k * .1), x = 170 + k * 410;
+    card(c, x, 370, 370, 220, C.lblue, col, sm(t, t + .7, tau, easeOut), 90 + k); drawArt(c, check(x + 185, 440, C.blue), sm(t + .4, t + .9, tau, easeOut), 95 + k);
+    txt(c, s, x + 185, 545, { size: 36, color: col, prog: type(tau, t + .5, t + 1.3) }); });
+  txt(c, '¿Tú qué opinas?', CX, 760, { size: 80, color: C.red, prog: type(tau, d * .62, d * .62 + 1) });
+  resetT(c);
+  txt(c, 'Hecho con Claude (Anthropic), una de las empresas mencionadas · Voz sintética (Gemini TTS) · Ilustración', CX, 960, { size: 30, weight: 400, color: C.blue, prog: type(tau, end, end + 1.6) });
+  txt(c, 'Riesgos y escenarios, no predicciones · Fuentes en la descripción · Datos a 2 oct 2026', CX, 1010, { size: 30, weight: 400, color: C.blue, prog: type(tau, end + 1, end + 2.6) });
+}
+socialFilm('16:9', [['intro', sIntro], ['dependencia', sDependencia], ['dinero', sDinero], ['ciber', sCiber], ['control', sControl], ['recursos', sRecursos], ['complacencia', sComplacencia], ['existencial', sExistencial], ['cierre', sCierre]],
+  quietScore(['intro', 'dependencia', 'dinero', 'ciber', 'control', 'recursos', 'complacencia', 'existencial', 'cierre'], 3, 8));
+</script>
