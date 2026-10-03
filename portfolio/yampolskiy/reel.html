@@ -1,0 +1,60 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Reel: superinteligencia</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{height:min(86vh,960px);width:auto;background:#fff;box-shadow:0 0 0 1px #333}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center}
+  button{background:#222;color:#ddd;border:1px solid #444;padding:4px 10px;cursor:pointer;font:inherit}
+  input[type=range]{width:320px}
+</style>
+<canvas id="c"></canvas>
+<script src="timing-reel.js"></script>
+<script src="core.js"></script>
+<script src="kit.js"></script>
+<script>
+/* BRIEF: topic, length, palette, facts used (with sources in descripcion.md), facts left out and why.
+   One scene per section in sections.json; each lasts exactly as long as its voice (timing.js).
+   Coordinates are screen pixels (1080x1920); keep art above y≈1300, captions use the bottom band. */
+setPalette('rainbow');                       // 'rainbow' | 'blue-red' | 'ink'
+
+function sHook(c, tau) {
+  const d = D('hook'); paper(c); push(c, tau, d);
+  card(c, 110, 170, 860, 200, C.lblue, C.blue, sm(.2, 1, tau, easeOut), 10); txt(c, 'Roman Yampolskiy', CX, 265, { size: 70, color: C.blue, prog: type(tau, .5, 1.4) }); txt(c, 'investigador de seguridad de IA', CX, 335, { size: 40, weight: 400, prog: type(tau, 1, 2) });
+  card(c, 110, 450, 860, 480, C.lred, C.red, sm(d * .3, d * .3 + .7, tau, easeOut), 11);
+  txt(c, '> 99 %', CX, 700, { size: 210, color: C.red, prog: type(tau, d * .35, d * .35 + .7) }); txt(c, 'su estimación de extinción', CX, 820, { size: 46, weight: 400, prog: type(tau, d * .45, d * .45 + 1) }); txt(c, 'en 100 años', CX, 880, { size: 46, weight: 400, prog: type(tau, d * .5, d * .5 + 1) });
+  txt(c, '¿Por qué?', CX, 1100, { size: 96, rainbow: true, prog: type(tau, d * .8, d * .8 + .6) });
+}
+function sRecursiva(c, tau) {
+  const d = D('recursiva'); paper(c); push(c, tau, d);
+  txt(c, 'mejora recursiva', CX, 200, { size: 90, rainbow: true, prog: type(tau, .1, 1) });
+  for (let k = 0; k < 4; k++) { const t = d * (.15 + k * .12), y = 360 + k * 230, s = .9 + k * .5;
+    drawArt(c, robot(CX, y, s, RAINBOW[k]), sm(t, t + .6, tau, easeOut), 20 + k);
+    if (k < 3) drawArt(c, [arrow(CX + 120, y + 20, CX + 120, y + 190, { w: 5, col: C.red })], sm(t + .4, t + .8, tau), 25 + k); }
+  txt(c, '«ya no le importaríamos»', CX, 1250, { size: 56, color: C.red, prog: type(tau, d * .7, d * .7 + 1) });
+}
+function sFiltros(c, tau) {
+  const d = D('filtros'); paper(c); push(c, tau, d);
+  card(c, 110, 170, 860, 300, C.lred, C.red, sm(.2, .9, tau, easeOut), 30); txt(c, 'Yampolskiy:', CX, 270, { size: 56, color: C.red, prog: type(tau, .4, 1.2) });
+  txt(c, 'la seguridad actual', CX, 350, { size: 52, prog: type(tau, .8, 1.6) }); txt(c, 'son sobre todo filtros', CX, 420, { size: 52, prog: type(tau, 1.2, 2) });
+  card(c, 110, 540, 860, 420, '#e3f7ec', C.green, sm(d * .35, d * .35 + .8, tau, easeOut), 31); txt(c, 'laboratorios:', CX, 640, { size: 56, color: C.green, prog: type(tau, d * .38, d * .38 + .8) });
+  txt(c, 'entrenar valores', CX, 730, { size: 50, prog: type(tau, d * .45, d * .45 + 1) }); txt(c, 'interpretabilidad', CX, 810, { size: 50, prog: type(tau, d * .52, d * .52 + 1) });
+  txt(c, '…problema abierto', CX, 900, { size: 50, color: C.orange, prog: type(tau, d * .7, d * .7 + 1) });
+}
+function sContra(c, tau) {
+  const d = D('contra'); paper(c); push(c, tau, d);
+  card(c, 110, 170, 860, 330, C.lblue, C.blue, sm(.2, .9, tau, easeOut), 40); txt(c, 'Yann LeCun', CX, 280, { size: 70, color: C.blue, prog: type(tau, .4, 1.2) }); txt(c, '«cifras inventadas»', CX, 400, { size: 60, color: C.blue, prog: type(tau, .9, 1.8) });
+  card(c, 110, 580, 860, 460, '#efe6ff', C.violet, sm(d * .45, d * .45 + .8, tau, easeOut), 41); txt(c, 'encuesta a investigadores', CX, 680, { size: 48, color: C.violet, prog: type(tau, d * .48, d * .48 + 1) });
+  txt(c, '5 %', CX, 900, { size: 220, color: C.violet, prog: type(tau, d * .58, d * .58 + .6) }); txt(c, 'mediana', CX, 990, { size: 46, weight: 400, prog: type(tau, d * .62, d * .62 + .8) });
+}
+function sCierre(c, tau) {
+  const d = D('cierre'), end = d - 3.8; paper(c); push(c, tau, d);
+  txt(c, '¿Quién tiene', CX, 360, { size: 110, rainbow: true, prog: type(tau, .1, 1) }); txt(c, 'razón?', CX, 500, { size: 110, rainbow: true, prog: type(tau, .7, 1.4) });
+  txt(c, 'Nadie puede demostrarlo', CX, 700, { size: 60, prog: type(tau, d * .15, d * .15 + 1) }); txt(c, 'todavía', CX, 780, { size: 60, prog: type(tau, d * .22, d * .22 + .8) });
+  txt(c, '¿Tú qué opinas?', CX, 1000, { size: 76, color: C.violet, prog: type(tau, d * .45, d * .45 + 1) });
+  resetT(c);
+  txt(c, 'Hecho con Claude (Anthropic) · Voz sintética (Gemini TTS)', CX, 1360, { size: 30, weight: 400, prog: type(tau, end, end + 1.2) });
+  txt(c, 'Opiniones atribuidas · Fuentes en el video largo', CX, 1410, { size: 30, weight: 400, prog: type(tau, end + .5, end + 1.7) });
+}
+socialFilm('9:16', [['hook', sHook], ['recursiva', sRecursiva], ['filtros', sFiltros], ['contra', sContra], ['cierre', sCierre]]);
+</script>

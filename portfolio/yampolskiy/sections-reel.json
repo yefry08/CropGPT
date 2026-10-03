@@ -1,0 +1,11 @@
+{
+  "title": "Reel: ¿podemos controlar una superinteligencia?",
+  "language": "es",
+  "sections": [
+    {"id": "hook", "chapter": "Gancho", "text": "Para el investigador Roman Yampolskiy, la probabilidad de que la inteligencia artificial acabe con la humanidad en cien años supera el noventa y nueve por ciento. ¿Por qué?"},
+    {"id": "recursiva", "chapter": "Mejora recursiva", "text": "Por la mejora recursiva: una inteligencia artificial que diseña a otra mejor, que diseña a otra mejor. Llegado ese punto, dice, ya no le importaríamos."},
+    {"id": "filtros", "chapter": "Filtros", "text": "Y critica que la seguridad actual sean sobre todo filtros. Los laboratorios responden que también entrenan valores y estudian cómo piensan los modelos, aunque admiten que el problema sigue abierto."},
+    {"id": "contra", "chapter": "Contrapunto", "text": "Yann LeCun cree que esas cifras son inventadas. Y en la gran encuesta a investigadores, la estimación mediana fue del cinco por ciento."},
+    {"id": "cierre", "chapter": "Cierre", "text": "Nadie puede demostrar todavía quién tiene razón. Este video se hizo con Claude, de Anthropic. ¿Tú qué opinas?"}
+  ]
+}
