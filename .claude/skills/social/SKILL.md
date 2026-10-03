@@ -13,6 +13,10 @@ description: >-
 
 Everything lives in `portfolio/<slug>/`. Spanish is the default language; follow the user's language.
 
+**Deliverables, every time:** the long 16:9 video **and** the 60 s 9:16 reel, unless the user asks for
+only one. Plan the voice quota for both (long ≈ 8–9 requests + reel 5) and use the same TTS model for
+both when the quota allows, so they sound alike; otherwise say which model each one used.
+
 ## 1. Verify first (mandatory)
 Read [references/fact-check.md](references/fact-check.md). Search every claim, tell the user in a short table
 what was confirmed, corrected or left out, and only then write. Allegations are labelled and answered;
