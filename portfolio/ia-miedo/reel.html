@@ -1,0 +1,50 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Reel: ¿apocalipsis o marketing?</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{height:min(86vh,960px);width:auto;background:#fff;box-shadow:0 0 0 1px #333}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center}
+  button{background:#222;color:#ddd;border:1px solid #444;padding:4px 10px;cursor:pointer;font:inherit}
+  input[type=range]{width:320px}
+</style>
+<canvas id="c"></canvas>
+<script src="timing-reel.js"></script>
+<script src="core.js"></script>
+<script src="kit.js"></script>
+<script>
+/* BRIEF: topic, length, palette, facts used (with sources in descripcion.md), facts left out and why.
+   One scene per section in sections.json; each lasts exactly as long as its voice (timing.js).
+   Coordinates are screen pixels (1080x1920); keep art above y≈1300, captions use the bottom band. */
+setPalette('neon');                       // 'rainbow' | 'blue-red' | 'ink'
+
+// ---------- neon beats: one idea per beat, hard cuts between beats ----------
+function makeClock(order) { const st = {}; let at = 0; order.forEach(k => { st[k] = at; at += D(k); }); return { st, total: at }; }
+// beat index for tau inside a section split at fractions fr (e.g. [.25,.5,.8])
+function beatOf(tau, d, fr) { let i = 0; while (i < fr.length && tau >= d * fr[i]) i++; return i; }
+function since(tau, d, fr, i) { return tau - (i ? d * fr[i - 1] : 0); }
+function hueBloom(c, f, x = CX, y = CY, r = 900) { bloom(c, x, y, r, spectrum(f), .32); }
+function label(c, s, x, y, t, size = 40, col = C.grey) { typeGlow(c, s, x, y, clamp(t * 2, 0, 1), { size, color: col, glow: 6, accent: col, weight: 400 }); }
+const ORDER = ['r1', 'r2'], CLK = makeClock(ORDER);
+const F = (id, tau) => (CLK.st[id] + tau) / CLK.total;
+function sR1(c, tau) {
+  const d = D('r1'), fr = [.24, .44, .66, .84], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hueBloom(c, F('r1', tau), CX, 760, 900);
+  if (b === 0) { label(c, 'RENUNCIA EN ANTHROPIC', CX, 560, t, 44, C.cyan); typeGlow(c, '«podría', CX, 760, (t - .3) / .6, { size: 120 }); typeGlow(c, 'matarnos', CX, 900, (t - .8) / .6, { size: 120 }); typeGlow(c, 'a todos»', CX, 1040, (t - 1.3) / .6, { size: 120, accent: C.magenta }); }
+  if (b === 1) { shockwave(c, CX, 760, t, 0, C.magenta); slam(c, '> 10 %', CX, 840, t * 1.6, { size: 230, color: C.magenta }); label(c, 'riesgo de extinción en 10 años', CX, 960, t - .6, 44); label(c, 'según quien dirige la alineación', CX, 1020, t - 1, 38); }
+  if (b === 2) { label(c, 'LO DEMOSTRADO', CX, 520, t, 46, C.cyan); glassTile(c, 140, 600, 800, 200, C.blue, t * 1.6); typeGlow(c, 'se copian en pruebas', CX, 720, (t - .4) / 1, { size: 62 });
+    glassTile(c, 140, 850, 800, 200, C.violet, (t - 1) * 1.6); typeGlow(c, 'trampa en un examen', CX, 970, (t - 1.4) / 1, { size: 62, accent: C.violet }); }
+  if (b === 3) { typeGlow(c, 'Sin conciencia.', CX, 760, t / .8, { size: 104 }); typeGlow(c, 'Fallo de objetivos.', CX, 900, (t - .9) / .9, { size: 92, accent: C.pink }); }
+  if (b === 4) typeGlow(c, '¿Es real?', CX, 840, t / .6, { size: 130, accent: C.violet });
+}
+function sR2(c, tau) {
+  const d = D('r2'), fr = [.3, .55, .72], b = beatOf(tau, d, fr), t = since(tau, d, fr, b), end = d - 4; blackFrame(c); hueBloom(c, F('r2', tau), CX, 760, 900);
+  if (b === 0) { label(c, 'LO DISCUTIDO', CX, 560, t, 46, C.magenta); slam(c, 'captura', CX, 800, (t - .3) * 1.5, { size: 150, color: C.magenta }); slam(c, 'regulatoria', CX, 960, (t - .7) * 1.5, { size: 120, color: C.magenta }); label(c, 'Andrew Ng · Yann LeCun', CX, 1080, t - 1.3, 42); }
+  if (b === 1) { label(c, 'DARIO AMODEI', CX, 600, t, 46, C.cyan); glassTile(c, 140, 680, 800, 260, C.cyan, t * 1.6); typeGlow(c, 'frenar con', CX, 790, (t - .3) / .7, { size: 70 }); typeGlow(c, 'evaluadores independientes', CX, 880, (t - .8) / 1.2, { size: 56, accent: C.cyan }); }
+  if (b === 2) { typeGlow(c, 'EE. UU. y China:', CX, 780, t / .8, { size: 84 }); typeGlow(c, 'solo hablar', CX, 900, (t - .8) / .7, { size: 92, accent: C.orange }); }
+  if (b === 3) { typeGlow(c, '¿Apocalipsis', CX, 760, t / .7, { size: 110 }); typeGlow(c, 'o marketing?', CX, 900, (t - .7) / .7, { size: 110, accent: C.magenta }); label(c, '¿Tú qué opinas?', CX, 1060, t - 1.6, 56, C.pink); }
+  resetT(c);
+  label(c, 'Hecho con Claude (Anthropic) · Voz sintética (Gemini TTS)', CX, 1380, (tau - end) / 1.5, 30, C.grey);
+  label(c, 'Opiniones atribuidas · Fuentes en el video largo', CX, 1430, (tau - end - .6) / 1.5, 30, C.grey);
+}
+socialFilm('9:16', [['r1', sR1], ['r2', sR2]]);
+</script>

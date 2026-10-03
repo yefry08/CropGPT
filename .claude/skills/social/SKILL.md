@@ -27,7 +27,11 @@ conflicts of interest (Anthropic) are disclosed.
 bash .claude/skills/social/scripts/new_project.sh <slug> [rainbow|blue-red|ink]
 ```
 Palettes: `rainbow` = white paper, six inks · `blue-red` = only blue and red on white · `ink` = warm paper,
-dark ink, violet/red. Use what the user asked for ("fondo blanco y más colores" → rainbow).
+dark ink, violet/red · `neon` = the "motion promo" register (pure black, light as the subject, neon spectrum
+cyan → violet → magenta across the film, typed lines whose newest letter flashes, rings, shockwaves, glass
+tiles: `blackFrame`, `typeGlow`, `slam`, `ring`, `shockwave`, `glassTile`, `bloom`, `spectrum(f)`). Use what the
+user asked for ("fondo blanco y más colores" → rainbow; "neón / Apple / synthwave / motion prompt" → neon).
+In neon: one idea per beat, big and centred, ≤5 words on screen, hard cuts, no hand-drawn wobble on text.
 
 ## 3. Script → `sections.json`
 - One section per scene, each `{ "id", "chapter", "text" }`. Original wording (≤10% overlap with any

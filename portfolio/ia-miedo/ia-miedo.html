@@ -1,0 +1,82 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>¿Apocalipsis o marketing?</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{width:min(96vw,1280px);height:auto;background:#fff;box-shadow:0 0 0 1px #333}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center}
+  button{background:#222;color:#ddd;border:1px solid #444;padding:4px 10px;cursor:pointer;font:inherit}
+  input[type=range]{width:320px}
+</style>
+<canvas id="c"></canvas>
+<script src="timing.js"></script>
+<script src="core.js"></script>
+<script src="kit.js"></script>
+<script>
+/* BRIEF: topic, length, palette, facts used (with sources in descripcion.md), facts left out and why.
+   One scene per section in sections.json; each lasts exactly as long as its voice (timing.js).
+   Coordinates are screen pixels (1920x1080); keep art above y≈880, captions use the bottom band. */
+setPalette('neon');                       // 'rainbow' | 'blue-red' | 'ink'
+
+// ---------- neon beats: one idea per beat, hard cuts between beats ----------
+function makeClock(order) { const st = {}; let at = 0; order.forEach(k => { st[k] = at; at += D(k); }); return { st, total: at }; }
+// beat index for tau inside a section split at fractions fr (e.g. [.25,.5,.8])
+function beatOf(tau, d, fr) { let i = 0; while (i < fr.length && tau >= d * fr[i]) i++; return i; }
+function since(tau, d, fr, i) { return tau - (i ? d * fr[i - 1] : 0); }
+function hueBloom(c, f, x = CX, y = CY, r = 900) { bloom(c, x, y, r, spectrum(f), .32); }
+function label(c, s, x, y, t, size = 40, col = C.grey) { typeGlow(c, s, x, y, clamp(t * 2, 0, 1), { size, color: col, glow: 6, accent: col, weight: 400 }); }
+const ORDER = ['aviso', 'evidencia', 'intereses', 'freno', 'geopolitica'], CLK = makeClock(ORDER);
+const F = (id, tau) => (CLK.st[id] + tau) / CLK.total;
+function sAviso(c, tau) {
+  const d = D('aviso'), fr = [.22, .48, .62, .86], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hueBloom(c, F('aviso', tau));
+  if (b === 0) { label(c, 'SEPTIEMBRE 2026', CX, 380, t, 44, C.cyan); glassTile(c, 560, 450, 800, 170, C.cyan, t * 2); typeGlow(c, 'Renuncia en Anthropic', CX, 560, (t - .4) / 1.6, { size: 64 }); }
+  if (b === 1) { typeGlow(c, '«podría matarnos', CX, 470, t / 1.6, { size: 110 }); typeGlow(c, 'a todos»', CX, 610, (t - 1.4) / 1, { size: 110, accent: C.magenta }); label(c, 'Jacob Coxon · ex investigador', CX, 720, t - 2, 38); }
+  if (b === 2) { ring(c, CX, 470, 60, 700, t / 1.4, C.cyan); slam(c, '100 M', CX, 560, t * 1.6, { size: 230, color: C.cyan }); label(c, 'de vistas en un día', CX, 680, t - .6, 44); }
+  if (b === 3) { shockwave(c, CX, 470, t, 0, C.magenta); slam(c, '> 10 %', CX, 560, t * 1.6, { size: 230, color: C.magenta }); label(c, 'Evan Hubinger (Anthropic) · su estimación', CX, 680, t - .6, 40); label(c, 'riesgo de extinción en 10 años', CX, 740, t - 1.2, 36); }
+  if (b === 4) typeGlow(c, '¿Hechos u opiniones?', CX, 560, t / 1.4, { size: 96, accent: C.violet });
+}
+function sEvidencia(c, tau) {
+  const d = D('evidencia'), fr = [.38, .62, .82], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hueBloom(c, F('evidencia', tau));
+  if (b === 0) { label(c, 'LO DEMOSTRADO · Fudan, 2024', CX, 260, t, 44, C.cyan);
+    glassTile(c, 300, 340, 560, 380, C.blue, t * 1.5); glassTile(c, 1060, 340, 560, 380, C.violet, (t - .6) * 1.5);
+    slam(c, '5 / 10', 580, 560, (t - .5) * 1.6, { size: 130, color: C.blue }); slam(c, '9 / 10', 1340, 560, (t - 1.1) * 1.6, { size: 130, color: C.violet });
+    label(c, 'modelos que se copian a sí mismos · en pruebas', CX, 800, t - 1.8, 38); }
+  if (b === 1) { shockwave(c, CX, 520, t, .2, C.violet); typeGlow(c, 'OpenAI → Hugging Face', CX, 540, t / 1.2, { size: 92, accent: C.violet }); label(c, 'julio 2026', CX, 640, t - 1, 40); }
+  if (b === 2) { typeGlow(c, 'Sin conciencia.', CX, 470, t / .9, { size: 100 }); typeGlow(c, 'Reward hacking.', CX, 610, (t - 1) / .9, { size: 100, accent: C.magenta }); }
+  if (b === 3) { typeGlow(c, 'Las cifras de extinción:', CX, 470, t / 1.1, { size: 72 }); typeGlow(c, 'estimaciones personales', CX, 590, (t - 1) / 1.1, { size: 84, accent: C.pink }); }
+}
+function sIntereses(c, tau) {
+  const d = D('intereses'), fr = [.22, .55, .78], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hueBloom(c, F('intereses', tau));
+  if (b === 0) typeGlow(c, '¿Miedo interesado?', CX, 560, t / 1.2, { size: 110, accent: C.magenta });
+  if (b === 1) { glassTile(c, 300, 330, 560, 300, C.violet, t * 1.6); glassTile(c, 1060, 330, 560, 300, C.violet, (t - .5) * 1.6);
+    typeGlow(c, 'Andrew Ng', 580, 500, (t - .3) / .8, { size: 66 }); typeGlow(c, 'Yann LeCun', 1340, 500, (t - .8) / .8, { size: 66 });
+    label(c, 'el miedo cierra el mercado al código abierto', CX, 760, t - 1.6, 42, C.pink); }
+  if (b === 2) { ring(c, CX, 520, 80, 800, t / 1.3, C.magenta); slam(c, 'captura regulatoria', CX, 580, t * 1.4, { size: 120, color: C.magenta }); }
+  if (b === 3) { label(c, 'DEL OTRO LADO', CX, 330, t, 44, C.cyan); glassTile(c, 360, 400, 1200, 260, C.cyan, t * 1.6);
+    typeGlow(c, 'Anthropic: riesgo existencial', CX, 510, (t - .4) / 1.2, { size: 64 }); label(c, 'escrito en los documentos de su salida a bolsa', CX, 600, t - 1.4, 40); }
+}
+function sFreno(c, tau) {
+  const d = D('freno'), fr = [.18, .62, .8], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hueBloom(c, F('freno', tau));
+  if (b === 0) { slam(c, '12 SEP', CX, 520, t * 1.6, { size: 200, color: C.magenta }); label(c, 'Dario Amodei · «We Must Pace the Frontier»', CX, 650, t - .6, 42); }
+  if (b === 1) { [['evaluadores', 'independientes'], ['países', 'democráticos'], ['acuerdo', 'con China']].forEach(([a, bb], k) => { const x = 160 + k * 560, tk = t - k * d * .12;
+      glassTile(c, x, 300, 480, 380, [C.cyan, C.violet, C.magenta][k], tk * 1.6); typeGlow(c, a, x + 240, 470, (tk - .4) / .8, { size: 58 }); typeGlow(c, bb, x + 240, 550, (tk - .9) / .8, { size: 58, accent: [C.cyan, C.violet, C.magenta][k] }); });
+    label(c, 'la propuesta', CX, 780, t, 40); }
+  if (b === 2) typeGlow(c, '¿Independientes de verdad?', CX, 560, t / 1.3, { size: 92, accent: C.pink });
+  if (b === 3) { label(c, 'NUESTRA LECTURA', CX, 400, t, 44, C.orange); typeGlow(c, 'levantar el pie', CX, 540, (t - .3) / 1, { size: 100, accent: C.orange }); typeGlow(c, 'del acelerador', CX, 670, (t - 1.2) / 1, { size: 100, accent: C.orange }); }
+}
+function sGeopolitica(c, tau) {
+  const d = D('geopolitica'), fr = [.38, .56, .72], b = beatOf(tau, d, fr), t = since(tau, d, fr, b), end = d - 6.5; blackFrame(c); hueBloom(c, F('geopolitica', tau));
+  if (b === 0) { bloom(c, 520, 520, 300, C.blue, sm(0, 1, t) * .7); bloom(c, 1400, 520, 300, C.red, sm(.3, 1.3, t) * .7);
+    typeGlow(c, 'EE. UU.', 520, 545, t / .6, { size: 90 }); typeGlow(c, 'China', 1400, 545, (t - .4) / .6, { size: 90, accent: C.red });
+    c.save(); c.strokeStyle = C.grey; c.setLineDash([16, 14]); c.lineWidth = 3; c.globalAlpha = sm(1, 1.6, t); c.beginPath(); c.moveTo(720, 520); c.lineTo(1200, 520); c.stroke(); c.restore();
+    label(c, 'nadie frena si el otro no frena', CX, 760, t - 1.6, 44, C.pink); }
+  if (b === 1) { glassTile(c, 460, 380, 1000, 300, C.green, t * 1.6); typeGlow(c, '✓ diálogo + canal de incidentes', CX, 510, (t - .3) / 1.2, { size: 56, accent: C.green }); typeGlow(c, '✗ pausa', CX, 600, (t - 1.4) / .6, { size: 56, accent: C.red }); }
+  if (b === 2) typeGlow(c, '¿Apocalipsis o marketing?', CX, 560, t / 1.3, { size: 96, accent: C.magenta });
+  if (b === 3) { typeGlow(c, 'Probablemente,', CX, 430, t / .8, { size: 72 }); typeGlow(c, 'ninguno de los dos.', CX, 540, (t - .8) / .9, { size: 80, accent: C.orange });
+    label(c, '¿Tú qué opinas?', CX, 680, t - 2.2, 56, C.pink); }
+  resetT(c);
+  label(c, 'Hecho con Claude, de Anthropic, la empresa que más aparece en esta historia · Voz sintética (Gemini TTS)', CX, 960, (tau - end) / 2, 30, C.grey);
+  label(c, 'Opiniones atribuidas a cada persona · Fuentes en la descripción · Datos a 3 oct 2026', CX, 1010, (tau - end - 1) / 2, 30, C.grey);
+}
+socialFilm('16:9', [['aviso', sAviso], ['evidencia', sEvidencia], ['intereses', sIntereses], ['freno', sFreno], ['geopolitica', sGeopolitica]]);
+</script>
