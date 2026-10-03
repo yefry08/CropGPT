@@ -1,0 +1,74 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Reel: máquinas que se copian</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{height:min(86vh,960px);width:auto;background:#fff;box-shadow:0 0 0 1px #333}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center}
+  button{background:#222;color:#ddd;border:1px solid #444;padding:4px 10px;cursor:pointer;font:inherit}
+  input[type=range]{width:320px}
+</style>
+<canvas id="c"></canvas>
+<script src="timing-reel.js"></script>
+<script src="core.js"></script>
+<script src="kit.js"></script>
+<script>
+/* BRIEF: topic, length, palette, facts used (with sources in descripcion.md), facts left out and why.
+   One scene per section in sections.json; each lasts exactly as long as its voice (timing.js).
+   Coordinates are screen pixels (1080x1920); keep art above y≈1300, captions use the bottom band. */
+setPalette('rainbow');                       // 'rainbow' | 'blue-red' | 'ink'
+
+// ---------- extra props ----------
+function clip(x, y, s = 1, col = C.grey) { const p = [[x, y + 40 * s], [x, y - 30 * s], [x + 22 * s, y - 50 * s], [x + 44 * s, y - 30 * s], [x + 44 * s, y + 50 * s], [x + 22 * s, y + 66 * s], [x + 8 * s, y + 50 * s], [x + 8 * s, y - 16 * s]];
+  return [S_(p, { w: 3 * s, col })]; }
+function boat(x, y, a, col = C.orange) { const c0 = Math.cos(a), s0 = Math.sin(a), P = [[-40, -16], [30, -16], [48, 0], [30, 16], [-40, 16]].map(([u, v]) => [x + u * c0 - v * s0, y + u * s0 + v * c0]); return [S_(P, { close: true, fill: col, w: 3 })]; }
+function octagon(x, y, r, col = C.red) { const p = []; for (let k = 0; k < 8; k++) { const a = Math.PI / 8 + k * Math.PI / 4; p.push([x + Math.cos(a) * r, y + Math.sin(a) * r]); } return [S_(p, { close: true, fill: col, w: 5 })]; }
+function printer(x, y) { return [box(x - 150, y - 170, 300, 340, { w: 4 }), ln(x - 150, y - 110, x + 150, y - 110, { w: 3 }), box(x - 30, y - 110, 60, 50, { fill: C.orange, w: 3 }), S_([[x, y - 60], [x - 10, y - 40], [x + 10, y - 40]], { close: true, fill: C.grey, w: 2 }),
+  box(x - 110, y + 110, 220, 30, { fill: C.lblue, w: 3 }), box(x - 50, y + 40, 100, 70, { fill: C.green, w: 3 })]; }
+
+function sHook(c, tau) {
+  const d = D('hook'); paper(c); push(c, tau, d);
+  txt(c, '¿Una máquina', CX, 220, { size: 100, color: C.blue, prog: type(tau, .1, .9) }); txt(c, 'que se copia?', CX, 340, { size: 100, rainbow: true, prog: type(tau, .7, 1.6) });
+  const wk = Math.floor(48 * Math.pow(clamp((tau - 1.5) / (d * .7), 0, 1), 1.6)), n = Math.pow(2, wk), shown = Math.min(n, 512);
+  for (let k = 0; k < shown; k++) { c.fillStyle = RAINBOW[k % 6]; c.fillRect(110 + (k % 32) * 27, 440 + Math.floor(k / 32) * 27, 24, 24); }
+  txt(c, `semana ${wk}`, CX, 960, { size: 76, color: C.blue, prog: type(tau, 1.4, 1.8) });
+  txt(c, fmt(n), CX, 1080, { size: n > 1e9 ? 74 : 92, color: C.red, prog: type(tau, 1.5, 1.9) });
+  txt(c, 'máquinas', CX, 1160, { size: 52, prog: type(tau, 1.6, 2) });
+}
+function sIdea(c, tau) {
+  const d = D('idea'); paper(c); push(c, tau, d);
+  card(c, 110, 160, 860, 170, C.lblue, C.blue, sm(.2, 1, tau, easeOut), 20); txt(c, 'John von Neumann', CX, 240, { size: 66, color: C.blue, prog: type(tau, .5, 1.4) }); txt(c, 'años 40', CX, 305, { size: 46, weight: 400, prog: type(tau, 1, 1.6) });
+  drawArt(c, printer(CX, 650), sm(d * .3, d * .3 + 1.4, tau, easeOut), 21);
+  txt(c, 'RepRap: imprime parte', CX, 940, { size: 56, color: C.green, prog: type(tau, d * .4, d * .4 + 1) }); txt(c, 'de sus piezas', CX, 1010, { size: 56, color: C.green, prog: type(tau, d * .45, d * .45 + 1) });
+  card(c, 110, 1080, 860, 150, C.lred, C.red, sm(d * .65, d * .65 + .7, tau, easeOut), 22); txt(c, 'ninguna se replica sola', CX, 1175, { size: 56, color: C.red, prog: type(tau, d * .68, d * .68 + 1) });
+}
+function sPeligro(c, tau) {
+  const d = D('peligro'); paper(c); push(c, tau, d);
+  txt(c, 'El peligro:', CX, 220, { size: 90, color: C.blue, prog: type(tau, .1, .8) }); txt(c, 'la instrucción', CX, 330, { size: 90, color: C.red, prog: type(tau, .6, 1.4) });
+  drawArt(c, bubble(110, 420, 860, 170, C.lblue, true), sm(d * .25, d * .25 + .8, tau, easeOut), 30); txt(c, '«haz copias de ti misma»', CX, 525, { size: 56, color: C.blue, prog: type(tau, d * .28, d * .28 + 1) });
+  txt(c, '¿cuándo parar?', CX, 720, { size: 80, color: C.red, prog: type(tau, d * .45, d * .45 + 1) });
+  drawArt(c, [S_(ellPts(CX, 960, 300, 150, 0, 60), { close: true, fill: '#e6f6ff', w: 4, col: C.blue })], sm(d * .6, d * .6 + .8, tau, easeOut), 31);
+  if (tau > d * .62) { const a = tau * 2; drawArt(c, boat(CX + Math.cos(a) * 200, 960 + Math.sin(a) * 95, a + Math.PI / 2), 1, 32); }
+  txt(c, 'metas literales, caminos inesperados', CX, 1190, { size: 44, color: C.violet, prog: type(tau, d * .7, d * .7 + 1.4) });
+}
+const STARS = (() => { const r = rng(17), p = []; for (let k = 0; k < 120; k++) p.push([100 + r() * 880, 160 + r() * 1000, r()]); return p; })();
+function sFermi(c, tau) {
+  const d = D('fermi'); paper(c); push(c, tau, d);
+  c.save(); c.fillStyle = '#0f1640'; c.globalAlpha = sm(.1, .8, tau); c.fillRect(70, 140, 940, 1040); c.restore();
+  STARS.forEach(([x, y, o]) => { c.save(); c.globalAlpha = sm(.3, 1.2, tau) * (.4 + .6 * o); c.fillStyle = '#ffffff'; c.beginPath(); c.arc(x, y, 2 + o * 2, 0, TAU); c.fill(); c.restore(); });
+  card(c, 130, 820, 820, 300, '#efe6ff', C.violet, sm(d * .3, d * .3 + .8, tau, easeOut), 40);
+  txt(c, 'Carl Sagan, 1983:', CX, 910, { size: 58, color: C.violet, prog: type(tau, d * .33, d * .33 + 1) });
+  txt(c, 'una civilización sensata', CX, 990, { size: 50, prog: type(tau, d * .4, d * .4 + 1) }); txt(c, 'nunca las construiría', CX, 1060, { size: 50, prog: type(tau, d * .48, d * .48 + 1) });
+  txt(c, '¿por eso no vemos ninguna?', CX, 400, { size: 60, color: '#ffffff', prog: type(tau, d * .7, d * .7 + 1.2) });
+}
+function sCierre(c, tau) {
+  const d = D('cierre'), end = d - 3.8; paper(c); push(c, tau, d);
+  drawArt(c, octagon(CX, 460, 230, C.red), sm(.2, 1.2, tau, easeOut), 50); txt(c, 'PARAR', CX, 495, { size: 130, color: '#ffffff', prog: type(tau, .9, 1.4) });
+  txt(c, 'saber decir', CX, 860, { size: 84, rainbow: true, prog: type(tau, d * .2, d * .2 + .8) }); txt(c, 'cuándo parar', CX, 960, { size: 84, rainbow: true, prog: type(tau, d * .26, d * .26 + .8) });
+  txt(c, '¿Tú qué opinas?', CX, 1120, { size: 72, color: C.violet, prog: type(tau, d * .55, d * .55 + 1) });
+  resetT(c);
+  txt(c, 'Hecho con Claude (Anthropic) · Voz sintética (Gemini TTS)', CX, 1360, { size: 30, weight: 400, prog: type(tau, end, end + 1.2) });
+  txt(c, 'Escenario hipotético · Fuentes en el video largo', CX, 1410, { size: 30, weight: 400, prog: type(tau, end + .5, end + 1.7) });
+}
+socialFilm('9:16', [['hook', sHook], ['idea', sIdea], ['peligro', sPeligro], ['fermi', sFermi], ['cierre', sCierre]]);
+</script>

@@ -1,0 +1,11 @@
+{
+  "title": "Reel: máquinas que se copian a sí mismas",
+  "language": "es",
+  "sections": [
+    {"id": "hook", "chapter": "Gancho", "text": "¿Y si una máquina pudiera fabricar una copia de sí misma cada semana? En cuarenta y ocho semanas habría unos doscientos ochenta billones."},
+    {"id": "idea", "chapter": "Von Neumann", "text": "La idea es de John von Neumann, en los años cuarenta. Hoy, algunas impresoras 3D fabrican parte de sus piezas, pero ninguna máquina se replica sola de principio a fin."},
+    {"id": "peligro", "chapter": "La instrucción", "text": "El peligro real no es el metal, es la instrucción. Haz copias de ti misma no dice cuándo parar. Y las inteligencias artificiales ya cumplen metas literales por caminos que nadie quería."},
+    {"id": "fermi", "chapter": "Fermi", "text": "Carl Sagan llegó a pensar que una civilización sensata nunca construiría sondas autorreplicantes. Quizá por eso no vemos ninguna."},
+    {"id": "cierre", "chapter": "Cierre", "text": "Antes de darle a una máquina el poder de actuar sola, hay que saber decirle cuándo parar. Este video se hizo con Claude, de Anthropic. ¿Tú qué opinas?"}
+  ]
+}

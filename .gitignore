@@ -40,3 +40,8 @@ portfolio/ia-riesgos/audio-reel
 portfolio/ia-riesgos/*.mp4
 portfolio/ia-riesgos/*.log
 portfolio/ia-riesgos/out
+portfolio/von-neumann/audio
+portfolio/von-neumann/audio-reel
+portfolio/von-neumann/*.mp4
+portfolio/von-neumann/*.log
+portfolio/von-neumann/out
