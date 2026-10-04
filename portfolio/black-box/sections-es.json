@@ -1,0 +1,10 @@
+{"sections": [
+ {"id": "s1", "chapter": "La jugada 37", "text": "En dos mil dieciséis, AlphaGo hizo una jugada que, según sus propios cálculos, un humano haría solo una de cada diez mil veces. Y ganó. Nadie supo explicar del todo por qué."},
+ {"id": "s2", "chapter": "Reglas contra números", "text": "El software normal sigue reglas que escribió una persona. Una red neuronal aprende las suyas, repartidas en miles de millones de números: GPT-3 tenía ciento setenta y cinco mil millones."},
+ {"id": "s3", "chapter": "El panda y el gibón", "text": "Añade un ruido tan leve que no lo vemos, y una red dirá que un panda es un gibón, con un noventa y nueve coma tres por ciento de confianza."},
+ {"id": "s4", "chapter": "Mirar por dentro", "text": "Hoy los investigadores desarman modelos como si fueran cerebros. Un equipo encontró un rasgo del puente Golden Gate, y al subirlo, el modelo no hablaba de otra cosa."},
+ {"id": "s5", "chapter": "Grokking", "text": "Algunas redes memorizan durante mucho tiempo y, de repente, entienden. Ni sus creadores pueden predecir cuándo."},
+ {"id": "s6", "chapter": "Irreducible", "text": "Stephen Wolfram sostiene que algunos procesos no tienen atajo: la única forma de saber el resultado es ejecutar cada paso."},
+ {"id": "s7", "chapter": "El intérprete", "text": "Nuestro cerebro también es una caja negra. Pacientes con el cerebro dividido inventaban, muy seguros, razones para decisiones que no sabían que habían tomado."},
+ {"id": "s8", "chapter": "La ley y la lección", "text": "Desde diciembre de dos mil veintisiete, la ley de la Unión Europea da derecho a una explicación cuando una inteligencia artificial de alto riesgo decide sobre ti. Lo construimos antes de entenderlo."}
+]}

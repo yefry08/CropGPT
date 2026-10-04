@@ -1,7 +1,9 @@
 """Quiet original score for the recording: soft chord pads, a pulsing pluck, and a paper whoosh at each scene change."""
 import json, wave, numpy as np
 SR = 44100
-d = json.load(open('out/starts.json')); total = d['total']; starts = d['starts']
+import sys
+SRC, DST = (sys.argv[1:3] + ["out/starts.json", "out/score.wav"][len(sys.argv[1:3]):])
+d = json.load(open(SRC)); total = d["total"]; starts = d["starts"]
 n = int(total * SR); t = np.arange(n) / SR; out = np.zeros((n, 2))
 hz = lambda m: 440 * 2 ** ((m - 69) / 12)
 chords = [[57, 60, 64, 67], [53, 57, 60, 64], [48, 52, 55, 62], [55, 59, 62, 66]]  # Am7 Fmaj7 Cadd9 G(maj7)
@@ -27,6 +29,6 @@ for s0 in starts[1:]:  # paper whoosh (band-passed noise swell) on every tear
     out[i0:i0 + L] += (x * e * .18)[:, None] * [1, .8]
 fade = np.minimum(1, np.minimum(t / 1.0, (total - t) / 2.5))[:, None]
 out = np.tanh(out * fade * 1.4) * .8
-with wave.open('out/score.wav', 'wb') as w:
+with wave.open(DST, "wb") as w:
     w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR); w.writeframes((out * 32767).astype('<i2').tobytes())
 print('score', total)
