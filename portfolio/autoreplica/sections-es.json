@@ -1,0 +1,10 @@
+{"sections": [
+ {"id": "s1", "chapter": "Se duplican", "text": "Una máquina capaz de copiarse a sí misma no crece: se duplica. Y eso cambia todas las cuentas."},
+ {"id": "s2", "chapter": "Von Neumann", "text": "John von Neumann demostró en los años cuarenta que una máquina puede construir una copia completa de sí misma."},
+ {"id": "s3", "chapter": "La fábrica lunar", "text": "En mil novecientos ochenta, la NASA estudió en serio una fábrica lunar que se replicara usando los materiales del lugar."},
+ {"id": "s4", "chapter": "Los clips", "text": "El riesgo no es una máquina malvada: es una obediente. Una IA que solo quiera hacer clips convertiría todo en clips."},
+ {"id": "s5", "chapter": "Convergencia", "text": "Casi cualquier objetivo lleva a las mismas metas intermedias: más recursos, más energía, y que nadie te apague."},
+ {"id": "s6", "chapter": "Fermi", "text": "Si copiarse es tan fácil, la galaxia debería estar llena de sondas. No vemos ninguna."},
+ {"id": "s7", "chapter": "Tipler y Sagan", "text": "Tipler dijo que ese silencio significa que no hay nadie. Sagan respondió que una civilización prudente no las construiría."},
+ {"id": "s8", "chapter": "Hoy", "text": "Hoy el debate volvió: cuanto más autónoma es una inteligencia artificial, más importa que sus objetivos y los nuestros coincidan."}
+]}
