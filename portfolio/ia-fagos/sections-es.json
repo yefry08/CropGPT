@@ -1,0 +1,10 @@
+{"sections": [
+ {"id": "s1", "chapter": "Dieciséis", "text": "Una inteligencia artificial escribió genomas de virus que no existían, y dieciséis de ellos funcionaron de verdad."},
+ {"id": "s2", "chapter": "Solo bacterias", "text": "Son bacteriófagos: virus que solo atacan bacterias, probados con cepas de laboratorio de E. coli."},
+ {"id": "s3", "chapter": "La receta", "text": "El modelo partió del fago fi equis ciento setenta y cuatro, uno de los genomas más conocidos y pequeños que existen."},
+ {"id": "s4", "chapter": "Dieciséis de trescientos", "text": "De unos trescientos diseños probados, solo dieciséis llegaron a funcionar. La célula fue el juez."},
+ {"id": "s5", "chapter": "Nuevos", "text": "No eran copias: se separaban de sus parientes naturales en cientos de puntos del genoma."},
+ {"id": "s6", "chapter": "La resistencia", "text": "Frente a bacterias que resistían al virus original, una mezcla de estos fagos consiguió vencerlas."},
+ {"id": "s7", "chapter": "¿Para qué sirve?", "text": "La promesa es la terapia con fagos contra bacterias que ya no responden a los antibióticos."},
+ {"id": "s8", "chapter": "Cautela", "text": "Por eso importa cómo se revisan estas secuencias y quién responde. La inteligencia artificial escribió, pero la célula decidió."}
+]}
