@@ -1,7 +1,7 @@
 // Records black-box.html to MP4: seeks every frame (deterministic), hides the player UI.
 import puppeteer from 'puppeteer-core';
 import { spawn } from 'node:child_process';
-const FPS = 30, out = process.argv[2] || 'out/black-box.mp4', page = process.argv[3] || 'signo.html';
+const FPS = 30, out = process.argv[2] || 'out/black-box.mp4', page = process.argv[3] || 'empleos.html';
 const b = await puppeteer.launch({ executablePath: '/root/.channelforge/bin/chrome-nosandbox', args: ['--no-sandbox'] });
 const p = await b.newPage();
 await p.setViewport({ width: 1080, height: 1920 });

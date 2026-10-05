@@ -210,7 +210,7 @@ DEF.push({ bg: "#2A1E5C", tr: "left",
     E("circle", { cx: 840, cy: 880, r: 46, fill: "#FFFDE6" }, g);
     E("circle", { cx: 824, cy: 868, r: 40, fill: "#101A3A" }, g);
     // the loop: two arrows chasing each other
-    const loop = E("g", {}, g), cx = 540, cy = 1230, R = 150;
+    const loop = E("g", {}, g), cx = 560, cy = 1240, R = 196;
     const arcs = [0, 1].map(k => {
       const a0 = k * Math.PI, a1 = a0 + Math.PI * .82;
       const x0 = cx + Math.cos(a0) * R, y0 = cy + Math.sin(a0) * R, x1 = cx + Math.cos(a1) * R, y1 = cy + Math.sin(a1) * R;
@@ -219,15 +219,15 @@ DEF.push({ bg: "#2A1E5C", tr: "left",
       return { p, head };
     });
     const mid = E("g", {}, g);
-    paper(mid, 420, 1182, 240, 100, { seed: 1311, fill: "#FFE14D" });
-    T(mid, "más y más", 540, 1246, { f: SERIF, s: 40, i: 1, a: "middle" });
+    paper(mid, 462, 1200, 196, 82, { seed: 1311, fill: "#FFE14D" });
+    T(mid, "más y más", 560, 1252, { f: SERIF, s: 36, i: 1, a: "middle" });
     const clock = E("g", {}, g);
-    E("circle", { cx: 220, cy: 1230, r: 86, fill: "#FFFDF8", stroke: "#333", "stroke-width": 5 }, clock);
+    E("circle", { cx: 200, cy: 1240, r: 78, fill: "#FFFDF8", stroke: "#333", "stroke-width": 5 }, clock);
     for (let k = 0; k < 12; k++) { const a = k * Math.PI / 6;
-      E("line", { x1: 220 + Math.sin(a) * 62, y1: 1230 - Math.cos(a) * 62, x2: 220 + Math.sin(a) * 74, y2: 1230 - Math.cos(a) * 74, stroke: INK, "stroke-width": k % 3 ? 3 : 5 }, clock); }
-    const hh = E("line", { x1: 220, y1: 1230, x2: 220, y2: 1178, ...stroke(INK, 8) }, clock);
-    const mh = E("line", { x1: 220, y1: 1230, x2: 220, y2: 1156, ...stroke(RED, 5) }, clock);
-    E("circle", { cx: 220, cy: 1230, r: 9, fill: INK }, clock);
+      E("line", { x1: 200 + Math.sin(a) * 56, y1: 1240 - Math.cos(a) * 56, x2: 200 + Math.sin(a) * 66, y2: 1240 - Math.cos(a) * 66, stroke: INK, "stroke-width": k % 3 ? 3 : 5 }, clock); }
+    const hh = E("line", { x1: 200, y1: 1240, x2: 200, y2: 1192, ...stroke(INK, 8) }, clock);
+    const mh = E("line", { x1: 200, y1: 1240, x2: 200, y2: 1168, ...stroke(RED, 5) }, clock);
+    E("circle", { cx: 200, cy: 1240, r: 9, fill: INK }, clock);
     const cl = S.layer("front", 80, 1100, 920, 0);
     const bl = S.layer("front", 80, 150, 920, 330);
     paper(bl, 100, 172, 880, 280, { seed: 1321 });
@@ -240,8 +240,8 @@ DEF.push({ bg: "#2A1E5C", tr: "left",
       loop.setAttribute("transform", `rotate(${sp.toFixed(1)} ${cx} ${cy})`);
       arcs.forEach((a, i) => { a.p.style.opacity = eb(seg(t, 1.0 + i * .3, 1.4 + i * .3)); a.head.style.opacity = a.p.style.opacity; });
       mid.style.opacity = seg(t, 2.4, 2.8);
-      hh.setAttribute("transform", `rotate(${(Math.max(0, t - .6) * 42).toFixed(1)} 220 1230)`);
-      mh.setAttribute("transform", `rotate(${(Math.max(0, t - .6) * 504).toFixed(1)} 220 1230)`);
+      hh.setAttribute("transform", `rotate(${(Math.max(0, t - .6) * 42).toFixed(1)} 200 1240)`);
+      mh.setAttribute("transform", `rotate(${(Math.max(0, t - .6) * 504).toFixed(1)} 200 1240)`);
     };
   } });
 
