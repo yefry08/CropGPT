@@ -83,7 +83,7 @@ DEF.push({ bg: "#F6B400", tr: "up",
   build(S) {
     const g = S.sub;
     E("path", { d: "M300 1340 L780 1340 L820 1400 L260 1400 Z", fill: "#8E5826" }, g);
-    const bk = oldBook(g, 540, 1080, .86);
+    const bk = oldBook(g, 600, 1248, .72);
     const press = [];
     for (let i = 0; i < 10; i++) press.push(oldBook(g, 540, 1080, .86 * (1 - i * .03), { cover: "#6E3520", dark: "#3E1A0E" }));
     const tl = S.layer("front", 90, 150, 900, 330);
@@ -95,14 +95,14 @@ DEF.push({ bg: "#F6B400", tr: "up",
     const bl = S.layer("front", 620, 1180, 420, 260);
     paper(bl, 640, 1200, 380, 220, { seed: 821 });
     const bars = [40, 86, 150, 120, 70].map((h, k) => E("rect", { x: 666 + k * 70, y: 1382, width: 48, height: 0, fill: k === 2 ? RED : "#C9A44A" }, bl));
-    pix(bl, "DOS SIGLOS VENDIENDOSE", 830, 1232, 3.2, "#666", "middle");
+    pix(bl, "DOS SIGLOS VENDIENDOSE", 830, 1232, 2.7, "#666", "middle");
     S.piece(bl, { at: 3.6, from: "right", r: 4 });
     const hs = [40, 86, 150, 120, 70];
     return (t) => {
       press.forEach((p, i) => { const at = 2.2 + i * .22, q = eb(seg(t, at, at + .3));
-        p.setAttribute("transform", `translate(${(540 - 26 - i * 22).toFixed(1)} ${(1080 - 16 - i * 26 + Math.sin(t * 1.4 + i) * 3).toFixed(1)}) scale(${(.86 * (1 - i * .03) * q).toFixed(3)}) rotate(${(-4 + i * 1.2).toFixed(1)})`);
+        p.setAttribute("transform", `translate(${(600 + ((i % 2) ? 12 : -12)).toFixed(1)} ${(1102 - i * 40 + Math.sin(t * 1.4 + i) * 3).toFixed(1)}) scale(${(.72 * (1 - i * .02) * q).toFixed(3)}) rotate(${(-3 + (i % 3) * 3).toFixed(1)})`);
         p.style.opacity = q > 0 ? 1 : 0; });
-      bk.setAttribute("transform", `translate(540 ${(1080 + Math.sin(t * 1.2) * 5).toFixed(1)}) scale(.86)`);
+      bk.setAttribute("transform", `translate(600 ${(1248 + Math.sin(t * 1.2) * 5).toFixed(1)}) scale(.72)`);
       bars.forEach((b, k) => { const h = hs[k] * eo(seg(t, 4.0 + k * .14, 4.5 + k * .14));
         b.setAttribute("y", (1382 - h).toFixed(1)); b.setAttribute("height", h.toFixed(1)); });
     };
@@ -117,43 +117,43 @@ DEF.push({ bg: "#E8402A", tr: "right",
   build(S) {
     const g = S.sub;
     // empty tribunal: bench, gavel, ledger, scales — no figures
-    const court = E("g", {}, g);
-    E("path", { d: "M180 1180 L700 1180 L740 1250 L140 1250 Z", fill: "#7A4A26", stroke: "#4A2A12", "stroke-width": 5 }, court);
-    E("rect", { x: 140, y: 1250, width: 600, height: 150, fill: "#8E5826", stroke: "#4A2A12", "stroke-width": 5 }, court);
-    for (let k = 0; k < 4; k++) E("rect", { x: 170 + k * 148, y: 1278, width: 118, height: 94, rx: 6, fill: "#7A4A26", stroke: "#4A2A12", "stroke-width": 3 }, court);
-    E("path", { d: "M180 1180 L700 1180", ...stroke("#fff", 6), opacity: .25 }, court);
+    const court = E("g", { transform: "translate(350 1200) scale(1.12) translate(-350 -1310)" }, g);
+    E("path", { d: "M130 1180 L560 1180 L596 1246 L96 1246 Z", fill: "#7A4A26", stroke: "#4A2A12", "stroke-width": 5 }, court);
+    E("rect", { x: 96, y: 1246, width: 500, height: 150, fill: "#8E5826", stroke: "#4A2A12", "stroke-width": 5 }, court);
+    for (let k = 0; k < 4; k++) E("rect", { x: 122 + k * 123, y: 1274, width: 98, height: 94, rx: 6, fill: "#7A4A26", stroke: "#4A2A12", "stroke-width": 3 }, court);
+    E("path", { d: "M130 1180 L560 1180", ...stroke("#fff", 6), opacity: .25 }, court);
     // ledger with ticks that fill in
     const led = E("g", {}, court);
-    paper(led, 210, 1086, 300, 96, { seed: 831 });
+    paper(led, 130, 1072, 280, 92, { seed: 831 });
     const ticks = [];
-    for (let i = 0; i < 18; i++) ticks.push(E("line", { x1: 232 + (i % 9) * 30, y1: 1106 + Math.floor(i / 9) * 44, x2: 232 + (i % 9) * 30, y2: 1140 + Math.floor(i / 9) * 44, ...stroke(INK, 5), opacity: 0 }, led));
+    for (let i = 0; i < 18; i++) ticks.push(E("line", { x1: 150 + (i % 9) * 28, y1: 1090 + Math.floor(i / 9) * 42, x2: 150 + (i % 9) * 28, y2: 1122 + Math.floor(i / 9) * 42, ...stroke(INK, 5), opacity: 0 }, led));
     // gavel
     const gav = E("g", {}, court);
-    E("rect", { x: 540, y: 1120, width: 150, height: 22, rx: 11, fill: "url(#gHandle)" }, gav);
-    E("rect", { x: 630, y: 1086, width: 86, height: 90, rx: 12, fill: "#7A4A26", stroke: "#4A2A12", "stroke-width": 4 }, gav);
-    E("rect", { x: 646, y: 1098, width: 20, height: 24, rx: 6, fill: "#fff", opacity: .4 }, gav);
-    E("rect", { x: 600, y: 1182, width: 150, height: 22, rx: 8, fill: "#5E3417" }, court);
-    const sc = scales(g, 860, 1060, .66);
+    E("rect", { x: 420, y: 1112, width: 130, height: 20, rx: 10, fill: "url(#gHandle)" }, gav);
+    E("rect", { x: 500, y: 1080, width: 78, height: 82, rx: 12, fill: "#7A4A26", stroke: "#4A2A12", "stroke-width": 4 }, gav);
+    E("rect", { x: 514, y: 1092, width: 18, height: 22, rx: 6, fill: "#fff", opacity: .4 }, gav);
+    E("rect", { x: 466, y: 1176, width: 130, height: 20, rx: 8, fill: "#5E3417" }, court);
+    
     // unlit pyre: stake and firewood, cold ashes — no fire, no figures
-    const pyre = E("g", {}, g);
-    E("ellipse", { cx: 430, cy: 1392, rx: 190, ry: 34, fill: "rgba(0,0,0,.22)" }, pyre);
-    E("rect", { x: 414, y: 1180, width: 32, height: 200, rx: 6, fill: "#6E4523", stroke: "#3E2510", "stroke-width": 4 }, pyre);
+    const pyre = E("g", { transform: "translate(830 1280) scale(1.3) translate(-830 -1392)" }, g);
+    E("ellipse", { cx: 830, cy: 1392, rx: 150, ry: 30, fill: "rgba(0,0,0,.22)" }, pyre);
+    E("rect", { x: 814, y: 1150, width: 30, height: 230, rx: 6, fill: "#6E4523", stroke: "#3E2510", "stroke-width": 4 }, pyre);
     const logs = [];
     for (let i = 0; i < 9; i++) { const a = -40 + i * 10, x = 430 + Math.sin(a * Math.PI / 180) * 10;
-      logs.push(E("rect", { x: 300 + i * 30, y: 1352, width: 26, height: 42, rx: 8, fill: ["#6E4523", "#8A5A2E", "#5A3718"][i % 3], stroke: "#3E2510", "stroke-width": 3, transform: `rotate(${a} ${312 + i * 30} 1372)` }, pyre)); }
+      logs.push(E("rect", { x: 714 + i * 26, y: 1346, width: 24, height: 40, rx: 8, fill: ["#6E4523", "#8A5A2E", "#5A3718"][i % 3], stroke: "#3E2510", "stroke-width": 3, transform: `rotate(${a} ${726 + i * 26} 1366)` }, pyre)); }
     const ash = [];
-    for (let i = 0; i < 14; i++) ash.push(E("circle", { cx: 320 + i * 17, cy: 1392 + (i % 3) * 5, r: 6 + (i % 4), fill: "#9C958A", opacity: 0 }, pyre));
+    for (let i = 0; i < 14; i++) ash.push(E("circle", { cx: 726 + i * 15, cy: 1390 + (i % 3) * 5, r: 6 + (i % 4), fill: "#9C958A", opacity: 0 }, pyre));
     // flames over the firewood (no figures of any kind)
     const fire = E("g", { opacity: 0 }, pyre);
-    E("ellipse", { cx: 430, cy: 1300, rx: 150, ry: 120, fill: "url(#gGlowO)", opacity: .8 }, fire);
-    const flames = [[430, 1, "#FF6A00"], [370, .72, "#FF9A1F"], [492, .68, "#FF8A00"], [400, .5, "#FFD23F"], [462, .46, "#FFE98A"]].map(([x, k, col]) => {
-      const f = E("path", { d: `M${x} 1370 q${-46 * k} ${-60 * k} ${-10 * k} ${-110 * k} q${12 * k} ${34 * k} ${30 * k} ${16 * k} q${-14 * k} ${-52 * k} ${18 * k} ${-96 * k} q${4 * k} ${54 * k} ${34 * k} ${70 * k} q${18 * k} ${44 * k} ${-72 * k} ${120 * k} Z`, fill: col }, fire);
+    E("ellipse", { cx: 830, cy: 1268, rx: 140, ry: 120, fill: "url(#gGlowO)", opacity: .8 }, fire);
+    const flames = [[830, 1, "#FF6A00"], [776, .72, "#FF9A1F"], [884, .68, "#FF8A00"], [802, .5, "#FFD23F"], [858, .46, "#FFE98A"]].map(([x, k, col]) => {
+      const f = E("path", { d: `M${x} 1356 q${-46 * k} ${-60 * k} ${-10 * k} ${-110 * k} q${12 * k} ${34 * k} ${30 * k} ${16 * k} q${-14 * k} ${-52 * k} ${18 * k} ${-96 * k} q${4 * k} ${54 * k} ${34 * k} ${70 * k} q${18 * k} ${44 * k} ${-72 * k} ${120 * k} Z`, fill: col }, fire);
       return { f, x, k };
     });
     const embers = [];
     for (let i = 0; i < 10; i++) embers.push(E("circle", { r: 3 + (i % 3), fill: "#FFC21A", opacity: 0 }, fire));
     // candles in memory (lit, calm)
-    const cands = [[640, 1392, .5], [700, 1398, .44], [760, 1392, .48]].map(([x, y, s]) => candle(pyre, x, y, s));
+    const cands = [[640, 1398, .42], [690, 1402, .38], [740, 1398, .40]].map(([x, y, s]) => candle(pyre, x, y, s));
     const cl = S.layer("front", 80, 150, 920, 340);
     paper(cl, 100, 172, 880, 290, { seed: 841 });
     const n1 = T(cl, "0", 320, 310, { s: 96, w: 900, a: "middle", ls: -3 });
@@ -168,22 +168,22 @@ DEF.push({ bg: "#E8402A", tr: "right",
       n2.textContent = t < 2.2 ? "0" : fmt(45000 * eo(seg(t, 2.2, 4.2)));
       ticks.forEach((k, i) => k.setAttribute("opacity", seg(t, 1.6 + i * .12, 1.8 + i * .12)));
       const hit = Math.max(0, Math.sin(Math.max(0, t - 2.0) * 3.4));
-      gav.setAttribute("transform", `rotate(${(-14 * hit).toFixed(1)} 690 1130)`);
-      logs.forEach((l, i) => { const p = eb(seg(t, 3.2 + i * .1, 3.5 + i * .1));
+      gav.setAttribute("transform", `rotate(${(-14 * hit).toFixed(1)} 556 1122)`);
+      logs.forEach((l, i) => { const p = eb(seg(t, 2.6 + i * .1, 2.9 + i * .1));
         l.setAttribute("opacity", p); });
-      ash.forEach((a, i) => a.setAttribute("opacity", (seg(t, 5.4 + i * .05, 5.7 + i * .05) * .9).toFixed(2)));
-      const burn = seg(t, 3.9, 4.6), die = 1 - seg(t, 5.2, 6.0);
+      ash.forEach((a, i) => a.setAttribute("opacity", (seg(t, 8.2 + i * .04, 8.5 + i * .04) * .9).toFixed(2)));
+      const burn = seg(t, 3.4, 4.2), die = 1 - seg(t, 7.6, 8.6);
       fire.setAttribute("opacity", (burn * die).toFixed(2));
       flames.forEach((o, i) => { const w = .82 + .18 * Math.sin(t * 7 + i * 1.7), h = (.7 + .3 * Math.sin(t * 9 + i)) * burn * die;
-        o.f.setAttribute("transform", `translate(${o.x} 1370) scale(${w.toFixed(3)} ${Math.max(.05, h).toFixed(3)}) translate(${-o.x} -1370)`); });
+        o.f.setAttribute("transform", `translate(${o.x} 1356) scale(${w.toFixed(3)} ${Math.max(.05, h).toFixed(3)}) translate(${-o.x} -1356)`); });
       embers.forEach((e, i) => { const f = ((t * .7 + i * .13) % 1);
-        e.setAttribute("cx", (370 + i * 14 + Math.sin(t * 2 + i) * 16).toFixed(1));
-        e.setAttribute("cy", (1350 - f * 180).toFixed(1));
+        e.setAttribute("cx", (770 + i * 13 + Math.sin(t * 2 + i) * 14).toFixed(1));
+        e.setAttribute("cy", (1336 - f * 190).toFixed(1));
         e.setAttribute("opacity", burn > .2 ? ((1 - f) * .9 * die).toFixed(2) : 0); });
-      cands.forEach((c, i) => { const p = eb(seg(t, 5.0 + i * .2, 5.3 + i * .2));
-        c.c.setAttribute("transform", `translate(${640 + i * 60} ${1392 + (i === 1 ? 6 : 0)}) scale(${(.5 - i * .02) * p})`);
+      cands.forEach((c, i) => { const p = eb(seg(t, 8.6 + i * .2, 8.9 + i * .2));
+        c.c.setAttribute("transform", `translate(${640 + i * 50} ${1398 + (i === 1 ? 4 : 0)}) scale(${((.42 - i * .02) * p).toFixed(3)})`);
         c.fl.setAttribute("transform", `translate(${(Math.sin(t * 3 + i) * 2).toFixed(1)} 0) scale(1 ${(.92 + .08 * Math.sin(t * 7 + i)).toFixed(2)})`); });
-      sc.beam.setAttribute("transform", `rotate(${(Math.sin(t * 1.3) * 3).toFixed(2)} 0 -130)`);
+
     };
   } });
 
@@ -205,8 +205,8 @@ DEF.push({ bg: "#10A36A", tr: "up",
       T(gg, lab, cx, cy + R + 56, { f: SERIF, s: 42, i: 1, a: "middle" });
       return { gg, inner, cx, cy };
     };
-    const slow = gear(330, 1020, 128, 10, "#C9C1AE", "verdad");
-    const fast = gear(720, 1070, 168, 12, "#FFD23F", "orden");
+    const slow = gear(320, 1090, 150, 10, "#C9C1AE", "verdad");
+    const fast = gear(740, 1150, 196, 12, "#FFD23F", "orden");
     const spark = [];
     for (let i = 0; i < 8; i++) spark.push(E("circle", { r: 7, fill: "#fff", opacity: 0 }, g));
     const cl = S.layer("front", 80, 150, 920, 340);
@@ -220,7 +220,7 @@ DEF.push({ bg: "#10A36A", tr: "up",
       slow.inner.setAttribute("transform", `rotate(${(w * 18).toFixed(1)} ${slow.cx} ${slow.cy})`);
       fast.inner.setAttribute("transform", `rotate(${(-w * 86).toFixed(1)} ${fast.cx} ${fast.cy})`);
       spark.forEach((s, i) => { const f = ((t * 1.4 + i * .18) % 1);
-        s.setAttribute("cx", 520 + Math.cos(i) * 24); s.setAttribute("cy", 1046 + Math.sin(i * 2) * 20 - f * 40);
+        s.setAttribute("cx", 520 + Math.cos(i) * 24); s.setAttribute("cy", 1116 + Math.sin(i * 2) * 20 - f * 40);
         s.setAttribute("opacity", t > 1.6 ? ((1 - f) * .8).toFixed(2) : 0); });
     };
   } });
@@ -240,8 +240,7 @@ DEF.push({ bg: "#6A3BDE", tr: "left",
     const msg = E("g", {}, pipe);
     E("rect", { x: -40, y: -26, width: 80, height: 52, rx: 8, fill: "#FFFDF5", stroke: INK, "stroke-width": 4 }, msg);
     E("path", { d: "M-40 -26 L0 6 L40 -26", ...stroke(INK, 4) }, msg);
-    const xo = drawable(E("path", { d: "M160 860 L930 1000 M930 860 L160 1000", ...stroke(RED, 12) }, g));
-    pix(g, "ANTES: SOLO PASABA", 540, 1014, 4, "#E7DCFF", "middle");
+    const xo = drawable(E("path", { d: "M180 868 L900 988 M900 868 L180 988", ...stroke(RED, 12) }, g));
     // bottom: an agent that writes the message itself
     const ag = E("g", {}, g);
     E("rect", { x: 390, y: 1130, width: 300, height: 206, rx: 26, fill: "#D9DEE6", stroke: "#6B747F", "stroke-width": 5 }, ag);
@@ -253,7 +252,7 @@ DEF.push({ bg: "#6A3BDE", tr: "left",
     E("rect", { x: 414, y: 1150, width: 62, height: 12, rx: 6, fill: "#fff", opacity: .55 }, ag);
     E("line", { x1: 540, y1: 1130, x2: 540, y2: 1096, ...stroke("#6B747F", 6) }, ag);
     E("circle", { cx: 540, cy: 1086, r: 14, fill: RED }, ag);
-    const outs = [[250, 1200], [250, 1300], [830, 1200], [830, 1300]].map(([x, y]) => {
+    const outs = [[196, 1168], [196, 1322], [884, 1168], [884, 1322]].map(([x, y]) => {
       const o = E("g", {}, g);
       E("rect", { x: x - 54, y: y - 36, width: 108, height: 72, rx: 8, fill: "#FFFDF5", stroke: INK, "stroke-width": 4 }, o);
       for (let i = 0; i < 3; i++) E("rect", { x: x - 36, y: y - 18 + i * 16, width: 72 - i * 14, height: 7, rx: 3, fill: "#C9C1AE" }, o);
