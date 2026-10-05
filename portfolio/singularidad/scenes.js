@@ -160,7 +160,7 @@ DEF.push({ bg: "#2443D6", tr: "right",
 DEF.push({ bg: "#E8402A", tr: "up",
   strip: { color: "#FFFDF5", word: "2.882", wordColor: INK, cx: 540, cy: 580, size: 290, wx: -170, from: 1 },
   sub: { x: 90, y: 790, w: 900, h: 620 },
-  label: { text: "RECORD HUMANO", x: 70, y: 1392, r: -4 },
+  label: { text: "RÉCORD HUMANO", x: 70, y: 1392, r: -4 },
   cap: ["Hoy un motor de ajedrez en un móvil", "supera por cientos de puntos Elo al humano mejor clasificado de la historia."],
   build(S) {
     const g = S.sub;
@@ -215,9 +215,9 @@ DEF.push({ bg: "#6A3BDE", tr: "left",
         T(rg, s, x - 100, 998 + i * 56, { f: SERIF, s: 36, i: 1 }); return rg; });
       return { cg, x, rows };
     });
-    const dl = S.layer("front", 300, 1310, 480, 150);
-    paper(dl, 320, 1330, 440, 110, { seed: 1571, fill: INK });
-    T(dl, "2029", 540, 1414, { s: 76, w: 900, c: "#FFE14D", a: "middle", ls: -2 });
+    const dl = S.layer("front", 540, 1310, 480, 150);
+    paper(dl, 560, 1330, 440, 110, { seed: 1571, fill: INK });
+    T(dl, "2029", 780, 1414, { s: 76, w: 900, c: "#FFE14D", a: "middle", ls: -2 });
     S.piece(dl, { at: 4.2, from: "bottom", dist: 500, r: -2 });
     const cl = S.layer("front", 80, 150, 920, 330);
     paper(cl, 100, 172, 880, 280, { seed: 1581 });
@@ -316,7 +316,7 @@ DEF.push({ bg: "#FF7A1A", tr: "right",
 DEF.push({ bg: "#123C5A", tr: "left",
   strip: { color: "#FFFDF5", word: "Hormigas", wordColor: INK, cx: 540, cy: 580, size: 270, maxW: 850, wx: -140, from: 1 },
   sub: { x: 70, y: 800, w: 940, h: 620 },
-  label: { text: "UNA HIPOTESIS", x: 70, y: 1392, r: -4 },
+  label: { text: "UNA HIPÓTESIS", x: 70, y: 1392, r: -4 },
   cap: ["El miedo no es que nos odien: es volvernos irrelevantes,", "como las hormigas bajo una autopista. Es una hipótesis, no un pronóstico."],
   build(S) {
     const g = S.sub;
@@ -334,7 +334,7 @@ DEF.push({ bg: "#123C5A", tr: "left",
     paper(cl, 100, 172, 880, 290, { seed: 1621 });
     T(cl, "no por odio:", 540, 278, { f: SERIF, s: 56, i: 1, a: "middle" });
     T(cl, "por irrelevancia", 540, 352, { f: SERIF, s: 56, i: 1, a: "middle", c: RED });
-    pix(cl, "ESCENARIO EN DEBATE, NO UNA PREDICCION", 540, 406, 3, "#666", "middle");
+    pix(cl, "ESCENARIO EN DEBATE, NO UNA PREDICCIÓN", 540, 406, 3, "#666", "middle");
     S.piece(cl, { at: 1.2, from: "top", r: -2 });
     return (t) => {
       ants.forEach((o, i) => { const q = eb(seg(t, .9 + i * .12, 1.2 + i * .12));
