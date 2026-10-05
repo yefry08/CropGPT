@@ -1,0 +1,10 @@
+{"sections": [
+ {"id": "s1", "chapter": "La tesis", "text": "Harari sostiene en Nexus que la información no sirve, sobre todo, para decir la verdad: sirve para conectar."},
+ {"id": "s2", "chapter": "El manual", "text": "Su ejemplo: en mil cuatrocientos ochenta y seis, un clérigo, Heinrich Kramer, publicó un manual para cazar brujas que fue un éxito de ventas durante dos siglos."},
+ {"id": "s3", "chapter": "La red funcionó", "text": "Las brujas del manual no existían, pero la red funcionó: unos cien mil juicios y en torno a cuarenta y cinco mil ejecuciones."},
+ {"id": "s4", "chapter": "Conectar, no verificar", "text": "La lección de Harari: una red puede difundir algo falso con enorme eficacia si eso coordina a la gente."},
+ {"id": "s5", "chapter": "Agente", "text": "Lo nuevo, dice, es que la inteligencia artificial ya no es el canal por donde pasa el mensaje: decide qué mensaje mandar."},
+ {"id": "s6", "chapter": "Alineación", "text": "De ahí el problema de la alineación: un sistema muy eficaz cumpliendo un objetivo mal definido."},
+ {"id": "s7", "chapter": "Autocorrección", "text": "Su propuesta no es frenar la tecnología, sino construir mecanismos que admitan el error y lo corrijan."},
+ {"id": "s8", "chapter": "Las críticas", "text": "A Harari también lo critican: le reprochan generalizar y saltarse detalles incómodos. Conviene leerlo con esa cautela."}
+]}
