@@ -43,8 +43,8 @@ DEF.push({ bg: "#E8402A", tr: "left",
       const pg = E("g", {}, g);
       for (const dx of [-90, 0, 90]) E("line", { x1: 0, y1: 0, x2: dx, y2: 150, stroke: "#9a6a10", "stroke-width": 3 }, pg);
       paper(pg, -120, 44, 240, 120, { seed: 1001 + sd, fill });
-      const num = T(pg, "0", 0, 118, { s: 72, w: 900, a: "middle", c: col, ls: -2 });
-      T(pg, lab, 0, 158, { f: SERIF, s: 30, i: 1, a: "middle", c: "#444" });
+      T(pg, lab, 0, 84, { f: SERIF, s: 30, i: 1, a: "middle", c: "#444" });
+      const num = T(pg, "0", 0, 148, { s: 66, w: 900, a: "middle", c: col, ls: -2 });
       E("path", { d: "M-136 150 Q0 206 136 150 Z", fill: "url(#gWarm)", stroke: "#9a6a10", "stroke-width": 3 }, pg);
       return { pg, sd, num, target: +n };
     });
@@ -307,6 +307,7 @@ DEF.push({ bg: "#123C5A", tr: "left",
       E("rect", { x: x - 54, y: y - 150, width: 108, height: 130, rx: 12, fill: "#D9DEE6", stroke: "#6B747F", "stroke-width": 4 }, cg);
       E("rect", { x: x - 60, y: y - 26, width: 120, height: 24, rx: 8, fill: "#AEB7C2", stroke: "#6B747F", "stroke-width": 4 }, cg);
       E("rect", { x: x - 46, y: y - 136, width: 28, height: 16, rx: 6, fill: "#fff", opacity: .5 }, cg);
+      for (const sx of [-1, 1]) E("rect", { x: x + sx * 42 - 7, y: y - 2, width: 14, height: 56, rx: 6, fill: "#8d95a0" }, cg);
       return { cg, x, y };
     });
     const doc = E("g", {}, g);
