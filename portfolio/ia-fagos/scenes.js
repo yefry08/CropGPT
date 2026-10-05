@@ -166,9 +166,9 @@ DEF.push({ bg: "#F6B400", tr: "right",
 
 // 4 — 16 de ~300
 DEF.push({ bg: "#E8402A", tr: "up",
-  strip: { color: "#FFFDF5", word: "285", wordColor: INK, cx: 540, cy: 590, size: 300, wx: -200, from: 1 },
+  strip: { color: "#FFFDF5", word: "~300", wordColor: INK, cx: 540, cy: 590, size: 290, wx: -185, from: 1 },
   sub: { x: 70, y: 780, w: 940, h: 620 },
-  label: { text: "LA CELULA JUZGA", x: 70, y: 1392, r: -4 },
+  label: { text: "LA CELULA JUZGA", x: 150, y: 760, r: -4, at: 1.5 },
   cap: ["De unos 300 diseños probados, solo 16 llegaron a funcionar:", "la célula fue el juez."],
   build(S) {
     const g = S.sub;
@@ -183,6 +183,7 @@ DEF.push({ bg: "#E8402A", tr: "up",
     const bg2 = E("rect", { x: 150, y: 1360, width: 0, height: 52, rx: 8, fill: "#1E9E5A" }, barL);
     const t1 = T(barL, "", 170, 1328, { s: 34, w: 800, c: "#333" }), t2 = T(barL, "", 170, 1398, { s: 34, w: 800, c: "#fff" });
     S.piece(barL, { at: 3.4, from: "bottom", dist: 700, r: 0 });
+    // (label appears after the bars land, clear of the card)
     return (t) => {
       dots.forEach((d, i) => { const p = eb(seg(t, .8 + i * .006, 1.0 + i * .006)); sxf(d.el, d.cx, d.cy, p); d.el.style.opacity = p > 0 ? 1 : 0;
         if (d.on) { const q = eo(seg(t, 2.6, 3.4)); d.el.setAttribute("fill", q > .5 ? "#FFD23F" : "#F7C9C0");
@@ -198,11 +199,11 @@ DEF.push({ bg: "#E8402A", tr: "up",
 DEF.push({ bg: "#6A3BDE", tr: "left",
   strip: { color: "#CFF75A", word: "Nuevos", wordColor: INK, cx: 540, cy: 600, size: 290, wx: -160, from: -1 },
   sub: { x: 70, y: 790, w: 940, h: 600 },
-  label: { text: "DISTINTOS", x: 96, y: 1392, r: -4 },
+  label: { text: "DISTINTOS", x: 96, y: 866, r: -4, at: 1.2 },
   cap: ["No eran copias:", "se separaban de sus parientes naturales en cientos de puntos del genoma."],
   build(S) {
     const g = S.sub, r = rng(23), n = 46, x0 = 150, w = 780, cw = w / n;
-    const rowY = [900, 1040], labels = ["natural", "diseñado por IA"];
+    const rowY = [952, 1086], labels = ["natural", "diseñado por IA"];
     const cells = [[], []];
     rowY.forEach((y, k) => {
       paper(g, x0 - 12, y - 12, w + 24, 96, { seed: 451 + k, j: 5, shadow: k === 1 });
@@ -212,12 +213,12 @@ DEF.push({ bg: "#6A3BDE", tr: "left",
     });
     // differences: recolour the AI row and mark them
     const diffIdx = []; for (let i = 0; i < n; i++) if (r() < .34) diffIdx.push(i);
-    const marks = diffIdx.map(i => E("rect", { x: x0 + i * cw - 1, y: 1032, width: cw + 2, height: 88, fill: "none", stroke: "#fff", "stroke-width": 4, opacity: 0 }, g));
-    const cl = S.layer("front", 90, 1180, 900, 260);
-    paper(cl, 110, 1200, 860, 210, { seed: 461 });
-    const num = T(cl, "0", 300, 1352, { s: 120, w: 900, c: RED, a: "middle", ls: -4 });
-    T(cl, "diferencias con su", 520, 1300, { f: SERIF, s: 44, i: 1 });
-    T(cl, "pariente más cercano", 520, 1356, { f: SERIF, s: 44, i: 1 });
+    const marks = diffIdx.map(i => E("rect", { x: x0 + i * cw - 1, y: 1078, width: cw + 2, height: 88, fill: "none", stroke: "#fff", "stroke-width": 4, opacity: 0 }, g));
+    const cl = S.layer("front", 90, 1210, 900, 240);
+    paper(cl, 110, 1226, 860, 186, { seed: 461 });
+    const num = T(cl, "", 320, 1346, { f: SERIF, s: 72, i: 1, c: RED, a: "middle" });
+    T(cl, "de diferencias con su", 560, 1304, { f: SERIF, s: 44, i: 1 });
+    T(cl, "pariente más cercano", 560, 1360, { f: SERIF, s: 44, i: 1 });
     S.piece(cl, { at: 3.6, from: "bottom", dist: 600, r: 0 });
     return (t) => {
       cells.forEach((row, k) => row.forEach((c, i) => { const p = eb(seg(t, .8 + k * .5 + i * .02, 1.0 + k * .5 + i * .02));
@@ -226,7 +227,7 @@ DEF.push({ bg: "#6A3BDE", tr: "left",
       diffIdx.forEach((i, k) => { const on = sw > k / diffIdx.length;
         cells[1][i].el.setAttribute("fill", on ? ["#FF6EC7", "#5CE1FF", "#FFD23F", "#CFF75A"][k % 4] : ["#2443D6", "#1E9E5A", "#FFD23F", RED][cells[1][i].base]);
         marks[k].setAttribute("opacity", on ? (.55 + .45 * Math.sin(t * 5 + k)).toFixed(2) : 0); });
-      num.textContent = t < 3.9 ? "0" : Math.round(400 * eo(seg(t, 3.9, 5.2))) + "+";
+      num.textContent = t < 4.1 ? "" : "cientos";
     };
   } });
 
@@ -269,7 +270,7 @@ DEF.push({ bg: "#FF7A1A", tr: "right",
 DEF.push({ bg: "#E8367F", tr: "up",
   strip: { color: "#FFFDF5", word: "¿Para qué?", wordColor: INK, cx: 540, cy: 620, size: 260, maxW: 880, wx: -90, from: -1 },
   sub: { x: 90, y: 820, w: 900, h: 560 },
-  label: { text: "ANTIBIOTICOS", x: 70, y: 1392, r: -4 },
+  label: { text: "ANTIBIOTICOS", x: 110, y: 1396, r: -4 },
   cap: ["La promesa es la terapia con fagos", "contra bacterias que ya no responden a los antibióticos."],
   build(S) {
     const g = S.sub;
@@ -279,7 +280,7 @@ DEF.push({ bg: "#E8367F", tr: "up",
     pill(pills, 250, 1150, -18); pill(pills, 360, 1230, 12); pill(pills, 260, 1280, -6, "#2443D6");
     const x1 = drawable(E("path", { d: "M120 1060 Q320 1200 500 1340", ...stroke("#fff", 16) }, g));
     const x2 = drawable(E("path", { d: "M500 1060 Q320 1200 120 1340", ...stroke("#fff", 16) }, g));
-    T(g, "ya no funcionan", 310, 1398, { f: SERIF, s: 38, i: 1, c: "#fff", a: "middle" });
+
     // right: phage vial
     const vial = E("g", {}, g);
     E("path", { d: "M700 1040 L880 1040 L880 1090 L856 1110 L856 1330 Q856 1372 790 1372 Q724 1372 724 1330 L724 1110 L700 1090 Z", fill: "rgba(255,255,255,.35)", stroke: "#fff", "stroke-width": 7 }, vial);
@@ -292,8 +293,8 @@ DEF.push({ bg: "#E8367F", tr: "up",
     E("rect", { x: 696, y: 1028, width: 188, height: 26, rx: 8, fill: "#fff" }, vial);
     E("path", { d: "M740 1130 L740 1320", ...stroke("#fff", 10), opacity: .45 }, vial);
     const ar = harrow(g, 530, 1180, 660, 1180, { bend: -.28, c: "#fff", w: 9, hl: 30 });
-    const sl = S.layer("front", 80, 140, 330, 400);
-    portrait(sl, 110, 160, { seed: 481, name: "LABORATORIO", hair: "fringe", hairC: "#3b2b1f", suit: "#F2F4F7", shirt: "#CFE3F5", halo: "#CFF75A", glasses: true });
+    const sl = S.layer("front", 70, 190, 330, 400);
+    portrait(sl, 100, 210, { seed: 481, name: "LABORATORIO", hair: "fringe", hairC: "#3b2b1f", suit: "#F2F4F7", shirt: "#CFE3F5", halo: "#CFF75A", glasses: true });
     S.piece(sl, { at: 1.2, from: "left", r: -4 });
     const tl = S.layer("front", 450, 170, 570, 340);
     paper(tl, 470, 190, 530, 290, { seed: 491 });
@@ -333,8 +334,8 @@ DEF.push({ bg: "#123C5A", tr: "left",
     E("circle", { cx, cy, r: R - 15, fill: "none", stroke: "#4a4f55", "stroke-width": 2.5 }, lens);
     const stamp = E("g", { opacity: 0 }, g), sx = 760, sy = 980;
     E("circle", { cx: sx, cy: sy, r: 96, fill: "none", stroke: "#1E9E5A", "stroke-width": 10 }, stamp);
-    T(stamp, "REVISADO", sx, sy + 10, { s: 34, w: 900, c: "#1E9E5A", a: "middle", ls: 1 });
-    T(stamp, "ANTES", sx, sy + 52, { s: 30, w: 900, c: "#1E9E5A", a: "middle" });
+    T(stamp, "REVISADO", sx, sy + 2, { s: 30, w: 900, c: "#1E9E5A", a: "middle", ls: 1 });
+    T(stamp, "ANTES", sx, sy + 44, { s: 30, w: 900, c: "#1E9E5A", a: "middle" });
     stamp.setAttribute("transform", `rotate(-14 ${sx} ${sy})`);
     const cl = S.layer("front", 80, 150, 920, 340);
     paper(cl, 100, 172, 880, 290, { seed: 511 });
@@ -371,7 +372,7 @@ DEF.push({ bg: "#151515", tr: "left", dur: 7.5,
       ["Phys.org, ago 2026", "Sixteen AI-designed viruses offer a new route"],
       ["University of Reading, 2026", "Comentario de expertos sobre el estudio"],
       ["Asimov Press", "AI-Designed Phages"]];
-    const rows = items.map(([a, b], i) => { const rg = E("g", {}, g), y = 625 + i * 118;
+    const rows = items.map(([a, b], i) => { const rg = E("g", {}, g), y = 620 + i * 116;
       E("rect", { x: 104, y: y - 34, width: 40, height: 40, fill: INK }, rg);
       pix(rg, String(i + 1), 124, y - 27, 4, "#fff", "middle");
       T(rg, a, 162, y, { s: 33, w: 800 }); T(rg, b, 162, y + 44, { f: SERIF, s: 30, i: 1, w: 400, c: "#444" }); return rg; });
