@@ -22,11 +22,6 @@ for k in range(int(total / bar) + 1):
         pt = np.arange(pl) / SR; m = chords[k % 4][(b * 2 + k) % 4] + 12
         s = np.sin(2 * np.pi * hz(m) * pt) * np.exp(-pt / .12) * .05
         out[p0:p0 + pl] += s[:, None] * [.7, 1.0]
-for s0 in starts[1:]:  # paper whoosh (band-passed noise swell) on every tear
-    i0 = int((s0 - .1) * SR); L = int(.9 * SR); x = rng.standard_normal(L)
-    x = np.convolve(x, np.ones(6) / 6, 'same') - np.convolve(x, np.ones(60) / 60, 'same')
-    e = np.sin(np.linspace(0, np.pi, L)) ** 2
-    out[i0:i0 + L] += (x * e * .18)[:, None] * [1, .8]
 fade = np.minimum(1, np.minimum(t / 1.0, (total - t) / 2.5))[:, None]
 out = np.tanh(out * fade * 1.4) * .8
 with wave.open(DST, "wb") as w:
