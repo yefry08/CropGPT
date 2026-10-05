@@ -1,0 +1,10 @@
+{"sections": [
+ {"id": "s1", "chapter": "Un signo", "text": "En dos mil diecinueve, un solo signo cambiado en el código convirtió a GPT-2 en lo contrario de lo que querían."},
+ {"id": "s2", "chapter": "Cómo se alinea", "text": "Para alinearlo usaban RLHF: personas puntuaban respuestas, y con esas notas se entrenaba un modelo de recompensa."},
+ {"id": "s3", "chapter": "La regla", "text": "Una instrucción decía: si el texto es sexualmente explícito, dale la peor nota posible."},
+ {"id": "s4", "chapter": "El fallo", "text": "Al reorganizar el código se invirtió el signo de la recompensa. Lo peor pasó a valer como lo mejor."},
+ {"id": "s5", "chapter": "El bucle", "text": "Nadie lo vio: el entrenamiento corrió de noche, optimizando hacia exactamente lo que debía evitar."},
+ {"id": "s6", "chapter": "La mañana", "text": "Por la mañana no era un galimatías: era lo máximamente malo. Y lo pararon."},
+ {"id": "s7", "chapter": "Desalineación", "text": "El sistema no se rebeló: hizo justo lo que decía la fórmula. Eso es desalineación externa."},
+ {"id": "s8", "chapter": "La lección", "text": "La lección: a veces el fallo de alineación no es filosófico. Es un signo mal puesto que nadie revisó."}
+]}
