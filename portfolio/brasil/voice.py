@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Narrate sections.json locally with Kokoro (ONNX) — no API key, no quota, no network.
+"""FALLBACK narrator. The series uses Gemini TTS (narrate.py, voice Charon); this script is
+only for when that key or quota is unavailable.
+
+Narrate sections.json locally with Kokoro (ONNX) — no API key, no quota, no network.
 
 Model files (downloaded once, kept outside the repo):
     /root/.cache/kokoro/kokoro-v1.0.onnx   https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/

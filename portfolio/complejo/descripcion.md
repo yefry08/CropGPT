@@ -54,8 +54,8 @@ externas). Vídeo: `complejo-es.mp4`.
 ## Producción
 
 ```
-python3 voice.py --audio audio-es     # Kokoro-82M local, voz em_alex, espeak es-419
-python3 build.py                      # 83,2 s; voz 70,1 s
+GEMINI_API_KEY=... python3 narrate.py --spec sections-es.json --audio audio-es   # Gemini TTS, voz Charon
+python3 build.py
 node rec.mjs out/frames.mp4 complejo.html
 ffmpeg ... -i out/frames.mp4 -i out/mix.m4a ... complejo-es.mp4
 ```

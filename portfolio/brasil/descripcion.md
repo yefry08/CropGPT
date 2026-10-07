@@ -63,8 +63,8 @@ sino en **Facebook (559) e Instagram (365)**; TikTok sumó 70.
 ## Producción
 
 ```
-python3 voice.py --audio audio-es     # Kokoro-82M local, voz em_alex, espeak es-419
-python3 build.py                      # 92,8 s; voz 79,7 s
+GEMINI_API_KEY=... python3 narrate.py --spec sections-es.json --audio audio-es   # Gemini TTS, voz Charon
+python3 build.py
 node rec.mjs out/frames.mp4 brasil.html
 ffmpeg ... -i out/frames.mp4 -i out/mix.m4a ... brasil-es.mp4
 ```
