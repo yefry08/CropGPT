@@ -4,8 +4,8 @@ name: Publicar Tensión Global en Hugging Face Spaces
 on:
   workflow_dispatch:
   push:
-    branches: [main]
-    paths: ['tension-global/**']
+    branches: [main, claude/upbeat-babbage-k7d2sp]
+    paths: ['tension-global/**', '.github/workflows/hf-space.yml']
 jobs:
   deploy:
     runs-on: ubuntu-latest
