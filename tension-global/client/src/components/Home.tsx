@@ -3,6 +3,8 @@ import type { AILevel, Side } from '@tg/shared';
 import { loadSave } from '../hooks/useLocalGame';
 import { RulesModal } from './Modals';
 
+const STATIC = import.meta.env.VITE_STATIC === '1';
+
 export type Start =
   | { t: 'solo'; side: Side; level: AILevel; resume: boolean }
   | { t: 'create'; name: string; side: Side }
@@ -79,6 +81,7 @@ export function Home({ onStart, initialCode }: { onStart: (s: Start) => void; in
           )}
         </section>
 
+        {!STATIC && (
         <section className="panel">
           <h2>Online 1 contra 1</h2>
           <label>
@@ -114,6 +117,7 @@ export function Home({ onStart, initialCode }: { onStart: (s: Start) => void; in
           </div>
           <p className="muted">Cada jugador elige bando en la sala. Si te desconectas, la partida sigue y puedes volver con el mismo enlace.</p>
         </section>
+        )}
       </div>
 
       <footer className="home-foot">

@@ -83,6 +83,13 @@ fly scale count 1                         # imprescindible: el estado está en m
 `fly.toml` mantiene una máquina siempre encendida (`auto_stop_machines = "off"`, `min_machines_running = 1`) y define el
 chequeo de salud en `/healthz`.
 
+### GitHub Pages (solo un jugador)
+
+Pages solo sirve archivos estáticos: el modo contra la IA funciona entero en el navegador, pero el **online no** (necesita el
+servidor Node). `npm run build:pages` genera esa versión en `dist/public` (sin la sección online). El workflow
+`.github/workflows/pages.yml` la publica; activa antes *Settings → Pages → Source: GitHub Actions*. Se ejecuta al subir a
+`main` o manualmente (*Run workflow*); si Pages rechaza otra rama por reglas del entorno `github-pages`, ejecútalo desde `main`.
+
 ## Cómo se juega (resumen)
 
 * **Tiempo:** 10 turnos de 6 rondas; en cada ronda el Bloque Oriental juega primero. 5 eras de 2 turnos:

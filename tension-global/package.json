@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "concurrently -k -n servidor,cliente -c blue,red \"npm run dev -w server\" \"npm run dev -w client\"",
     "build": "npm run build -w client && npm run build -w server",
+    "build:pages": "VITE_STATIC=1 npm run build -w client",
     "start": "node dist/server.cjs",
     "test": "npm run test -w shared",
     "typecheck": "npm run typecheck -w shared && npm run typecheck -w server && npm run typecheck -w client"
