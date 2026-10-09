@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRIFT Drones - 3D Interactive Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            min-height: 300vh;
+            padding: 100vh 40px 100px;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 60px 40px;
+            margin: 200px auto;
+            max-width: 800px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .section h2 {
+            color: #764ba2;
+            font-size: 2em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .section p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            text-align: center;
+            color: white;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        .scroll-text {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .scroll-arrow {
+            font-size: 24px;
+        }
+
+        .control-info {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            z-index: 10;
+            max-width: 250px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <div class="progress-bar" id="progressBar"></div>
+
+    <div class="scroll-indicator">
+        <div class="scroll-text">Scroll para descender el dron</div>
+        <div class="scroll-arrow">↓</div>
+    </div>
+
+    <div class="control-info">
+        <strong>🚁 DRIFT DRONES</strong>
+        <p>Scroll para ver el dron descender hacia la base de control</p>
+    </div>
+
+    <div class="content">
+        <div class="section">
+            <h1>🚁 DRIFT Drones Paraguay</h1>
+            <p>Bienvenido a DRIFT Drones - El futuro de la educación STEM en Paraguay.</p>
+            <p>Scroll hacia abajo para ver nuestro dron descender a la base de control y conocer más sobre nuestro programa.</p>
+        </div>
+
+        <div class="section">
+            <h2>¿Qué es DRIFT Drones?</h2>
+            <p>Un programa revolucionario de educación donde estudiantes aprenden:</p>
+            <div class="features">
+                <div class="feature">✈️ Piloting<br>Manejo de Drones</div>
+                <div class="feature">💻 Coding<br>Programación Python</div>
+                <div class="feature">🔧 Engineering<br>Construcción & Reparación</div>
+                <div class="feature">🤝 Teamwork<br>Drone Soccer</div>
+            </div>
+            <p style="margin-top: 30px;">Nuestro programa combina tecnología de vanguardia con educación práctica para preparar a la próxima generación de innovadores.</p>
+        </div>
+
+        <div class="section">
+            <h2>Beneficios del Programa</h2>
+            <p><strong>Para Estudiantes:</strong> Aprenden habilidades STEM del siglo 21, se preparan para carreras en tech y aviación.</p>
+            <p><strong>Para Escuelas:</strong> Diferenciación competitiva, eventos de marketing, programa de certficación oficial.</p>
+            <p><strong>Para Padres:</strong> Inversión en futuro STEM, programa seguro y supervisado, resultados visibles.</p>
+            <a href="#" class="cta-button">Solicitar Información</a>
+        </div>
+
+        <div class="section">
+            <h2>Nuestro Programa</h2>
+            <p><strong>8 Semanas • 2-3 horas/semana • Certificado al completar</strong></p>
+            <p>
+                Semana 1-2: Introducción a drones y componentes<br>
+                Semana 3-4: Piloting y Drone Racing<br>
+                Semana 5-6: Coding y Vuelos Autónomos<br>
+                Semana 7-8: Drone Soccer y Competición
+            </p>
+            <p style="margin-top: 20px;">Al completar el programa, estudiantes obtienen:</p>
+            <div class="features">
+                <div class="feature">📜 Certificación Oficial</div>
+                <div class="feature">🏆 Portfolio de Proyectos</div>
+                <div class="feature">🎖️ Experiencia Práctica</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>¡Únete a DRIFT Drones!</h2>
+            <p>Paraguay necesita más educación STEM. Sé parte de la revolución.</p>
+            <p>Consultoría gratuita • Programas adaptables • Soporte completo</p>
+            <a href="mailto:info@driftdrones.py" class="cta-button">Contacta Ahora</a>
+        </div>
+
+        <div class="section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center;">
+            <h2 style="color: white;">¡El Futuro de la Educación Está Aquí!</h2>
+            <p style="color: rgba(255,255,255,0.9);">Más de 1,000 estudiantes en 50+ escuelas ya están aprendiendo con DRIFT.</p>
+            <p style="color: rgba(255,255,255,0.9); margin-bottom: 20px;">¿Será la tuya la próxima?</p>
+            <a href="#" class="cta-button" style="background: white; color: #667eea;">Reservar Consulta</a>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Scene setup
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x1a1a2e);
+        scene.fog = new THREE.Fog(0x1a1a2e, 1000, 5000);
+
+        const canvas = document.getElementById('canvas');
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
+        camera.position.set(0, 50, 100);
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFShadowShadowMap;
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(100, 200, 100);
+        directionalLight.castShadow = true;
+        directionalLight.shadow.mapSize.width = 2048;
+        directionalLight.shadow.mapSize.height = 2048;
+        directionalLight.shadow.camera.far = 1000;
+        scene.add(directionalLight);
+
+        // Drone group
+        const droneGroup = new THREE.Group();
+        scene.add(droneGroup);
+
+        // Create Drone
+        function createDrone() {
+            const group = new THREE.Group();
+
+            // Body
+            const bodyGeometry = new THREE.BoxGeometry(20, 8, 20);
+            const bodyMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 });
+            const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+            body.castShadow = true;
+            body.receiveShadow = true;
+            group.add(body);
+
+            // Camera (front)
+            const cameraGeometry = new THREE.SphereGeometry(2, 8, 8);
+            const cameraMaterial = new THREE.MeshPhongMaterial({ color: 0x000000 });
+            const camera = new THREE.Mesh(cameraGeometry, cameraMaterial);
+            camera.position.z = 12;
+            camera.castShadow = true;
+            group.add(camera);
+
+            // Arms
+            for (let i = 0; i < 4; i++) {
+                const armGeometry = new THREE.BoxGeometry(3, 2, 25);
+                const armMaterial = new THREE.MeshPhongMaterial({ color: 0x333333 });
+                const arm = new THREE.Mesh(armGeometry, armMaterial);
+                arm.castShadow = true;
+
+                const angle = (i * Math.PI / 2) + Math.PI / 4;
+                arm.position.x = Math.cos(angle) * 12;
+                arm.position.z = Math.sin(angle) * 12;
+                arm.rotation.z = angle;
+
+                group.add(arm);
+
+                // Motor
+                const motorGeometry = new THREE.CylinderGeometry(3, 3, 2, 8);
+                const motorMaterial = new THREE.MeshPhongMaterial({ color: 0x444444 });
+                const motor = new THREE.Mesh(motorGeometry, motorMaterial);
+                motor.position.x = Math.cos(angle) * 25;
+                motor.position.z = Math.sin(angle) * 25;
+                motor.castShadow = true;
+                group.add(motor);
+
+                // Propeller
+                const propellerGroup = new THREE.Group();
+                propellerGroup.position.x = Math.cos(angle) * 25;
+                propellerGroup.position.z = Math.sin(angle) * 25;
+
+                const propGeometry = new THREE.BoxGeometry(2, 20, 3);
+                const propMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
+                const prop1 = new THREE.Mesh(propGeometry, propMaterial);
+                prop1.castShadow = true;
+                propellerGroup.add(prop1);
+
+                const prop2 = new THREE.Mesh(propGeometry, propMaterial);
+                prop2.rotation.z = Math.PI / 2;
+                prop2.castShadow = true;
+                propellerGroup.add(prop2);
+
+                // Store for animation
+                propellerGroup.userData.rotationAxis = new THREE.Vector3(0, 1, 0);
+                group.add(propellerGroup);
+            }
+
+            return group;
+        }
+
+        const drone = createDrone();
+        droneGroup.add(drone);
+
+        // Create Control Base
+        function createControlBase() {
+            const group = new THREE.Group();
+            group.position.y = -200;
+
+            // Base platform
+            const platformGeometry = new THREE.BoxGeometry(100, 10, 100);
+            const platformMaterial = new THREE.MeshPhongMaterial({ color: 0x228B22 });
+            const platform = new THREE.Mesh(platformGeometry, platformMaterial);
+            platform.position.y = 0;
+            platform.castShadow = true;
+            platform.receiveShadow = true;
+            group.add(platform);
+
+            // Landing pad
+            const padGeometry = new THREE.CircleGeometry(30, 32);
+            const padMaterial = new THREE.MeshPhongMaterial({ color: 0xFFFFFF });
+            const pad = new THREE.Mesh(padGeometry, padMaterial);
+            pad.rotation.x = -Math.PI / 2;
+            pad.position.y = 6;
+            pad.receiveShadow = true;
+            group.add(pad);
+
+            // Control tower
+            const towerGeometry = new THREE.BoxGeometry(30, 60, 30);
+            const towerMaterial = new THREE.MeshPhongMaterial({ color: 0x4169E1 });
+            const tower = new THREE.Mesh(towerGeometry, towerMaterial);
+            tower.position.set(-40, 30, -40);
+            tower.castShadow = true;
+            tower.receiveShadow = true;
+            group.add(tower);
+
+            // Antenna
+            const antennaGeometry = new THREE.CylinderGeometry(2, 2, 50, 8);
+            const antennaMaterial = new THREE.MeshPhongMaterial({ color: 0xFFD700 });
+            const antenna = new THREE.Mesh(antennaGeometry, antennaMaterial);
+            antenna.position.set(-40, 85, -40);
+            antenna.castShadow = true;
+            group.add(antenna);
+
+            return group;
+        }
+
+        const controlBase = createControlBase();
+        scene.add(controlBase);
+
+        // Create Grid Ground
+        function createGround() {
+            const gridSize = 500;
+            const gridDivisions = 50;
+            const gridHelper = new THREE.GridHelper(gridSize, gridDivisions, 0x444444, 0x222222);
+            gridHelper.position.y = -300;
+            scene.add(gridHelper);
+        }
+
+        createGround();
+
+        // Add stars
+        function createStars() {
+            const geometry = new THREE.BufferGeometry();
+            const vertices = [];
+            for (let i = 0; i < 1000; i++) {
+                vertices.push(
+                    (Math.random() - 0.5) * 2000,
+                    Math.random() * 2000,
+                    (Math.random() - 0.5) * 2000
+                );
+            }
+            geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
+            const material = new THREE.PointsMaterial({ color: 0xffffff, size: 2 });
+            const stars = new THREE.Points(geometry, material);
+            scene.add(stars);
+        }
+
+        createStars();
+
+        // Scroll interaction
+        let scrollProgress = 0;
+        window.addEventListener('scroll', () => {
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            scrollProgress = window.scrollY / maxScroll;
+
+            // Update progress bar
+            document.getElementById('progressBar').style.width = (scrollProgress * 100) + '%';
+        });
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Update drone position based on scroll
+            const startY = 150;
+            const endY = -50; // Landing on base
+            droneGroup.position.y = startY + (endY - startY) * scrollProgress;
+
+            // Drone rotation and tilt based on descent
+            droneGroup.rotation.x = scrollProgress * 0.2;
+            droneGroup.rotation.z = Math.sin(scrollProgress * Math.PI) * 0.1;
+
+            // Rotate propellers
+            drone.children.forEach((child) => {
+                if (child instanceof THREE.Group && child.userData.rotationAxis) {
+                    child.rotation.y += 0.3;
+                }
+            });
+
+            // Camera follow
+            const cameraDistance = 100 + scrollProgress * 50;
+            const cameraHeight = 50 + scrollProgress * 100;
+            camera.position.set(
+                Math.sin(Date.now() * 0.0002) * cameraDistance,
+                cameraHeight,
+                Math.cos(Date.now() * 0.0002) * cameraDistance
+            );
+            camera.lookAt(0, droneGroup.position.y, 0);
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
