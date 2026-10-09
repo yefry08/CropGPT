@@ -1,0 +1,23 @@
+{
+  "name": "tension-global",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Tensión Global — juego de estrategia web sobre la Guerra Fría y el orden multipolar",
+  "type": "module",
+  "workspaces": ["shared", "server", "client"],
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "dev": "concurrently -k -n servidor,cliente -c blue,red \"npm run dev -w server\" \"npm run dev -w client\"",
+    "build": "npm run build -w client && npm run build -w server",
+    "start": "node dist/server.cjs",
+    "test": "npm run test -w shared",
+    "typecheck": "npm run typecheck -w shared && npm run typecheck -w server && npm run typecheck -w client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0",
+    "esbuild": "^0.25.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "vitest": "^3.0.0"
+  }
+}
