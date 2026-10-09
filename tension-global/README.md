@@ -63,6 +63,27 @@ docker build -t tension-global .
 docker run --rm -p 8080:8080 tension-global      # http://localhost:8080
 ```
 
+### Hugging Face Spaces (gratis, sin tarjeta)
+
+Un *Space* de tipo Docker admite WebSockets, así que funciona el juego completo (un jugador y online). En el plan gratuito
+se duerme tras un tiempo sin visitas: al despertar tarda un poco y se pierden las salas en curso.
+
+1. En <https://huggingface.co/new-space> crea un Space con **SDK: Docker** (plantilla en blanco) y hardware gratuito.
+2. Elige cómo subir el código:
+   - **Automático (GitHub Actions):** en *Settings → Secrets and variables → Actions* del repositorio de GitHub, crea el secreto
+     `HF_TOKEN` (token de <https://huggingface.co/settings/tokens> con permiso *Write*) y la variable `HF_SPACE`
+     (`tu-usuario/nombre-del-space`). Luego ejecuta *Actions → Publicar Tensión Global en Hugging Face Spaces → Run workflow*.
+     También se ejecuta solo al subir cambios de `tension-global/` a `main`.
+   - **A mano:**
+     ```bash
+     git clone https://huggingface.co/spaces/tu-usuario/nombre-del-space hf-space
+     sh tension-global/scripts/build-hf-space.sh hf-space
+     cd hf-space && git add -A && git commit -m "Tensión Global" && git push
+     ```
+3. El Space construye la imagen y queda en `https://tu-usuario-nombre-del-space.hf.space`.
+4. Login opcional: en *Settings* del Space añade la variable `VITE_NEON_AUTH_URL` y `NEON_AUTH_JWKS_URL`, y registra ese dominio
+   `.hf.space` como dominio de confianza en Neon Auth.
+
 ### Render
 
 1. Crea un **Web Service** desde este repositorio, runtime **Docker**, **Root Directory** `tension-global`

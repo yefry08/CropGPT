@@ -1,0 +1,36 @@
+name: Publicar Tensión Global en Hugging Face Spaces
+# Requiere en GitHub: secreto HF_TOKEN (token de Hugging Face con permiso de escritura)
+# y variable HF_SPACE (por ejemplo "usuario/tension-global").
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['tension-global/**']
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Comprobar configuración
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_SPACE: ${{ vars.HF_SPACE }}
+        run: |
+          if [ -z "$HF_TOKEN" ] || [ -z "$HF_SPACE" ]; then
+            echo "Falta el secreto HF_TOKEN o la variable HF_SPACE"; exit 1
+          fi
+      - name: Armar el Space
+        run: sh tension-global/scripts/build-hf-space.sh space
+      - name: Subir al Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_SPACE: ${{ vars.HF_SPACE }}
+        run: |
+          cd space
+          git init -q -b main
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add -A
+          git commit -qm "Despliegue desde ${GITHUB_SHA::7}"
+          HF_USER="${HF_SPACE%%/*}"
+          git push -f "https://${HF_USER}:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE}" main
