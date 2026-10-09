@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@neondatabase/auth": "^0.5.0-beta",
     "@tg/shared": "*",
     "d3-geo": "^3.1.1",
     "d3-selection": "^3.0.0",

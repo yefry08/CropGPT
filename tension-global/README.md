@@ -83,6 +83,29 @@ fly scale count 1                         # imprescindible: el estado está en m
 `fly.toml` mantiene una máquina siempre encendida (`auto_stop_machines = "off"`, `min_machines_running = 1`) y define el
 chequeo de salud en `/healthz`.
 
+### Cuentas con Neon Auth (opcional)
+
+El modo online puede exigir inicio de sesión con [Neon Auth](https://neon.com/docs/auth/overview) (Managed Better Auth). Es
+opcional: sin las variables de abajo el juego funciona sin cuentas. El modo un jugador nunca requiere sesión, y los
+espectadores tampoco.
+
+| Dónde | Variable | Valor |
+|---|---|---|
+| Cliente (en la *build*) | `VITE_NEON_AUTH_URL` | URL de Auth de la rama, p. ej. `https://ep-…neonauth….aws.neon.tech/neondb/auth` |
+| Servidor | `NEON_AUTH_JWKS_URL` | `<URL de Auth>/.well-known/jwks.json` |
+| Servidor (opcional) | `NEON_AUTH_ISSUER` | emisor esperado del JWT, si quieres comprobarlo |
+
+Cómo funciona: el cliente inicia sesión (correo y contraseña) con `@neondatabase/auth`, y en cada conexión del socket envía el
+JWT de 15 minutos. El servidor lo verifica (EdDSA) contra el JWKS con `jose`; el nombre en la sala sale de la cuenta y el asiento
+queda ligado a su id, de modo que otra cuenta no puede recuperarlo con el token de sala. Con Docker pasa la URL al construir:
+`docker build --build-arg VITE_NEON_AUTH_URL=… .`
+
+En la consola de Neon, **añade como dominios de confianza** los orígenes del cliente (tu dominio de Render/Fly y
+`http://localhost:5173`); si no, Auth responde `invalid domain`. Comprueba la integración del servidor sin red con
+`npx tsx server/scripts/auth-check.ts` (usa un JWKS falso local).
+
+> En la versión de GitHub Pages el login no se muestra: allí no hay modo online.
+
 ### GitHub Pages (solo un jugador)
 
 Pages solo sirve archivos estáticos: el modo contra la IA funciona entero en el navegador, pero el **online no** (necesita el

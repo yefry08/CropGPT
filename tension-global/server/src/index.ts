@@ -4,6 +4,7 @@ import http from 'node:http';
 import path from 'node:path';
 import express from 'express';
 import { Server, type Socket } from 'socket.io';
+import { authEnabled, verifyToken } from './auth';
 import {
   applyAction,
   createGame,
@@ -26,6 +27,8 @@ interface Member {
   side: Side | null;
   spectator: boolean;
   ready: boolean;
+  /** Id de la cuenta (Neon Auth) que ocupa el asiento, si el login está activo. */
+  userId?: string;
 }
 
 interface Room {
@@ -44,6 +47,8 @@ const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const app = express();
 app.disable('x-powered-by');
 app.get('/healthz', (_req, res) => res.json({ ok: true, rooms: rooms.size }));
+// El cliente consulta si hay que iniciar sesión para jugar online.
+app.get('/api/config', (_req, res) => res.json({ authRequired: authEnabled }));
 
 const candidates = [process.env.STATIC_DIR, path.resolve(process.cwd(), 'dist/public'), path.resolve(process.cwd(), '../dist/public'), path.resolve(process.cwd(), '../client/dist')].filter(
   (x): x is string => !!x,
@@ -148,13 +153,21 @@ function find(socket: Socket<ClientToServer, ServerToClient>): { room: Room; m: 
 }
 
 // ——— Sockets ———
+// La identidad (si el login está activo) se verifica al conectar con el JWT del handshake.
+io.use(async (socket, next) => {
+  if (authEnabled) socket.data.user = await verifyToken(socket.handshake.auth?.token);
+  next();
+});
+
 io.on('connection', (socket) => {
   socket.on('room:create', (p, cb) => {
     try {
+      if (authEnabled && !socket.data.user) return cb({ ok: false, error: 'Inicia sesión para crear una sala' });
+      const user = socket.data.user as { id: string; name: string } | undefined;
       const side: Side = p?.side === 'E' ? 'E' : 'W';
       const code = newCode();
       const room: Room = { code, members: new Map(), state: null, chat: [], chatSeq: 0, lastActive: Date.now() };
-      const m: Member = { token: randomBytes(16).toString('hex'), name: cleanName(p?.name), sid: null, side, spectator: false, ready: false };
+      const m: Member = { token: randomBytes(16).toString('hex'), name: user?.name ?? cleanName(p?.name), sid: null, side, spectator: false, ready: false, userId: user?.id };
       room.members.set(m.token, m);
       rooms.set(code, room);
       attach(socket, room, m);
@@ -168,14 +181,18 @@ io.on('connection', (socket) => {
     const code = String(p?.code ?? '').toUpperCase().trim();
     const room = rooms.get(code);
     if (!room) return cb({ ok: false, error: 'La sala no existe o ha caducado' });
+    const user = socket.data.user as { id: string; name: string } | undefined;
     let m = p.token ? room.members.get(p.token) : undefined;
+    // Un asiento con cuenta solo lo recupera esa misma cuenta.
+    if (m?.userId && m.userId !== user?.id) return cb({ ok: false, error: 'Esa plaza pertenece a otra cuenta. Inicia sesión con la correcta.' });
     if (m) {
       // Reconexión: el asiento se conserva.
       if (m.sid && m.sid !== socket.id) io.sockets.sockets.get(m.sid)?.disconnect(true);
       m.name = cleanName(p.name || m.name);
     } else {
       const spectator = !!p.spectator || room.state !== null;
-      m = { token: randomBytes(16).toString('hex'), name: cleanName(p.name), sid: null, side: null, spectator, ready: false };
+      if (authEnabled && !spectator && !user) return cb({ ok: false, error: 'Inicia sesión para unirte como jugador' });
+      m = { token: randomBytes(16).toString('hex'), name: (!spectator && user?.name) || cleanName(p.name), sid: null, side: null, spectator, ready: false, userId: spectator ? undefined : user?.id };
       room.members.set(m.token, m);
       if (spectator) pushChat(room, 'Sistema', 'spectator', `${m.name} mira la partida como espectador.`);
     }

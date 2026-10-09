@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import type { AILevel, Side } from '@tg/shared';
 import { loadSave } from '../hooks/useLocalGame';
+import { useAuth } from '../hooks/useAuth';
 import { RulesModal } from './Modals';
+import { AccountBox } from './AccountBox';
 
 const STATIC = import.meta.env.VITE_STATIC === '1';
 
@@ -28,9 +30,11 @@ export function Home({ onStart, initialCode }: { onStart: (s: Start) => void; in
   });
   const [code, setCode] = useState(initialCode ?? '');
   const [rules, setRules] = useState(false);
+  const auth = useAuth();
+  const needLogin = !STATIC && auth.enabled && !auth.user;
   const save = loadSave();
   const nm = () => {
-    const n = name.trim() || 'Jugador';
+    const n = auth.user?.name ?? (name.trim() || 'Jugador');
     try {
       localStorage.setItem('tg-name', n);
     } catch {
@@ -84,15 +88,19 @@ export function Home({ onStart, initialCode }: { onStart: (s: Start) => void; in
         {!STATIC && (
         <section className="panel">
           <h2>Online 1 contra 1</h2>
-          <label>
-            Tu nombre
-            <input value={name} maxLength={20} onChange={(e) => setName(e.target.value)} placeholder="Jugador" />
-          </label>
+          {auth.enabled ? (
+            <AccountBox auth={auth} />
+          ) : (
+            <label>
+              Tu nombre
+              <input value={name} maxLength={20} onChange={(e) => setName(e.target.value)} placeholder="Jugador" />
+            </label>
+          )}
           <div className="row">
-            <button className="w" onClick={() => onStart({ t: 'create', name: nm(), side: 'W' })}>
+            <button className="w" disabled={needLogin} onClick={() => onStart({ t: 'create', name: nm(), side: 'W' })}>
               Crear sala · Occidente
             </button>
-            <button className="e" onClick={() => onStart({ t: 'create', name: nm(), side: 'E' })}>
+            <button className="e" disabled={needLogin} onClick={() => onStart({ t: 'create', name: nm(), side: 'E' })}>
               Crear sala · Oriental
             </button>
           </div>
@@ -108,13 +116,14 @@ export function Home({ onStart, initialCode }: { onStart: (s: Start) => void; in
             />
           </label>
           <div className="row">
-            <button className="primary" disabled={!codeOk} onClick={() => onStart({ t: 'join', code: code.trim().toUpperCase(), name: nm(), spectator: false })}>
+            <button className="primary" disabled={!codeOk || needLogin} onClick={() => onStart({ t: 'join', code: code.trim().toUpperCase(), name: nm(), spectator: false })}>
               Unirse
             </button>
             <button disabled={!codeOk} onClick={() => onStart({ t: 'join', code: code.trim().toUpperCase(), name: nm(), spectator: true })}>
               Ver como espectador
             </button>
           </div>
+          {needLogin && <p className="muted">Inicia sesión para crear o unirte a una sala. Para mirar como espectador no hace falta.</p>}
           <p className="muted">Cada jugador elige bando en la sala. Si te desconectas, la partida sigue y puedes volver con el mismo enlace.</p>
         </section>
         )}

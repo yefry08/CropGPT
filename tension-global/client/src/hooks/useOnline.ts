@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { io, type Socket } from 'socket.io-client';
 import type { Action, ChatMsg, ClientToServer, GameState, JoinResult, Role, RoomInfo, ServerToClient, Side } from '@tg/shared';
+import { getAuthToken } from '../lib/auth';
 import type { GameController } from './types';
 
 type Sock = Socket<ServerToClient, ClientToServer>;
@@ -63,7 +64,7 @@ export function useOnline(intent: Intent): OnlineSession {
   const spectRef = useRef(intent.t === 'join' && intent.spectator);
 
   useEffect(() => {
-    const sock: Sock = io({ transports: ['websocket', 'polling'], reconnectionDelay: 800, reconnectionDelayMax: 5000 });
+    const sock: Sock = io({ auth: (cb) => void getAuthToken().then((token) => cb(token ? { token } : {})), transports: ['websocket', 'polling'], reconnectionDelay: 800, reconnectionDelayMax: 5000 });
     sockRef.current = sock;
 
     const handleJoin = (r: JoinResult) => {

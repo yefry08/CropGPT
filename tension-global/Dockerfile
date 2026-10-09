@@ -9,6 +9,9 @@ RUN npm ci --no-audit --no-fund
 COPY shared shared
 COPY server server
 COPY client client
+# URL pública de Neon Auth (se incrusta en el cliente al compilar). Opcional: sin ella no hay login.
+ARG VITE_NEON_AUTH_URL
+ENV VITE_NEON_AUTH_URL=$VITE_NEON_AUTH_URL
 RUN npm run build
 
 FROM node:22-alpine
