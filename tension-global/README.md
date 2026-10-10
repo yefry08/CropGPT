@@ -72,38 +72,34 @@ docker run --rm -p 8080:8080 tension-global      # http://localhost:8080
 
 ### Hugging Face Spaces
 
-**Cuenta gratuita → Space estático (un jugador y online P2P).** Hugging Face solo permite Spaces Docker con plan de pago; gratis se
-puede publicar la versión estática (la misma que GitHub Pages):
+**Cuenta gratuita → Space estático (un jugador, online P2P y Guerra de cartas).** Hugging Face solo permite Spaces Docker
+con plan de pago; gratis se publica la versión estática (la misma que GitHub Pages). Publicado así en
+<https://huggingface.co/spaces/ElDoctor/tension-global>.
 
-```bash
-npm run build:pages                       # genera dist/public sin la sección online
-hf repos create usuario/tension-global --type space --space-sdk static --public --exist-ok
-# añade a dist/public un README.md con la cabecera `sdk: static` y `app_file: index.html`
-hf upload usuario/tension-global dist/public . --repo-type space
-```
+- **Automático (GitHub Actions):** crea un Space con **SDK: Static**. En *Settings → Secrets and variables → Actions* del
+  repositorio de GitHub crea el secreto `HF_TOKEN` (token de <https://huggingface.co/settings/tokens> con permiso *Write*) y la
+  variable `HF_SPACE` (`tu-usuario/nombre-del-space`). El workflow `.github/workflows/hf-space.yml` compila y publica al subir
+  cambios de `tension-global/` a `main`, o a mano con *Run workflow*. Sin esos dos valores se salta (no falla).
+- **A mano:**
+  ```bash
+  npm run build:pages                       # genera dist/public
+  hf repos create usuario/tension-global --type space --space-sdk static --public --exist-ok
+  # añade a dist/public un README.md con la cabecera `sdk: static` y `app_file: index.html`
+  hf upload usuario/tension-global dist/public . --repo-type space
+  ```
 
-Publicado así en <https://huggingface.co/spaces/ElDoctor/tension-global>.
+**Plan de pago → Space Docker (también el servidor online con Socket.IO).** Un Space Docker admite WebSockets:
 
-**Plan de pago → Space Docker (juego completo, también online).**
-
-Un *Space* de tipo Docker admite WebSockets, así que funciona el juego completo (un jugador y online). En el plan gratuito
-se duerme tras un tiempo sin visitas: al despertar tarda un poco y se pierden las salas en curso.
-
-1. En <https://huggingface.co/new-space> crea un Space con **SDK: Docker** (plantilla en blanco) y hardware gratuito.
-2. Elige cómo subir el código:
-   - **Automático (GitHub Actions):** en *Settings → Secrets and variables → Actions* del repositorio de GitHub, crea el secreto
-     `HF_TOKEN` (token de <https://huggingface.co/settings/tokens> con permiso *Write*) y la variable `HF_SPACE`
-     (`tu-usuario/nombre-del-space`). Luego ejecuta *Actions → Publicar Tensión Global en Hugging Face Spaces → Run workflow*.
-     También se ejecuta solo al subir cambios de `tension-global/` a `main`.
-   - **A mano:**
-     ```bash
-     git clone https://huggingface.co/spaces/tu-usuario/nombre-del-space hf-space
-     sh tension-global/scripts/build-hf-space.sh hf-space
-     cd hf-space && git add -A && git commit -m "Tensión Global" && git push
-     ```
+1. Crea un Space con **SDK: Docker** (plantilla en blanco).
+2. Sube el código:
+   ```bash
+   git clone https://huggingface.co/spaces/tu-usuario/nombre-del-space hf-space
+   sh tension-global/scripts/build-hf-space.sh hf-space
+   cd hf-space && git add -A && git commit -m "Tensión Global" && git push
+   ```
 3. El Space construye la imagen y queda en `https://tu-usuario-nombre-del-space.hf.space`.
-4. Login opcional: en *Settings* del Space añade la variable `VITE_NEON_AUTH_URL` y `NEON_AUTH_JWKS_URL`, y registra ese dominio
-   `.hf.space` como dominio de confianza en Neon Auth.
+4. Login opcional: en *Settings* del Space añade las variables `VITE_NEON_AUTH_URL` y `NEON_AUTH_JWKS_URL`, y registra el
+   dominio `.hf.space` como dominio de confianza en Neon Auth.
 
 ### Render
 
