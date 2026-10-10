@@ -1,0 +1,21 @@
+{
+  "name": "@tg/server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "esbuild src/index.ts --bundle --platform=node --target=node20 --format=cjs --outfile=../dist/server.cjs --external:bufferutil --external:utf-8-validate",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tg/shared": "*",
+    "express": "^4.21.0",
+    "jose": "^6.2.12",
+    "socket.io": "^4.8.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.0.0"
+  }
+}

@@ -1,0 +1,68 @@
+name: Publicar Tensión Global en Hugging Face Spaces
+# Publica la versión estática (un jugador, online P2P y Guerra de cartas), que funciona en cuentas gratuitas.
+# Requiere en GitHub: secreto HF_TOKEN (token de Hugging Face con permiso de escritura)
+# y variable HF_SPACE (por ejemplo "usuario/tension-global"). Sin ellos, el workflow se salta.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['tension-global/**']
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      HF_SPACE: ${{ vars.HF_SPACE }}
+    steps:
+      - name: Comprobar configuración
+        id: cfg
+        run: |
+          if [ -z "$HF_TOKEN" ] || [ -z "$HF_SPACE" ]; then
+            echo "::notice::Falta el secreto HF_TOKEN o la variable HF_SPACE: no se publica."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.cfg.outputs.ok == 'true'
+      - uses: actions/setup-node@v4
+        if: steps.cfg.outputs.ok == 'true'
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tension-global/package-lock.json
+      - name: Compilar la versión estática
+        if: steps.cfg.outputs.ok == 'true'
+        working-directory: tension-global
+        run: npm ci && npm run build:pages
+      - name: Armar el Space
+        if: steps.cfg.outputs.ok == 'true'
+        run: |
+          mkdir space && cp -r tension-global/dist/public/. space/
+          cat > space/README.md <<'MD'
+          ---
+          title: Tensión Global
+          emoji: ☢️
+          colorFrom: yellow
+          colorTo: red
+          sdk: static
+          app_file: index.html
+          pinned: false
+          short_description: "Guerra Fría a 2026: IA, online P2P y guerra de cartas"
+          ---
+
+          # Tensión Global · Global Tension
+
+          Juego web de estrategia (1947–2026) y modo Guerra de cartas. Strategy web game (1947–2026) and Card War mode.
+          MD
+          sed -i 's/^          //' space/README.md
+      - name: Subir al Space
+        if: steps.cfg.outputs.ok == 'true'
+        run: |
+          cd space
+          git init -q -b main
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add -A
+          git commit -qm "Despliegue desde ${GITHUB_SHA::7}"
+          git push -f "https://${HF_SPACE%%/*}:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE}" main
