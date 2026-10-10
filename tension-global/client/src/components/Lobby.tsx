@@ -12,6 +12,7 @@ export function Lobby({
   onExit,
   connected,
   error,
+  p2pHost,
 }: {
   info: RoomInfo | null;
   role: Role | null;
@@ -22,6 +23,7 @@ export function Lobby({
   onExit: () => void;
   connected: boolean;
   error: string | null;
+  p2pHost?: boolean;
 }) {
   const [msg, setMsg] = useState<string | null>(null);
   const [copied, setCopied] = useState('');
@@ -55,13 +57,18 @@ export function Lobby({
             <span key={i}>{c}</span>
           ))}
         </div>
-        {!connected && <div className="conn-banner">Reconectando con el servidor…</div>}
+        {p2pHost && (
+          <div className="conn-banner">Tu navegador hospeda la sala: mantén esta pestaña abierta mientras dure la partida. Si la cierras, la partida queda guardada y continúa al volver a abrir el enlace.</div>
+        )}
+        {!connected && !error && <div className="conn-banner">Reconectando…</div>}
         {error && <div className="conn-banner warn">{error}</div>}
         <div className="row">
           <button onClick={() => copy(linkPlayer, 'p')}>{copied === 'p' ? '¡Copiado!' : 'Copiar enlace de la sala'}</button>
           <button onClick={() => copy(linkSpec, 's')}>{copied === 's' ? '¡Copiado!' : 'Copiar enlace de espectador'}</button>
         </div>
 
+        {!info && <div className="muted">Conectando con la sala…</div>}
+        {info && (
         <div className="seats">
           {(['W', 'E'] as Side[]).map((s) => {
             const st = seat(s);
@@ -86,6 +93,7 @@ export function Lobby({
             );
           })}
         </div>
+        )}
 
         {role === 'spectator' ? (
           <p className="muted">Estás como espectador. Verás la partida en cuanto empiece (sin las manos de los jugadores).</p>

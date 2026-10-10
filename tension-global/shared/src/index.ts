@@ -10,3 +10,4 @@ export * from './rng';
 export * from './ai';
 export * from './sim';
 export * from './protocol';
+export * from './room';

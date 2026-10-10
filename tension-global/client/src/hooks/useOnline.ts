@@ -2,9 +2,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { io, type Socket } from 'socket.io-client';
 import type { Action, ChatMsg, ClientToServer, GameState, JoinResult, Role, RoomInfo, ServerToClient, Side } from '@tg/shared';
 import { getAuthToken } from '../lib/auth';
+import { makeP2PSocket, type P2PRole } from '../net/p2p';
 import type { GameController } from './types';
 
 type Sock = Socket<ServerToClient, ClientToServer>;
+
+/** En la versión estática (GitHub Pages / Hugging Face) no hay servidor: se juega P2P. */
+export const P2P = import.meta.env.VITE_STATIC === '1';
 
 export type Intent =
   | { t: 'create'; name: string; side: Side }
@@ -46,6 +50,8 @@ export interface OnlineSession {
   setReady: (r: boolean) => Promise<string | null>;
   controller: GameController | null;
   leave: () => void;
+  /** En modo P2P: si este navegador hospeda la sala o se conecta a ella. */
+  p2p: P2PRole | null;
 }
 
 /** Conexión con el servidor autoritativo. Guarda un token por sala para reconectar. */
@@ -62,9 +68,15 @@ export function useOnline(intent: Intent): OnlineSession {
   const codeRef = useRef<string | null>(code);
   const nameRef = useRef(intent.name);
   const spectRef = useRef(intent.t === 'join' && intent.spectator);
+  const [p2p, setP2p] = useState<P2PRole | null>(null);
 
   useEffect(() => {
-    const sock: Sock = io({ auth: (cb) => void getAuthToken().then((token) => cb(token ? { token } : {})), transports: ['websocket', 'polling'], reconnectionDelay: 800, reconnectionDelayMax: 5000 });
+    let sock: Sock;
+    if (P2P) {
+      const made = makeP2PSocket(intent.t === 'create' ? { t: 'create' } : { t: 'join', code: intent.code.toUpperCase() });
+      sock = made.sock as unknown as Sock;
+      setP2p(made.role);
+    } else sock = io({ auth: (cb) => void getAuthToken().then((token) => cb(token ? { token } : {})), transports: ['websocket', 'polling'], reconnectionDelay: 800, reconnectionDelayMax: 5000 });
     sockRef.current = sock;
 
     const handleJoin = (r: JoinResult) => {
@@ -88,6 +100,7 @@ export function useOnline(intent: Intent): OnlineSession {
 
     sock.on('connect', () => {
       setConnected(true);
+      setError(null);
       const c = codeRef.current;
       if (c) {
         // Reconexión (o primera unión a una sala existente) con el token guardado.
@@ -97,8 +110,9 @@ export function useOnline(intent: Intent): OnlineSession {
       }
     });
     sock.on('disconnect', () => setConnected(false));
-    sock.on('connect_error', () => {
+    sock.on('connect_error', (e: Error) => {
       setConnected(false);
+      if (P2P && e?.message) setError(e.message);
     });
     sock.on('room:info', (i) => {
       setInfo(i);
@@ -158,5 +172,6 @@ export function useOnline(intent: Intent): OnlineSession {
     leave: () => {
       if (codeRef.current) clearToken(codeRef.current);
     },
+    p2p,
   };
 }

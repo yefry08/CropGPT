@@ -57,7 +57,8 @@ function OnlineGame({ intent, onExit }: { intent: Intent; onExit: () => void }) 
       role={o.role}
       chat={o.chat}
       connected={o.connected}
-      error={o.status === 'connecting' && !o.connected ? 'Conectando…' : o.error}
+      error={o.error ?? (o.status === 'connecting' && !o.connected ? 'Conectando…' : null)}
+      p2pHost={o.p2p === 'host'}
       onSend={(t) => o.controller?.online?.sendChat(t)}
       onSide={o.chooseSide}
       onReady={o.setReady}

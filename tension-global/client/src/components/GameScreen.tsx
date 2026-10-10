@@ -270,7 +270,7 @@ export function GameScreen({ ctrl, onExit }: { ctrl: GameController; onExit: () 
           if (state.phase === 'over' || window.confirm(online ? '¿Salir de la sala? Podrás volver con el mismo enlace.' : '¿Volver al menú? La partida se guarda para continuarla.')) onExit();
         }}
       />
-      {online && !online.connected && <div className="conn-banner">Sin conexión con el servidor. Reintentando… la partida sigue en el servidor.</div>}
+      {online && !online.connected && <div className="conn-banner">Sin conexión. Reintentando… la partida no se pierde.</div>}
       {online && online.connected && oppSeat && !oppSeat.connected && (
         <div className="conn-banner warn">El rival está desconectado. La partida espera a que vuelva (puede reconectarse con su enlace).</div>
       )}

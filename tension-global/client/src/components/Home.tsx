@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { AILevel, Side } from '@tg/shared';
 import { loadSave } from '../hooks/useLocalGame';
+import { P2P } from '../hooks/useOnline';
 import { useAuth } from '../hooks/useAuth';
 import { RulesModal } from './Modals';
 import { AccountBox } from './AccountBox';
@@ -85,10 +86,10 @@ export function Home({ onStart, initialCode }: { onStart: (s: Start) => void; in
           )}
         </section>
 
-        {!STATIC && (
+        {(!STATIC || P2P) && (
         <section className="panel">
           <h2>Online 1 contra 1</h2>
-          {auth.enabled ? (
+          {auth.enabled && !STATIC ? (
             <AccountBox auth={auth} />
           ) : (
             <label>
@@ -124,6 +125,7 @@ export function Home({ onStart, initialCode }: { onStart: (s: Start) => void; in
             </button>
           </div>
           {needLogin && <p className="muted">Inicia sesión para crear o unirte a una sala. Para mirar como espectador no hace falta.</p>}
+          {P2P && <p className="muted">Sin servidor: tu navegador hospeda la sala que crees (mantén la pestaña abierta) y el otro jugador se conecta directamente a ti.</p>}
           <p className="muted">Cada jugador elige bando en la sala. Si te desconectas, la partida sigue y puedes volver con el mismo enlace.</p>
         </section>
         )}

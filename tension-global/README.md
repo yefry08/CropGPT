@@ -8,6 +8,8 @@ reglas concretas y arte son originales. Todo el juego está en español.
 - **Un jugador** contra una IA (Fácil / Normal / Difícil). Todo corre en el navegador con la misma lógica de `/shared`.
 - **Online 1 contra 1** con servidor autoritativo (Node + Socket.IO): sala de 6 caracteres, elección de bando, chat,
   reconexión con token guardado en `localStorage` y **espectadores** mediante enlace.
+- **Online P2P sin servidor** en la versión estática (GitHub Pages / Hugging Face): el navegador de quien crea la sala hace
+  de servidor y los demás se conectan por WebRTC (PeerJS). Ver «Modo online P2P».
 
 > Este juego vive en el subdirectorio `tension-global/` del repositorio (la raíz contiene otro proyecto).
 
@@ -65,7 +67,7 @@ docker run --rm -p 8080:8080 tension-global      # http://localhost:8080
 
 ### Hugging Face Spaces
 
-**Cuenta gratuita → Space estático (solo un jugador).** Hugging Face solo permite Spaces Docker con plan de pago; gratis se
+**Cuenta gratuita → Space estático (un jugador y online P2P).** Hugging Face solo permite Spaces Docker con plan de pago; gratis se
 puede publicar la versión estática (la misma que GitHub Pages):
 
 ```bash
@@ -143,8 +145,8 @@ En la consola de Neon, **añade como dominios de confianza** los orígenes del c
 
 ### GitHub Pages (solo un jugador)
 
-Pages solo sirve archivos estáticos: el modo contra la IA funciona entero en el navegador, pero el **online no** (necesita el
-servidor Node). `npm run build:pages` genera esa versión en `dist/public` (sin la sección online). El workflow
+Pages solo sirve archivos estáticos: el modo contra la IA funciona entero en el navegador y el online usa el modo P2P
+(ver «Modo online P2P»). `npm run build:pages` genera esa versión en `dist/public`. El workflow
 `.github/workflows/pages.yml` la publica; activa antes *Settings → Pages → Source: GitHub Actions*. Se ejecuta al subir a
 `main` o manualmente (*Run workflow*); si Pages rechaza otra rama por reglas del entorno `github-pages`, ejecútalo desde `main`.
 
@@ -240,6 +242,21 @@ Si cambias cartas, reglas o la IA, vuelve a ejecutar `npm test` y reajusta si ha
   niveles de zoom; vuelve a ejecutarlo si cambias anclas o tamaños de ficha.
 * Zoom con rueda, pellizco y arrastre; botones Mundo / Europa / Medio Oriente / Asia / África / Américas.
   Las adyacencias se dibujan solo al pasar el cursor o al elegir un objetivo.
+
+## Modo online P2P (versión estática)
+
+En la build estática (`npm run build:pages`) no hay servidor Node, así que el modo online funciona entre navegadores:
+
+* Quien **crea la sala** la hospeda: su navegador ejecuta `RoomHost` (`shared/src/room.ts`, la misma lógica de salas que el
+  servidor, con tests en `shared/test/room.test.ts`) y valida cada acción con el motor compartido.
+* Los demás jugadores y espectadores se conectan a él por WebRTC con [PeerJS](https://peerjs.com/), usando su servidor
+  público de señalización (`client/src/net/p2p.ts`). Cada uno recibe solo su vista (su mano).
+* La sala vive mientras la pestaña del anfitrión esté abierta. Se guarda en su `localStorage`: si la recarga o la cierra y
+  vuelve a abrir el enlace, la partida continúa y los demás se reconectan solos (unos segundos).
+* Limitaciones: el anfitrión podría ver la mano rival con las herramientas del navegador (hace de árbitro), y algunas
+  redes muy restrictivas impiden la conexión directa (no se usa servidor TURN).
+
+Publicado en <https://huggingface.co/spaces/ElDoctor/tension-global>.
 
 ## Protocolo online (Socket.IO)
 
