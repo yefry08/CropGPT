@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   CARD,
   COUNTRY,
+  cardName,
   activeIds,
   accessibleIn,
   actingSide,
@@ -19,6 +20,7 @@ import {
 } from '@tg/shared';
 import { isSoundOn, setSound, sfx } from '../lib/sound';
 import type { GameController } from '../hooks/types';
+import { useLang } from '../i18n';
 import { ActionPanel, type PendingUI } from './ActionPanel';
 import { CardView } from './CardView';
 import { MapView } from './MapView';
@@ -42,6 +44,7 @@ function undoPlacement(list: Placement[]): Placement[] {
 
 export function GameScreen({ ctrl, onExit }: { ctrl: GameController; onExit: () => void }) {
   const { state, me } = ctrl;
+  const { lang, tr } = useLang();
   const [sel, setSel] = useState<CardId | null>(null);
   const [placements, setPlacements] = useState<Placement[]>([]);
   const [target, setTarget] = useState<CountryId | null>(null);
@@ -81,7 +84,7 @@ export function GameScreen({ ctrl, onExit }: { ctrl: GameController; onExit: () 
     if (state.logSeq !== lastSeq.current) {
       const fresh = state.log.filter((l) => l.id > lastSeq.current);
       lastSeq.current = state.logSeq;
-      const rolls = fresh.filter((l) => l.dice).map((l) => ({ id: l.id, value: l.dice!.value, label: l.dice!.label, side: l.dice!.side }));
+      const rolls = fresh.filter((l) => l.dice).map((l) => ({ id: l.id, value: l.dice!.value, label: l.dice!.label, labelEn: l.dice!.labelEn, side: l.dice!.side }));
       if (rolls.length) {
         setDice((q) => [...q, ...rolls]);
         sfx.dice();
@@ -157,7 +160,7 @@ export function GameScreen({ ctrl, onExit }: { ctrl: GameController; onExit: () 
       if (mine && pend) {
         if (!selectable.has(id)) {
           setInspect(id);
-          if (pend.kind !== 'free' || freeSpent < pend.n) flash('Ese país no es un objetivo válido ahora.');
+          if (pend.kind !== 'free' || freeSpent < pend.n) flash(tr('Ese país no es un objetivo válido ahora.', 'That country is not a valid target right now.'));
           return;
         }
         if (pend.kind === 'ops' && pend.mode === 'coup') setTarget(id);
@@ -168,7 +171,7 @@ export function GameScreen({ ctrl, onExit }: { ctrl: GameController; onExit: () 
       }
       setInspect((cur) => (cur === id ? null : id));
     },
-    [mine, pend, selectable, freeSpent, flash],
+    [mine, pend, selectable, freeSpent, flash, tr],
   );
 
   const run = useCallback(
@@ -190,7 +193,7 @@ export function GameScreen({ ctrl, onExit }: { ctrl: GameController; onExit: () 
   const pendingUI: PendingUI | null = useMemo(() => {
     if (!mine || !pend || !me) return null;
     if (pend.kind === 'ops') {
-      const name = CARD[pend.cardId]?.name ?? 'Operaciones';
+      const name = CARD[pend.cardId] ? cardName(pend.cardId, lang) : tr('Operaciones', 'Operations');
       if (pend.mode === 'influence') {
         const spent = sim?.spent ?? 0;
         return {
@@ -201,7 +204,7 @@ export function GameScreen({ ctrl, onExit }: { ctrl: GameController; onExit: () 
           target: null,
           hasOptions: selectable.size > 0 || placements.length > 0,
           cardName: name,
-          hint: `Coloca influencia (${pend.ops} ops; cuesta 2 en países controlados por el rival)`,
+          hint: tr(`Coloca influencia (${pend.ops} ops; cuesta 2 en países controlados por el rival)`, `Place influence (${pend.ops} ops; costs 2 in rival-controlled countries)`),
         };
       }
       return {
@@ -212,7 +215,7 @@ export function GameScreen({ ctrl, onExit }: { ctrl: GameController; onExit: () 
         target,
         hasOptions: selectable.size > 0,
         cardName: name,
-        hint: 'Elige el país del golpe (con influencia rival)',
+        hint: tr('Elige el país del golpe (con influencia rival)', 'Pick the coup target (with rival influence)'),
       };
     }
     const remove = pend.o.mode === 'remove';
@@ -225,10 +228,13 @@ export function GameScreen({ ctrl, onExit }: { ctrl: GameController; onExit: () 
       target: null,
       mode: remove ? 'remove' : 'add',
       hasOptions: selectable.size > 0 || placements.length > 0,
-      cardName: CARD[pend.cardId]?.name ?? 'Evento',
-      hint: `${remove ? 'Quita' : 'Coloca'} hasta ${pend.n} de influencia${max ? ` (máx. ${max} por país)` : ''}`,
+      cardName: CARD[pend.cardId] ? cardName(pend.cardId, lang) : tr('Evento', 'Event'),
+      hint: tr(
+        `${remove ? 'Quita' : 'Coloca'} hasta ${pend.n} de influencia${max ? ` (máx. ${max} por país)` : ''}`,
+        `${remove ? 'Remove' : 'Place'} up to ${pend.n} influence${max ? ` (max. ${max} per country)` : ''}`,
+      ),
     };
-  }, [mine, pend, me, sim, placements, selectable, target, freeSpent]);
+  }, [mine, pend, me, sim, placements, selectable, target, freeSpent, lang, tr]);
 
   const confirm = () => {
     if (!pend) return;
@@ -244,9 +250,13 @@ export function GameScreen({ ctrl, onExit }: { ctrl: GameController; onExit: () 
   const banner = (() => {
     if (state.phase === 'over') return null;
     if (mine && pendingUI) return pendingUI.hint;
-    if (pend && me && pend.side !== me) return `${pend.side === 'W' ? 'Occidente' : 'El Bloque Oriental'} resuelve «${CARD[pend.cardId]?.name}»…`;
-    if (!me) return `Espectador · juega ${acting === 'W' ? 'Occidente' : 'el Bloque Oriental'}`;
-    if (!myTurn) return ctrl.aiThinking ? 'La IA está pensando…' : `Turno del ${acting === 'W' ? 'Occidente' : 'Bloque Oriental'}`;
+    if (pend && me && pend.side !== me)
+      return tr(
+        `${pend.side === 'W' ? 'Occidente' : 'El Bloque Oriental'} resuelve «${cardName(pend.cardId, 'es')}»…`,
+        `${pend.side === 'W' ? 'The West' : 'The Eastern Bloc'} is resolving “${cardName(pend.cardId, 'en')}”…`,
+      );
+    if (!me) return tr(`Espectador · juega ${acting === 'W' ? 'Occidente' : 'el Bloque Oriental'}`, `Spectator · ${acting === 'W' ? 'the West' : 'the Eastern Bloc'} to play`);
+    if (!myTurn) return ctrl.aiThinking ? tr('La IA está pensando…', 'The AI is thinking…') : tr(`Turno del ${acting === 'W' ? 'Occidente' : 'Bloque Oriental'}`, `${acting === 'W' ? 'West' : 'Eastern Bloc'} to play`);
     return null;
   })();
 
@@ -267,12 +277,12 @@ export function GameScreen({ ctrl, onExit }: { ctrl: GameController; onExit: () 
         onHelp={() => setHelp(true)}
         onDrawer={() => setDrawer((d) => !d)}
         onMenu={() => {
-          if (state.phase === 'over' || window.confirm(online ? '¿Salir de la sala? Podrás volver con el mismo enlace.' : '¿Volver al menú? La partida se guarda para continuarla.')) onExit();
+          if (state.phase === 'over' || window.confirm(online ? tr('¿Salir de la sala? Podrás volver con el mismo enlace.', 'Leave the room? You can come back with the same link.') : tr('¿Volver al menú? La partida se guarda para continuarla.', 'Back to the menu? The game is saved so you can continue it.'))) onExit();
         }}
       />
-      {online && !online.connected && <div className="conn-banner">Sin conexión. Reintentando… la partida no se pierde.</div>}
+      {online && !online.connected && <div className="conn-banner">{tr('Sin conexión. Reintentando… la partida no se pierde.', 'No connection. Retrying… the game is not lost.')}</div>}
       {online && online.connected && oppSeat && !oppSeat.connected && (
-        <div className="conn-banner warn">El rival está desconectado. La partida espera a que vuelva (puede reconectarse con su enlace).</div>
+        <div className="conn-banner warn">{tr('El rival está desconectado. La partida espera a que vuelva (puede reconectarse con su enlace).', 'Your opponent is disconnected. The game waits for them (they can reconnect with their link).')}</div>
       )}
       <div className="game-main">
         <section className="map-col">
@@ -292,7 +302,7 @@ export function GameScreen({ ctrl, onExit }: { ctrl: GameController; onExit: () 
 
           <div className="hand-dock">
             <button className="hand-handle" onClick={() => setHandOpen((o) => !o)} aria-expanded={handOpen}>
-              {handOpen ? '▼' : '▲'} Mano ({hand.length}) · Mazo {state.deck.length} · Rival {oppHand}
+              {handOpen ? '▼' : '▲'} {tr('Mano', 'Hand')} ({hand.length}) · {tr('Mazo', 'Deck')} {state.deck.length} · {tr('Rival', 'Opponent')} {oppHand}
             </button>
             {me ? (
               <>
@@ -330,19 +340,21 @@ export function GameScreen({ ctrl, onExit }: { ctrl: GameController; onExit: () 
                 </div>
               </>
             ) : (
-              <div className="actions idle">Modo espectador: no ves las manos. Mano de Occidente {state.hands.W.length} · Oriental {state.hands.E.length}.</div>
+              <div className="actions idle">
+                {tr('Modo espectador: no ves las manos.', 'Spectator mode: hands are hidden.')} {tr('Occidente', 'West')} {state.hands.W.length} · {tr('Oriental', 'Eastern')} {state.hands.E.length}
+              </div>
             )}
           </div>
         </section>
 
         <aside className="side-col">
           <nav className="tabs">
-            {([['log', 'Despachos'], ['score', 'Puntuar'], ...(online ? [['chat', 'Chat']] : []), ['rules', 'Reglas']] as [Tab, string][]).map(([k, label]) => (
+            {([['log', tr('Despachos', 'Dispatches')], ['score', tr('Puntuar', 'Scoring')], ...(online ? [['chat', 'Chat']] : []), ['rules', tr('Reglas', 'Rules')]] as [Tab, string][]).map(([k, label]) => (
               <button key={k} className={tab === k ? 'on' : ''} onClick={() => setTab(k)}>
                 {label}
               </button>
             ))}
-            <button className="close-drawer" onClick={() => setDrawer(false)} aria-label="Cerrar">
+            <button className="close-drawer" onClick={() => setDrawer(false)} aria-label={tr('Cerrar', 'Close')}>
               ✕
             </button>
           </nav>

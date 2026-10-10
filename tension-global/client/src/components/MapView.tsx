@@ -6,6 +6,8 @@ import {
   COUNTRIES,
   COUNTRY,
   REGION_NAME,
+  REGION_NAME_EN,
+  countryShort,
   controller,
   countryName,
   isActive,
@@ -16,6 +18,7 @@ import {
   type Region,
   type Side,
 } from '@tg/shared';
+import { useLang } from '../i18n';
 import { REGION_VIEWS, WORLD_RATIO, buildGeometry, loadWorld, pieceKind, type LandPiece, type MapGeometry } from '../lib/geo';
 
 interface Props {
@@ -32,11 +35,6 @@ interface Props {
 type Own = 'w' | 'e' | 'n';
 const T0 = { k: 1, x: 0, y: 0 };
 
-const shortName = (id: CountryId, era: number) => {
-  if (id === 'de') return era >= 4 ? 'Alemania' : 'Alem. Occ.';
-  if (id === 'yu') return era >= 4 ? 'Serbia' : 'Yugoslavia';
-  return COUNTRY[id].short;
-};
 
 // ——— Capa de tierra (memoizada: no se repinta al hacer zoom) ———
 interface LandProps {
@@ -110,6 +108,7 @@ function useFlash(value: number): boolean {
 interface ChipProps {
   id: CountryId;
   era: number;
+  lang: 'es' | 'en';
   w: number;
   e: number;
   ctl: Own;
@@ -126,7 +125,7 @@ interface ChipProps {
   onHover: (id: CountryId | null) => void;
 }
 
-const Chip = memo(function Chip({ id, era, w, e, ctl, x, y, a, compact, nbW, nbE, hl, sel, planned, onCountry, onHover }: ChipProps) {
+const Chip = memo(function Chip({ id, era, lang, w, e, ctl, x, y, a, compact, nbW, nbE, hl, sel, planned, onCountry, onHover }: ChipProps) {
   const def = COUNTRY[id];
   const fw = useFlash(w);
   const fe = useFlash(e);
@@ -152,7 +151,7 @@ const Chip = memo(function Chip({ id, era, w, e, ctl, x, y, a, compact, nbW, nbE
       <rect className="chip-bg" x={-hw} y={-hh} width={hw * 2} height={hh * 2} rx={4} />
       {!compact && (
         <text className="chip-name" x={def.key ? 3 : 0} y={-4} textAnchor="middle">
-          {shortName(id, era)}
+          {countryShort(id, era as 1, lang)}
         </text>
       )}
       {def.key && (
@@ -180,9 +179,9 @@ const Chip = memo(function Chip({ id, era, w, e, ctl, x, y, a, compact, nbW, nbE
         <g transform={`translate(${hw - 2},${-hh + 1})`}>
           <circle r={5.5} className={nbW ? 'nb-w' : 'nb-e'} />
           <text className="nb-t" y={2.8} textAnchor="middle">
-            {nbW ? 'EU' : nbE ? 'RU' : ''}
+            {nbW ? (lang === 'en' ? 'US' : 'EU') : nbE ? 'RU' : ''}
           </text>
-          <title>{nbW ? 'Vecino de EE.UU.' : 'Vecino de la URSS/Rusia'}</title>
+          <title>{nbW ? (lang === 'en' ? 'Neighbor of the US' : 'Vecino de EE.UU.') : lang === 'en' ? 'Neighbor of the USSR/Russia' : 'Vecino de la URSS/Rusia'}</title>
         </g>
       )}
       {planned !== 0 && (
@@ -208,6 +207,7 @@ export function MapView({ state, me, selectable, selected, planned, plannedSign,
   const [t, setT] = useState(T0);
   const [hover, setHover] = useState<CountryId | null>(null);
   const [activeRegion, setActiveRegion] = useState<Region | 'world'>('world');
+  const { lang, tr } = useLang();
   const era = state.era;
 
   useEffect(() => {
@@ -342,7 +342,7 @@ export function MapView({ state, me, selectable, selected, planned, plannedSign,
   if (!geo) {
     return (
       <div className="map-wrap" ref={wrapRef}>
-        <div className="map-loading">{pieces === null ? 'Cargando mapa…' : 'No se pudo cargar el mapa'}</div>
+        <div className="map-loading">{pieces === null ? tr('Cargando mapa…', 'Loading map…') : tr('No se pudo cargar el mapa', 'Could not load the map')}</div>
       </div>
     );
   }
@@ -409,10 +409,10 @@ export function MapView({ state, me, selectable, selected, planned, plannedSign,
           return (
             <g className="superlabels" pointerEvents="none">
               <text x={t.x + t.k * us[0]} y={t.y + t.k * us[1]} textAnchor="middle" className="sl-w">
-                EE.UU.
+                {tr('EE.UU.', 'USA')}
               </text>
               <text x={t.x + t.k * ru[0]} y={t.y + t.k * ru[1]} textAnchor="middle" className="sl-e">
-                {era < 4 ? 'URSS' : 'RUSIA'}
+                {era < 4 ? tr('URSS', 'USSR') : tr('RUSIA', 'RUSSIA')}
               </text>
             </g>
           );
@@ -441,6 +441,7 @@ export function MapView({ state, me, selectable, selected, planned, plannedSign,
                   key={q.c.id}
                   id={q.c.id}
                   era={era}
+                  lang={lang}
                   w={inf.W}
                   e={inf.E}
                   ctl={own[q.c.id] ?? 'n'}
@@ -464,14 +465,14 @@ export function MapView({ state, me, selectable, selected, planned, plannedSign,
       <div className="map-controls">
         {(['world', 'EU', 'ME', 'AS', 'AF', 'AM'] as const).map((r) => (
           <button key={r} className={activeRegion === r ? 'on' : ''} onClick={() => goTo(r)}>
-            {r === 'world' ? 'Mundo' : REGION_NAME[r]}
+            {r === 'world' ? tr('Mundo', 'World') : lang === 'en' ? REGION_NAME_EN[r] : REGION_NAME[r]}
           </button>
         ))}
         <span className="zoom-btns">
-          <button onClick={() => zoomBy(1.6)} aria-label="Acercar">
+          <button onClick={() => zoomBy(1.6)} aria-label={tr('Acercar', 'Zoom in')}>
             +
           </button>
-          <button onClick={() => zoomBy(1 / 1.6)} aria-label="Alejar">
+          <button onClick={() => zoomBy(1 / 1.6)} aria-label={tr('Alejar', 'Zoom out')}>
             −
           </button>
         </span>
@@ -479,16 +480,17 @@ export function MapView({ state, me, selectable, selected, planned, plannedSign,
 
       {infoId && <CountryInfo state={state} id={infoId} me={me} />}
       <div className="map-legend">
-        <span><i className="lg w" /> Occidente</span>
-        <span><i className="lg e" /> Bloque Oriental</span>
-        <span><i className="lg n" /> Sin control</span>
-        <span><i className="lg k" /> País clave</span>
+        <span><i className="lg w" /> {tr('Occidente', 'West')}</span>
+        <span><i className="lg e" /> {tr('Bloque Oriental', 'Eastern Bloc')}</span>
+        <span><i className="lg n" /> {tr('Sin control', 'Uncontrolled')}</span>
+        <span><i className="lg k" /> {tr('País clave', 'Key country')}</span>
       </div>
     </div>
   );
 }
 
 function CountryInfo({ state, id, me }: { state: GameState; id: CountryId; me: Side | null }) {
+  const { lang, tr } = useLang();
   const def = COUNTRY[id];
   const inf = state.influence[id];
   const ctl = controller(state, id);
@@ -496,23 +498,31 @@ function CountryInfo({ state, id, me }: { state: GameState; id: CountryId; me: S
   return (
     <div className="country-info">
       <div className="ci-title">
-        {countryName(id, state.era)} {def.key && <span className="ci-key">★ clave</span>}
+        {countryName(id, state.era, lang)} {def.key && <span className="ci-key">★ {tr('clave', 'key')}</span>}
       </div>
       <div className="ci-sub">
-        {REGION_NAME[def.region]} · Estabilidad {def.stab}
+        {lang === 'en' ? REGION_NAME_EN[def.region] : REGION_NAME[def.region]} · {tr('Estabilidad', 'Stability')} {def.stab}
       </div>
       <div className="ci-inf">
-        <span className="w">Occidente {inf.W}</span>
-        <span className="e">Oriental {inf.E}</span>
+        <span className="w">
+          {tr('Occidente', 'West')} {inf.W}
+        </span>
+        <span className="e">
+          {tr('Oriental', 'Eastern')} {inf.E}
+        </span>
       </div>
       <div className="ci-ctl">
-        {ctl === 'W' ? 'Controla Occidente' : ctl === 'E' ? 'Controla el Bloque Oriental' : 'Sin control'}
-        {me && ctl === (me === 'W' ? 'E' : 'W') ? ' · colocar cuesta 2' : ''}
+        {ctl === 'W' ? tr('Controla Occidente', 'Controlled by the West') : ctl === 'E' ? tr('Controla el Bloque Oriental', 'Controlled by the Eastern Bloc') : tr('Sin control', 'Uncontrolled')}
+        {me && ctl === (me === 'W' ? 'E' : 'W') ? tr(' · colocar cuesta 2', ' · placing costs 2') : ''}
       </div>
       {(isSuperNeighbor('W', id, state.era) || isSuperNeighbor('E', id, state.era)) && (
-        <div className="ci-sub">{isSuperNeighbor('W', id, state.era) ? 'Vecino de EE.UU.' : state.era >= 4 ? 'Vecino de Rusia' : 'Vecino de la URSS'}</div>
+        <div className="ci-sub">
+          {isSuperNeighbor('W', id, state.era) ? tr('Vecino de EE.UU.', 'Neighbor of the US') : state.era >= 4 ? tr('Vecino de Rusia', 'Neighbor of Russia') : tr('Vecino de la URSS', 'Neighbor of the USSR')}
+        </div>
       )}
-      <div className="ci-nb">Vecinos: {nb.map((n) => COUNTRY[n].short).join(', ') || '—'}</div>
+      <div className="ci-nb">
+        {tr('Vecinos', 'Neighbors')}: {nb.map((n) => countryShort(n, state.era, lang)).join(', ') || '—'}
+      </div>
     </div>
   );
 }

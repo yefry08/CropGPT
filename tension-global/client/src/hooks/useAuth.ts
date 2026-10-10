@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { authClient } from '../lib/auth';
+import { getLang } from '../i18n';
 
 export interface AuthUser {
   id: string;
@@ -16,7 +17,8 @@ export interface AuthState {
   signOut: () => Promise<void>;
 }
 
-const msg = (e: unknown): string => (e as { message?: string } | null)?.message ?? 'No se pudo completar la operación';
+const msg = (e: unknown): string =>
+  (e as { message?: string } | null)?.message ?? (getLang() === 'en' ? 'The operation could not be completed' : 'No se pudo completar la operación');
 
 export function useAuth(): AuthState {
   const [user, setUser] = useState<AuthUser | null>(null);
@@ -44,7 +46,7 @@ export function useAuth(): AuthState {
     loading,
     user,
     signIn: async (email, password) => {
-      if (!authClient) return 'El login no está configurado';
+      if (!authClient) return getLang() === 'en' ? 'Login is not configured' : 'El login no está configurado';
       try {
         const { error } = await authClient.signIn.email({ email, password });
         if (error) return msg(error);
@@ -55,7 +57,7 @@ export function useAuth(): AuthState {
       }
     },
     signUp: async (name, email, password) => {
-      if (!authClient) return 'El login no está configurado';
+      if (!authClient) return getLang() === 'en' ? 'Login is not configured' : 'El login no está configurado';
       try {
         const { error } = await authClient.signUp.email({ email, password, name });
         if (error) return msg(error);

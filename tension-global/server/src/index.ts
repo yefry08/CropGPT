@@ -6,6 +6,7 @@ import express from 'express';
 import { Server, type Socket } from 'socket.io';
 import { authEnabled, verifyToken } from './auth';
 import {
+  GameError,
   applyAction,
   createGame,
   viewFor,
@@ -243,7 +244,7 @@ io.on('connection', (socket) => {
       sendState(room);
       if (room.state.phase === 'over') sendInfo(room);
     } catch (e) {
-      cb({ ok: false, error: e instanceof Error ? e.message : 'Acción inválida' });
+      cb({ ok: false, error: e instanceof Error ? e.message : 'Acción inválida', errorEn: e instanceof GameError ? e.en : undefined } as { ok: boolean; error?: string });
     }
   });
 

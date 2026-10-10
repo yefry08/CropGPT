@@ -1,4 +1,6 @@
 import { COUNTRY, countryName } from './countries';
+import { CARD_EN } from './cards.en';
+import { REGION_NAME_EN, type Lang } from './i18n';
 import type { CardDef, CardId, CardOwner, Eff, Era, FreeOpts, Region, Side, SideRef } from './types';
 import { REGION_NAME } from './types';
 
@@ -189,69 +191,89 @@ export const ALL_CARDS: CardDef[] = CARDS;
 export const CARD: Record<CardId, CardDef> = Object.fromEntries(CARDS.map((c) => [c.id, c]));
 
 // ——— Texto de efectos (generado desde los datos para que nunca discrepe de la mecánica) ———
-export function describeEffects(card: CardDef, era: Era = 5): string[] {
-  if (card.kind === 'score' && card.region) return [`Puntúa ${REGION_NAME[card.region]} ahora.`];
+export function cardName(id: CardId, lang: Lang = 'es'): string {
+  return lang === 'en' ? CARD_EN[id]?.[0] ?? CARD[id]?.name ?? id : CARD[id]?.name ?? id;
+}
+
+export function cardBlurb(id: CardId, lang: Lang = 'es'): string {
+  return lang === 'en' ? CARD_EN[id]?.[1] ?? CARD[id]?.blurb ?? '' : CARD[id]?.blurb ?? '';
+}
+
+export function describeEffects(card: CardDef, era: Era = 5, lang: Lang = 'es'): string[] {
+  const en = lang === 'en';
+  const regName = (r: Region) => (en ? REGION_NAME_EN[r] : REGION_NAME[r]);
+  if (card.kind === 'score' && card.region) return [en ? `Score ${regName(card.region)} now.` : `Puntúa ${REGION_NAME[card.region]} ahora.`];
   const ownerName = (s: SideRef): string => {
-    if (s === 'W') return 'Occidente';
-    if (s === 'E') return 'el Bloque Oriental';
-    if (card.owner === 'N') return s === 'me' ? 'quien juega la carta' : 'su rival';
-    const mine: Side = card.owner;
-    const side: Side = s === 'me' ? mine : mine === 'W' ? 'E' : 'W';
+    let side: Side | null = s === 'W' || s === 'E' ? s : null;
+    if (!side) {
+      if (card.owner === 'N') return s === 'me' ? (en ? 'the player' : 'quien juega la carta') : en ? 'their rival' : 'su rival';
+      const mine: Side = card.owner;
+      side = s === 'me' ? mine : mine === 'W' ? 'E' : 'W';
+    }
+    if (en) return side === 'W' ? 'the West' : 'the Eastern Bloc';
     return side === 'W' ? 'Occidente' : 'el Bloque Oriental';
   };
   const sideAdj = (s: SideRef): string => {
     const n = ownerName(s);
+    if (en) return n === 'the West' ? 'Western' : n === 'the Eastern Bloc' ? 'Eastern' : n === 'their rival' ? 'rival' : 'own';
     return n === 'Occidente' ? 'occidental' : n === 'el Bloque Oriental' ? 'oriental' : n === 'su rival' ? 'rival' : 'propia';
   };
-  const cn = (c: string) => countryName(c, era);
+  const cn = (c: string) => countryName(c, era, lang);
   const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
   const out: string[] = [];
   const walk = (effs: Eff[], into: string[]) => {
     for (const e of effs) {
       switch (e.k) {
         case 'inf':
-          into.push(`+${e.n} de influencia ${sideAdj(e.s)} en ${cn(e.c)}.`);
+          into.push(en ? `+${e.n} ${sideAdj(e.s)} influence in ${cn(e.c)}.` : `+${e.n} de influencia ${sideAdj(e.s)} en ${cn(e.c)}.`);
           break;
         case 'rem':
-          into.push(
-            e.n >= 99
-              ? `Elimina toda la influencia ${sideAdj(e.s)} en ${cn(e.c)}.`
-              : `−${e.n} de influencia ${sideAdj(e.s)} en ${cn(e.c)}.`,
-          );
+          if (e.n >= 99) into.push(en ? `Remove all ${sideAdj(e.s)} influence in ${cn(e.c)}.` : `Elimina toda la influencia ${sideAdj(e.s)} en ${cn(e.c)}.`);
+          else into.push(en ? `−${e.n} ${sideAdj(e.s)} influence in ${cn(e.c)}.` : `−${e.n} de influencia ${sideAdj(e.s)} en ${cn(e.c)}.`);
           break;
         case 'vp':
-          into.push(e.n >= 0 ? `${cap(ownerName(e.s))} gana ${e.n} PV.` : `${cap(ownerName(e.s))} pierde ${-e.n} PV.`);
+          if (en) into.push(e.n >= 0 ? `${cap(ownerName(e.s))} gains ${e.n} VP.` : `${cap(ownerName(e.s))} loses ${-e.n} VP.`);
+          else into.push(e.n >= 0 ? `${cap(ownerName(e.s))} gana ${e.n} PV.` : `${cap(ownerName(e.s))} pierde ${-e.n} PV.`);
           break;
         case 'tension':
-          into.push(e.n < 0 ? `La Tensión baja ${-e.n}.` : `La Tensión sube ${e.n}.`);
+          if (en) into.push(e.n < 0 ? `Tension drops ${-e.n}.` : `Tension rises ${e.n}.`);
+          else into.push(e.n < 0 ? `La Tensión baja ${-e.n}.` : `La Tensión sube ${e.n}.`);
           break;
         case 'setTension':
-          into.push(`La Tensión baja a ${e.n}.`);
+          into.push(en ? `Tension drops to ${e.n}.` : `La Tensión baja a ${e.n}.`);
           break;
         case 'tech':
-          into.push(`${cap(ownerName(e.s))} avanza un hito en la carrera tecnológica.`);
+          into.push(en ? `${cap(ownerName(e.s))} advances one technology milestone.` : `${cap(ownerName(e.s))} avanza un hito en la carrera tecnológica.`);
           break;
         case 'risk':
-          into.push(`Riesgo de IA ${e.n > 0 ? '+' : '−'}${Math.abs(e.n)} (activo desde la era 4).`);
+          into.push(
+            en
+              ? `AI Risk ${e.n > 0 ? '+' : '−'}${Math.abs(e.n)} (active from era 4).`
+              : `Riesgo de IA ${e.n > 0 ? '+' : '−'}${Math.abs(e.n)} (activo desde la era 4).`,
+          );
           break;
         case 'cap':
-          into.push(`Capacidad de IA de ${ownerName(e.s)} ${e.n > 0 ? '+' : '−'}${Math.abs(e.n)}.`);
+          into.push(en ? `AI Capability of ${ownerName(e.s)} ${e.n > 0 ? '+' : '−'}${Math.abs(e.n)}.` : `Capacidad de IA de ${ownerName(e.s)} ${e.n > 0 ? '+' : '−'}${Math.abs(e.n)}.`);
           break;
         case 'free': {
           const regs = e.o.regions ?? (e.o.region ? [e.o.region] : null);
-          const where = regs ? `en ${regs.map((r) => REGION_NAME[r]).join(' / ')}` : 'en cualquier país';
-          const mx = e.o.max ? ` (máx. ${e.o.max} por país)` : '';
+          const where = regs ? (en ? 'in ' : 'en ') + regs.map(regName).join(' / ') : en ? 'in any country' : 'en cualquier país';
+          const mx = e.o.max ? (en ? ` (max. ${e.o.max} per country)` : ` (máx. ${e.o.max} por país)`) : '';
           if (e.o.mode === 'remove')
-            into.push(`${cap(ownerName(e.s))} quita ${e.n} de influencia rival ${where}${mx}.`);
+            into.push(en ? `${cap(ownerName(e.s))} removes ${e.n} rival influence ${where}${mx}.` : `${cap(ownerName(e.s))} quita ${e.n} de influencia rival ${where}${mx}.`);
           else
             into.push(
-              `${cap(ownerName(e.s))} coloca ${e.n} de influencia ${where}${e.o.own ? ', solo donde ya tenga presencia' : ''}${mx}.`,
+              en
+                ? `${cap(ownerName(e.s))} places ${e.n} influence ${where}${e.o.own ? ', only where already present' : ''}${mx}.`
+                : `${cap(ownerName(e.s))} coloca ${e.n} de influencia ${where}${e.o.own ? ', solo donde ya tenga presencia' : ''}${mx}.`,
             );
           break;
         }
         case 'war':
           into.push(
-            `Guerra en ${cn(e.c)}: 1d6 − 1 por cada vecino controlado por el rival; con 4+ gana ${e.vp} PV y sustituye la influencia rival.`,
+            en
+              ? `War in ${cn(e.c)}: 1d6 − 1 per neighbor controlled by the rival; on 4+ gain ${e.vp} VP and replace the rival's influence.`
+              : `Guerra en ${cn(e.c)}: 1d6 − 1 por cada vecino controlado por el rival; con 4+ gana ${e.vp} PV y sustituye la influencia rival.`,
           );
           break;
         case 'if': {
@@ -259,17 +281,17 @@ export function describeEffects(card: CardDef, era: Era = 5): string[] {
           const b: string[] = [];
           walk(e.then, a);
           walk(e.else, b);
-          const nm = e.s === 'W' ? 'Occidente' : 'el Bloque Oriental';
-          const nm2 = e.s === 'W' ? 'el Bloque Oriental' : 'Occidente';
-          if (a.length) into.push(`Si lo juega ${nm}: ${a.join(' ')}`);
-          if (b.length) into.push(`Si lo juega ${nm2}: ${b.join(' ')}`);
+          const nm = en ? (e.s === 'W' ? 'the West' : 'the Eastern Bloc') : e.s === 'W' ? 'Occidente' : 'el Bloque Oriental';
+          const nm2 = en ? (e.s === 'W' ? 'the Eastern Bloc' : 'the West') : e.s === 'W' ? 'el Bloque Oriental' : 'Occidente';
+          if (a.length) into.push(en ? `If played by ${nm}: ${a.join(' ')}` : `Si lo juega ${nm}: ${a.join(' ')}`);
+          if (b.length) into.push(en ? `If played by ${nm2}: ${b.join(' ')}` : `Si lo juega ${nm2}: ${b.join(' ')}`);
           break;
         }
       }
     }
   };
   walk(card.eff, out);
-  if (card.removed) out.push('Se retira del juego tras activarse.');
+  if (card.removed) out.push(en ? 'Removed from play after its event.' : 'Se retira del juego tras activarse.');
   // «Alem. Or.» + punto final → un solo punto
   return out.map((l) => l.replace(/\.\.(?!\.)/g, '.'));
 }

@@ -1,3 +1,4 @@
+import { COUNTRY_EN } from './i18n';
 import type { CountryDef, CountryId, Era, Region } from './types';
 
 type Row = [
@@ -149,9 +150,17 @@ export function activeIds(era: Era): CountryId[] {
 }
 
 /** Nombre mostrado: Alemania Occ. pasa a ser Alemania desde 1991. */
-export function countryName(id: CountryId, era: Era): string {
-  if (id === 'de' && era >= 4) return 'Alemania';
+export function countryName(id: CountryId, era: Era, lang: 'es' | 'en' = 'es'): string {
+  if (id === 'de' && era >= 4) return lang === 'en' ? 'Germany' : 'Alemania';
+  if (lang === 'en') return COUNTRY_EN[id]?.[0] ?? id;
   return COUNTRY[id]?.name ?? id;
+}
+
+export function countryShort(id: CountryId, era: Era, lang: 'es' | 'en' = 'es'): string {
+  if (id === 'de') return era >= 4 ? (lang === 'en' ? 'Germany' : 'Alemania') : lang === 'en' ? 'W. Germany' : 'Alem. Occ.';
+  if (id === 'yu') return era >= 4 ? (lang === 'en' ? 'Serbia' : 'Serbia') : 'Yugoslavia';
+  if (lang === 'en') return COUNTRY_EN[id]?.[1] ?? id;
+  return COUNTRY[id]?.short ?? id;
 }
 
 // Adyacencias: [a, b, desde?, hasta?]. Fronteras reales y rutas marítimas obvias;

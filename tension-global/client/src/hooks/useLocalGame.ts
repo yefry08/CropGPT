@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { actingSide, applyAction, chooseAction, createGame, makeRng, viewFor, type AILevel, type Action, type GameState, type Side } from '@tg/shared';
+import { GameError, actingSide, applyAction, chooseAction, createGame, makeRng, viewFor, type AILevel, type Action, type GameState, type Side } from '@tg/shared';
+import { getLang } from '../i18n';
 import type { GameController } from './types';
 
 const SAVE_KEY = 'tg-save-v1';
@@ -67,13 +68,14 @@ export function useLocalGame(side: Side, level: AILevel, resume: SavedGame | nul
     async (a: Action) => {
       try {
         const cur = fullRef.current;
-        if (actingSide(cur) !== side) return 'No es tu turno';
+        if (actingSide(cur) !== side) return getLang() === 'en' ? 'It is not your turn' : 'No es tu turno';
         const next = applyAction(cur, side, a);
         fullRef.current = next;
         setFull(next);
         return null;
       } catch (e) {
-        return e instanceof Error ? e.message : 'Acción inválida';
+        if (e instanceof GameError) return getLang() === 'en' ? e.en : e.message;
+        return e instanceof Error ? e.message : getLang() === 'en' ? 'Invalid action' : 'Acción inválida';
       }
     },
     [side],

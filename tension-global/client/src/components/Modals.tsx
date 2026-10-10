@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
-import { ERA_INFO, SIDE_NAME, type Era, type GameState, type Side } from '@tg/shared';
+import { ERA_EN, ERA_INFO, type Era, type GameState, type Side } from '@tg/shared';
+import { useLang } from '../i18n';
 import { RulesPanel } from './Panels';
 
 export function EraModal({ era, state, onClose }: { era: Era; state: GameState; onClose: () => void }) {
-  const info = ERA_INFO[era];
-  const prev = era > 1 ? ERA_INFO[(era - 1) as Era] : null;
+  const { lang, tr } = useLang();
+  const base = ERA_INFO[era];
+  const info = lang === 'en' ? { ...base, ...ERA_EN[era] } : base;
+  const prevEra = (era - 1) as Era;
+  const prev = era > 1 ? (lang === 'en' ? { ...ERA_INFO[prevEra], ...ERA_EN[prevEra] } : ERA_INFO[prevEra]) : null;
   return (
     <div className="modal-back" role="dialog" aria-modal="true" aria-label={`Era ${era}`}>
       <div className="modal era-modal">
@@ -14,7 +18,9 @@ export function EraModal({ era, state, onClose }: { era: Era; state: GameState; 
         <p className="era-lead">{info.lead}</p>
         {prev && (
           <>
-            <h4>Resumen de la era anterior · {prev.title}</h4>
+            <h4>
+              {tr('Resumen de la era anterior', 'Previous era recap')} · {prev.title}
+            </h4>
             <ul>
               {prev.recap.map((r) => (
                 <li key={r}>{r}</li>
@@ -22,17 +28,21 @@ export function EraModal({ era, state, onClose }: { era: Era; state: GameState; 
             </ul>
           </>
         )}
-        <h4>Cambios en la partida</h4>
+        <h4>{tr('Cambios en la partida', 'Game changes')}</h4>
         <ul className="era-changes">
           {info.changes.map((r) => (
             <li key={r}>{r}</li>
           ))}
         </ul>
         <div className="era-score">
-          Marcador: <b className={state.vp > 0 ? 'w' : state.vp < 0 ? 'e' : ''}>{state.vp > 0 ? `+${state.vp}` : state.vp} PV</b> · Tensión <b>{state.tension}</b>
+          {tr('Marcador', 'Score')}:{' '}
+          <b className={state.vp > 0 ? 'w' : state.vp < 0 ? 'e' : ''}>
+            {state.vp > 0 ? `+${state.vp}` : state.vp} {tr('PV', 'VP')}
+          </b>{' '}
+          · {tr('Tensión', 'Tension')} <b>{state.tension}</b>
         </div>
         <button className="primary" onClick={onClose} autoFocus>
-          Continuar
+          {tr('Continuar', 'Continue')}
         </button>
       </div>
     </div>
@@ -40,21 +50,23 @@ export function EraModal({ era, state, onClose }: { era: Era; state: GameState; 
 }
 
 export function GameOverModal({ state, me, onExit }: { state: GameState; me: Side | null; onExit: () => void }) {
+  const { lang, tr } = useLang();
   const w = state.winner;
-  const title = w === 'draw' ? 'Empate' : `Victoria de ${SIDE_NAME[w as Side]}`;
-  const mine = me && w && w !== 'draw' ? (w === me ? '¡Has ganado!' : 'Has perdido.') : '';
+  const title =
+    w === 'draw' ? tr('Empate', 'Draw') : w === 'W' ? tr('Victoria de Occidente', 'Victory for the West') : tr('Victoria del Bloque Oriental', 'Victory for the Eastern Bloc');
+  const mine = me && w && w !== 'draw' ? (w === me ? tr('¡Has ganado!', 'You won!') : tr('Has perdido.', 'You lost.')) : '';
   return (
     <div className="modal-back" role="dialog" aria-modal="true">
       <div className={`modal over-modal ${w === 'W' ? 'w' : w === 'E' ? 'e' : ''}`}>
-        <div className="era-num">FIN DE LA PARTIDA</div>
+        <div className="era-num">{tr('FIN DE LA PARTIDA', 'GAME OVER')}</div>
         <h2>{title}</h2>
         {mine && <div className="over-mine">{mine}</div>}
-        <p>{state.endReason}</p>
+        <p>{lang === 'en' ? state.endReasonEn ?? state.endReason : state.endReason}</p>
         <div className="era-score">
-          Marcador final: <b>{state.vp > 0 ? `+${state.vp}` : state.vp} PV</b> · Tensión {state.tension}
+          {tr('Marcador final', 'Final score')}: <b>{state.vp > 0 ? `+${state.vp}` : state.vp} {tr('PV', 'VP')}</b> · {tr('Tensión', 'Tension')} {state.tension}
         </div>
         <button className="primary" onClick={onExit}>
-          Volver al menú
+          {tr('Volver al menú', 'Back to menu')}
         </button>
       </div>
     </div>
@@ -62,13 +74,14 @@ export function GameOverModal({ state, me, onExit }: { state: GameState; me: Sid
 }
 
 export function RulesModal({ onClose }: { onClose: () => void }) {
+  const { tr } = useLang();
   return (
     <div className="modal-back" role="dialog" aria-modal="true" onClick={onClose}>
       <div className="modal rules-modal" onClick={(e) => e.stopPropagation()}>
-        <h2>Cómo se juega</h2>
+        <h2>{tr('Cómo se juega', 'How to play')}</h2>
         <RulesPanel />
         <button className="primary" onClick={onClose}>
-          Cerrar
+          {tr('Cerrar', 'Close')}
         </button>
       </div>
     </div>
@@ -79,10 +92,12 @@ export interface DiceEvent {
   id: number;
   value: number;
   label: string;
+  labelEn?: string;
   side?: Side;
 }
 
 export function DiceOverlay({ queue, onNext }: { queue: DiceEvent[]; onNext: () => void }) {
+  const { lang } = useLang();
   const cur = queue[0];
   const [shown, setShown] = useState(1);
   const [done, setDone] = useState(false);
@@ -111,7 +126,7 @@ export function DiceOverlay({ queue, onNext }: { queue: DiceEvent[]; onNext: () 
       <div className={`die s-${cur.side?.toLowerCase() ?? 'n'}${done ? ' done' : ' rolling'}`}>
         <div className="die-face">{shown}</div>
       </div>
-      <div className="dice-label">{cur.label}</div>
+      <div className="dice-label">{lang === 'en' ? cur.labelEn ?? cur.label : cur.label}</div>
     </div>
   );
 }

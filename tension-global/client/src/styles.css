@@ -341,3 +341,63 @@ input:focus { outline: 2px solid var(--amber); outline-offset: -1px; }
 /* ——— Cuenta ——— */
 .account { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; padding: 8px 10px; background: #0a1417; border: 1px solid var(--line); border-radius: 8px; }
 .account-form { display: flex; flex-direction: column; gap: 8px; }
+
+/* ——— Selector de idioma ——— */
+.lang-switch { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.lang-switch button { border: none; border-radius: 0; padding: 4px 8px; font-size: 12px; font-weight: 700; background: transparent; width: auto !important; height: auto !important; }
+.lang-switch button.on { background: #7a5a14; color: #fff3d6; }
+.home-top { width: min(1100px, 100%); display: flex; justify-content: flex-end; margin-bottom: -10px; }
+.home-grid { width: min(1100px, 100%); }
+.war-panel { border-color: #7a5a14; }
+
+/* ——— Guerra de cartas ——— */
+.war { min-height: 100dvh; display: flex; flex-direction: column; background:
+    radial-gradient(900px 400px at 50% 40%, #1a2b2a55, transparent), repeating-linear-gradient(0deg, #ffffff05 0 1px, transparent 1px 3px), var(--bg); }
+.war-top { display: flex; align-items: center; gap: 14px; padding: 8px 12px; border-bottom: 1px solid var(--line); background: linear-gradient(#0d1a1f, #0a1317); flex-wrap: wrap; }
+.war-top .tb-actions { margin-left: auto; }
+.war-score { display: flex; gap: 14px; align-items: baseline; font-family: var(--stencil); font-size: 20px; letter-spacing: .05em; }
+.war-score b { font-size: 28px; }
+.war-score .vs { font-size: 14px; color: var(--mut); }
+.war-bar { flex: 1 1 160px; min-width: 120px; height: 10px; border-radius: 5px; background: #6e2520; overflow: hidden; border: 1px solid var(--line); }
+.wb-me { height: 100%; background: var(--w); transition: width .5s; }
+.war-cycle { display: flex; flex-wrap: wrap; gap: 6px 10px; justify-content: center; padding: 6px 10px; font-size: 12.5px; color: var(--txt); }
+.war-cycle em { color: var(--amber); font-style: normal; margin-left: 4px; }
+.war-cycle .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; background: var(--dc); }
+.battlefield { flex: 1; display: grid; grid-template-columns: 1fr minmax(220px, 1.1fr) 1fr; align-items: center; gap: 12px; padding: 10px 16px; min-height: 260px; }
+.bf-side { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.bf-label { font-size: 12px; color: var(--mut); letter-spacing: .05em; }
+.bf-slot { position: relative; }
+.bf-score { position: absolute; top: -12px; right: -12px; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: var(--amber); color: #1a1204; font: 900 20px var(--stencil); box-shadow: 0 4px 12px #000a; animation: land .35s ease-out; }
+.bf-center { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+.bf-result { font: 700 18px var(--stencil); letter-spacing: .04em; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--line); background: #0a1317cc; }
+.bf-result.good { border-color: var(--w); color: var(--w2); } .bf-result.bad { border-color: var(--e); color: var(--e2); }
+.bf-result.war-alert { border-color: var(--amber); color: var(--amber); animation: led 1s infinite; }
+.bf-why { font-size: 13px; color: var(--mut); max-width: 320px; }
+.wfacedown { position: relative; height: 54px; width: 90px; }
+.wfacedown span { position: absolute; top: 0; width: 36px; height: 50px; border-radius: 5px; border: 1px solid #2e5058; background: repeating-linear-gradient(45deg, #13262b 0 5px, #0e1c20 5px 10px); }
+.wfacedown b { position: absolute; right: -6px; bottom: -6px; background: var(--amber); color: #1a1204; border-radius: 10px; padding: 0 7px; font-size: 13px; }
+.war-hand { display: flex; gap: 10px; padding: 12px; justify-content: center; flex-wrap: wrap; border-top: 1px solid var(--line); background: linear-gradient(#0c171b, #091215); }
+.wcard { --dc: #888; width: 168px; min-height: 214px; text-align: left; display: flex; flex-direction: column; gap: 5px; padding: 8px 9px; border-radius: 10px; border: 1px solid #2e464c; border-top: 6px solid var(--dc); background: linear-gradient(color-mix(in srgb, var(--dc) 22%, #101c20), #0e171a 65%); position: relative; transition: transform .15s, box-shadow .15s; }
+.wcard:hover:not(:disabled) { transform: translateY(-6px); box-shadow: 0 0 0 2px var(--amber), 0 10px 20px #000a; }
+.wcard:disabled { opacity: .75; cursor: default; }
+.wcard.small { width: 150px; min-height: 150px; }
+.wcard.empty { width: 150px; min-height: 150px; border: 2px dashed var(--line); background: transparent; }
+.wcard.back { width: 150px; min-height: 150px; display: grid; place-items: center; font: 900 46px var(--stencil); color: #2e5058; background: repeating-linear-gradient(45deg, #13262b 0 6px, #0e1c20 6px 12px); }
+.wcard.thinking { animation: pulse 1s infinite; }
+.wcard.h-win { box-shadow: 0 0 0 3px var(--ok), 0 0 24px #58d68d55; } .wcard.h-lose { opacity: .55; filter: grayscale(.6); } .wcard.h-tie { box-shadow: 0 0 0 3px var(--amber); }
+.d-land { --dc: #8fae4f; } .d-sea { --dc: #3a8fd9; } .d-air { --dc: #b9c6d2; } .d-cyber { --dc: #29c7a4; } .d-space { --dc: #a073e0; }
+.wc-top { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--mut); }
+.wc-power { width: 34px; height: 34px; border-radius: 8px; display: grid; place-items: center; background: var(--dc); color: #0a1316; font: 900 22px var(--stencil); }
+.wc-domain { font-weight: 700; color: var(--txt); }
+.wc-year { margin-left: auto; }
+.wc-name { font: 800 15px var(--stencil); letter-spacing: .03em; line-height: 1.1; }
+.wc-blurb { font-size: 11px; color: #a9bdb8; line-height: 1.25; flex: 1; }
+.wc-beats { font-size: 11px; color: var(--amber); }
+.wc-tag { font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: #6f8782; }
+@media (max-width: 760px) {
+  .battlefield { grid-template-columns: 1fr 1fr; grid-template-areas: 'ai me' 'c c'; }
+  .bf-side.ai { grid-area: ai; } .bf-side.me { grid-area: me; } .bf-center { grid-area: c; }
+  .wcard { width: calc(50vw - 22px); max-width: 168px; min-height: 196px; }
+  .wcard.small, .wcard.empty, .wcard.back { width: 132px; min-height: 140px; }
+  .war-score { font-size: 16px; } .war-score b { font-size: 22px; }
+}

@@ -11,6 +11,11 @@ reglas concretas y arte son originales. Todo el juego está en español.
 - **Online P2P sin servidor** en la versión estática (GitHub Pages / Hugging Face): el navegador de quien crea la sala hace
   de servidor y los demás se conectan por WebRTC (PeerJS). Ver «Modo online P2P».
 
+- **Guerra de cartas**: un modo rápido aparte, inspirado en el clásico juego de cartas «Guerra» pero con decisiones,
+  con cartas de escenarios hipotéticos de conflictos futuros (2027–2040). Ver «Guerra de cartas».
+- **Español e inglés**: selector ES/EN en el menú y en la partida (se recuerda en el navegador; por defecto, el idioma del
+  sistema). En las partidas online cada jugador lee el registro en su idioma.
+
 > Este juego vive en el subdirectorio `tension-global/` del repositorio (la raíz contiene otro proyecto).
 
 ## Estructura
@@ -242,6 +247,26 @@ Si cambias cartas, reglas o la IA, vuelve a ejecutar `npm test` y reajusta si ha
   niveles de zoom; vuelve a ejecutarlo si cambias anclas o tamaños de ficha.
 * Zoom con rueda, pellizco y arrastre; botones Mundo / Europa / Medio Oriente / Asia / África / Américas.
   Las adyacencias se dibujan solo al pasar el cursor o al elegir un objetivo.
+
+## Guerra de cartas
+
+Modo independiente del mapa (`shared/src/war.ts`, con tests en `shared/test/war.test.ts`; interfaz en
+`client/src/components/WarScreen.tsx`):
+
+* 40 cartas de escenarios **hipotéticos** de conflictos futuros, 8 por dominio: Tierra, Mar, Aire, Ciber y Espacio. Cada
+  carta tiene un poder de 2 a 9 y el poder total de cada dominio es el mismo (44).
+* Cada bando empieza con 20 cartas y una mano de 5. En cada ronda ambos eligen carta sin ver la del otro; gana la de más
+  poder y se lleva las dos (vuelven a su mazo).
+* **Ventaja de dominio (+2)** en ciclo: Ciber › Espacio › Aire › Tierra › Mar › Ciber.
+* **Empate = guerra**: cada bando pone 3 cartas boca abajo y juega otra de su mano; el ganador se lleva todo el bote.
+* Pierde quien se queda sin cartas; tras 40 rondas gana quien tenga más.
+* IA Fácil (al azar) o Normal (estima sus posibilidades contra las cartas que aún no ha visto; nunca mira tu mano).
+
+## Idiomas
+
+Los datos del juego tienen texto en español e inglés (`shared/src/i18n.ts`, `shared/src/cards.en.ts`); el texto de efecto
+de las cartas se genera desde los datos en ambos idiomas, y el motor guarda cada línea del registro en los dos. La interfaz
+usa `client/src/i18n.tsx` (`tr('texto', 'text')`).
 
 ## Modo online P2P (versión estática)
 

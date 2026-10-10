@@ -1,4 +1,5 @@
-import { COUNTRY, activeIds, isActive, isSuperNeighbor, neighborsOf } from './countries';
+import { COUNTRY, activeIds, countryName, isActive, isSuperNeighbor, neighborsOf } from './countries';
+import type { Lang } from './i18n';
 import type { CountryId, GameState, Influence, Placement, Region, RegionScore, RegionScoreSide, Side } from './types';
 import { other } from './types';
 
@@ -73,16 +74,17 @@ export interface PlacementSim {
 }
 
 /** Valida y simula colocaciones en orden (la influencia recién puesta abre nuevos vecinos). */
-export function simulatePlacements(state: GameState, side: Side, ops: number, placements: Placement[]): PlacementSim {
+export function simulatePlacements(state: GameState, side: Side, ops: number, placements: Placement[], lang: Lang = 'es'): PlacementSim {
+  const en = lang === 'en';
   const tmp: Record<CountryId, Influence> = {};
   for (const id in state.influence) tmp[id] = { W: state.influence[id].W, E: state.influence[id].E };
   let spent = 0;
   for (const p of placements) {
-    if (!Number.isInteger(p.n) || p.n < 0) return { error: 'Cantidad inválida', influence: tmp, spent };
+    if (!Number.isInteger(p.n) || p.n < 0) return { error: en ? 'Invalid amount' : 'Cantidad inválida', influence: tmp, spent };
     for (let i = 0; i < p.n; i++) {
-      if (!accessibleIn(tmp, state.era, side, p.c)) return { error: `${COUNTRY[p.c]?.name ?? p.c} no es accesible`, influence: tmp, spent };
+      if (!accessibleIn(tmp, state.era, side, p.c)) return { error: en ? `${countryName(p.c, state.era, 'en')} is not reachable` : `${COUNTRY[p.c]?.name ?? p.c} no es accesible`, influence: tmp, spent };
       const cost = controllerOf(tmp[p.c], p.c) === other(side) ? 2 : 1;
-      if (spent + cost > ops) return { error: 'No quedan puntos de operaciones', influence: tmp, spent };
+      if (spent + cost > ops) return { error: en ? 'No operations points left' : 'No quedan puntos de operaciones', influence: tmp, spent };
       spent += cost;
       tmp[p.c][side] += 1;
     }
@@ -90,11 +92,12 @@ export function simulatePlacements(state: GameState, side: Side, ops: number, pl
   return { error: null, influence: tmp, spent };
 }
 
-export function coupBlockedReason(state: GameState, c: CountryId): string | null {
+export function coupBlockedReason(state: GameState, c: CountryId, lang: Lang = 'es'): string | null {
   const r = COUNTRY[c].region;
-  if (r === 'EU' && state.tension <= 4) return 'Con Tensión 4 o menos no hay golpes en Europa';
-  if (r === 'AS' && state.tension <= 3) return 'Con Tensión 3 o menos no hay golpes en Asia';
-  if (r === 'ME' && state.tension <= 2) return 'Con Tensión 2 o menos no hay golpes en Medio Oriente';
+  const en = lang === 'en';
+  if (r === 'EU' && state.tension <= 4) return en ? 'No coups in Europe at Tension 4 or lower' : 'Con Tensión 4 o menos no hay golpes en Europa';
+  if (r === 'AS' && state.tension <= 3) return en ? 'No coups in Asia at Tension 3 or lower' : 'Con Tensión 3 o menos no hay golpes en Asia';
+  if (r === 'ME' && state.tension <= 2) return en ? 'No coups in the Middle East at Tension 2 or lower' : 'Con Tensión 2 o menos no hay golpes en Medio Oriente';
   return null;
 }
 

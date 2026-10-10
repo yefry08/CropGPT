@@ -1,4 +1,4 @@
-import { applyAction, createGame } from './engine';
+import { GameError, applyAction, createGame } from './engine';
 import type { ChatMsg, JoinResult, Role, RoomInfo } from './protocol';
 import type { Action, GameState, Side } from './types';
 import { viewFor } from './view';
@@ -194,7 +194,7 @@ export class RoomHost {
           if (this.state.phase === 'over') this.sendInfo();
           this.save();
         } catch (e) {
-          reply({ ok: false, error: e instanceof Error ? e.message : 'Acción inválida' });
+          reply({ ok: false, error: e instanceof Error ? e.message : 'Acción inválida', errorEn: e instanceof GameError ? e.en : undefined });
         }
         return;
       }

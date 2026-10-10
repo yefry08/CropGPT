@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Home, type Start } from './components/Home';
 import { GameScreen } from './components/GameScreen';
 import { Lobby } from './components/Lobby';
+import { WarScreen } from './components/WarScreen';
+import { useLang } from './i18n';
 import { clearSave, loadSave, useLocalGame, type SavedGame } from './hooks/useLocalGame';
 import { clearToken, getToken, useOnline, type Intent } from './hooks/useOnline';
 
@@ -23,6 +25,7 @@ function SoloGame({ start, onExit }: { start: Extract<Start, { t: 'solo' }>; onE
 
 function OnlineGame({ intent, onExit }: { intent: Intent; onExit: () => void }) {
   const o = useOnline(intent);
+  const { tr } = useLang();
   const leave = () => {
     if (o.state?.phase === 'over') o.leave();
     const url = new URL(location.href);
@@ -35,7 +38,7 @@ function OnlineGame({ intent, onExit }: { intent: Intent; onExit: () => void }) 
     return (
       <div className="home">
         <div className="panel center">
-          <h2>No se pudo entrar</h2>
+          <h2>{tr('No se pudo entrar', 'Could not join')}</h2>
           <p>{o.error}</p>
           <button
             className="primary"
@@ -44,7 +47,7 @@ function OnlineGame({ intent, onExit }: { intent: Intent; onExit: () => void }) 
               leave();
             }}
           >
-            Volver al menú
+            {tr('Volver al menú', 'Back to menu')}
           </button>
         </div>
       </div>
@@ -57,7 +60,7 @@ function OnlineGame({ intent, onExit }: { intent: Intent; onExit: () => void }) 
       role={o.role}
       chat={o.chat}
       connected={o.connected}
-      error={o.error ?? (o.status === 'connecting' && !o.connected ? 'Conectando…' : null)}
+      error={o.error ?? (o.status === 'connecting' && !o.connected ? tr('Conectando…', 'Connecting…') : null)}
       p2pHost={o.p2p === 'host'}
       onSend={(t) => o.controller?.online?.sendChat(t)}
       onSide={o.chooseSide}
@@ -85,12 +88,10 @@ export function App() {
     return null;
   });
 
-  useEffect(() => {
-    document.title = 'Tensión Global';
-  }, []);
 
   if (!screen) return <Home onStart={setScreen} initialCode={/^[A-Z0-9]{6}$/.test(urlCode) ? urlCode : undefined} />;
   if (screen.t === 'solo') return <SoloGame start={screen} onExit={() => setScreen(null)} />;
+  if (screen.t === 'war') return <WarScreen level={screen.level} onExit={() => setScreen(null)} />;
   const intent: Intent = screen.t === 'create' ? screen : { t: 'join', code: screen.code, name: screen.name, spectator: screen.spectator };
   return <OnlineGame key={screen.t === 'join' ? screen.code : 'new'} intent={intent} onExit={() => setScreen(null)} />;
 }

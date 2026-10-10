@@ -110,7 +110,9 @@ export interface LogEntry {
   side?: Side;
   kind: LogKind;
   text: string;
-  dice?: { value: number; label: string; side?: Side };
+  /** Texto en inglés. */
+  en?: string;
+  dice?: { value: number; label: string; labelEn?: string; side?: Side };
 }
 
 export interface Placement {
@@ -139,6 +141,7 @@ export interface GameState {
   phase: 'play' | 'over';
   winner: Side | 'draw' | null;
   endReason: string | null;
+  endReasonEn?: string | null;
   /** > 0 favorece a Occidente; < 0 al Bloque Oriental. */
   vp: number;
   /** 5 (calma) → 1 (guerra nuclear). */

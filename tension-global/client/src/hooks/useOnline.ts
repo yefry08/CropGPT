@@ -3,6 +3,7 @@ import { io, type Socket } from 'socket.io-client';
 import type { Action, ChatMsg, ClientToServer, GameState, JoinResult, Role, RoomInfo, ServerToClient, Side } from '@tg/shared';
 import { getAuthToken } from '../lib/auth';
 import { makeP2PSocket, type P2PRole } from '../net/p2p';
+import { localizeError } from '../i18n';
 import type { GameController } from './types';
 
 type Sock = Socket<ServerToClient, ClientToServer>;
@@ -81,7 +82,7 @@ export function useOnline(intent: Intent): OnlineSession {
 
     const handleJoin = (r: JoinResult) => {
       if (!r.ok) {
-        setError(r.error ?? 'No se pudo entrar en la sala');
+        setError(localizeError(r.error ?? 'No se pudo entrar en la sala', r.error ? undefined : 'Could not enter the room'));
         setStatus('error');
         return;
       }
@@ -131,20 +132,20 @@ export function useOnline(intent: Intent): OnlineSession {
 
   const send = useCallback(async (action: Action): Promise<string | null> => {
     const s = sockRef.current;
-    if (!s || !s.connected) return 'Sin conexión con el servidor';
+    if (!s || !s.connected) return localizeError('Sin conexión con el servidor');
     return new Promise((resolve) => {
-      s.timeout(8000).emit('game:action', { action }, (err: unknown, r?: { ok: boolean; error?: string }) =>
-        resolve(err || !r ? 'El servidor no responde' : r.ok ? null : r.error ?? 'Acción inválida'),
+      s.timeout(8000).emit('game:action', { action }, (err: unknown, r?: { ok: boolean; error?: string; errorEn?: string }) =>
+        resolve(err || !r ? localizeError('El servidor no responde') : r.ok ? null : localizeError(r.error ?? 'Acción inválida', r.errorEn)),
       );
     });
   }, []);
 
   const emitAck = useCallback(<E extends 'room:side' | 'room:ready'>(ev: E, payload: Parameters<ClientToServer[E]>[0]) => {
     const s = sockRef.current;
-    if (!s || !s.connected) return Promise.resolve<string | null>('Sin conexión');
+    if (!s || !s.connected) return Promise.resolve<string | null>(localizeError('Sin conexión'));
     return new Promise<string | null>((resolve) => {
       (s.timeout(8000) as unknown as { emit: (...a: unknown[]) => void }).emit(ev, payload, (err: unknown, r?: { ok: boolean; error?: string }) =>
-        resolve(err || !r ? 'El servidor no responde' : r.ok ? null : r.error ?? 'Error'),
+        resolve(err || !r ? localizeError('El servidor no responde') : r.ok ? null : localizeError(r.error ?? 'Error')),
       );
     });
   }, []);
