@@ -63,7 +63,21 @@ docker build -t tension-global .
 docker run --rm -p 8080:8080 tension-global      # http://localhost:8080
 ```
 
-### Hugging Face Spaces (gratis, sin tarjeta)
+### Hugging Face Spaces
+
+**Cuenta gratuita → Space estático (solo un jugador).** Hugging Face solo permite Spaces Docker con plan de pago; gratis se
+puede publicar la versión estática (la misma que GitHub Pages):
+
+```bash
+npm run build:pages                       # genera dist/public sin la sección online
+hf repos create usuario/tension-global --type space --space-sdk static --public --exist-ok
+# añade a dist/public un README.md con la cabecera `sdk: static` y `app_file: index.html`
+hf upload usuario/tension-global dist/public . --repo-type space
+```
+
+Publicado así en <https://huggingface.co/spaces/ElDoctor/tension-global>.
+
+**Plan de pago → Space Docker (juego completo, también online).**
 
 Un *Space* de tipo Docker admite WebSockets, así que funciona el juego completo (un jugador y online). En el plan gratuito
 se duerme tras un tiempo sin visitas: al despertar tarda un poco y se pierden las salas en curso.
