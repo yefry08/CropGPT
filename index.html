@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DRIFT Drones Paraguay</title>
+<meta name="description" content="Programa educativo de drones para escuelas en Paraguay: pilotaje, programación, ingeniería y Drone Soccer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #070b16;
+    --ink: #e8eefc;
+    --muted: #9aa8c7;
+    --lime: #b6f23a;
+    --cyan: #33d6ff;
+    --panel: rgba(10, 16, 32, 0.74);
+    --line: rgba(255, 255, 255, 0.09);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Inter, system-ui, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  #scene { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
+
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 10;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 28px;
+    background: linear-gradient(to bottom, rgba(7, 11, 22, 0.85), rgba(7, 11, 22, 0));
+  }
+  .logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; letter-spacing: 0.08em; }
+  .logo b { color: var(--lime); }
+  .telemetry {
+    font-family: 'Space Grotesk', sans-serif; font-size: 13px; color: var(--muted);
+    font-variant-numeric: tabular-nums; display: flex; gap: 18px;
+  }
+  .telemetry span { color: var(--cyan); }
+  .telemetry .status { color: var(--lime); }
+
+  main { position: relative; z-index: 1; }
+  section { min-height: 100vh; display: flex; align-items: center; padding: 96px 28px; }
+  .panel {
+    max-width: 460px; background: var(--panel);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    border: 1px solid var(--line); border-radius: 16px; padding: 32px;
+  }
+  .hero .panel { background: none; border: none; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 0; max-width: 640px; }
+  h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(40px, 7vw, 84px); line-height: 1.02; letter-spacing: -0.02em; }
+  h1 em { font-style: normal; color: var(--lime); }
+  h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(26px, 3.4vw, 36px); line-height: 1.15; margin-bottom: 14px; }
+  .kicker {
+    font-family: 'Space Grotesk', sans-serif; font-size: 13px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--cyan); margin-bottom: 14px;
+  }
+  p { color: var(--muted); }
+  .lead { font-size: 18px; margin-top: 22px; max-width: 480px; }
+
+  ul.grid { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+  ul.grid li { border: 1px solid var(--line); border-radius: 12px; padding: 14px; background: rgba(255, 255, 255, 0.02); font-size: 14px; color: var(--muted); }
+  ul.grid strong { display: block; color: var(--ink); font-family: 'Space Grotesk', sans-serif; font-size: 16px; margin-bottom: 2px; }
+
+  ol.weeks { list-style: none; margin-top: 16px; border-left: 2px solid var(--line); }
+  ol.weeks li { padding: 9px 0 9px 20px; position: relative; color: var(--muted); }
+  ol.weeks li::before { content: ''; position: absolute; left: -6px; top: 18px; width: 10px; height: 10px; border-radius: 50%; background: var(--lime); }
+  ol.weeks span { font-family: 'Space Grotesk', sans-serif; color: var(--ink); margin-right: 8px; }
+
+  .btn {
+    display: inline-block; margin-top: 22px; padding: 13px 26px; border-radius: 999px;
+    background: var(--lime); color: #0b1200; font-weight: 600; text-decoration: none;
+  }
+  .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 22px; }
+  .actions .btn { margin-top: 0; }
+  .btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+  .btn.ghost:hover { border-color: var(--lime); }
+
+  .hint {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 10;
+    font-size: 13px; letter-spacing: 0.08em; color: var(--muted); transition: opacity 0.4s;
+    animation: nudge 2s ease-in-out infinite;
+  }
+  @keyframes nudge { 50% { transform: translate(-50%, 6px); } }
+
+  .landed { justify-content: center; align-items: flex-end; padding-bottom: 56px; }
+  .landed .panel { text-align: center; }
+
+  .no-webgl #scene { display: none; }
+  .no-webgl body, body.no-webgl { background: radial-gradient(ellipse at top, #13203f, var(--bg)); }
+
+  @media (max-width: 720px) {
+    header { padding: 14px 16px; }
+    .telemetry { gap: 10px; font-size: 12px; }
+    section { padding: 88px 16px 40px; align-items: flex-end; }
+    .hero { align-items: center; }
+    .panel { padding: 22px; }
+    ul.grid { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .hint { animation: none; }
+  }
+</style>
+</head>
+<body>
+<canvas id="scene" aria-hidden="true"></canvas>
+
+<header>
+  <div class="logo"><b>DRIFT</b> DRONES</div>
+  <div class="telemetry" aria-hidden="true">
+    <div>ALT <span id="alt">12.0</span> m</div>
+    <div class="status" id="status">EN VUELO</div>
+  </div>
+</header>
+
+<div class="hint" id="hint">BAJÁ PARA ATERRIZAR ↓</div>
+
+<main>
+  <section class="hero">
+    <div class="panel">
+      <div class="kicker">Programa educativo · Paraguay</div>
+      <h1>Aprendé a <em>volar</em>.<br>Aprendé a programar.</h1>
+      <p class="lead">DRIFT Drones lleva drones educativos, programación y Drone Soccer a las escuelas de Paraguay.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="panel">
+      <div class="kicker">Qué aprenden</div>
+      <h2>Tecnología que se toca, se arma y se vuela.</h2>
+      <ul class="grid">
+        <li><strong>Pilotaje</strong>Despegue, maniobras y vuelo seguro con instructor.</li>
+        <li><strong>Programación</strong>De bloques a Python: misiones de vuelo autónomo.</li>
+        <li><strong>Ingeniería</strong>Motores, baterías, sensores y reparación.</li>
+        <li><strong>Drone Soccer</strong>Trabajo en equipo y estrategia en competencia.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="panel">
+      <div class="kicker">El programa</div>
+      <h2>8 semanas, de cero a torneo.</h2>
+      <ol class="weeks">
+        <li><span>1–2</span>Fundamentos, componentes y seguridad</li>
+        <li><span>3–4</span>Pilotaje y circuitos de obstáculos</li>
+        <li><span>5–6</span>Programación y vuelo autónomo</li>
+        <li><span>7–8</span>Drone Soccer y torneo final</li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <div class="panel">
+      <div class="kicker">Para escuelas</div>
+      <h2>Nosotros llevamos los drones. Ustedes, los pilotos.</h2>
+      <p>Llevamos el equipo, el material y el instructor. La escuela pone el espacio y los estudiantes.</p>
+      <p style="margin-top:12px">Grupos de hasta 20 estudiantes, 2 a 3 horas por semana. El cierre es un torneo abierto a las familias.</p>
+    </div>
+  </section>
+
+  <section class="landed" id="contacto">
+    <div class="panel">
+      <div class="kicker">Aterrizaje completo</div>
+      <h2>Llevemos DRIFT a tu escuela.</h2>
+      <p>Coordinemos una demostración en vivo para tus estudiantes.</p>
+      <div class="actions">
+        <a class="btn" href="https://wa.me/18492620018?text=Hola%2C%20quiero%20info%20sobre%20DRIFT%20Drones" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="btn ghost" href="mailto:yefrynunez45@gmail.com?subject=DRIFT%20Drones">yefrynunez45@gmail.com</a>
+        <a class="btn ghost" href="tel:+595972877231">Llamar +595 972 877 231</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="vendor/three.min.js"></script>
+<script>
+(() => {
+  const altEl = document.getElementById('alt');
+  const statusEl = document.getElementById('status');
+  const hint = document.getElementById('hint');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const START_Y = 12;
+  const PAD_TOP = 0.14;
+  const SKID = 0.115;
+  const LAND_Y = PAD_TOP + SKID;
+
+  let target = 0;
+  function readScroll() {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    target = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    hint.style.opacity = window.scrollY > 40 ? 0 : 1;
+  }
+  window.addEventListener('scroll', readScroll, { passive: true });
+  readScroll();
+
+  function telemetry(alt, landed) {
+    const text = alt.toFixed(1);
+    if (altEl.textContent !== text) altEl.textContent = text;
+    const status = landed ? 'ATERRIZADO' : alt < 1.5 ? 'APROXIMACIÓN' : alt < START_Y - 0.5 ? 'DESCENDIENDO' : 'EN VUELO';
+    if (statusEl.textContent !== status) statusEl.textContent = status;
+    return status;
+  }
+
+  const canvas = document.getElementById('scene');
+  let renderer;
+  try {
+    if (!window.THREE) throw new Error('three.js not loaded');
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  } catch (e) {
+    document.documentElement.classList.add('no-webgl');
+    window.addEventListener('scroll', () => {
+      const q = Math.min(1, target / 0.96);
+      telemetry(START_Y * Math.pow(1 - q, 1.5), q > 0.998);
+    }, { passive: true });
+    return;
+  }
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.outputEncoding = THREE.sRGBEncoding;
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x070b16);
+  scene.fog = new THREE.Fog(0x070b16, 14, 60);
+
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.05, 400);
+
+  scene.add(new THREE.HemisphereLight(0x8fb4ff, 0x0b1020, 0.6));
+  const key = new THREE.DirectionalLight(0xffffff, 1.1);
+  key.position.set(4, 20, 6);
+  key.castShadow = true;
+  key.shadow.mapSize.set(1024, 1024);
+  Object.assign(key.shadow.camera, { left: -3, right: 3, top: 3, bottom: -3, near: 1, far: 50 });
+  scene.add(key);
+  const padGlow = new THREE.PointLight(0xb6f23a, 0, 6);
+  padGlow.position.set(0, 0.6, 0);
+  scene.add(padGlow);
+
+  // Ground
+  const ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(400, 400),
+    new THREE.MeshStandardMaterial({ color: 0x060b16, roughness: 1 })
+  );
+  ground.rotation.x = -Math.PI / 2;
+  ground.receiveShadow = true;
+  scene.add(ground);
+  const grid = new THREE.GridHelper(80, 80, 0x1f3a66, 0x14223e);
+  grid.position.y = 0.002;
+  grid.material.transparent = true;
+  grid.material.opacity = 0.5;
+  scene.add(grid);
+
+  // Stars
+  {
+    const n = 1500, pos = new Float32Array(n * 3);
+    for (let i = 0; i < n; i++) {
+      const r = 120 + Math.random() * 60;
+      const th = Math.random() * Math.PI * 2;
+      const ph = Math.random() * Math.PI * 0.45;
+      pos[i * 3] = r * Math.sin(ph) * Math.cos(th);
+      pos[i * 3 + 1] = r * Math.cos(ph);
+      pos[i * 3 + 2] = r * Math.sin(ph) * Math.sin(th);
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    scene.add(new THREE.Points(g, new THREE.PointsMaterial({ color: 0xcfe0ff, size: 0.7, fog: false })));
+  }
+
+  // Landing pad
+  function padTexture() {
+    const c = document.createElement('canvas');
+    c.width = c.height = 512;
+    const x = c.getContext('2d');
+    x.fillStyle = '#0e1628'; x.fillRect(0, 0, 512, 512);
+    x.strokeStyle = '#b6f23a'; x.lineWidth = 12;
+    x.beginPath(); x.arc(256, 256, 236, 0, Math.PI * 2); x.stroke();
+    x.strokeStyle = 'rgba(182,242,58,0.45)'; x.lineWidth = 4;
+    x.beginPath(); x.arc(256, 256, 200, 0, Math.PI * 2); x.stroke();
+    x.fillStyle = '#e8eefc';
+    x.font = 'bold 230px sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle';
+    x.fillText('H', 256, 262);
+    x.fillStyle = '#b6f23a'; x.font = 'bold 34px sans-serif';
+    x.fillText('D R I F T', 256, 60);
+    const t = new THREE.CanvasTexture(c);
+    t.encoding = THREE.sRGBEncoding;
+    t.anisotropy = 4;
+    return t;
+  }
+  const pad = new THREE.Group();
+  const base = new THREE.Mesh(
+    new THREE.CylinderGeometry(1.7, 1.8, PAD_TOP, 64),
+    new THREE.MeshStandardMaterial({ color: 0x1a2236, metalness: 0.3, roughness: 0.6 })
+  );
+  base.position.y = PAD_TOP / 2;
+  base.receiveShadow = true;
+  base.castShadow = true;
+  pad.add(base);
+  const top = new THREE.Mesh(
+    new THREE.CircleGeometry(1.6, 64),
+    new THREE.MeshStandardMaterial({ map: padTexture(), roughness: 0.8 })
+  );
+  top.rotation.x = -Math.PI / 2;
+  top.position.y = PAD_TOP + 0.001;
+  top.receiveShadow = true;
+  pad.add(top);
+  const edgeLights = [];
+  for (let i = 0; i < 16; i++) {
+    const a = (i / 16) * Math.PI * 2;
+    const m = new THREE.MeshStandardMaterial({ color: 0x223000, emissive: 0xb6f23a, emissiveIntensity: 0.2 });
+    const l = new THREE.Mesh(new THREE.SphereGeometry(0.035, 12, 8), m);
+    l.position.set(Math.cos(a) * 1.72, PAD_TOP + 0.02, Math.sin(a) * 1.72);
+    pad.add(l);
+    edgeLights.push(m);
+  }
+  scene.add(pad);
+
+  // Drone
+  const mat = {
+    shell: new THREE.MeshStandardMaterial({ color: 0xe9eef8, metalness: 0.15, roughness: 0.35 }),
+    dark: new THREE.MeshStandardMaterial({ color: 0x1b2233, metalness: 0.5, roughness: 0.45 }),
+    accent: new THREE.MeshStandardMaterial({ color: 0xb6f23a, emissive: 0x2f4a00, roughness: 0.4 }),
+    blade: new THREE.MeshStandardMaterial({ color: 0x2a3248, roughness: 0.6 }),
+    disc: new THREE.MeshBasicMaterial({ color: 0xb8c6e6, transparent: true, opacity: 0, depthWrite: false }),
+    green: new THREE.MeshStandardMaterial({ color: 0x0a2a0a, emissive: 0x39ff6a, emissiveIntensity: 1.2 }),
+    red: new THREE.MeshStandardMaterial({ color: 0x2a0a0a, emissive: 0xff3b3b, emissiveIntensity: 1.2 }),
+    lens: new THREE.MeshStandardMaterial({ color: 0x0a1a24, emissive: 0x1aa8d6, emissiveIntensity: 0.8 }),
+  };
+  function mesh(geo, m, x = 0, y = 0, z = 0) {
+    const o = new THREE.Mesh(geo, m);
+    o.position.set(x, y, z);
+    o.castShadow = true;
+    return o;
+  }
+
+  const drone = new THREE.Group();
+  const props = [];
+  drone.add(mesh(new THREE.BoxGeometry(0.34, 0.1, 0.5), mat.shell));
+  const canopy = mesh(new THREE.SphereGeometry(0.17, 28, 12, 0, Math.PI * 2, 0, Math.PI / 2), mat.shell, 0, 0.05, 0);
+  canopy.scale.set(1, 0.5, 1.35);
+  drone.add(canopy);
+  drone.add(mesh(new THREE.BoxGeometry(0.346, 0.022, 0.32), mat.accent, 0, 0.0, 0));
+  drone.add(mesh(new THREE.SphereGeometry(0.055, 16, 12), mat.dark, 0, -0.07, 0.22));
+  const lens = mesh(new THREE.CircleGeometry(0.028, 20), mat.lens, 0, -0.07, 0.276);
+  drone.add(lens);
+
+  [[1, 1], [-1, 1], [1, -1], [-1, -1]].forEach(([sx, sz], i) => {
+    const ax = sx * 0.42, az = sz * 0.42;
+    const arm = mesh(new THREE.BoxGeometry(0.05, 0.04, Math.hypot(ax, az)), mat.dark, ax / 2, 0, az / 2);
+    arm.rotation.y = Math.atan2(ax, az);
+    drone.add(arm);
+    drone.add(mesh(new THREE.CylinderGeometry(0.045, 0.05, 0.07, 20), mat.dark, ax, 0.03, az));
+    const guard = mesh(new THREE.TorusGeometry(0.2, 0.012, 8, 48), mat.dark, ax, 0.075, az);
+    guard.rotation.x = Math.PI / 2;
+    drone.add(guard);
+    drone.add(mesh(new THREE.SphereGeometry(0.018, 10, 8), sz > 0 ? mat.green : mat.red, ax, -0.02, az));
+
+    const prop = new THREE.Group();
+    prop.position.set(ax, 0.078, az);
+    const blade = mesh(new THREE.BoxGeometry(0.36, 0.006, 0.034), mat.blade);
+    blade.rotation.x = 0.12;
+    prop.add(blade);
+    const disc = new THREE.Mesh(new THREE.CircleGeometry(0.18, 32), mat.disc);
+    disc.rotation.x = -Math.PI / 2;
+    prop.add(disc);
+    prop.userData.dir = i === 0 || i === 3 ? 1 : -1;
+    drone.add(prop);
+    props.push(prop);
+  });
+
+  // Landing skids (bottom at y = -SKID)
+  [-1, 1].forEach((s) => {
+    const rail = mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.46, 10), mat.dark, s * 0.13, -SKID + 0.012, 0);
+    rail.rotation.x = Math.PI / 2;
+    drone.add(rail);
+    [-1, 1].forEach((t) => {
+      drone.add(mesh(new THREE.CylinderGeometry(0.01, 0.01, 0.07, 8), mat.dark, s * 0.13, -0.085, t * 0.14));
+    });
+  });
+  scene.add(drone);
+
+  // Remote controller on the pad
+  const screenCanvas = document.createElement('canvas');
+  screenCanvas.width = 256; screenCanvas.height = 128;
+  const sctx = screenCanvas.getContext('2d');
+  const screenTex = new THREE.CanvasTexture(screenCanvas);
+  screenTex.encoding = THREE.sRGBEncoding;
+  function drawScreen(alt, status) {
+    sctx.fillStyle = '#04121a'; sctx.fillRect(0, 0, 256, 128);
+    sctx.fillStyle = '#33d6ff'; sctx.font = 'bold 20px monospace';
+    sctx.fillText('DRIFT  LINK ●', 14, 28);
+    sctx.fillStyle = '#e8eefc'; sctx.font = 'bold 40px monospace';
+    sctx.fillText(alt.toFixed(1) + ' m', 14, 76);
+    sctx.fillStyle = status === 'ATERRIZADO' ? '#b6f23a' : '#9aa8c7'; sctx.font = 'bold 18px monospace';
+    sctx.fillText(status, 14, 110);
+    screenTex.needsUpdate = true;
+  }
+
+  const ctrl = new THREE.Group();
+  const cBody = mesh(new THREE.BoxGeometry(0.5, 0.07, 0.26), mat.dark);
+  ctrl.add(cBody);
+  [-1, 1].forEach((s) => {
+    const grip = mesh(new THREE.CylinderGeometry(0.07, 0.06, 0.2, 18), mat.dark, s * 0.25, -0.01, 0.06);
+    grip.rotation.x = Math.PI / 2;
+    ctrl.add(grip);
+  });
+  ctrl.add(mesh(new THREE.BoxGeometry(0.44, 0.012, 0.03), mat.accent, 0, 0.036, -0.12));
+  const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.2, 0.1), new THREE.MeshBasicMaterial({ map: screenTex }));
+  screen.rotation.x = -Math.PI / 2;
+  screen.position.set(0, 0.037, -0.04);
+  ctrl.add(screen);
+  const sticks = [];
+  [-1, 1].forEach((s) => {
+    const ring = mesh(new THREE.TorusGeometry(0.04, 0.008, 8, 24), mat.shell, s * 0.15, 0.037, 0.05);
+    ring.rotation.x = Math.PI / 2;
+    ctrl.add(ring);
+    const pivot = new THREE.Group();
+    pivot.position.set(s * 0.15, 0.037, 0.05);
+    pivot.add(mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.06, 8), mat.shell, 0, 0.03, 0));
+    pivot.add(mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.012, 16), mat.accent, 0, 0.062, 0));
+    ctrl.add(pivot);
+    sticks.push(pivot);
+    const ant = mesh(new THREE.CylinderGeometry(0.008, 0.012, 0.22, 8), mat.dark, s * 0.2, 0.1, -0.13);
+    ant.rotation.z = -s * 0.25;
+    ctrl.add(ant);
+  });
+  ctrl.position.set(1.02, PAD_TOP + 0.065, 0.62);
+  ctrl.rotation.set(0.12, -0.55, 0);
+  scene.add(ctrl);
+
+  // Animation
+  const smooth = (e0, e1, x) => { const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0))); return t * t * (3 - 2 * t); };
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const camPos = new THREE.Vector3();
+  const look = new THREE.Vector3();
+
+  let width = 0, height = 0, wide = false;
+  function resize() {
+    width = window.innerWidth; height = window.innerHeight; wide = width > 900;
+    renderer.setSize(width, height, false);
+    camera.aspect = width / height;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  let p = target, prevP = p, spin = 45, last = performance.now(), lastScreen = 0, status = '';
+
+  function frame(now) {
+    const dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
+    const t = now / 1000;
+
+    p += (target - p) * (1 - Math.exp(-dt * 6));
+    const vel = (p - prevP) / Math.max(dt, 1e-4);
+    prevP = p;
+
+    const q = Math.min(1, p / 0.96);
+    const h = Math.pow(1 - q, 1.5);
+    const landed = q > 0.998;
+    const bobAmp = reduceMotion ? 0 : 0.06 * Math.min(1, h * 6);
+    const y = LAND_Y + (START_Y - LAND_Y) * h + Math.sin(t * 2.1) * bobAmp;
+    drone.position.set(Math.sin(t * 0.7) * bobAmp, y, 0);
+    drone.rotation.y = h * Math.PI * 0.8;
+    drone.rotation.x = Math.max(-0.25, Math.min(0.25, vel * 0.25)) + Math.sin(t * 1.3) * bobAmp * 0.6;
+    drone.rotation.z = Math.cos(t * 1.1) * bobAmp * 0.6;
+
+    spin = lerp(spin, landed ? 0 : 45, 1 - Math.exp(-dt * (landed ? 1.2 : 4)));
+    props.forEach((pr) => { pr.rotation.y += pr.userData.dir * spin * dt; });
+    mat.disc.opacity = Math.min(0.22, spin / 200);
+
+    sticks[0].rotation.x = Math.max(-0.45, Math.min(0.45, vel * 2.5));
+    sticks[1].rotation.z = reduceMotion ? 0 : Math.sin(t * 1.7) * 0.12 * (landed ? 0 : 1);
+
+    const lit = landed ? 1 : smooth(0.6, 1, q);
+    edgeLights.forEach((m, i) => {
+      const chase = 0.5 + 0.5 * Math.sin(t * 4 - i * 0.8);
+      m.emissiveIntensity = 0.15 + lit * (0.4 + chase * 0.9);
+    });
+    padGlow.intensity = lit * 1.2;
+
+    const s = smooth(0, 1, q);
+    const orbit = reduceMotion ? 0 : (1 - s) * 0.7;
+    const narrow = Math.max(1, 0.75 / camera.aspect);
+    const dist = lerp(5.4, 3.1, s) * narrow;
+    const rise = lerp(1.6, 0.95, s) * Math.sqrt(narrow);
+    const ang = 0.5 + orbit;
+    camPos.set(Math.sin(ang) * dist, y + rise, Math.cos(ang) * dist);
+    camera.position.copy(camPos);
+    const endShift = smooth(0.85, 1, q);
+    look.set(lerp(0, 0.45, endShift), y - lerp(0.2, 0.25, s), lerp(0, 0.25, endShift));
+    camera.lookAt(look);
+
+    const offsetX = wide ? -width * 0.17 * (1 - endShift) : 0;
+    const offsetY = wide ? 0 : height * 0.2 * (1 - endShift);
+    camera.setViewOffset(width, height, offsetX, offsetY, width, height);
+    camera.updateProjectionMatrix();
+
+    const alt = Math.max(0, y - LAND_Y);
+    status = telemetry(landed ? 0 : alt, landed);
+    if (now - lastScreen > 100) { drawScreen(landed ? 0 : alt, status); lastScreen = now; }
+
+    renderer.render(scene, camera);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
