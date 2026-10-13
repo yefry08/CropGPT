@@ -1,21 +1,10 @@
-[BORRADOR — escrito a partir de tu brief. Un párrafo por escena. Las líneas entre corchetes NO se narran: son tú a cámara o preguntas pendientes.]
-
-[PENDIENTE: ¿qué cuenta «De guerra»? Necesito tu historia en una o dos frases para escribir la apertura.]
-
-[CÁMARA: presentación — «Mi nombre es Yefry Núñez, tengo 27 años…»]
-
-Con Contractor AI uso la inteligencia artificial contra la corrupción en la contratación pública. Con ese proyecto gané HackCorruption en Bogotá, Colombia.
-
-Soy Billion Acts Fellow, una iniciativa respaldada por catorce premios Nobel de la Paz.
-
-Con 3R VideoGame, un videojuego de realidad virtual sobre reciclaje, quedamos en el top 20 mundial de los ITU SDGs Digital GameChangers.
-
-[PENDIENTE: ¿de dónde vienen los diez mil dólares de capital semilla?]
-
-Y hoy soy revisor científico de NeurIPS 2026, una de las conferencias de inteligencia artificial más importantes del mundo.
-
-He llevado este trabajo a El Salvador y a São Paulo, en Brasil.
-
-[CÁMARA: «En junio de 2026, mucho antes de que… más de 250 jóvenes en la Pucamaima… preparar el futuro… emprender»]
-
-Tecnología con propósito. Impacto global desde República Dominicana.
+# Un párrafo por escena. [N] = narración con tu voz clonada. [C] = tú a cámara (texto para los subtítulos).
+[N] De Guerra a ser premiado por una iniciativa de catorce premios Nobel de la Paz.
+[C] Mi nombre es Yefry Núñez, tengo 27 años y esta es mi postulación al Premio Nacional de la Juventud, en la categoría de superación y logros personales.
+[N] Con Contractor AI uso la inteligencia artificial contra la corrupción en la contratación pública. Con ese proyecto gané HackCorruption en Bogotá, Colombia.
+[N] Soy Billion Acts Fellow, una iniciativa de catorce premios Nobel de la Paz.
+[N] Con 3R VideoGame, un videojuego de realidad virtual sobre reciclaje, quedamos en el top 20 mundial de los ITU SDGs Digital GameChangers.
+[N] Hoy soy revisor científico de NeurIPS 2026, y mis papers han sido aceptados en Kenia y en Uganda.
+[N] He llevado este trabajo a El Salvador y a São Paulo, en Brasil.
+[C] En junio de 2026, mucho antes de que Jacob Coxon, Sam Altman y Dario Amodei encendieran las alarmas sobre las problemáticas de la IA, yo ya había desarrollado un evento con más de 250 jóvenes en la PUCMM de Santo Domingo. Por eso quiero ganar este premio, para impulsar mi voz y preparar el futuro. Quiero seguir llevando mis investigaciones y mis trabajos para desarrollar un futuro en el que los jóvenes puedan afrontar y convivir con los nuevos avances de la inteligencia artificial, puedan obtener trabajo, emprender.
+[N] Tecnología con propósito. Impacto global desde República Dominicana.

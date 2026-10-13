@@ -1,17 +1,120 @@
 [
-  {"disparador": "De guerra",           "tipo": "grafico", "descripcion": "tipografía cinética «DE GUERRA A LA SUPERACIÓN», pausa dramática", "color": "blanco"},
-  {"disparador": "Yefry Núñez",         "tipo": "grafico", "descripcion": "rótulo inferior «YEFRY NÚÑEZ · DOMINICANO»", "color": "blanco"},
-  {"disparador": "Premio Nacional de la Juventud", "tipo": "grafico", "descripcion": "insignia «PREMIO NACIONAL DE LA JUVENTUD»", "color": "dorado"},
-  {"disparador": "Contractor AI",       "tipo": "imagen",  "archivo": "imagenes/contractor_ai.png", "texto": "INTELIGENCIA ARTIFICIAL CONTRA LA CORRUPCIÓN", "color": "azul"},
-  {"disparador": "HackCorruption",      "tipo": "grafico", "descripcion": "insignia «GANADOR» + mapa con Bogotá, Colombia", "color": "dorado"},
-  {"disparador": "Billion Acts Fellow", "tipo": "grafico", "descripcion": "globo animado + «BILLION ACTS FELLOW» y «UNA INICIATIVA DE 14 PREMIOS NOBEL DE LA PAZ»", "color": "dorado"},
-  {"disparador": "top 20 mundial",      "tipo": "grafico", "descripcion": "cifra grande «TOP 20 MUNDIAL» · ITU SDGs Digital GameChangers", "color": "verde"},
-  {"disparador": "3R VideoGame",        "tipo": "imagen",  "archivo": "imagenes/3r_videogame.png", "color": "verde"},
-  {"disparador": "NeurIPS 2026",        "tipo": "grafico", "descripcion": "artículos y red neuronal animada + «NEURIPS 2026 · REVISOR CIENTÍFICO»", "color": "azul"},
-  {"disparador": "El Salvador",         "tipo": "grafico", "descripcion": "mapa de impacto: RD, Colombia, El Salvador, Brasil", "color": "dorado"},
-  {"disparador": "junio de 2026",       "tipo": "grafico", "descripcion": "cifra grande «JUNIO 2026» (cubre el empalme)", "color": "blanco"},
-  {"disparador": "250 jóvenes",         "tipo": "grafico", "descripcion": "contador animado «+250 JÓVENES» · AI Safety Bootcamp", "color": "azul"},
-  {"disparador": "Pucamaima",           "tipo": "imagen",  "archivo": "imagenes/bootcamp.jpg"},
-  {"disparador": "inteligencia artificial", "tipo": "grafico", "descripcion": "«FUTURO DEL TRABAJO · IA SEGURA»", "color": "azul"},
-  {"disparador": "Tecnología con propósito", "tipo": "grafico", "descripcion": "cierre «TECNOLOGÍA CON PROPÓSITO» → «IMPACTO GLOBAL DESDE REPÚBLICA DOMINICANA»", "color": "blanco"}
+  {
+    "disparador": "De Guerra",
+    "tipo": "grafico",
+    "descripcion": "tipografía cinética «DE GUERRA» → «A SER PREMIADO»",
+    "color": "blanco",
+    "impacto": true,
+    "capa": "A",
+    "desde_inicio": true
+  },
+  {
+    "disparador": "catorce premios Nobel",
+    "tipo": "grafico",
+    "descripcion": "«UNA INICIATIVA DE 14 PREMIOS NOBEL DE LA PAZ» con 14 medallas dibujadas",
+    "color": "dorado",
+    "impacto": true,
+    "capa": "B"
+  },
+  {
+    "disparador": "Yefry Núñez",
+    "tipo": "grafico",
+    "descripcion": "rótulo inferior «YEFRY NÚÑEZ · DOMINICANO»",
+    "color": "blanco"
+  },
+  {
+    "disparador": "Premio Nacional de la Juventud",
+    "tipo": "grafico",
+    "descripcion": "insignia «PREMIO NACIONAL DE LA JUVENTUD»",
+    "color": "dorado"
+  },
+  {
+    "disparador": "Contractor AI",
+    "tipo": "imagen",
+    "dibujo": "contractor",
+    "texto": "INTELIGENCIA ARTIFICIAL CONTRA LA CORRUPCIÓN",
+    "color": "azul",
+    "capa": "full"
+  },
+  {
+    "disparador": "HackCorruption",
+    "tipo": "grafico",
+    "descripcion": "insignia «GANADOR · HACKCORRUPTION» + mapa con Bogotá, Colombia",
+    "color": "dorado",
+    "impacto": true,
+    "capa": "full"
+  },
+  {
+    "disparador": "Billion Acts Fellow",
+    "tipo": "grafico",
+    "descripcion": "globo girando + «BILLION ACTS FELLOW»",
+    "color": "dorado",
+    "capa": "full"
+  },
+  {
+    "disparador": "3R VideoGame",
+    "tipo": "imagen",
+    "dibujo": "vr",
+    "texto": "3R VIDEOGAME · REALIDAD VIRTUAL Y RECICLAJE",
+    "color": "verde",
+    "capa": "A"
+  },
+  {
+    "disparador": "top 20 mundial",
+    "tipo": "grafico",
+    "descripcion": "cifra grande «TOP 20 MUNDIAL» · ITU SDGs Digital GameChangers",
+    "color": "verde",
+    "impacto": true,
+    "capa": "B"
+  },
+  {
+    "disparador": "NeurIPS 2026",
+    "tipo": "imagen",
+    "dibujo": "papers",
+    "texto": "NEURIPS 2026 · REVISOR CIENTÍFICO",
+    "color": "azul",
+    "capa": "A"
+  },
+  {
+    "disparador": "Kenia",
+    "tipo": "grafico",
+    "descripcion": "mapa: papers aceptados en Kenia y Uganda",
+    "color": "azul",
+    "capa": "B"
+  },
+  {
+    "disparador": "El Salvador",
+    "tipo": "grafico",
+    "descripcion": "mapa de impacto: RD → El Salvador y São Paulo, Brasil",
+    "color": "dorado",
+    "capa": "full"
+  },
+  {
+    "disparador": "junio de 2026",
+    "tipo": "grafico",
+    "descripcion": "cifra grande «JUNIO 2026» a pantalla completa (tapa el empalme)",
+    "color": "blanco",
+    "duracion": 3.1
+  },
+  {
+    "disparador": "250 jóvenes",
+    "tipo": "imagen",
+    "dibujo": "bootcamp",
+    "texto": "+250 JÓVENES · AI SAFETY BOOTCAMP",
+    "color": "azul",
+    "impacto": true
+  },
+  {
+    "disparador": "inteligencia artificial, puedan",
+    "tipo": "grafico",
+    "descripcion": "«FUTURO DEL TRABAJO · IA SEGURA»",
+    "color": "azul"
+  },
+  {
+    "disparador": "Tecnología con propósito",
+    "tipo": "grafico",
+    "descripcion": "«TECNOLOGÍA CON PROPÓSITO» → «IMPACTO GLOBAL DESDE REPÚBLICA DOMINICANA» + mapa con todos los puntos",
+    "color": "blanco",
+    "capa": "full"
+  }
 ]

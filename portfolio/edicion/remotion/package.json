@@ -1,0 +1,21 @@
+{
+  "name": "yefry-premio-juventud",
+  "private": true,
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render:h": "remotion render src/index.ts Horizontal ../salida/final_1080p.mp4",
+    "render:v": "remotion render src/index.ts Vertical ../salida/final_vertical.mp4"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@remotion/cli": "^4.0.535",
+    "@types/react": "^19.3.0",
+    "d3-geo": "^3.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.535",
+    "topojson-client": "^3.1.0",
+    "typescript": "^7.0.2",
+    "world-atlas": "^2.0.2"
+  }
+}

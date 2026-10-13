@@ -1,0 +1,1436 @@
+{
+ "fps": 30,
+ "total": 99.693,
+ "scenes": [
+  {
+   "id": "N1",
+   "kind": "N",
+   "start": 0.0,
+   "dur": 6.746,
+   "pre": 1.5,
+   "audio": "N1.wav",
+   "text": "De Guerra a ser premiado por una iniciativa de catorce premios Nobel de la Paz.",
+   "words": [
+    {
+     "w": "De",
+     "s": 1.5,
+     "e": 1.84
+    },
+    {
+     "w": "Guerra",
+     "s": 1.84,
+     "e": 2.2
+    },
+    {
+     "w": "a",
+     "s": 2.2,
+     "e": 2.5
+    },
+    {
+     "w": "ser",
+     "s": 2.5,
+     "e": 2.66
+    },
+    {
+     "w": "premiado",
+     "s": 2.66,
+     "e": 3.14
+    },
+    {
+     "w": "por",
+     "s": 3.14,
+     "e": 3.36
+    },
+    {
+     "w": "una",
+     "s": 3.36,
+     "e": 3.52
+    },
+    {
+     "w": "iniciativa",
+     "s": 3.52,
+     "e": 4.02
+    },
+    {
+     "w": "de",
+     "s": 4.02,
+     "e": 4.16
+    },
+    {
+     "w": "catorce",
+     "s": 4.16,
+     "e": 4.52
+    },
+    {
+     "w": "premios",
+     "s": 4.52,
+     "e": 4.98
+    },
+    {
+     "w": "Nobel",
+     "s": 4.98,
+     "e": 5.24
+    },
+    {
+     "w": "de",
+     "s": 5.24,
+     "e": 5.44
+    },
+    {
+     "w": "la",
+     "s": 5.44,
+     "e": 5.6
+    },
+    {
+     "w": "Paz.",
+     "s": 5.6,
+     "e": 5.72
+    }
+   ]
+  },
+  {
+   "id": "C1",
+   "kind": "C",
+   "start": 6.746,
+   "dur": 8.78,
+   "src": "base.mp4",
+   "from": 0.0,
+   "text": "Mi nombre es Yefry Núñez, tengo 27 años y esta es mi postulación al Premio Nacional de la Juventud, en la categoría de superación y logros personales.",
+   "words": [
+    {
+     "w": "Mi",
+     "s": 0.0,
+     "e": 0.54
+    },
+    {
+     "w": "nombre",
+     "s": 0.54,
+     "e": 0.72
+    },
+    {
+     "w": "es",
+     "s": 0.72,
+     "e": 0.9
+    },
+    {
+     "w": "Yefry",
+     "s": 0.9,
+     "e": 1.12
+    },
+    {
+     "w": "Núñez,",
+     "s": 1.12,
+     "e": 1.54
+    },
+    {
+     "w": "tengo",
+     "s": 1.8,
+     "e": 1.86
+    },
+    {
+     "w": "27",
+     "s": 1.86,
+     "e": 2.22
+    },
+    {
+     "w": "años",
+     "s": 2.22,
+     "e": 2.68
+    },
+    {
+     "w": "y",
+     "s": 2.68,
+     "e": 2.94
+    },
+    {
+     "w": "esta",
+     "s": 2.94,
+     "e": 3.1
+    },
+    {
+     "w": "es",
+     "s": 3.1,
+     "e": 3.14
+    },
+    {
+     "w": "mi",
+     "s": 3.14,
+     "e": 3.24
+    },
+    {
+     "w": "postulación",
+     "s": 3.24,
+     "e": 3.593
+    },
+    {
+     "w": "al",
+     "s": 3.593,
+     "e": 3.947
+    },
+    {
+     "w": "Premio",
+     "s": 3.947,
+     "e": 4.3
+    },
+    {
+     "w": "Nacional",
+     "s": 4.3,
+     "e": 4.72
+    },
+    {
+     "w": "de",
+     "s": 4.72,
+     "e": 4.9
+    },
+    {
+     "w": "la",
+     "s": 4.9,
+     "e": 5.02
+    },
+    {
+     "w": "Juventud,",
+     "s": 5.02,
+     "e": 5.46
+    },
+    {
+     "w": "en",
+     "s": 5.6,
+     "e": 5.68
+    },
+    {
+     "w": "la",
+     "s": 5.68,
+     "e": 5.74
+    },
+    {
+     "w": "categoría",
+     "s": 5.74,
+     "e": 5.88
+    },
+    {
+     "w": "de",
+     "s": 5.88,
+     "e": 6.02
+    },
+    {
+     "w": "superación",
+     "s": 6.02,
+     "e": 6.74
+    },
+    {
+     "w": "y",
+     "s": 6.74,
+     "e": 7.1
+    },
+    {
+     "w": "logros",
+     "s": 7.1,
+     "e": 7.4
+    },
+    {
+     "w": "personales.",
+     "s": 7.4,
+     "e": 8.76
+    }
+   ]
+  },
+  {
+   "id": "N2",
+   "kind": "N",
+   "start": 15.526,
+   "dur": 10.651,
+   "pre": 0.0,
+   "audio": "N2.wav",
+   "text": "Con Contractor AI uso la inteligencia artificial contra la corrupción en la contratación pública. Con ese proyecto gané HackCorruption en Bogotá, Colombia.",
+   "words": [
+    {
+     "w": "Con",
+     "s": 0.0,
+     "e": 0.34
+    },
+    {
+     "w": "Contractor",
+     "s": 0.34,
+     "e": 1.16
+    },
+    {
+     "w": "AI",
+     "s": 1.16,
+     "e": 1.44
+    },
+    {
+     "w": "uso",
+     "s": 1.84,
+     "e": 1.98
+    },
+    {
+     "w": "la",
+     "s": 1.98,
+     "e": 2.22
+    },
+    {
+     "w": "inteligencia",
+     "s": 2.22,
+     "e": 2.74
+    },
+    {
+     "w": "artificial",
+     "s": 2.74,
+     "e": 3.34
+    },
+    {
+     "w": "contra",
+     "s": 3.34,
+     "e": 3.68
+    },
+    {
+     "w": "la",
+     "s": 3.68,
+     "e": 3.98
+    },
+    {
+     "w": "corrupción",
+     "s": 3.98,
+     "e": 4.38
+    },
+    {
+     "w": "en",
+     "s": 4.38,
+     "e": 4.56
+    },
+    {
+     "w": "la",
+     "s": 4.56,
+     "e": 4.82
+    },
+    {
+     "w": "contratación",
+     "s": 4.82,
+     "e": 5.3
+    },
+    {
+     "w": "pública.",
+     "s": 5.3,
+     "e": 5.78
+    },
+    {
+     "w": "Con",
+     "s": 5.94,
+     "e": 6.1
+    },
+    {
+     "w": "ese",
+     "s": 6.1,
+     "e": 6.32
+    },
+    {
+     "w": "proyecto",
+     "s": 6.32,
+     "e": 6.84
+    },
+    {
+     "w": "gané",
+     "s": 7.08,
+     "e": 7.34
+    },
+    {
+     "w": "HackCorruption",
+     "s": 7.34,
+     "e": 8.28
+    },
+    {
+     "w": "en",
+     "s": 8.28,
+     "e": 8.52
+    },
+    {
+     "w": "Bogotá,",
+     "s": 8.52,
+     "e": 9.12
+    },
+    {
+     "w": "Colombia.",
+     "s": 9.34,
+     "e": 9.62
+    }
+   ]
+  },
+  {
+   "id": "N3",
+   "kind": "N",
+   "start": 26.177,
+   "dur": 5.375,
+   "pre": 0.0,
+   "audio": "N3.wav",
+   "text": "Soy Billion Acts Fellow, una iniciativa de catorce premios Nobel de la Paz.",
+   "words": [
+    {
+     "w": "Soy",
+     "s": 0.0,
+     "e": 0.24
+    },
+    {
+     "w": "Billion",
+     "s": 0.24,
+     "e": 0.673
+    },
+    {
+     "w": "Acts",
+     "s": 0.673,
+     "e": 1.107
+    },
+    {
+     "w": "Fellow,",
+     "s": 1.107,
+     "e": 1.54
+    },
+    {
+     "w": "una",
+     "s": 1.54,
+     "e": 1.68
+    },
+    {
+     "w": "iniciativa",
+     "s": 1.68,
+     "e": 2.2
+    },
+    {
+     "w": "de",
+     "s": 2.2,
+     "e": 2.34
+    },
+    {
+     "w": "catorce",
+     "s": 2.34,
+     "e": 2.76
+    },
+    {
+     "w": "premios",
+     "s": 2.76,
+     "e": 3.18
+    },
+    {
+     "w": "Nobel",
+     "s": 3.18,
+     "e": 3.4
+    },
+    {
+     "w": "de",
+     "s": 3.4,
+     "e": 3.58
+    },
+    {
+     "w": "la",
+     "s": 3.58,
+     "e": 3.74
+    },
+    {
+     "w": "Paz.",
+     "s": 3.74,
+     "e": 3.92
+    }
+   ]
+  },
+  {
+   "id": "N4",
+   "kind": "N",
+   "start": 31.552,
+   "dur": 11.655,
+   "pre": 0.0,
+   "audio": "N4.wav",
+   "text": "Con 3R VideoGame, un videojuego de realidad virtual sobre reciclaje, quedamos en el top 20 mundial de los ITU SDGs Digital GameChangers.",
+   "words": [
+    {
+     "w": "Con",
+     "s": 0.0,
+     "e": 0.34
+    },
+    {
+     "w": "3R",
+     "s": 0.34,
+     "e": 1.08
+    },
+    {
+     "w": "VideoGame,",
+     "s": 1.08,
+     "e": 2.28
+    },
+    {
+     "w": "un",
+     "s": 2.28,
+     "e": 2.44
+    },
+    {
+     "w": "videojuego",
+     "s": 2.44,
+     "e": 2.98
+    },
+    {
+     "w": "de",
+     "s": 2.98,
+     "e": 3.08
+    },
+    {
+     "w": "realidad",
+     "s": 3.08,
+     "e": 3.66
+    },
+    {
+     "w": "virtual",
+     "s": 3.66,
+     "e": 4.16
+    },
+    {
+     "w": "sobre",
+     "s": 4.16,
+     "e": 4.48
+    },
+    {
+     "w": "reciclaje,",
+     "s": 4.48,
+     "e": 5.28
+    },
+    {
+     "w": "quedamos",
+     "s": 5.48,
+     "e": 5.76
+    },
+    {
+     "w": "en",
+     "s": 5.76,
+     "e": 5.94
+    },
+    {
+     "w": "el",
+     "s": 5.94,
+     "e": 6.1
+    },
+    {
+     "w": "top",
+     "s": 6.1,
+     "e": 6.28
+    },
+    {
+     "w": "20",
+     "s": 6.28,
+     "e": 6.66
+    },
+    {
+     "w": "mundial",
+     "s": 6.66,
+     "e": 7.1
+    },
+    {
+     "w": "de",
+     "s": 7.1,
+     "e": 7.32
+    },
+    {
+     "w": "los",
+     "s": 7.32,
+     "e": 7.58
+    },
+    {
+     "w": "ITU",
+     "s": 7.58,
+     "e": 8.26
+    },
+    {
+     "w": "SDGs",
+     "s": 8.26,
+     "e": 8.94
+    },
+    {
+     "w": "Digital",
+     "s": 9.1,
+     "e": 9.54
+    },
+    {
+     "w": "GameChangers.",
+     "s": 9.54,
+     "e": 10.44
+    }
+   ]
+  },
+  {
+   "id": "N5",
+   "kind": "N",
+   "start": 43.207,
+   "dur": 7.181,
+   "pre": 0.0,
+   "audio": "N5.wav",
+   "text": "Hoy soy revisor científico de NeurIPS 2026, y mis papers han sido aceptados en Kenia y en Uganda.",
+   "words": [
+    {
+     "w": "Hoy",
+     "s": 0.0,
+     "e": 0.28
+    },
+    {
+     "w": "soy",
+     "s": 0.28,
+     "e": 0.5
+    },
+    {
+     "w": "revisor",
+     "s": 0.5,
+     "e": 0.92
+    },
+    {
+     "w": "científico",
+     "s": 0.92,
+     "e": 1.56
+    },
+    {
+     "w": "de",
+     "s": 1.56,
+     "e": 1.72
+    },
+    {
+     "w": "NeurIPS",
+     "s": 1.72,
+     "e": 2.12
+    },
+    {
+     "w": "2026,",
+     "s": 2.12,
+     "e": 3.2
+    },
+    {
+     "w": "y",
+     "s": 3.2,
+     "e": 3.56
+    },
+    {
+     "w": "mis",
+     "s": 3.56,
+     "e": 3.74
+    },
+    {
+     "w": "papers",
+     "s": 3.74,
+     "e": 4.1
+    },
+    {
+     "w": "han",
+     "s": 4.1,
+     "e": 4.38
+    },
+    {
+     "w": "sido",
+     "s": 4.38,
+     "e": 4.56
+    },
+    {
+     "w": "aceptados",
+     "s": 4.56,
+     "e": 5.12
+    },
+    {
+     "w": "en",
+     "s": 5.12,
+     "e": 5.3
+    },
+    {
+     "w": "Kenia",
+     "s": 5.3,
+     "e": 5.6
+    },
+    {
+     "w": "y",
+     "s": 5.6,
+     "e": 5.76
+    },
+    {
+     "w": "en",
+     "s": 5.76,
+     "e": 5.84
+    },
+    {
+     "w": "Uganda.",
+     "s": 5.84,
+     "e": 6.16
+    }
+   ]
+  },
+  {
+   "id": "N6",
+   "kind": "N",
+   "start": 50.388,
+   "dur": 4.191,
+   "pre": 0.0,
+   "audio": "N6.wav",
+   "text": "He llevado este trabajo a El Salvador y a São Paulo, en Brasil.",
+   "words": [
+    {
+     "w": "He",
+     "s": 0.0,
+     "e": 0.26
+    },
+    {
+     "w": "llevado",
+     "s": 0.26,
+     "e": 0.6
+    },
+    {
+     "w": "este",
+     "s": 0.6,
+     "e": 0.8
+    },
+    {
+     "w": "trabajo",
+     "s": 0.8,
+     "e": 1.18
+    },
+    {
+     "w": "a",
+     "s": 1.18,
+     "e": 1.28
+    },
+    {
+     "w": "El",
+     "s": 1.28,
+     "e": 1.42
+    },
+    {
+     "w": "Salvador",
+     "s": 1.42,
+     "e": 1.72
+    },
+    {
+     "w": "y",
+     "s": 1.72,
+     "e": 1.94
+    },
+    {
+     "w": "a",
+     "s": 1.94,
+     "e": 2.02
+    },
+    {
+     "w": "São",
+     "s": 2.02,
+     "e": 2.22
+    },
+    {
+     "w": "Paulo,",
+     "s": 2.22,
+     "e": 2.5
+    },
+    {
+     "w": "en",
+     "s": 2.7,
+     "e": 2.88
+    },
+    {
+     "w": "Brasil.",
+     "s": 2.88,
+     "e": 3.06
+    }
+   ]
+  },
+  {
+   "id": "C2",
+   "kind": "C",
+   "start": 54.579,
+   "dur": 38.987,
+   "src": "base.mp4",
+   "from": 8.78,
+   "text": "En junio de 2026, mucho antes de que Jacob Coxon, Sam Altman y Dario Amodei encendieran las alarmas sobre las problemáticas de la IA, yo ya había desarrollado un evento con más de 250 jóvenes en la PUCMM de Santo Domingo. Por eso quiero ganar este premio, para impulsar mi voz y preparar el futuro. Quiero seguir llevando mis investigaciones y mis trabajos para desarrollar un futuro en el que los jóvenes puedan afrontar y convivir con los nuevos avances de la inteligencia artificial, puedan obtener trabajo, emprender.",
+   "words": [
+    {
+     "w": "En",
+     "s": 0.28,
+     "e": 0.4
+    },
+    {
+     "w": "junio",
+     "s": 0.4,
+     "e": 1.04
+    },
+    {
+     "w": "de",
+     "s": 1.04,
+     "e": 1.32
+    },
+    {
+     "w": "2026,",
+     "s": 1.32,
+     "e": 2.16
+    },
+    {
+     "w": "mucho",
+     "s": 2.52,
+     "e": 2.66
+    },
+    {
+     "w": "antes",
+     "s": 2.66,
+     "e": 3.04
+    },
+    {
+     "w": "de",
+     "s": 3.04,
+     "e": 3.2
+    },
+    {
+     "w": "que",
+     "s": 3.2,
+     "e": 3.34
+    },
+    {
+     "w": "Jacob",
+     "s": 3.34,
+     "e": 3.62
+    },
+    {
+     "w": "Coxon,",
+     "s": 3.62,
+     "e": 4.133
+    },
+    {
+     "w": "Sam",
+     "s": 4.133,
+     "e": 4.647
+    },
+    {
+     "w": "Altman",
+     "s": 4.647,
+     "e": 5.16
+    },
+    {
+     "w": "y",
+     "s": 5.16,
+     "e": 5.58
+    },
+    {
+     "w": "Dario",
+     "s": 5.58,
+     "e": 6.72
+    },
+    {
+     "w": "Amodei",
+     "s": 6.72,
+     "e": 7.98
+    },
+    {
+     "w": "encendieran",
+     "s": 7.98,
+     "e": 8.56
+    },
+    {
+     "w": "las",
+     "s": 8.56,
+     "e": 8.88
+    },
+    {
+     "w": "alarmas",
+     "s": 8.88,
+     "e": 9.4
+    },
+    {
+     "w": "sobre",
+     "s": 9.4,
+     "e": 9.98
+    },
+    {
+     "w": "las",
+     "s": 9.98,
+     "e": 10.58
+    },
+    {
+     "w": "problemáticas",
+     "s": 10.58,
+     "e": 11.1
+    },
+    {
+     "w": "de",
+     "s": 11.1,
+     "e": 11.34
+    },
+    {
+     "w": "la",
+     "s": 11.34,
+     "e": 11.56
+    },
+    {
+     "w": "IA,",
+     "s": 11.56,
+     "e": 12.34
+    },
+    {
+     "w": "yo",
+     "s": 12.34,
+     "e": 12.44
+    },
+    {
+     "w": "ya",
+     "s": 12.44,
+     "e": 12.58
+    },
+    {
+     "w": "había",
+     "s": 12.58,
+     "e": 12.72
+    },
+    {
+     "w": "desarrollado",
+     "s": 12.72,
+     "e": 13.36
+    },
+    {
+     "w": "un",
+     "s": 13.36,
+     "e": 13.6
+    },
+    {
+     "w": "evento",
+     "s": 13.6,
+     "e": 13.94
+    },
+    {
+     "w": "con",
+     "s": 13.94,
+     "e": 14.22
+    },
+    {
+     "w": "más",
+     "s": 14.22,
+     "e": 14.42
+    },
+    {
+     "w": "de",
+     "s": 14.42,
+     "e": 14.62
+    },
+    {
+     "w": "250",
+     "s": 14.62,
+     "e": 15.26
+    },
+    {
+     "w": "jóvenes",
+     "s": 15.26,
+     "e": 15.62
+    },
+    {
+     "w": "en",
+     "s": 15.62,
+     "e": 16.34
+    },
+    {
+     "w": "la",
+     "s": 16.34,
+     "e": 16.91
+    },
+    {
+     "w": "PUCMM",
+     "s": 16.91,
+     "e": 17.48
+    },
+    {
+     "w": "de",
+     "s": 17.48,
+     "e": 17.72
+    },
+    {
+     "w": "Santo",
+     "s": 17.72,
+     "e": 17.92
+    },
+    {
+     "w": "Domingo.",
+     "s": 17.92,
+     "e": 18.8
+    },
+    {
+     "w": "Por",
+     "s": 19.12,
+     "e": 19.22
+    },
+    {
+     "w": "eso",
+     "s": 19.22,
+     "e": 19.44
+    },
+    {
+     "w": "quiero",
+     "s": 19.44,
+     "e": 19.8
+    },
+    {
+     "w": "ganar",
+     "s": 19.8,
+     "e": 20.4
+    },
+    {
+     "w": "este",
+     "s": 20.4,
+     "e": 20.64
+    },
+    {
+     "w": "premio,",
+     "s": 20.64,
+     "e": 21.12
+    },
+    {
+     "w": "para",
+     "s": 21.12,
+     "e": 21.44
+    },
+    {
+     "w": "impulsar",
+     "s": 21.44,
+     "e": 21.84
+    },
+    {
+     "w": "mi",
+     "s": 21.84,
+     "e": 21.94
+    },
+    {
+     "w": "voz",
+     "s": 21.94,
+     "e": 22.42
+    },
+    {
+     "w": "y",
+     "s": 22.42,
+     "e": 22.78
+    },
+    {
+     "w": "preparar",
+     "s": 22.78,
+     "e": 23.4
+    },
+    {
+     "w": "el",
+     "s": 23.4,
+     "e": 23.42
+    },
+    {
+     "w": "futuro.",
+     "s": 23.42,
+     "e": 23.66
+    },
+    {
+     "w": "Quiero",
+     "s": 24.06,
+     "e": 24.2
+    },
+    {
+     "w": "seguir",
+     "s": 24.2,
+     "e": 24.46
+    },
+    {
+     "w": "llevando",
+     "s": 24.46,
+     "e": 24.88
+    },
+    {
+     "w": "mis",
+     "s": 24.88,
+     "e": 25.26
+    },
+    {
+     "w": "investigaciones",
+     "s": 25.26,
+     "e": 26.1
+    },
+    {
+     "w": "y",
+     "s": 26.1,
+     "e": 26.44
+    },
+    {
+     "w": "mis",
+     "s": 26.44,
+     "e": 26.96
+    },
+    {
+     "w": "trabajos",
+     "s": 26.96,
+     "e": 27.8
+    },
+    {
+     "w": "para",
+     "s": 27.8,
+     "e": 28.12
+    },
+    {
+     "w": "desarrollar",
+     "s": 28.12,
+     "e": 28.7
+    },
+    {
+     "w": "un",
+     "s": 28.7,
+     "e": 28.88
+    },
+    {
+     "w": "futuro",
+     "s": 28.88,
+     "e": 29.3
+    },
+    {
+     "w": "en",
+     "s": 29.3,
+     "e": 29.72
+    },
+    {
+     "w": "el",
+     "s": 29.72,
+     "e": 29.78
+    },
+    {
+     "w": "que",
+     "s": 29.78,
+     "e": 29.86
+    },
+    {
+     "w": "los",
+     "s": 29.86,
+     "e": 30.12
+    },
+    {
+     "w": "jóvenes",
+     "s": 30.12,
+     "e": 30.5
+    },
+    {
+     "w": "puedan",
+     "s": 30.5,
+     "e": 31.54
+    },
+    {
+     "w": "afrontar",
+     "s": 31.54,
+     "e": 32.54
+    },
+    {
+     "w": "y",
+     "s": 32.54,
+     "e": 32.88
+    },
+    {
+     "w": "convivir",
+     "s": 32.88,
+     "e": 33.44
+    },
+    {
+     "w": "con",
+     "s": 33.44,
+     "e": 33.64
+    },
+    {
+     "w": "los",
+     "s": 33.64,
+     "e": 33.76
+    },
+    {
+     "w": "nuevos",
+     "s": 33.76,
+     "e": 34.02
+    },
+    {
+     "w": "avances",
+     "s": 34.02,
+     "e": 34.74
+    },
+    {
+     "w": "de",
+     "s": 34.74,
+     "e": 35.0
+    },
+    {
+     "w": "la",
+     "s": 35.0,
+     "e": 35.18
+    },
+    {
+     "w": "inteligencia",
+     "s": 35.18,
+     "e": 35.76
+    },
+    {
+     "w": "artificial,",
+     "s": 35.76,
+     "e": 36.42
+    },
+    {
+     "w": "puedan",
+     "s": 36.94,
+     "e": 37.02
+    },
+    {
+     "w": "obtener",
+     "s": 37.02,
+     "e": 37.38
+    },
+    {
+     "w": "trabajo,",
+     "s": 37.38,
+     "e": 37.98
+    },
+    {
+     "w": "emprender.",
+     "s": 38.38,
+     "e": 38.78
+    }
+   ]
+  },
+  {
+   "id": "N7",
+   "kind": "N",
+   "start": 93.566,
+   "dur": 6.127,
+   "pre": 0.0,
+   "audio": "N7.wav",
+   "text": "Tecnología con propósito. Impacto global desde República Dominicana.",
+   "words": [
+    {
+     "w": "Tecnología",
+     "s": 0.0,
+     "e": 0.64
+    },
+    {
+     "w": "con",
+     "s": 0.64,
+     "e": 0.94
+    },
+    {
+     "w": "propósito.",
+     "s": 0.94,
+     "e": 1.62
+    },
+    {
+     "w": "Impacto",
+     "s": 1.72,
+     "e": 2.18
+    },
+    {
+     "w": "global",
+     "s": 2.18,
+     "e": 2.52
+    },
+    {
+     "w": "desde",
+     "s": 2.52,
+     "e": 2.86
+    },
+    {
+     "w": "República",
+     "s": 2.86,
+     "e": 3.4
+    },
+    {
+     "w": "Dominicana.",
+     "s": 3.4,
+     "e": 3.98
+    }
+   ]
+  }
+ ],
+ "resources": [
+  {
+   "disparador": "De Guerra",
+   "tipo": "grafico",
+   "descripcion": "tipografía cinética «DE GUERRA» → «A SER PREMIADO»",
+   "color": "blanco",
+   "impacto": true,
+   "capa": "A",
+   "desde_inicio": true,
+   "scene": "N1",
+   "kind": "N",
+   "s": 0,
+   "e": 6.746,
+   "abs": 0.0
+  },
+  {
+   "disparador": "catorce premios Nobel",
+   "tipo": "grafico",
+   "descripcion": "«UNA INICIATIVA DE 14 PREMIOS NOBEL DE LA PAZ» con 14 medallas dibujadas",
+   "color": "dorado",
+   "impacto": true,
+   "capa": "B",
+   "scene": "N1",
+   "kind": "N",
+   "s": 3.96,
+   "e": 6.746,
+   "abs": 3.96
+  },
+  {
+   "disparador": "Yefry Núñez",
+   "tipo": "grafico",
+   "descripcion": "rótulo inferior «YEFRY NÚÑEZ · DOMINICANO»",
+   "color": "blanco",
+   "scene": "C1",
+   "kind": "C",
+   "s": 0.7,
+   "e": 8.76,
+   "abs": 7.446
+  },
+  {
+   "disparador": "Premio Nacional de la Juventud",
+   "tipo": "grafico",
+   "descripcion": "insignia «PREMIO NACIONAL DE LA JUVENTUD»",
+   "color": "dorado",
+   "scene": "C1",
+   "kind": "C",
+   "s": 3.747,
+   "e": 8.76,
+   "abs": 10.493
+  },
+  {
+   "disparador": "Contractor AI",
+   "tipo": "imagen",
+   "dibujo": "contractor",
+   "texto": "INTELIGENCIA ARTIFICIAL CONTRA LA CORRUPCIÓN",
+   "color": "azul",
+   "capa": "full",
+   "scene": "N2",
+   "kind": "N",
+   "s": 0.14,
+   "e": 7.14,
+   "abs": 15.666
+  },
+  {
+   "disparador": "HackCorruption",
+   "tipo": "grafico",
+   "descripcion": "insignia «GANADOR · HACKCORRUPTION» + mapa con Bogotá, Colombia",
+   "color": "dorado",
+   "impacto": true,
+   "capa": "full",
+   "scene": "N2",
+   "kind": "N",
+   "s": 7.14,
+   "e": 10.651,
+   "abs": 22.666
+  },
+  {
+   "disparador": "Billion Acts Fellow",
+   "tipo": "grafico",
+   "descripcion": "globo girando + «BILLION ACTS FELLOW»",
+   "color": "dorado",
+   "capa": "full",
+   "scene": "N3",
+   "kind": "N",
+   "s": 0.04,
+   "e": 5.375,
+   "abs": 26.217
+  },
+  {
+   "disparador": "3R VideoGame",
+   "tipo": "imagen",
+   "dibujo": "vr",
+   "texto": "3R VIDEOGAME · REALIDAD VIRTUAL Y RECICLAJE",
+   "color": "verde",
+   "capa": "A",
+   "scene": "N4",
+   "kind": "N",
+   "s": 0.14,
+   "e": 11.655,
+   "abs": 31.692
+  },
+  {
+   "disparador": "top 20 mundial",
+   "tipo": "grafico",
+   "descripcion": "cifra grande «TOP 20 MUNDIAL» · ITU SDGs Digital GameChangers",
+   "color": "verde",
+   "impacto": true,
+   "capa": "B",
+   "scene": "N4",
+   "kind": "N",
+   "s": 5.9,
+   "e": 11.655,
+   "abs": 37.452
+  },
+  {
+   "disparador": "NeurIPS 2026",
+   "tipo": "imagen",
+   "dibujo": "papers",
+   "texto": "NEURIPS 2026 · REVISOR CIENTÍFICO",
+   "color": "azul",
+   "capa": "A",
+   "scene": "N5",
+   "kind": "N",
+   "s": 1.52,
+   "e": 7.181,
+   "abs": 44.727
+  },
+  {
+   "disparador": "Kenia",
+   "tipo": "grafico",
+   "descripcion": "mapa: papers aceptados en Kenia y Uganda",
+   "color": "azul",
+   "capa": "B",
+   "scene": "N5",
+   "kind": "N",
+   "s": 5.1,
+   "e": 7.181,
+   "abs": 48.307
+  },
+  {
+   "disparador": "El Salvador",
+   "tipo": "grafico",
+   "descripcion": "mapa de impacto: RD → El Salvador y São Paulo, Brasil",
+   "color": "dorado",
+   "capa": "full",
+   "scene": "N6",
+   "kind": "N",
+   "s": 1.08,
+   "e": 4.191,
+   "abs": 51.468
+  },
+  {
+   "disparador": "junio de 2026",
+   "tipo": "grafico",
+   "descripcion": "cifra grande «JUNIO 2026» a pantalla completa (tapa el empalme)",
+   "color": "blanco",
+   "duracion": 3.1,
+   "scene": "C2",
+   "kind": "C",
+   "s": 0.2,
+   "e": 3.3,
+   "abs": 54.779
+  },
+  {
+   "disparador": "250 jóvenes",
+   "tipo": "imagen",
+   "dibujo": "bootcamp",
+   "texto": "+250 JÓVENES · AI SAFETY BOOTCAMP",
+   "color": "azul",
+   "impacto": true,
+   "scene": "C2",
+   "kind": "C",
+   "s": 14.42,
+   "e": 18.8,
+   "abs": 68.999
+  },
+  {
+   "disparador": "inteligencia artificial, puedan",
+   "tipo": "grafico",
+   "descripcion": "«FUTURO DEL TRABAJO · IA SEGURA»",
+   "color": "azul",
+   "scene": "C2",
+   "kind": "C",
+   "s": 34.98,
+   "e": 38.78,
+   "abs": 89.559
+  },
+  {
+   "disparador": "Tecnología con propósito",
+   "tipo": "grafico",
+   "descripcion": "«TECNOLOGÍA CON PROPÓSITO» → «IMPACTO GLOBAL DESDE REPÚBLICA DOMINICANA» + mapa con todos los puntos",
+   "color": "blanco",
+   "capa": "full",
+   "scene": "N7",
+   "kind": "N",
+   "s": 0,
+   "e": 6.127,
+   "abs": 93.566
+  }
+ ],
+ "missing": []
+}
