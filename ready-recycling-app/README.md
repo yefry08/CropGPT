@@ -41,8 +41,10 @@ En local (requiere Android SDK + NDK y JDK 17–21):
 
 ```bash
 npx expo prebuild --platform android
-cd android && ./gradlew assembleRelease
+cd android && ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a
 # APK: android/app/build/outputs/apk/release/app-release.apk
 ```
+
+`app.json` activa R8 (minify), la reducción de recursos y el empaquetado comprimido de las librerías nativas mediante `expo-build-properties`. Así, el APK solo arm64 pesa unos 18 MB; sin `-PreactNativeArchitectures` incluye todas las arquitecturas.
 
 El APK de release generado así va firmado con la clave de depuración. Sirve para instalarlo directamente, pero no para publicarlo en Google Play. Para la tienda, configura una clave de subida propia o usa EAS.
