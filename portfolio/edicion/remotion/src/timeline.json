@@ -1,6 +1,6 @@
 {
  "fps": 30,
- "total": 97.853,
+ "total": 242.135,
  "scenes": [
   {
    "id": "N1",
@@ -100,1121 +100,2927 @@
     {
      "w": "Mi",
      "s": 0.25,
-     "e": 0.497
+     "e": 0.487
     },
     {
      "w": "nombre",
-     "s": 0.497,
-     "e": 0.8
+     "s": 0.487,
+     "e": 0.784
     },
     {
      "w": "es",
-     "s": 0.8,
-     "e": 1.179
+     "s": 0.784,
+     "e": 1.101
     },
     {
      "w": "Yefry",
-     "s": 1.179,
-     "e": 1.52
+     "s": 1.101,
+     "e": 1.378
     },
     {
      "w": "Núñez,",
-     "s": 1.52,
-     "e": 2.032
+     "s": 1.378,
+     "e": 1.912
     },
     {
      "w": "tengo",
-     "s": 2.26,
-     "e": 2.317
+     "s": 2.15,
+     "e": 2.209
     },
     {
      "w": "27",
-     "s": 2.317,
-     "e": 2.848
+     "s": 2.209,
+     "e": 2.743
     },
     {
      "w": "años",
-     "s": 2.848,
-     "e": 3.208
+     "s": 2.743,
+     "e": 3.1
     },
     {
      "w": "y",
-     "s": 3.208,
-     "e": 3.549
+     "s": 3.1,
+     "e": 3.337
     },
     {
      "w": "esta",
-     "s": 3.549,
-     "e": 3.682
+     "s": 3.337,
+     "e": 3.456
     },
     {
      "w": "es",
-     "s": 3.682,
-     "e": 3.777
+     "s": 3.456,
+     "e": 3.574
     },
     {
      "w": "mi",
-     "s": 3.777,
-     "e": 3.929
+     "s": 3.574,
+     "e": 3.693
     },
     {
      "w": "postulación",
-     "s": 3.929,
-     "e": 4.422
+     "s": 3.693,
+     "e": 4.247
     },
     {
      "w": "al",
-     "s": 4.422,
-     "e": 4.63
+     "s": 4.247,
+     "e": 4.425
     },
     {
      "w": "Premio",
-     "s": 4.63,
-     "e": 4.877
+     "s": 4.425,
+     "e": 4.722
     },
     {
      "w": "Nacional",
-     "s": 4.877,
-     "e": 5.218
+     "s": 4.722,
+     "e": 5.059
     },
     {
      "w": "de",
-     "s": 5.218,
-     "e": 5.389
+     "s": 5.059,
+     "e": 5.237
     },
     {
      "w": "la",
-     "s": 5.389,
-     "e": 5.521
+     "s": 5.237,
+     "e": 5.355
     },
     {
      "w": "Juventud,",
-     "s": 5.521,
-     "e": 5.957
+     "s": 5.355,
+     "e": 5.91
     },
     {
      "w": "en",
-     "s": 5.957,
-     "e": 6.223
+     "s": 5.91,
+     "e": 6.206
     },
     {
      "w": "la",
-     "s": 6.223,
-     "e": 6.356
+     "s": 6.206,
+     "e": 6.345
     },
     {
      "w": "categoría",
-     "s": 6.356,
-     "e": 6.792
+     "s": 6.345,
+     "e": 6.8
     },
     {
      "w": "de",
-     "s": 6.792,
-     "e": 6.981
+     "s": 6.8,
+     "e": 6.958
     },
     {
      "w": "superación",
-     "s": 6.981,
-     "e": 7.474
+     "s": 6.958,
+     "e": 7.473
     },
     {
      "w": "y",
-     "s": 7.474,
-     "e": 7.702
+     "s": 7.473,
+     "e": 7.73
     },
     {
      "w": "logros",
-     "s": 7.702,
-     "e": 8.005
+     "s": 7.73,
+     "e": 8.106
     },
     {
      "w": "personales.",
-     "s": 8.005,
-     "e": 8.593
+     "s": 8.106,
+     "e": 8.601
     }
    ],
    "voz": [
     {
      "file": "C1_1.wav",
      "at": 0.25,
-     "tempo": 1.055,
+     "tempo": 1.011,
      "dur": 8.38
     }
    ]
   },
   {
+   "id": "T1",
+   "kind": "T",
+   "start": 15.756,
+   "dur": 2.4,
+   "text": "PROYECTOS",
+   "words": []
+  },
+  {
    "id": "N2",
    "kind": "N",
-   "start": 15.756,
-   "dur": 10.21,
+   "start": 18.156,
+   "dur": 13.841,
    "pre": 0.0,
    "audio": "N2.wav",
-   "text": "Con Contractor AI uso la inteligencia artificial contra la corrupción en la contratación pública. Con ese proyecto gané HackCorruption en Bogotá, Colombia.",
+   "text": "Todo empezó con una pregunta: ¿y si la inteligencia artificial pudiera vigilar cómo se gasta el dinero público? Así nació Contractor AI, una herramienta que analiza las contrataciones públicas y señala los contratos con riesgo de corrupción.",
    "words": [
     {
-     "w": "Con",
+     "w": "Todo",
      "s": 0.0,
-     "e": 0.38
+     "e": 0.26
     },
     {
-     "w": "Contractor",
-     "s": 0.38,
-     "e": 0.92
+     "w": "empezó",
+     "s": 0.26,
+     "e": 0.72
     },
     {
-     "w": "AI",
-     "s": 0.92,
-     "e": 1.48
+     "w": "con",
+     "s": 0.72,
+     "e": 0.86
     },
     {
-     "w": "uso",
-     "s": 1.48,
-     "e": 1.88
+     "w": "una",
+     "s": 0.86,
+     "e": 1.14
+    },
+    {
+     "w": "pregunta:",
+     "s": 1.14,
+     "e": 1.54
+    },
+    {
+     "w": "¿y",
+     "s": 1.74,
+     "e": 1.92
+    },
+    {
+     "w": "si",
+     "s": 1.92,
+     "e": 2.04
     },
     {
      "w": "la",
-     "s": 1.88,
-     "e": 2.06
+     "s": 2.04,
+     "e": 2.2
     },
     {
      "w": "inteligencia",
-     "s": 2.06,
-     "e": 2.6
+     "s": 2.2,
+     "e": 2.72
     },
     {
      "w": "artificial",
-     "s": 2.6,
-     "e": 3.16
+     "s": 2.72,
+     "e": 3.26
     },
     {
-     "w": "contra",
-     "s": 3.16,
-     "e": 3.56
+     "w": "pudiera",
+     "s": 3.26,
+     "e": 3.66
     },
     {
-     "w": "la",
-     "s": 3.56,
-     "e": 3.86
+     "w": "vigilar",
+     "s": 3.66,
+     "e": 4.1
     },
     {
-     "w": "corrupción",
-     "s": 3.86,
-     "e": 4.26
+     "w": "cómo",
+     "s": 4.1,
+     "e": 4.34
     },
     {
-     "w": "en",
-     "s": 4.26,
-     "e": 4.46
+     "w": "se",
+     "s": 4.34,
+     "e": 4.52
     },
     {
-     "w": "la",
-     "s": 4.46,
-     "e": 4.7
+     "w": "gasta",
+     "s": 4.52,
+     "e": 4.74
     },
     {
-     "w": "contratación",
-     "s": 4.7,
-     "e": 5.14
+     "w": "el",
+     "s": 4.74,
+     "e": 4.9
     },
     {
-     "w": "pública.",
-     "s": 5.14,
-     "e": 5.66
+     "w": "dinero",
+     "s": 4.9,
+     "e": 5.12
     },
     {
-     "w": "Con",
-     "s": 5.98,
-     "e": 6.16
+     "w": "público?",
+     "s": 5.12,
+     "e": 5.54
     },
     {
-     "w": "ese",
-     "s": 6.16,
-     "e": 6.34
+     "w": "Así",
+     "s": 6.3,
+     "e": 6.54
     },
     {
-     "w": "proyecto",
-     "s": 6.34,
-     "e": 6.74
+     "w": "nació",
+     "s": 6.54,
+     "e": 6.86
     },
     {
-     "w": "gané",
-     "s": 6.74,
-     "e": 7.23
+     "w": "Contractor",
+     "s": 6.86,
+     "e": 7.46
     },
     {
-     "w": "HackCorruption",
-     "s": 7.23,
-     "e": 7.72
+     "w": "AI,",
+     "s": 7.46,
+     "e": 7.64
     },
     {
-     "w": "en",
-     "s": 7.72,
-     "e": 7.96
+     "w": "una",
+     "s": 7.86,
+     "e": 8.0
     },
     {
-     "w": "Bogotá,",
-     "s": 7.96,
-     "e": 8.62
+     "w": "herramienta",
+     "s": 8.0,
+     "e": 8.46
     },
     {
-     "w": "Colombia.",
-     "s": 8.82,
-     "e": 9.06
+     "w": "que",
+     "s": 8.46,
+     "e": 8.6
+    },
+    {
+     "w": "analiza",
+     "s": 8.6,
+     "e": 8.92
+    },
+    {
+     "w": "las",
+     "s": 8.92,
+     "e": 9.16
+    },
+    {
+     "w": "contrataciones",
+     "s": 9.16,
+     "e": 9.72
+    },
+    {
+     "w": "públicas",
+     "s": 9.72,
+     "e": 10.48
+    },
+    {
+     "w": "y",
+     "s": 10.48,
+     "e": 10.64
+    },
+    {
+     "w": "señala",
+     "s": 10.64,
+     "e": 11.0
+    },
+    {
+     "w": "los",
+     "s": 11.0,
+     "e": 11.34
+    },
+    {
+     "w": "contratos",
+     "s": 11.34,
+     "e": 11.62
+    },
+    {
+     "w": "con",
+     "s": 11.62,
+     "e": 11.82
+    },
+    {
+     "w": "riesgo",
+     "s": 11.82,
+     "e": 12.14
+    },
+    {
+     "w": "de",
+     "s": 12.14,
+     "e": 12.32
+    },
+    {
+     "w": "corrupción.",
+     "s": 12.32,
+     "e": 12.72
     }
    ]
   },
   {
    "id": "N3",
    "kind": "N",
-   "start": 25.966,
-   "dur": 4.999,
+   "start": 31.997,
+   "dur": 7.922,
    "pre": 0.0,
    "audio": "N3.wav",
-   "text": "Soy Billion Acts Fellow, una iniciativa de catorce premios Nobel de la Paz.",
+   "text": "En 2024, Contractor AI ganó HackCorruption en Bogotá, Colombia. Fui el primer dominicano en ganar esta competencia.",
    "words": [
     {
-     "w": "Soy",
+     "w": "En",
      "s": 0.0,
-     "e": 0.32
+     "e": 0.28
     },
     {
-     "w": "Billion",
-     "s": 0.32,
-     "e": 0.713
+     "w": "2024,",
+     "s": 0.28,
+     "e": 1.32
     },
     {
-     "w": "Acts",
-     "s": 0.713,
-     "e": 1.107
+     "w": "Contractor",
+     "s": 1.32,
+     "e": 1.83
     },
     {
-     "w": "Fellow,",
-     "s": 1.107,
-     "e": 1.5
+     "w": "AI",
+     "s": 1.83,
+     "e": 2.34
     },
     {
-     "w": "una",
-     "s": 1.5,
-     "e": 1.58
+     "w": "ganó",
+     "s": 2.34,
+     "e": 2.85
     },
     {
-     "w": "iniciativa",
-     "s": 1.58,
-     "e": 2.06
+     "w": "HackCorruption",
+     "s": 2.85,
+     "e": 3.36
     },
     {
-     "w": "de",
-     "s": 2.06,
-     "e": 2.2
+     "w": "en",
+     "s": 3.36,
+     "e": 3.5
     },
     {
-     "w": "catorce",
-     "s": 2.2,
-     "e": 2.62
+     "w": "Bogotá,",
+     "s": 3.5,
+     "e": 4.08
     },
     {
-     "w": "premios",
-     "s": 2.62,
-     "e": 3.02
+     "w": "Colombia.",
+     "s": 4.34,
+     "e": 4.58
     },
     {
-     "w": "Nobel",
-     "s": 3.02,
-     "e": 3.26
+     "w": "Fui",
+     "s": 4.8,
+     "e": 4.9
     },
     {
-     "w": "de",
-     "s": 3.26,
-     "e": 3.44
+     "w": "el",
+     "s": 4.9,
+     "e": 5.06
     },
     {
-     "w": "la",
-     "s": 3.44,
-     "e": 3.62
+     "w": "primer",
+     "s": 5.06,
+     "e": 5.22
     },
     {
-     "w": "Paz.",
-     "s": 3.62,
-     "e": 3.78
+     "w": "dominicano",
+     "s": 5.22,
+     "e": 5.7
+    },
+    {
+     "w": "en",
+     "s": 5.7,
+     "e": 5.84
+    },
+    {
+     "w": "ganar",
+     "s": 5.84,
+     "e": 6.12
+    },
+    {
+     "w": "esta",
+     "s": 6.12,
+     "e": 6.28
+    },
+    {
+     "w": "competencia.",
+     "s": 6.28,
+     "e": 6.84
     }
    ]
   },
   {
    "id": "N4",
    "kind": "N",
-   "start": 30.965,
-   "dur": 11.844,
+   "start": 39.92,
+   "dur": 10.184,
    "pre": 0.0,
    "audio": "N4.wav",
-   "text": "Con 3R VideoGame, un videojuego de realidad virtual sobre reciclaje, quedamos en el top 20 mundial de los ITU SDGs Digital GameChangers.",
+   "text": "En 2026, la OEA preseleccionó Contractor AI entre quince experiencias de doce países, en el Desafío de Datos para la Democracia.",
    "words": [
     {
-     "w": "Con",
+     "w": "En",
      "s": 0.0,
-     "e": 0.36
+     "e": 0.24
     },
     {
-     "w": "3R",
-     "s": 0.36,
-     "e": 1.06
+     "w": "2026,",
+     "s": 0.24,
+     "e": 1.26
     },
     {
-     "w": "VideoGame,",
-     "s": 1.06,
-     "e": 1.96
+     "w": "la",
+     "s": 1.62,
+     "e": 1.64
     },
     {
-     "w": "un",
-     "s": 2.26,
-     "e": 2.44
+     "w": "OEA",
+     "s": 1.64,
+     "e": 3.14
     },
     {
-     "w": "videojuego",
-     "s": 2.44,
-     "e": 2.92
+     "w": "preseleccionó",
+     "s": 3.14,
+     "e": 3.82
+    },
+    {
+     "w": "Contractor",
+     "s": 3.94,
+     "e": 4.18
+    },
+    {
+     "w": "AI",
+     "s": 4.18,
+     "e": 4.7
+    },
+    {
+     "w": "entre",
+     "s": 4.7,
+     "e": 5.26
+    },
+    {
+     "w": "quince",
+     "s": 5.26,
+     "e": 5.6
+    },
+    {
+     "w": "experiencias",
+     "s": 5.6,
+     "e": 6.12
     },
     {
      "w": "de",
-     "s": 2.92,
-     "e": 3.04
+     "s": 6.12,
+     "e": 6.3
     },
     {
-     "w": "realidad",
-     "s": 3.04,
-     "e": 3.42
+     "w": "doce",
+     "s": 6.3,
+     "e": 6.52
     },
     {
-     "w": "virtual",
-     "s": 3.42,
-     "e": 3.94
-    },
-    {
-     "w": "sobre",
-     "s": 3.94,
-     "e": 4.34
-    },
-    {
-     "w": "reciclaje,",
-     "s": 4.34,
-     "e": 5.38
-    },
-    {
-     "w": "quedamos",
-     "s": 5.6,
-     "e": 5.84
+     "w": "países,",
+     "s": 6.52,
+     "e": 6.94
     },
     {
      "w": "en",
-     "s": 5.84,
-     "e": 6.06
-    },
-    {
-     "w": "el",
-     "s": 6.06,
-     "e": 6.18
-    },
-    {
-     "w": "top",
-     "s": 6.18,
-     "e": 6.34
-    },
-    {
-     "w": "20",
-     "s": 6.34,
-     "e": 6.7
-    },
-    {
-     "w": "mundial",
-     "s": 6.7,
-     "e": 7.1
-    },
-    {
-     "w": "de",
-     "s": 7.1,
+     "s": 6.94,
      "e": 7.3
     },
     {
-     "w": "los",
+     "w": "el",
      "s": 7.3,
-     "e": 7.56
+     "e": 7.52
     },
     {
-     "w": "ITU",
-     "s": 7.56,
-     "e": 8.16
+     "w": "Desafío",
+     "s": 7.52,
+     "e": 7.8
     },
     {
-     "w": "SDGs",
-     "s": 8.16,
-     "e": 9.42
+     "w": "de",
+     "s": 7.8,
+     "e": 7.94
     },
     {
-     "w": "Digital",
-     "s": 9.42,
-     "e": 9.9
+     "w": "Datos",
+     "s": 7.94,
+     "e": 8.12
     },
     {
-     "w": "GameChangers.",
-     "s": 9.9,
-     "e": 10.74
+     "w": "para",
+     "s": 8.12,
+     "e": 8.4
+    },
+    {
+     "w": "la",
+     "s": 8.4,
+     "e": 8.66
+    },
+    {
+     "w": "Democracia.",
+     "s": 8.66,
+     "e": 9.06
     }
    ]
   },
   {
    "id": "N5",
    "kind": "N",
-   "start": 42.809,
-   "dur": 6.66,
+   "start": 50.104,
+   "dur": 12.238,
    "pre": 0.0,
    "audio": "N5.wav",
-   "text": "Hoy soy revisor científico de NeurIPS 2026, y mis papers han sido aceptados en Kenia y en Uganda.",
+   "text": "El clima es mi otro frente. Con 3R VideoGame, un videojuego de realidad virtual que enseña a reducir, reutilizar y reciclar, gané el Climate Change and Innovation Hackathon en República Dominicana.",
    "words": [
     {
-     "w": "Hoy",
+     "w": "El",
      "s": 0.0,
-     "e": 0.22
+     "e": 0.34
     },
     {
-     "w": "soy",
-     "s": 0.22,
-     "e": 0.4
+     "w": "clima",
+     "s": 0.34,
+     "e": 0.56
     },
     {
-     "w": "revisor",
-     "s": 0.5,
-     "e": 0.76
+     "w": "es",
+     "s": 0.56,
+     "e": 0.7
     },
     {
-     "w": "científico",
-     "s": 0.76,
-     "e": 1.28
+     "w": "mi",
+     "s": 0.7,
+     "e": 0.8
+    },
+    {
+     "w": "otro",
+     "s": 0.8,
+     "e": 1.0
+    },
+    {
+     "w": "frente.",
+     "s": 1.0,
+     "e": 1.3
+    },
+    {
+     "w": "Con",
+     "s": 1.52,
+     "e": 1.78
+    },
+    {
+     "w": "3R",
+     "s": 1.78,
+     "e": 2.36
+    },
+    {
+     "w": "VideoGame,",
+     "s": 2.36,
+     "e": 3.12
+    },
+    {
+     "w": "un",
+     "s": 3.12,
+     "e": 3.22
+    },
+    {
+     "w": "videojuego",
+     "s": 3.22,
+     "e": 3.66
     },
     {
      "w": "de",
-     "s": 1.28,
-     "e": 1.4
+     "s": 3.66,
+     "e": 3.78
     },
     {
-     "w": "NeurIPS",
-     "s": 1.4,
-     "e": 1.7
+     "w": "realidad",
+     "s": 3.78,
+     "e": 4.14
     },
     {
-     "w": "2026,",
-     "s": 1.7,
-     "e": 2.72
+     "w": "virtual",
+     "s": 4.14,
+     "e": 4.52
     },
     {
-     "w": "y",
-     "s": 2.72,
-     "e": 3.14
+     "w": "que",
+     "s": 4.52,
+     "e": 4.78
     },
     {
-     "w": "mis",
-     "s": 3.14,
-     "e": 3.28
+     "w": "enseña",
+     "s": 4.78,
+     "e": 5.08
     },
     {
-     "w": "papers",
-     "s": 3.28,
-     "e": 3.58
+     "w": "a",
+     "s": 5.08,
+     "e": 5.32
     },
     {
-     "w": "han",
-     "s": 3.58,
-     "e": 3.7
+     "w": "reducir,",
+     "s": 5.32,
+     "e": 5.82
     },
     {
-     "w": "sido",
-     "s": 3.7,
-     "e": 3.88
-    },
-    {
-     "w": "aceptados",
-     "s": 3.88,
-     "e": 4.38
-    },
-    {
-     "w": "en",
-     "s": 4.38,
-     "e": 4.6
-    },
-    {
-     "w": "Kenia",
-     "s": 4.6,
-     "e": 4.92
+     "w": "reutilizar",
+     "s": 6.04,
+     "e": 6.5
     },
     {
      "w": "y",
-     "s": 4.92,
-     "e": 5.1
+     "s": 6.5,
+     "e": 6.76
+    },
+    {
+     "w": "reciclar,",
+     "s": 6.76,
+     "e": 7.46
+    },
+    {
+     "w": "gané",
+     "s": 7.78,
+     "e": 8.02
+    },
+    {
+     "w": "el",
+     "s": 8.02,
+     "e": 8.24
+    },
+    {
+     "w": "Climate",
+     "s": 8.24,
+     "e": 8.52
+    },
+    {
+     "w": "Change",
+     "s": 8.52,
+     "e": 8.8
+    },
+    {
+     "w": "and",
+     "s": 8.8,
+     "e": 9.0
+    },
+    {
+     "w": "Innovation",
+     "s": 9.0,
+     "e": 9.4
+    },
+    {
+     "w": "Hackathon",
+     "s": 9.4,
+     "e": 9.9
     },
     {
      "w": "en",
-     "s": 5.1,
-     "e": 5.16
+     "s": 9.9,
+     "e": 10.24
     },
     {
-     "w": "Uganda.",
-     "s": 5.16,
-     "e": 5.46
+     "w": "República",
+     "s": 10.24,
+     "e": 10.64
+    },
+    {
+     "w": "Dominicana.",
+     "s": 10.64,
+     "e": 11.12
     }
    ]
   },
   {
    "id": "N6",
    "kind": "N",
-   "start": 49.468,
-   "dur": 4.417,
+   "start": 62.342,
+   "dur": 12.154,
    "pre": 0.0,
    "audio": "N6.wav",
-   "text": "He llevado este trabajo a El Salvador y a São Paulo, en Brasil.",
+   "text": "Con Ready Recycling llevamos el reciclaje a los centros educativos, para que los estudiantes limpien sus escuelas y le saquen provecho a los residuos. Los dos proyectos recibieron capital semilla regional.",
    "words": [
     {
-     "w": "He",
+     "w": "Con",
      "s": 0.0,
-     "e": 0.22
+     "e": 0.32
     },
     {
-     "w": "llevado",
-     "s": 0.22,
-     "e": 0.6
+     "w": "Ready",
+     "s": 0.32,
+     "e": 0.95
     },
     {
-     "w": "este",
-     "s": 0.6,
-     "e": 0.8
+     "w": "Recycling",
+     "s": 0.95,
+     "e": 1.58
     },
     {
-     "w": "trabajo",
-     "s": 0.8,
-     "e": 1.14
+     "w": "llevamos",
+     "s": 1.58,
+     "e": 1.9
     },
     {
-     "w": "a",
-     "s": 1.14,
-     "e": 1.23
+     "w": "el",
+     "s": 1.9,
+     "e": 2.14
     },
     {
-     "w": "El",
-     "s": 1.23,
-     "e": 1.32
-    },
-    {
-     "w": "Salvador",
-     "s": 1.32,
-     "e": 1.74
-    },
-    {
-     "w": "y",
-     "s": 1.74,
-     "e": 2.1
+     "w": "reciclaje",
+     "s": 2.14,
+     "e": 2.6
     },
     {
      "w": "a",
-     "s": 2.1,
-     "e": 2.2
-    },
-    {
-     "w": "São",
-     "s": 2.2,
-     "e": 2.36
-    },
-    {
-     "w": "Paulo,",
-     "s": 2.36,
+     "s": 2.6,
      "e": 2.7
     },
     {
-     "w": "en",
-     "s": 2.84,
-     "e": 2.92
+     "w": "los",
+     "s": 2.7,
+     "e": 2.84
     },
     {
-     "w": "Brasil.",
-     "s": 2.92,
-     "e": 3.2
+     "w": "centros",
+     "s": 2.84,
+     "e": 3.18
+    },
+    {
+     "w": "educativos,",
+     "s": 3.18,
+     "e": 3.86
+    },
+    {
+     "w": "para",
+     "s": 3.86,
+     "e": 4.24
+    },
+    {
+     "w": "que",
+     "s": 4.24,
+     "e": 4.4
+    },
+    {
+     "w": "los",
+     "s": 4.4,
+     "e": 4.68
+    },
+    {
+     "w": "estudiantes",
+     "s": 4.68,
+     "e": 5.1
+    },
+    {
+     "w": "limpien",
+     "s": 5.1,
+     "e": 5.46
+    },
+    {
+     "w": "sus",
+     "s": 5.46,
+     "e": 5.74
+    },
+    {
+     "w": "escuelas",
+     "s": 5.74,
+     "e": 6.2
+    },
+    {
+     "w": "y",
+     "s": 6.2,
+     "e": 6.36
+    },
+    {
+     "w": "le",
+     "s": 6.36,
+     "e": 6.52
+    },
+    {
+     "w": "saquen",
+     "s": 6.52,
+     "e": 6.82
+    },
+    {
+     "w": "provecho",
+     "s": 6.82,
+     "e": 7.12
+    },
+    {
+     "w": "a",
+     "s": 7.12,
+     "e": 7.22
+    },
+    {
+     "w": "los",
+     "s": 7.22,
+     "e": 7.38
+    },
+    {
+     "w": "residuos.",
+     "s": 7.38,
+     "e": 8.12
+    },
+    {
+     "w": "Los",
+     "s": 8.44,
+     "e": 8.58
+    },
+    {
+     "w": "dos",
+     "s": 8.58,
+     "e": 8.8
+    },
+    {
+     "w": "proyectos",
+     "s": 8.8,
+     "e": 9.38
+    },
+    {
+     "w": "recibieron",
+     "s": 9.38,
+     "e": 9.8
+    },
+    {
+     "w": "capital",
+     "s": 9.8,
+     "e": 10.22
+    },
+    {
+     "w": "semilla",
+     "s": 10.22,
+     "e": 10.6
+    },
+    {
+     "w": "regional.",
+     "s": 10.6,
+     "e": 10.98
     }
    ]
   },
   {
-   "id": "C2",
-   "kind": "C",
-   "start": 53.886,
-   "dur": 38.987,
-   "src": "base.mp4",
-   "from": 8.78,
-   "text": "En junio de 2026, mucho antes de que Jacob Coxon, Sam Altman y Dario Amodei encendieran las alarmas sobre las problemáticas de la IA, yo ya había desarrollado un evento con más de 250 jóvenes en la PUCMM de Santo Domingo. Por eso quiero ganar este premio, para impulsar mi voz y preparar el futuro. Quiero seguir llevando mis investigaciones y mis trabajos para desarrollar un futuro en el que los jóvenes puedan afrontar y convivir con los nuevos avances de la inteligencia artificial, puedan obtener trabajo, emprender.",
+   "id": "T2",
+   "kind": "T",
+   "start": 74.495,
+   "dur": 2.4,
+   "text": "RECONOCIMIENTOS",
+   "words": []
+  },
+  {
+   "id": "N7",
+   "kind": "N",
+   "start": 76.895,
+   "dur": 10.81,
+   "pre": 0.0,
+   "audio": "N7.wav",
+   "text": "3R VideoGame llegó al top 20 mundial de los ITU SDGs Digital GameChangers Awards, de la Unión Internacional de Telecomunicaciones.",
    "words": [
     {
-     "w": "En",
-     "s": 0.28,
-     "e": 0.58
+     "w": "3R",
+     "s": 0.1,
+     "e": 0.54
     },
     {
-     "w": "junio",
-     "s": 0.58,
-     "e": 0.9
+     "w": "VideoGame",
+     "s": 0.54,
+     "e": 1.02
+    },
+    {
+     "w": "llegó",
+     "s": 1.02,
+     "e": 1.26
+    },
+    {
+     "w": "al",
+     "s": 1.26,
+     "e": 1.48
+    },
+    {
+     "w": "top",
+     "s": 1.48,
+     "e": 1.68
+    },
+    {
+     "w": "20",
+     "s": 1.68,
+     "e": 2.02
+    },
+    {
+     "w": "mundial",
+     "s": 2.02,
+     "e": 2.38
     },
     {
      "w": "de",
-     "s": 0.9,
-     "e": 1.14
+     "s": 2.38,
+     "e": 2.5
     },
     {
-     "w": "2026,",
-     "s": 1.14,
-     "e": 2.28
+     "w": "los",
+     "s": 2.5,
+     "e": 2.66
     },
     {
-     "w": "mucho",
-     "s": 2.7,
-     "e": 2.82
+     "w": "ITU",
+     "s": 2.66,
+     "e": 3.58
     },
     {
-     "w": "antes",
-     "s": 2.82,
-     "e": 3.14
+     "w": "SDGs",
+     "s": 3.58,
+     "e": 4.52
+    },
+    {
+     "w": "Digital",
+     "s": 4.52,
+     "e": 5.08
+    },
+    {
+     "w": "GameChangers",
+     "s": 5.08,
+     "e": 5.8
+    },
+    {
+     "w": "Awards,",
+     "s": 5.8,
+     "e": 6.36
     },
     {
      "w": "de",
-     "s": 3.14,
-     "e": 3.28
+     "s": 6.36,
+     "e": 6.82
     },
     {
-     "w": "que",
-     "s": 3.28,
-     "e": 3.44
+     "w": "la",
+     "s": 6.82,
+     "e": 6.94
     },
     {
-     "w": "Jacob",
-     "s": 3.44,
-     "e": 3.76
+     "w": "Unión",
+     "s": 6.94,
+     "e": 7.16
     },
     {
-     "w": "Coxon,",
-     "s": 3.76,
-     "e": 4.3
-    },
-    {
-     "w": "Sam",
-     "s": 4.46,
-     "e": 4.56
-    },
-    {
-     "w": "Altman",
-     "s": 4.56,
-     "e": 4.92
-    },
-    {
-     "w": "y",
-     "s": 4.92,
-     "e": 5.1
-    },
-    {
-     "w": "Dario",
-     "s": 5.1,
-     "e": 5.38
-    },
-    {
-     "w": "Amodei",
-     "s": 5.38,
-     "e": 6.18
-    },
-    {
-     "w": "encendieran",
-     "s": 6.18,
-     "e": 6.72
-    },
-    {
-     "w": "las",
-     "s": 6.72,
-     "e": 7.0
-    },
-    {
-     "w": "alarmas",
-     "s": 7.0,
-     "e": 7.34
-    },
-    {
-     "w": "sobre",
-     "s": 7.34,
-     "e": 7.58
-    },
-    {
-     "w": "las",
-     "s": 7.58,
+     "w": "Internacional",
+     "s": 7.16,
      "e": 7.86
     },
     {
-     "w": "problemáticas",
+     "w": "de",
      "s": 7.86,
-     "e": 8.38
+     "e": 8.06
     },
     {
-     "w": "de",
-     "s": 8.38,
-     "e": 8.58
+     "w": "Telecomunicaciones.",
+     "s": 8.06,
+     "e": 9.02
+    }
+   ]
+  },
+  {
+   "id": "N8",
+   "kind": "N",
+   "start": 87.705,
+   "dur": 8.439,
+   "pre": 0.0,
+   "audio": "N8.wav",
+   "text": "Quedé en tercer lugar en Climathon República Dominicana, y gané dos veces la Iniciativa Dinámica de Transición Verde del BCIE.",
+   "words": [
+    {
+     "w": "Quedé",
+     "s": 0.0,
+     "e": 0.4
+    },
+    {
+     "w": "en",
+     "s": 0.4,
+     "e": 0.52
+    },
+    {
+     "w": "tercer",
+     "s": 0.52,
+     "e": 0.82
+    },
+    {
+     "w": "lugar",
+     "s": 0.82,
+     "e": 1.1
+    },
+    {
+     "w": "en",
+     "s": 1.1,
+     "e": 1.32
+    },
+    {
+     "w": "Climathon",
+     "s": 1.32,
+     "e": 1.96
+    },
+    {
+     "w": "República",
+     "s": 1.96,
+     "e": 2.34
+    },
+    {
+     "w": "Dominicana,",
+     "s": 2.34,
+     "e": 2.94
+    },
+    {
+     "w": "y",
+     "s": 2.94,
+     "e": 3.52
+    },
+    {
+     "w": "gané",
+     "s": 3.52,
+     "e": 3.76
+    },
+    {
+     "w": "dos",
+     "s": 3.76,
+     "e": 3.94
+    },
+    {
+     "w": "veces",
+     "s": 3.94,
+     "e": 4.18
     },
     {
      "w": "la",
-     "s": 8.58,
-     "e": 8.72
+     "s": 4.18,
+     "e": 4.4
     },
     {
-     "w": "IA,",
-     "s": 8.72,
-     "e": 9.26
+     "w": "Iniciativa",
+     "s": 4.4,
+     "e": 4.94
     },
     {
-     "w": "yo",
-     "s": 9.26,
-     "e": 9.36
+     "w": "Dinámica",
+     "s": 4.94,
+     "e": 5.42
     },
     {
-     "w": "ya",
-     "s": 9.36,
-     "e": 9.5
+     "w": "de",
+     "s": 5.42,
+     "e": 5.64
     },
     {
-     "w": "había",
-     "s": 9.5,
+     "w": "Transición",
+     "s": 5.64,
+     "e": 6.12
+    },
+    {
+     "w": "Verde",
+     "s": 6.12,
+     "e": 6.46
+    },
+    {
+     "w": "del",
+     "s": 6.46,
+     "e": 6.76
+    },
+    {
+     "w": "BCIE.",
+     "s": 6.76,
+     "e": 7.22
+    }
+   ]
+  },
+  {
+   "id": "N9",
+   "kind": "N",
+   "start": 96.144,
+   "dur": 11.211,
+   "pre": 0.0,
+   "audio": "N9.wav",
+   "text": "En 2025 fui premiado como Billion Acts Fellow por una iniciativa de catorce premios Nobel de la Paz, con un apoyo de cinco mil dólares para Contractor AI.",
+   "words": [
+    {
+     "w": "En",
+     "s": 0.0,
+     "e": 0.28
+    },
+    {
+     "w": "2025",
+     "s": 0.28,
+     "e": 1.2
+    },
+    {
+     "w": "fui",
+     "s": 1.2,
+     "e": 1.5
+    },
+    {
+     "w": "premiado",
+     "s": 1.5,
+     "e": 2.22
+    },
+    {
+     "w": "como",
+     "s": 2.22,
+     "e": 2.5
+    },
+    {
+     "w": "Billion",
+     "s": 2.5,
+     "e": 2.967
+    },
+    {
+     "w": "Acts",
+     "s": 2.967,
+     "e": 3.433
+    },
+    {
+     "w": "Fellow",
+     "s": 3.433,
+     "e": 3.9
+    },
+    {
+     "w": "por",
+     "s": 3.9,
+     "e": 4.22
+    },
+    {
+     "w": "una",
+     "s": 4.22,
+     "e": 4.42
+    },
+    {
+     "w": "iniciativa",
+     "s": 4.42,
+     "e": 4.96
+    },
+    {
+     "w": "de",
+     "s": 4.96,
+     "e": 5.1
+    },
+    {
+     "w": "catorce",
+     "s": 5.1,
+     "e": 5.5
+    },
+    {
+     "w": "premios",
+     "s": 5.5,
+     "e": 5.96
+    },
+    {
+     "w": "Nobel",
+     "s": 5.96,
+     "e": 6.18
+    },
+    {
+     "w": "de",
+     "s": 6.18,
+     "e": 6.38
+    },
+    {
+     "w": "la",
+     "s": 6.38,
+     "e": 6.56
+    },
+    {
+     "w": "Paz,",
+     "s": 6.56,
+     "e": 6.96
+    },
+    {
+     "w": "con",
+     "s": 6.96,
+     "e": 7.34
+    },
+    {
+     "w": "un",
+     "s": 7.34,
+     "e": 7.52
+    },
+    {
+     "w": "apoyo",
+     "s": 7.52,
+     "e": 7.7
+    },
+    {
+     "w": "de",
+     "s": 7.7,
+     "e": 8.04
+    },
+    {
+     "w": "cinco",
+     "s": 8.04,
+     "e": 8.29
+    },
+    {
+     "w": "mil",
+     "s": 8.29,
+     "e": 8.54
+    },
+    {
+     "w": "dólares",
+     "s": 8.54,
+     "e": 8.96
+    },
+    {
+     "w": "para",
+     "s": 8.96,
+     "e": 9.22
+    },
+    {
+     "w": "Contractor",
+     "s": 9.22,
      "e": 9.68
     },
     {
-     "w": "desarrollado",
+     "w": "AI.",
      "s": 9.68,
-     "e": 10.2
+     "e": 10.1
+    }
+   ]
+  },
+  {
+   "id": "N10",
+   "kind": "N",
+   "start": 107.355,
+   "dur": 17.467,
+   "pre": 0.0,
+   "audio": "N10.wav",
+   "text": "Ese año fui Joven Emprendedor del Año en Santo Domingo Este, segundo lugar en el I+D Lab de INDOTEL y finalista de PROMIPYME Emprende. Y la Organización de los Estados Americanos reconoció mi trabajo en transparencia e innovación cívica.",
+   "words": [
+    {
+     "w": "Ese",
+     "s": 0.0,
+     "e": 0.88
     },
     {
-     "w": "un",
-     "s": 10.2,
-     "e": 10.36
+     "w": "año",
+     "s": 0.88,
+     "e": 1.02
     },
     {
-     "w": "evento",
-     "s": 10.36,
-     "e": 10.6
+     "w": "fui",
+     "s": 1.02,
+     "e": 1.22
     },
     {
-     "w": "con",
-     "s": 10.6,
-     "e": 10.82
+     "w": "Joven",
+     "s": 1.22,
+     "e": 1.56
     },
     {
-     "w": "más",
-     "s": 10.82,
-     "e": 11.0
+     "w": "Emprendedor",
+     "s": 1.56,
+     "e": 2.16
     },
     {
-     "w": "de",
-     "s": 11.0,
-     "e": 11.18
+     "w": "del",
+     "s": 2.16,
+     "e": 2.38
     },
     {
-     "w": "250",
-     "s": 11.18,
-     "e": 11.86
-    },
-    {
-     "w": "jóvenes",
-     "s": 11.86,
-     "e": 12.26
+     "w": "Año",
+     "s": 2.38,
+     "e": 2.54
     },
     {
      "w": "en",
-     "s": 12.26,
-     "e": 12.5
-    },
-    {
-     "w": "la",
-     "s": 12.5,
-     "e": 12.62
-    },
-    {
-     "w": "PUCMM",
-     "s": 12.62,
-     "e": 13.02
-    },
-    {
-     "w": "de",
-     "s": 13.02,
-     "e": 13.26
+     "s": 2.54,
+     "e": 2.8
     },
     {
      "w": "Santo",
-     "s": 13.26,
-     "e": 13.5
+     "s": 2.8,
+     "e": 3.0
     },
     {
-     "w": "Domingo.",
-     "s": 13.5,
-     "e": 13.88
+     "w": "Domingo",
+     "s": 3.0,
+     "e": 3.46
     },
     {
-     "w": "Por",
-     "s": 19.12,
-     "e": 19.361
+     "w": "Este,",
+     "s": 3.46,
+     "e": 3.78
     },
     {
-     "w": "eso",
-     "s": 19.361,
-     "e": 19.528
+     "w": "segundo",
+     "s": 4.16,
+     "e": 4.34
     },
     {
-     "w": "quiero",
-     "s": 19.528,
-     "e": 19.732
-    },
-    {
-     "w": "ganar",
-     "s": 19.732,
-     "e": 20.065
-    },
-    {
-     "w": "este",
-     "s": 20.065,
-     "e": 20.232
-    },
-    {
-     "w": "premio,",
-     "s": 20.232,
-     "e": 20.862
-    },
-    {
-     "w": "para",
-     "s": 21.085,
-     "e": 21.159
-    },
-    {
-     "w": "impulsar",
-     "s": 21.159,
-     "e": 21.641
-    },
-    {
-     "w": "mi",
-     "s": 21.641,
-     "e": 21.77
-    },
-    {
-     "w": "voz",
-     "s": 21.77,
-     "e": 21.974
-    },
-    {
-     "w": "y",
-     "s": 21.974,
-     "e": 22.271
-    },
-    {
-     "w": "preparar",
-     "s": 22.271,
-     "e": 22.567
-    },
-    {
-     "w": "el",
-     "s": 22.567,
-     "e": 22.697
-    },
-    {
-     "w": "futuro.",
-     "s": 22.697,
-     "e": 23.012
-    },
-    {
-     "w": "Quiero",
-     "s": 24.35,
-     "e": 24.61
-    },
-    {
-     "w": "seguir",
-     "s": 24.61,
-     "e": 24.95
-    },
-    {
-     "w": "llevando",
-     "s": 24.95,
-     "e": 25.31
-    },
-    {
-     "w": "mis",
-     "s": 25.31,
-     "e": 25.53
-    },
-    {
-     "w": "investigaciones",
-     "s": 25.53,
-     "e": 26.21
-    },
-    {
-     "w": "y",
-     "s": 26.21,
-     "e": 26.39
-    },
-    {
-     "w": "mis",
-     "s": 26.39,
-     "e": 26.61
-    },
-    {
-     "w": "trabajos",
-     "s": 26.61,
-     "e": 27.03
-    },
-    {
-     "w": "para",
-     "s": 27.03,
-     "e": 27.29
-    },
-    {
-     "w": "desarrollar",
-     "s": 27.29,
-     "e": 27.85
-    },
-    {
-     "w": "un",
-     "s": 27.85,
-     "e": 28.01
-    },
-    {
-     "w": "futuro",
-     "s": 28.01,
-     "e": 28.39
+     "w": "lugar",
+     "s": 4.34,
+     "e": 4.62
     },
     {
      "w": "en",
-     "s": 28.39,
-     "e": 28.97
+     "s": 4.62,
+     "e": 4.82
     },
     {
      "w": "el",
-     "s": 28.97,
-     "e": 29.09
+     "s": 4.82,
+     "e": 4.94
     },
     {
-     "w": "que",
-     "s": 29.09,
-     "e": 29.21
+     "w": "I+D",
+     "s": 4.94,
+     "e": 6.05
     },
     {
-     "w": "los",
-     "s": 29.21,
-     "e": 29.39
-    },
-    {
-     "w": "jóvenes",
-     "s": 29.39,
-     "e": 29.67
-    },
-    {
-     "w": "puedan",
-     "s": 29.67,
-     "e": 29.97
-    },
-    {
-     "w": "afrontar",
-     "s": 29.97,
-     "e": 30.49
-    },
-    {
-     "w": "y",
-     "s": 30.49,
-     "e": 30.63
-    },
-    {
-     "w": "convivir",
-     "s": 30.63,
-     "e": 31.01
-    },
-    {
-     "w": "con",
-     "s": 31.01,
-     "e": 31.17
-    },
-    {
-     "w": "los",
-     "s": 31.17,
-     "e": 31.35
-    },
-    {
-     "w": "nuevos",
-     "s": 31.35,
-     "e": 31.59
-    },
-    {
-     "w": "avances",
-     "s": 31.59,
-     "e": 31.91
+     "w": "Lab",
+     "s": 6.05,
+     "e": 7.16
     },
     {
      "w": "de",
-     "s": 31.91,
-     "e": 32.09
+     "s": 7.16,
+     "e": 7.34
+    },
+    {
+     "w": "INDOTEL",
+     "s": 7.34,
+     "e": 8.0
+    },
+    {
+     "w": "y",
+     "s": 8.0,
+     "e": 8.54
+    },
+    {
+     "w": "finalista",
+     "s": 8.54,
+     "e": 9.02
+    },
+    {
+     "w": "de",
+     "s": 9.02,
+     "e": 9.22
+    },
+    {
+     "w": "PROMIPYME",
+     "s": 9.22,
+     "e": 9.82
+    },
+    {
+     "w": "Emprende.",
+     "s": 9.82,
+     "e": 10.46
+    },
+    {
+     "w": "Y",
+     "s": 11.06,
+     "e": 11.18
     },
     {
      "w": "la",
-     "s": 32.09,
-     "e": 32.27
+     "s": 11.18,
+     "e": 11.26
+    },
+    {
+     "w": "Organización",
+     "s": 11.26,
+     "e": 11.82
+    },
+    {
+     "w": "de",
+     "s": 11.82,
+     "e": 11.94
+    },
+    {
+     "w": "los",
+     "s": 11.94,
+     "e": 12.06
+    },
+    {
+     "w": "Estados",
+     "s": 12.06,
+     "e": 12.34
+    },
+    {
+     "w": "Americanos",
+     "s": 12.34,
+     "e": 13.26
+    },
+    {
+     "w": "reconoció",
+     "s": 13.26,
+     "e": 13.76
+    },
+    {
+     "w": "mi",
+     "s": 13.76,
+     "e": 13.94
+    },
+    {
+     "w": "trabajo",
+     "s": 13.94,
+     "e": 14.32
+    },
+    {
+     "w": "en",
+     "s": 14.32,
+     "e": 14.64
+    },
+    {
+     "w": "transparencia",
+     "s": 14.64,
+     "e": 15.32
+    },
+    {
+     "w": "e",
+     "s": 15.32,
+     "e": 15.54
+    },
+    {
+     "w": "innovación",
+     "s": 15.54,
+     "e": 15.98
+    },
+    {
+     "w": "cívica.",
+     "s": 15.98,
+     "e": 16.36
+    }
+   ]
+  },
+  {
+   "id": "N11",
+   "kind": "N",
+   "start": 124.821,
+   "dur": 15.927,
+   "pre": 0.0,
+   "audio": "N11.wav",
+   "text": "En 2026 recibí el International Youth Award de IINTAD en Innovación y Emprendimiento Social, con mención especial a la Innovación Juvenil Destacada, y fui finalista de la octava Cumbre Internacional por la Juventud y la Democracia.",
+   "words": [
+    {
+     "w": "En",
+     "s": 0.0,
+     "e": 0.36
+    },
+    {
+     "w": "2026",
+     "s": 0.36,
+     "e": 1.54
+    },
+    {
+     "w": "recibí",
+     "s": 1.94,
+     "e": 2.38
+    },
+    {
+     "w": "el",
+     "s": 2.38,
+     "e": 2.66
+    },
+    {
+     "w": "International",
+     "s": 2.66,
+     "e": 3.24
+    },
+    {
+     "w": "Youth",
+     "s": 3.24,
+     "e": 3.44
+    },
+    {
+     "w": "Award",
+     "s": 3.44,
+     "e": 3.78
+    },
+    {
+     "w": "de",
+     "s": 3.78,
+     "e": 4.12
+    },
+    {
+     "w": "IINTAD",
+     "s": 4.12,
+     "e": 5.08
+    },
+    {
+     "w": "en",
+     "s": 5.08,
+     "e": 5.42
+    },
+    {
+     "w": "Innovación",
+     "s": 5.42,
+     "e": 5.94
+    },
+    {
+     "w": "y",
+     "s": 5.94,
+     "e": 6.08
+    },
+    {
+     "w": "Emprendimiento",
+     "s": 6.08,
+     "e": 6.62
+    },
+    {
+     "w": "Social,",
+     "s": 6.62,
+     "e": 7.16
+    },
+    {
+     "w": "con",
+     "s": 7.16,
+     "e": 7.56
+    },
+    {
+     "w": "mención",
+     "s": 7.56,
+     "e": 7.96
+    },
+    {
+     "w": "especial",
+     "s": 7.96,
+     "e": 8.4
+    },
+    {
+     "w": "a",
+     "s": 8.4,
+     "e": 8.56
+    },
+    {
+     "w": "la",
+     "s": 8.56,
+     "e": 8.72
+    },
+    {
+     "w": "Innovación",
+     "s": 8.72,
+     "e": 9.08
+    },
+    {
+     "w": "Juvenil",
+     "s": 9.08,
+     "e": 9.48
+    },
+    {
+     "w": "Destacada,",
+     "s": 9.48,
+     "e": 10.24
+    },
+    {
+     "w": "y",
+     "s": 10.66,
+     "e": 10.66
+    },
+    {
+     "w": "fui",
+     "s": 10.66,
+     "e": 10.84
+    },
+    {
+     "w": "finalista",
+     "s": 10.84,
+     "e": 11.32
+    },
+    {
+     "w": "de",
+     "s": 11.32,
+     "e": 11.46
+    },
+    {
+     "w": "la",
+     "s": 11.46,
+     "e": 11.6
+    },
+    {
+     "w": "octava",
+     "s": 11.6,
+     "e": 12.12
+    },
+    {
+     "w": "Cumbre",
+     "s": 12.12,
+     "e": 12.54
+    },
+    {
+     "w": "Internacional",
+     "s": 12.54,
+     "e": 13.14
+    },
+    {
+     "w": "por",
+     "s": 13.14,
+     "e": 13.36
+    },
+    {
+     "w": "la",
+     "s": 13.36,
+     "e": 13.48
+    },
+    {
+     "w": "Juventud",
+     "s": 13.48,
+     "e": 13.94
+    },
+    {
+     "w": "y",
+     "s": 13.94,
+     "e": 14.08
+    },
+    {
+     "w": "la",
+     "s": 14.08,
+     "e": 14.3
+    },
+    {
+     "w": "Democracia.",
+     "s": 14.3,
+     "e": 14.74
+    }
+   ]
+  },
+  {
+   "id": "T3",
+   "kind": "T",
+   "start": 140.749,
+   "dur": 2.4,
+   "text": "EL MUNDO",
+   "words": []
+  },
+  {
+   "id": "N12",
+   "kind": "N",
+   "start": 143.149,
+   "dur": 12.31,
+   "pre": 0.0,
+   "audio": "N12.wav",
+   "text": "En Asia, participé en el Osaka Youth Summit, en Japón; en el hackathon de UNESCO y SEVENTEEN, en Corea del Sur; y fui finalista de Climate Startup en Bangkok, Tailandia.",
+   "words": [
+    {
+     "w": "En",
+     "s": 0.0,
+     "e": 0.26
+    },
+    {
+     "w": "Asia,",
+     "s": 0.26,
+     "e": 0.6
+    },
+    {
+     "w": "participé",
+     "s": 0.6,
+     "e": 1.26
+    },
+    {
+     "w": "en",
+     "s": 1.26,
+     "e": 1.48
+    },
+    {
+     "w": "el",
+     "s": 1.48,
+     "e": 1.6
+    },
+    {
+     "w": "Osaka",
+     "s": 1.6,
+     "e": 1.96
+    },
+    {
+     "w": "Youth",
+     "s": 1.96,
+     "e": 2.18
+    },
+    {
+     "w": "Summit,",
+     "s": 2.18,
+     "e": 2.74
+    },
+    {
+     "w": "en",
+     "s": 3.08,
+     "e": 3.12
+    },
+    {
+     "w": "Japón;",
+     "s": 3.12,
+     "e": 3.82
+    },
+    {
+     "w": "en",
+     "s": 4.14,
+     "e": 4.18
+    },
+    {
+     "w": "el",
+     "s": 4.18,
+     "e": 4.36
+    },
+    {
+     "w": "hackathon",
+     "s": 4.36,
+     "e": 4.74
+    },
+    {
+     "w": "de",
+     "s": 4.74,
+     "e": 4.96
+    },
+    {
+     "w": "UNESCO",
+     "s": 4.96,
+     "e": 5.3
+    },
+    {
+     "w": "y",
+     "s": 5.3,
+     "e": 5.48
+    },
+    {
+     "w": "SEVENTEEN,",
+     "s": 5.48,
+     "e": 6.28
+    },
+    {
+     "w": "en",
+     "s": 6.48,
+     "e": 6.64
+    },
+    {
+     "w": "Corea",
+     "s": 6.64,
+     "e": 6.84
+    },
+    {
+     "w": "del",
+     "s": 6.84,
+     "e": 7.06
+    },
+    {
+     "w": "Sur;",
+     "s": 7.06,
+     "e": 7.26
+    },
+    {
+     "w": "y",
+     "s": 7.26,
+     "e": 7.94
+    },
+    {
+     "w": "fui",
+     "s": 7.94,
+     "e": 8.14
+    },
+    {
+     "w": "finalista",
+     "s": 8.14,
+     "e": 8.66
+    },
+    {
+     "w": "de",
+     "s": 8.66,
+     "e": 8.88
+    },
+    {
+     "w": "Climate",
+     "s": 8.88,
+     "e": 9.28
+    },
+    {
+     "w": "Startup",
+     "s": 9.28,
+     "e": 9.88
+    },
+    {
+     "w": "en",
+     "s": 9.88,
+     "e": 10.1
+    },
+    {
+     "w": "Bangkok,",
+     "s": 10.1,
+     "e": 10.54
+    },
+    {
+     "w": "Tailandia.",
+     "s": 10.72,
+     "e": 11.2
+    }
+   ]
+  },
+  {
+   "id": "N13",
+   "kind": "N",
+   "start": 155.458,
+   "dur": 8.688,
+   "pre": 0.0,
+   "audio": "N13.wav",
+   "text": "En Europa, estuve en la Cumbre de la Alianza para el Gobierno Abierto, en España, y en Charity Entrepreneurship, en el Reino Unido.",
+   "words": [
+    {
+     "w": "En",
+     "s": 0.0,
+     "e": 0.24
+    },
+    {
+     "w": "Europa,",
+     "s": 0.24,
+     "e": 0.76
+    },
+    {
+     "w": "estuve",
+     "s": 1.32,
+     "e": 1.5
+    },
+    {
+     "w": "en",
+     "s": 1.5,
+     "e": 1.68
+    },
+    {
+     "w": "la",
+     "s": 1.68,
+     "e": 1.76
+    },
+    {
+     "w": "Cumbre",
+     "s": 1.76,
+     "e": 2.04
+    },
+    {
+     "w": "de",
+     "s": 2.04,
+     "e": 2.16
+    },
+    {
+     "w": "la",
+     "s": 2.16,
+     "e": 2.26
+    },
+    {
+     "w": "Alianza",
+     "s": 2.26,
+     "e": 2.68
+    },
+    {
+     "w": "para",
+     "s": 2.68,
+     "e": 2.88
+    },
+    {
+     "w": "el",
+     "s": 2.88,
+     "e": 3.02
+    },
+    {
+     "w": "Gobierno",
+     "s": 3.02,
+     "e": 3.3
+    },
+    {
+     "w": "Abierto,",
+     "s": 3.3,
+     "e": 3.82
+    },
+    {
+     "w": "en",
+     "s": 3.82,
+     "e": 4.16
+    },
+    {
+     "w": "España,",
+     "s": 4.16,
+     "e": 4.56
+    },
+    {
+     "w": "y",
+     "s": 4.56,
+     "e": 5.08
+    },
+    {
+     "w": "en",
+     "s": 5.08,
+     "e": 5.22
+    },
+    {
+     "w": "Charity",
+     "s": 5.22,
+     "e": 5.62
+    },
+    {
+     "w": "Entrepreneurship,",
+     "s": 5.62,
+     "e": 6.58
+    },
+    {
+     "w": "en",
+     "s": 6.58,
+     "e": 6.92
+    },
+    {
+     "w": "el",
+     "s": 6.92,
+     "e": 7.02
+    },
+    {
+     "w": "Reino",
+     "s": 7.02,
+     "e": 7.24
+    },
+    {
+     "w": "Unido.",
+     "s": 7.24,
+     "e": 7.58
+    }
+   ]
+  },
+  {
+   "id": "N14",
+   "kind": "N",
+   "start": 164.146,
+   "dur": 7.771,
+   "pre": 0.0,
+   "audio": "N14.wav",
+   "text": "En África, mis papers fueron aceptados en el Open Data Summit 2025, en Kenia y en Uganda.",
+   "words": [
+    {
+     "w": "En",
+     "s": 0.0,
+     "e": 0.24
+    },
+    {
+     "w": "África,",
+     "s": 0.24,
+     "e": 0.92
+    },
+    {
+     "w": "mis",
+     "s": 1.14,
+     "e": 1.3
+    },
+    {
+     "w": "papers",
+     "s": 1.3,
+     "e": 1.62
+    },
+    {
+     "w": "fueron",
+     "s": 1.62,
+     "e": 1.98
+    },
+    {
+     "w": "aceptados",
+     "s": 1.98,
+     "e": 2.5
+    },
+    {
+     "w": "en",
+     "s": 2.5,
+     "e": 2.66
+    },
+    {
+     "w": "el",
+     "s": 2.66,
+     "e": 2.82
+    },
+    {
+     "w": "Open",
+     "s": 2.82,
+     "e": 3.04
+    },
+    {
+     "w": "Data",
+     "s": 3.04,
+     "e": 3.36
+    },
+    {
+     "w": "Summit",
+     "s": 3.36,
+     "e": 3.7
+    },
+    {
+     "w": "2025,",
+     "s": 3.7,
+     "e": 4.72
+    },
+    {
+     "w": "en",
+     "s": 4.72,
+     "e": 5.32
+    },
+    {
+     "w": "Kenia",
+     "s": 5.32,
+     "e": 5.64
+    },
+    {
+     "w": "y",
+     "s": 5.64,
+     "e": 5.82
+    },
+    {
+     "w": "en",
+     "s": 5.82,
+     "e": 5.86
+    },
+    {
+     "w": "Uganda.",
+     "s": 5.86,
+     "e": 6.18
+    }
+   ]
+  },
+  {
+   "id": "N15",
+   "kind": "N",
+   "start": 171.918,
+   "dur": 5.243,
+   "pre": 0.0,
+   "audio": "N15.wav",
+   "text": "Y en América, de Bogotá a São Paulo, donde participé en EAGx.",
+   "words": [
+    {
+     "w": "Y",
+     "s": 0.0,
+     "e": 0.28
+    },
+    {
+     "w": "en",
+     "s": 0.28,
+     "e": 0.5
+    },
+    {
+     "w": "América,",
+     "s": 0.5,
+     "e": 0.96
+    },
+    {
+     "w": "de",
+     "s": 0.96,
+     "e": 1.32
+    },
+    {
+     "w": "Bogotá",
+     "s": 1.32,
+     "e": 1.74
+    },
+    {
+     "w": "a",
+     "s": 1.74,
+     "e": 1.76
+    },
+    {
+     "w": "São",
+     "s": 1.76,
+     "e": 1.98
+    },
+    {
+     "w": "Paulo,",
+     "s": 1.98,
+     "e": 2.5
+    },
+    {
+     "w": "donde",
+     "s": 2.78,
+     "e": 2.96
+    },
+    {
+     "w": "participé",
+     "s": 2.96,
+     "e": 3.48
+    },
+    {
+     "w": "en",
+     "s": 3.48,
+     "e": 3.62
+    },
+    {
+     "w": "EAGx.",
+     "s": 3.62,
+     "e": 4.1
+    }
+   ]
+  },
+  {
+   "id": "T4",
+   "kind": "T",
+   "start": 177.161,
+   "dur": 2.4,
+   "text": "INVESTIGACIÓN",
+   "words": []
+  },
+  {
+   "id": "N16",
+   "kind": "N",
+   "start": 179.561,
+   "dur": 8.081,
+   "pre": 0.0,
+   "audio": "N16.wav",
+   "text": "Hoy soy revisor científico de NeurIPS 2026, una de las conferencias de inteligencia artificial más importantes del mundo.",
+   "words": [
+    {
+     "w": "Hoy",
+     "s": 0.0,
+     "e": 0.26
+    },
+    {
+     "w": "soy",
+     "s": 0.26,
+     "e": 0.46
+    },
+    {
+     "w": "revisor",
+     "s": 0.46,
+     "e": 0.92
+    },
+    {
+     "w": "científico",
+     "s": 0.92,
+     "e": 1.58
+    },
+    {
+     "w": "de",
+     "s": 1.58,
+     "e": 1.74
+    },
+    {
+     "w": "NeurIPS",
+     "s": 1.74,
+     "e": 2.22
+    },
+    {
+     "w": "2026,",
+     "s": 2.22,
+     "e": 3.22
+    },
+    {
+     "w": "una",
+     "s": 3.68,
+     "e": 3.68
+    },
+    {
+     "w": "de",
+     "s": 3.68,
+     "e": 3.74
+    },
+    {
+     "w": "las",
+     "s": 3.74,
+     "e": 3.98
+    },
+    {
+     "w": "conferencias",
+     "s": 3.98,
+     "e": 4.48
+    },
+    {
+     "w": "de",
+     "s": 4.48,
+     "e": 4.62
     },
     {
      "w": "inteligencia",
-     "s": 32.27,
-     "e": 32.69
+     "s": 4.62,
+     "e": 5.08
     },
     {
-     "w": "artificial,",
-     "s": 32.69,
-     "e": 33.35
+     "w": "artificial",
+     "s": 5.08,
+     "e": 5.6
     },
     {
-     "w": "puedan",
-     "s": 33.77,
-     "e": 33.93
+     "w": "más",
+     "s": 5.6,
+     "e": 5.92
     },
     {
-     "w": "obtener",
-     "s": 33.93,
-     "e": 34.41
+     "w": "importantes",
+     "s": 5.92,
+     "e": 6.44
     },
     {
-     "w": "trabajo,",
-     "s": 34.41,
-     "e": 34.89
+     "w": "del",
+     "s": 6.44,
+     "e": 6.68
     },
     {
-     "w": "emprender.",
-     "s": 35.17,
-     "e": 35.59
+     "w": "mundo.",
+     "s": 6.68,
+     "e": 6.88
+    }
+   ]
+  },
+  {
+   "id": "N17",
+   "kind": "N",
+   "start": 187.642,
+   "dur": 5.115,
+   "pre": 0.0,
+   "audio": "N17.wav",
+   "text": "He hecho estancias de investigación en El Salvador y en São Paulo, Brasil.",
+   "words": [
+    {
+     "w": "He",
+     "s": 0.0,
+     "e": 0.24
+    },
+    {
+     "w": "hecho",
+     "s": 0.24,
+     "e": 0.52
+    },
+    {
+     "w": "estancias",
+     "s": 0.52,
+     "e": 0.92
+    },
+    {
+     "w": "de",
+     "s": 0.92,
+     "e": 1.16
+    },
+    {
+     "w": "investigación",
+     "s": 1.16,
+     "e": 1.66
+    },
+    {
+     "w": "en",
+     "s": 1.66,
+     "e": 1.84
+    },
+    {
+     "w": "El",
+     "s": 1.84,
+     "e": 2.04
+    },
+    {
+     "w": "Salvador",
+     "s": 2.04,
+     "e": 2.36
+    },
+    {
+     "w": "y",
+     "s": 2.36,
+     "e": 2.72
+    },
+    {
+     "w": "en",
+     "s": 2.72,
+     "e": 2.82
+    },
+    {
+     "w": "São",
+     "s": 2.82,
+     "e": 3.08
+    },
+    {
+     "w": "Paulo,",
+     "s": 3.08,
+     "e": 3.42
+    },
+    {
+     "w": "Brasil.",
+     "s": 3.64,
+     "e": 3.88
+    }
+   ]
+  },
+  {
+   "id": "N18",
+   "kind": "N",
+   "start": 192.757,
+   "dur": 10.255,
+   "pre": 0.0,
+   "audio": "N18.wav",
+   "text": "Y en casa, impulso la comunidad AI Safety Dominicana, para que la inteligencia artificial en nuestro país sea segura, gobernada y responsable.",
+   "words": [
+    {
+     "w": "Y",
+     "s": 0.0,
+     "e": 0.28
+    },
+    {
+     "w": "en",
+     "s": 0.28,
+     "e": 0.5
+    },
+    {
+     "w": "casa,",
+     "s": 0.5,
+     "e": 0.88
+    },
+    {
+     "w": "impulso",
+     "s": 1.18,
+     "e": 1.5
+    },
+    {
+     "w": "la",
+     "s": 1.6,
+     "e": 1.78
+    },
+    {
+     "w": "comunidad",
+     "s": 1.78,
+     "e": 2.32
+    },
+    {
+     "w": "AI",
+     "s": 2.32,
+     "e": 2.65
+    },
+    {
+     "w": "Safety",
+     "s": 2.65,
+     "e": 2.98
+    },
+    {
+     "w": "Dominicana,",
+     "s": 2.98,
+     "e": 3.62
+    },
+    {
+     "w": "para",
+     "s": 3.62,
+     "e": 4.2
+    },
+    {
+     "w": "que",
+     "s": 4.2,
+     "e": 4.34
+    },
+    {
+     "w": "la",
+     "s": 4.34,
+     "e": 4.48
+    },
+    {
+     "w": "inteligencia",
+     "s": 4.48,
+     "e": 4.96
+    },
+    {
+     "w": "artificial",
+     "s": 4.96,
+     "e": 5.48
+    },
+    {
+     "w": "en",
+     "s": 5.48,
+     "e": 5.74
+    },
+    {
+     "w": "nuestro",
+     "s": 5.74,
+     "e": 5.94
+    },
+    {
+     "w": "país",
+     "s": 5.94,
+     "e": 6.44
+    },
+    {
+     "w": "sea",
+     "s": 6.44,
+     "e": 6.9
+    },
+    {
+     "w": "segura,",
+     "s": 6.9,
+     "e": 7.62
+    },
+    {
+     "w": "gobernada",
+     "s": 7.78,
+     "e": 8.32
+    },
+    {
+     "w": "y",
+     "s": 8.32,
+     "e": 8.6
+    },
+    {
+     "w": "responsable.",
+     "s": 8.6,
+     "e": 9.16
+    }
+   ]
+  },
+  {
+   "id": "T5",
+   "kind": "T",
+   "start": 203.011,
+   "dur": 2.4,
+   "text": "IMPACTO",
+   "words": []
+  },
+  {
+   "id": "C2",
+   "kind": "C",
+   "start": 205.411,
+   "dur": 15.487,
+   "src": "base.mp4",
+   "from": 8.78,
+   "text": "En junio de 2026, mucho antes de que Jacob Coxon, Sam Altman y Dario Amodei encendieran las alarmas sobre las problemáticas de la IA, yo ya había desarrollado un evento con más de 250 jóvenes en la PUCMM de Santo Domingo.",
+   "words": [
+    {
+     "w": "En",
+     "s": 0.8,
+     "e": 1.1
+    },
+    {
+     "w": "junio",
+     "s": 1.1,
+     "e": 1.42
+    },
+    {
+     "w": "de",
+     "s": 1.42,
+     "e": 1.66
+    },
+    {
+     "w": "2026,",
+     "s": 1.66,
+     "e": 2.8
+    },
+    {
+     "w": "mucho",
+     "s": 3.22,
+     "e": 3.34
+    },
+    {
+     "w": "antes",
+     "s": 3.34,
+     "e": 3.66
+    },
+    {
+     "w": "de",
+     "s": 3.66,
+     "e": 3.8
+    },
+    {
+     "w": "que",
+     "s": 3.8,
+     "e": 3.96
+    },
+    {
+     "w": "Jacob",
+     "s": 3.96,
+     "e": 4.28
+    },
+    {
+     "w": "Coxon,",
+     "s": 4.28,
+     "e": 4.82
+    },
+    {
+     "w": "Sam",
+     "s": 4.98,
+     "e": 5.08
+    },
+    {
+     "w": "Altman",
+     "s": 5.08,
+     "e": 5.44
+    },
+    {
+     "w": "y",
+     "s": 5.44,
+     "e": 5.62
+    },
+    {
+     "w": "Dario",
+     "s": 5.62,
+     "e": 5.9
+    },
+    {
+     "w": "Amodei",
+     "s": 5.9,
+     "e": 6.7
+    },
+    {
+     "w": "encendieran",
+     "s": 6.7,
+     "e": 7.24
+    },
+    {
+     "w": "las",
+     "s": 7.24,
+     "e": 7.52
+    },
+    {
+     "w": "alarmas",
+     "s": 7.52,
+     "e": 7.86
+    },
+    {
+     "w": "sobre",
+     "s": 7.86,
+     "e": 8.1
+    },
+    {
+     "w": "las",
+     "s": 8.1,
+     "e": 8.38
+    },
+    {
+     "w": "problemáticas",
+     "s": 8.38,
+     "e": 8.9
+    },
+    {
+     "w": "de",
+     "s": 8.9,
+     "e": 9.1
+    },
+    {
+     "w": "la",
+     "s": 9.1,
+     "e": 9.24
+    },
+    {
+     "w": "IA,",
+     "s": 9.24,
+     "e": 9.78
+    },
+    {
+     "w": "yo",
+     "s": 9.78,
+     "e": 9.88
+    },
+    {
+     "w": "ya",
+     "s": 9.88,
+     "e": 10.02
+    },
+    {
+     "w": "había",
+     "s": 10.02,
+     "e": 10.2
+    },
+    {
+     "w": "desarrollado",
+     "s": 10.2,
+     "e": 10.72
+    },
+    {
+     "w": "un",
+     "s": 10.72,
+     "e": 10.88
+    },
+    {
+     "w": "evento",
+     "s": 10.88,
+     "e": 11.12
+    },
+    {
+     "w": "con",
+     "s": 11.12,
+     "e": 11.34
+    },
+    {
+     "w": "más",
+     "s": 11.34,
+     "e": 11.52
+    },
+    {
+     "w": "de",
+     "s": 11.52,
+     "e": 11.7
+    },
+    {
+     "w": "250",
+     "s": 11.7,
+     "e": 12.38
+    },
+    {
+     "w": "jóvenes",
+     "s": 12.38,
+     "e": 12.78
+    },
+    {
+     "w": "en",
+     "s": 12.78,
+     "e": 13.02
+    },
+    {
+     "w": "la",
+     "s": 13.02,
+     "e": 13.14
+    },
+    {
+     "w": "PUCMM",
+     "s": 13.14,
+     "e": 13.54
+    },
+    {
+     "w": "de",
+     "s": 13.54,
+     "e": 13.78
+    },
+    {
+     "w": "Santo",
+     "s": 13.78,
+     "e": 14.02
+    },
+    {
+     "w": "Domingo.",
+     "s": 14.02,
+     "e": 14.4
     }
    ],
    "voz": [
     {
      "file": "C2_1.wav",
-     "at": 0.28,
+     "at": 0.8,
      "tempo": 1.0,
      "dur": 13.725
-    },
-    {
-     "file": "C2_2.wav",
-     "at": 19.12,
-     "tempo": 1.079,
-     "dur": 4.94
-    },
-    {
-     "file": "C2_3.wav",
-     "at": 24.31,
-     "tempo": 1.0,
-     "dur": 11.451
     }
    ]
   },
   {
-   "id": "N7",
+   "id": "N19",
    "kind": "N",
-   "start": 92.872,
+   "start": 220.898,
+   "dur": 16.256,
+   "pre": 0.0,
+   "audio": "N19.wav",
+   "text": "Por eso quiero ganar este premio, para impulsar mi voz y preparar el futuro. Quiero seguir llevando mis investigaciones y mis trabajos para desarrollar un futuro en el que los jóvenes puedan afrontar y convivir con los nuevos avances de la inteligencia artificial, puedan obtener trabajo, emprender.",
+   "words": [
+    {
+     "w": "Por",
+     "s": 0.0,
+     "e": 0.22
+    },
+    {
+     "w": "eso",
+     "s": 0.22,
+     "e": 0.4
+    },
+    {
+     "w": "quiero",
+     "s": 0.4,
+     "e": 0.62
+    },
+    {
+     "w": "ganar",
+     "s": 0.62,
+     "e": 0.98
+    },
+    {
+     "w": "este",
+     "s": 0.98,
+     "e": 1.16
+    },
+    {
+     "w": "premio,",
+     "s": 1.16,
+     "e": 1.74
+    },
+    {
+     "w": "para",
+     "s": 1.9,
+     "e": 2.02
+    },
+    {
+     "w": "impulsar",
+     "s": 2.02,
+     "e": 2.48
+    },
+    {
+     "w": "mi",
+     "s": 2.48,
+     "e": 2.6
+    },
+    {
+     "w": "voz",
+     "s": 2.6,
+     "e": 2.76
+    },
+    {
+     "w": "y",
+     "s": 2.76,
+     "e": 3.02
+    },
+    {
+     "w": "preparar",
+     "s": 3.02,
+     "e": 3.3
+    },
+    {
+     "w": "el",
+     "s": 3.3,
+     "e": 3.44
+    },
+    {
+     "w": "futuro.",
+     "s": 3.44,
+     "e": 3.78
+    },
+    {
+     "w": "Quiero",
+     "s": 4.34,
+     "e": 4.54
+    },
+    {
+     "w": "seguir",
+     "s": 4.54,
+     "e": 4.82
+    },
+    {
+     "w": "llevando",
+     "s": 4.82,
+     "e": 5.24
+    },
+    {
+     "w": "mis",
+     "s": 5.24,
+     "e": 5.46
+    },
+    {
+     "w": "investigaciones",
+     "s": 5.46,
+     "e": 6.24
+    },
+    {
+     "w": "y",
+     "s": 6.24,
+     "e": 6.44
+    },
+    {
+     "w": "mis",
+     "s": 6.44,
+     "e": 6.66
+    },
+    {
+     "w": "trabajos",
+     "s": 6.66,
+     "e": 7.3
+    },
+    {
+     "w": "para",
+     "s": 7.3,
+     "e": 7.6
+    },
+    {
+     "w": "desarrollar",
+     "s": 7.6,
+     "e": 8.14
+    },
+    {
+     "w": "un",
+     "s": 8.14,
+     "e": 8.22
+    },
+    {
+     "w": "futuro",
+     "s": 8.22,
+     "e": 8.54
+    },
+    {
+     "w": "en",
+     "s": 8.54,
+     "e": 8.72
+    },
+    {
+     "w": "el",
+     "s": 8.72,
+     "e": 8.82
+    },
+    {
+     "w": "que",
+     "s": 8.82,
+     "e": 8.98
+    },
+    {
+     "w": "los",
+     "s": 8.98,
+     "e": 9.1
+    },
+    {
+     "w": "jóvenes",
+     "s": 9.1,
+     "e": 9.36
+    },
+    {
+     "w": "puedan",
+     "s": 9.36,
+     "e": 9.7
+    },
+    {
+     "w": "afrontar",
+     "s": 9.7,
+     "e": 10.2
+    },
+    {
+     "w": "y",
+     "s": 10.2,
+     "e": 10.36
+    },
+    {
+     "w": "convivir",
+     "s": 10.36,
+     "e": 10.72
+    },
+    {
+     "w": "con",
+     "s": 10.72,
+     "e": 10.86
+    },
+    {
+     "w": "los",
+     "s": 10.86,
+     "e": 11.0
+    },
+    {
+     "w": "nuevos",
+     "s": 11.0,
+     "e": 11.22
+    },
+    {
+     "w": "avances",
+     "s": 11.22,
+     "e": 11.58
+    },
+    {
+     "w": "de",
+     "s": 11.58,
+     "e": 11.76
+    },
+    {
+     "w": "la",
+     "s": 11.76,
+     "e": 11.9
+    },
+    {
+     "w": "inteligencia",
+     "s": 11.9,
+     "e": 12.36
+    },
+    {
+     "w": "artificial,",
+     "s": 12.36,
+     "e": 12.88
+    },
+    {
+     "w": "puedan",
+     "s": 12.88,
+     "e": 13.58
+    },
+    {
+     "w": "obtener",
+     "s": 13.58,
+     "e": 14.04
+    },
+    {
+     "w": "trabajo,",
+     "s": 14.04,
+     "e": 14.48
+    },
+    {
+     "w": "emprender.",
+     "s": 14.74,
+     "e": 15.1
+    }
+   ]
+  },
+  {
+   "id": "N20",
+   "kind": "N",
+   "start": 237.154,
    "dur": 4.981,
    "pre": 0.0,
-   "audio": "N7.wav",
+   "audio": "N20.wav",
    "text": "Tecnología con propósito. Impacto global desde República Dominicana.",
    "words": [
     {
@@ -1264,23 +3070,21 @@
   {
    "disparador": "De Guerra",
    "tipo": "grafico",
-   "descripcion": "tipografía cinética «DE GUERRA» → «A SER PREMIADO»",
+   "descripcion": "«DE GUERRA» → «A SER PREMIADO»",
    "color": "blanco",
-   "impacto": true,
    "capa": "A",
    "desde_inicio": true,
    "scene": "N1",
    "kind": "N",
-   "s": 0,
+   "s": 0.0,
    "e": 6.976,
    "abs": 0.0
   },
   {
    "disparador": "catorce premios Nobel",
    "tipo": "grafico",
-   "descripcion": "«UNA INICIATIVA DE 14 PREMIOS NOBEL DE LA PAZ» con 14 medallas dibujadas",
+   "descripcion": "14 medallas + «UNA INICIATIVA DE 14 PREMIOS NOBEL DE LA PAZ»",
    "color": "dorado",
-   "impacto": true,
    "capa": "B",
    "scene": "N1",
    "kind": "N",
@@ -1291,13 +3095,13 @@
   {
    "disparador": "Yefry Núñez",
    "tipo": "grafico",
-   "descripcion": "rótulo inferior «YEFRY NÚÑEZ · DOMINICANO»",
+   "descripcion": "rótulo «YEFRY NÚÑEZ · DOMINICANO · 27 AÑOS»",
    "color": "blanco",
    "scene": "C1",
    "kind": "C",
-   "s": 0.979,
-   "e": 8.593,
-   "abs": 7.955
+   "s": 0.901,
+   "e": 8.601,
+   "abs": 7.877
   },
   {
    "disparador": "Premio Nacional de la Juventud",
@@ -1306,73 +3110,252 @@
    "color": "dorado",
    "scene": "C1",
    "kind": "C",
-   "s": 4.43,
-   "e": 8.593,
-   "abs": 11.406
+   "s": 4.225,
+   "e": 8.601,
+   "abs": 11.201
+  },
+  {
+   "disparador": "Todo empezó",
+   "tipo": "grafico",
+   "descripcion": "pregunta «¿Y SI LA IA VIGILARA EL DINERO PÚBLICO?»",
+   "color": "azul",
+   "capa": "full",
+   "scene": "N2",
+   "kind": "N",
+   "s": 0.0,
+   "e": 6.66,
+   "abs": 18.156
   },
   {
    "disparador": "Contractor AI",
    "tipo": "imagen",
    "dibujo": "contractor",
-   "texto": "INTELIGENCIA ARTIFICIAL CONTRA LA CORRUPCIÓN",
+   "texto": "CONTRACTOR AI · IA CONTRA LA CORRUPCIÓN",
    "color": "azul",
    "capa": "full",
    "scene": "N2",
    "kind": "N",
-   "s": 0.18,
-   "e": 7.03,
-   "abs": 15.936
+   "s": 6.66,
+   "e": 13.841,
+   "abs": 24.816
   },
   {
    "disparador": "HackCorruption",
    "tipo": "grafico",
-   "descripcion": "insignia «GANADOR · HACKCORRUPTION» + mapa con Bogotá, Colombia",
-   "color": "dorado",
-   "impacto": true,
-   "capa": "full",
-   "scene": "N2",
-   "kind": "N",
-   "s": 7.03,
-   "e": 10.21,
-   "abs": 22.786
-  },
-  {
-   "disparador": "Billion Acts Fellow",
-   "tipo": "grafico",
-   "descripcion": "globo girando + «BILLION ACTS FELLOW»",
+   "descripcion": "«GANADOR · HACKCORRUPTION 2024» + «PRIMER DOMINICANO» + mapa de Bogotá",
    "color": "dorado",
    "capa": "full",
    "scene": "N3",
    "kind": "N",
-   "s": 0.12,
-   "e": 4.999,
-   "abs": 26.086
+   "s": 0.0,
+   "e": 7.922,
+   "abs": 31.997
+  },
+  {
+   "disparador": "la OEA preseleccionó",
+   "tipo": "grafico",
+   "descripcion": "contadores «15 experiencias · 12 países» · OEA, Desafío de Datos para la Democracia",
+   "color": "azul",
+   "capa": "full",
+   "scene": "N4",
+   "kind": "N",
+   "s": 0.0,
+   "e": 10.184,
+   "abs": 39.92
   },
   {
    "disparador": "3R VideoGame",
    "tipo": "imagen",
    "dibujo": "vr",
-   "texto": "3R VIDEOGAME · REALIDAD VIRTUAL Y RECICLAJE",
+   "texto": "3R VIDEOGAME · REALIDAD VIRTUAL",
    "color": "verde",
    "capa": "A",
-   "scene": "N4",
+   "scene": "N5",
    "kind": "N",
-   "s": 0.16,
-   "e": 11.844,
-   "abs": 31.125
+   "s": 0.0,
+   "e": 12.238,
+   "abs": 50.104
+  },
+  {
+   "disparador": "Climate Change and Innovation Hackathon",
+   "tipo": "grafico",
+   "descripcion": "insignia «GANADOR · Climate Change & Innovation Hackathon»",
+   "color": "verde",
+   "capa": "B",
+   "scene": "N5",
+   "kind": "N",
+   "s": 8.04,
+   "e": 12.238,
+   "abs": 58.144
+  },
+  {
+   "disparador": "Ready Recycling",
+   "tipo": "imagen",
+   "dibujo": "escuela",
+   "texto": "READY RECYCLING · RECICLAJE EN LAS ESCUELAS",
+   "color": "verde",
+   "capa": "A",
+   "scene": "N6",
+   "kind": "N",
+   "s": 0.0,
+   "e": 12.154,
+   "abs": 62.342
+  },
+  {
+   "disparador": "capital semilla",
+   "tipo": "grafico",
+   "descripcion": "«CAPITAL SEMILLA REGIONAL» para los dos proyectos",
+   "color": "dorado",
+   "capa": "B",
+   "scene": "N6",
+   "kind": "N",
+   "s": 9.6,
+   "e": 12.154,
+   "abs": 71.942
   },
   {
    "disparador": "top 20 mundial",
    "tipo": "grafico",
-   "descripcion": "cifra grande «TOP 20 MUNDIAL» · ITU SDGs Digital GameChangers",
+   "descripcion": "«TOP 20 MUNDIAL» · ITU SDGs Digital GameChangers Awards",
    "color": "verde",
-   "impacto": true,
-   "capa": "B",
-   "scene": "N4",
+   "capa": "full",
+   "scene": "N7",
    "kind": "N",
-   "s": 5.98,
-   "e": 11.844,
-   "abs": 36.945
+   "s": 0.0,
+   "e": 10.81,
+   "abs": 76.895
+  },
+  {
+   "disparador": "Climathon",
+   "tipo": "grafico",
+   "descripcion": "insignia «3.er LUGAR · Climathon RD»",
+   "color": "verde",
+   "capa": "A",
+   "scene": "N8",
+   "kind": "N",
+   "s": 0.0,
+   "e": 8.439,
+   "abs": 87.705
+  },
+  {
+   "disparador": "dos veces",
+   "tipo": "grafico",
+   "descripcion": "insignia «2 VECES GANADOR · BCIE Transición Verde»",
+   "color": "verde",
+   "capa": "B",
+   "scene": "N8",
+   "kind": "N",
+   "s": 3.56,
+   "e": 8.439,
+   "abs": 91.265
+  },
+  {
+   "disparador": "Billion Acts Fellow",
+   "tipo": "grafico",
+   "descripcion": "globo + «BILLION ACTS FELLOW» · 14 premios Nobel de la Paz",
+   "color": "dorado",
+   "capa": "A",
+   "scene": "N9",
+   "kind": "N",
+   "s": 0.0,
+   "e": 11.211,
+   "abs": 96.144
+  },
+  {
+   "disparador": "cinco mil dólares",
+   "tipo": "grafico",
+   "descripcion": "contador «US$5.000» para Contractor AI",
+   "color": "dorado",
+   "capa": "B",
+   "scene": "N9",
+   "kind": "N",
+   "s": 7.84,
+   "e": 11.211,
+   "abs": 103.984
+  },
+  {
+   "disparador": "Joven Emprendedor del Año",
+   "tipo": "grafico",
+   "descripcion": "lista: Joven Emprendedor del Año · 2.º INDOTEL I+D Lab · Finalista PROMIPYME · Reconocimiento OEA",
+   "color": "dorado",
+   "capa": "full",
+   "scene": "N10",
+   "kind": "N",
+   "s": 0.0,
+   "e": 17.467,
+   "abs": 107.355
+  },
+  {
+   "disparador": "International Youth Award",
+   "tipo": "grafico",
+   "descripcion": "insignia «INTERNATIONAL YOUTH AWARD · IINTAD 2026»",
+   "color": "dorado",
+   "capa": "A",
+   "scene": "N11",
+   "kind": "N",
+   "s": 0.0,
+   "e": 15.927,
+   "abs": 124.821
+  },
+  {
+   "disparador": "octava Cumbre",
+   "tipo": "grafico",
+   "descripcion": "«FINALISTA · VIII Cumbre Internacional por la Juventud y la Democracia»",
+   "color": "dorado",
+   "capa": "B",
+   "scene": "N11",
+   "kind": "N",
+   "s": 11.4,
+   "e": 15.927,
+   "abs": 136.221
+  },
+  {
+   "disparador": "En Asia",
+   "tipo": "grafico",
+   "descripcion": "mapa de Asia: Osaka (Japón), Corea del Sur, Bangkok (Tailandia)",
+   "color": "dorado",
+   "capa": "full",
+   "scene": "N12",
+   "kind": "N",
+   "s": 0.0,
+   "e": 12.31,
+   "abs": 143.149
+  },
+  {
+   "disparador": "En Europa",
+   "tipo": "grafico",
+   "descripcion": "mapa de Europa: España, Reino Unido",
+   "color": "dorado",
+   "capa": "full",
+   "scene": "N13",
+   "kind": "N",
+   "s": 0.0,
+   "e": 8.688,
+   "abs": 155.458
+  },
+  {
+   "disparador": "En África",
+   "tipo": "grafico",
+   "descripcion": "mapa: «PAPERS ACEPTADOS · OPEN DATA SUMMIT 2025» en Kenia y Uganda",
+   "color": "azul",
+   "capa": "full",
+   "scene": "N14",
+   "kind": "N",
+   "s": 0.0,
+   "e": 7.771,
+   "abs": 164.146
+  },
+  {
+   "disparador": "en América",
+   "tipo": "grafico",
+   "descripcion": "mapa de América: RD → Bogotá y São Paulo",
+   "color": "dorado",
+   "capa": "full",
+   "scene": "N15",
+   "kind": "N",
+   "s": 0.0,
+   "e": 5.243,
+   "abs": 171.918
   },
   {
    "disparador": "NeurIPS 2026",
@@ -1380,84 +3363,97 @@
    "dibujo": "papers",
    "texto": "NEURIPS 2026 · REVISOR CIENTÍFICO",
    "color": "azul",
-   "capa": "A",
-   "scene": "N5",
-   "kind": "N",
-   "s": 1.2,
-   "e": 6.66,
-   "abs": 44.009
-  },
-  {
-   "disparador": "Kenia",
-   "tipo": "grafico",
-   "descripcion": "mapa: papers aceptados en Kenia y Uganda",
-   "color": "azul",
-   "capa": "B",
-   "scene": "N5",
-   "kind": "N",
-   "s": 4.4,
-   "e": 6.66,
-   "abs": 47.209
-  },
-  {
-   "disparador": "El Salvador",
-   "tipo": "grafico",
-   "descripcion": "mapa de impacto: RD → El Salvador y São Paulo, Brasil",
-   "color": "dorado",
    "capa": "full",
-   "scene": "N6",
+   "scene": "N16",
    "kind": "N",
-   "s": 1.03,
-   "e": 4.417,
-   "abs": 50.498
+   "s": 0.0,
+   "e": 8.081,
+   "abs": 179.561
+  },
+  {
+   "disparador": "estancias de investigación",
+   "tipo": "grafico",
+   "descripcion": "mapa «ESTANCIAS DE INVESTIGACIÓN»: El Salvador y São Paulo",
+   "color": "azul",
+   "capa": "full",
+   "scene": "N17",
+   "kind": "N",
+   "s": 0.0,
+   "e": 5.115,
+   "abs": 187.642
+  },
+  {
+   "disparador": "AI Safety Dominicana",
+   "tipo": "imagen",
+   "dibujo": "bootcamp",
+   "texto": "AI SAFETY DOMINICANA",
+   "color": "azul",
+   "capa": "full",
+   "scene": "N18",
+   "kind": "N",
+   "s": 0.0,
+   "e": 10.255,
+   "abs": 192.757
   },
   {
    "disparador": "junio de 2026",
    "tipo": "grafico",
-   "descripcion": "cifra grande «JUNIO 2026» a pantalla completa (tapa el empalme)",
+   "descripcion": "«JUNIO 2026» en el panel superior",
    "color": "blanco",
-   "duracion": 3.1,
+   "duracion": 3.4,
    "scene": "C2",
    "kind": "C",
-   "s": 0.38,
-   "e": 3.48,
-   "abs": 54.266
+   "s": 0.9,
+   "e": 4.3,
+   "abs": 206.311
   },
   {
    "disparador": "250 jóvenes",
    "tipo": "imagen",
    "dibujo": "bootcamp",
-   "texto": "+250 JÓVENES · AI SAFETY BOOTCAMP",
+   "texto": "+250 JÓVENES",
    "color": "azul",
-   "impacto": true,
    "scene": "C2",
    "kind": "C",
-   "s": 10.98,
-   "e": 13.88,
-   "abs": 64.866
+   "s": 11.5,
+   "e": 14.4,
+   "abs": 216.911
+  },
+  {
+   "disparador": "Por eso quiero",
+   "tipo": "grafico",
+   "descripcion": "«QUIERO GANAR ESTE PREMIO» → «PARA IMPULSAR MI VOZ»",
+   "color": "blanco",
+   "capa": "full",
+   "scene": "N19",
+   "kind": "N",
+   "s": 0.0,
+   "e": 11.7,
+   "abs": 220.898
   },
   {
    "disparador": "inteligencia artificial, puedan",
    "tipo": "grafico",
    "descripcion": "«FUTURO DEL TRABAJO · IA SEGURA»",
    "color": "azul",
-   "scene": "C2",
-   "kind": "C",
-   "s": 32.07,
-   "e": 35.59,
-   "abs": 85.956
+   "capa": "full",
+   "scene": "N19",
+   "kind": "N",
+   "s": 11.7,
+   "e": 16.256,
+   "abs": 232.598
   },
   {
    "disparador": "Tecnología con propósito",
    "tipo": "grafico",
-   "descripcion": "«TECNOLOGÍA CON PROPÓSITO» → «IMPACTO GLOBAL DESDE REPÚBLICA DOMINICANA» + mapa con todos los puntos",
+   "descripcion": "mapa del mundo con todos los puntos + cierre",
    "color": "blanco",
    "capa": "full",
-   "scene": "N7",
+   "scene": "N20",
    "kind": "N",
-   "s": 0,
+   "s": 0.0,
    "e": 4.981,
-   "abs": 92.872
+   "abs": 237.154
   }
  ],
  "missing": []

@@ -115,6 +115,10 @@ def main():
     # En las escenas narradas no hay cámara a la que volver: el gráfico se queda hasta el final de la escena
     # o hasta que otro recurso ocupe su lugar (misma capa, o uno a pantalla completa).
     byid = {sc["id"]: sc for sc in scenes}
+    # el primer gráfico de cada escena narrada entra desde el principio de la escena: nunca pantalla vacía
+    for sid in {p["scene"] for p in placed if p["kind"] == "N"}:
+        first = min((p for p in placed if p["scene"] == sid), key=lambda p: p["s"])
+        first["abs"] = round(first["abs"] - first["s"], 3); first["s"] = 0.0
     for p in placed:
         if p["kind"] != "N": continue
         p["e"] = byid[p["scene"]]["dur"]
