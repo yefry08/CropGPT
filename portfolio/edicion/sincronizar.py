@@ -66,7 +66,24 @@ def main():
             a, b = (0.0, C1_END) if c == 1 else (C1_END, base_d)
             heard = [{"w": w["w"], "s": w["s"] - a, "e": w["e"] - a} for w in base_words if a - .05 <= w["s"] < b]
             words = align(text, heard)
-            scenes.append({"id": sid, "kind": "C", "start": round(t, 3), "dur": round(b - a, 3), "src": "base.mp4", "from": a, "text": text, "words": words})
+            sc = {"id": sid, "kind": "C", "start": round(t, 3), "dur": round(b - a, 3), "src": "base.mp4", "from": a, "text": text, "words": words}
+            frases = re.split(r"(?<=\.)\s+", text.strip())
+            files = [HERE / "trabajo" / "narracion" / f"{sid}_{k}.wav" for k in range(1, len(frases) + 1)]
+            if all(f.exists() for f in files):
+                # Tu voz a cámara sustituida por la clonada: cada frase entra cuando la empiezas a decir en el vídeo.
+                idx, starts = 0, []
+                for fr in frases: starts.append(words[idx]["s"]); idx += len(fr.split())
+                voz, nw, prev_end = [], [], 0.0
+                for k, (fr, f) in enumerate(zip(frases, files)):
+                    d = dur(f); at = max(starts[k], prev_end + .25)
+                    slot = (starts[k + 1] if k + 1 < len(frases) else sc["dur"] - .15) - at
+                    tempo = 1.0 if d <= slot else min(1.15, d / max(slot, .1))
+                    voz.append({"file": f.name, "at": round(at, 3), "tempo": round(tempo, 3), "dur": round(d / tempo, 3)})
+                    nw += [{**w, "s": round(at + w["s"] / tempo, 3), "e": round(at + w["e"] / tempo, 3)} for w in align(fr, hear(f))]
+                    prev_end = at + d / tempo
+                    if prev_end > sc["dur"]: print(f"  AVISO {sid}: la frase {k + 1} acaba {prev_end - sc['dur']:.2f} s después del plano")
+                sc["voz"], sc["words"] = voz, nw
+            scenes.append(sc)
             t += b - a
     # disparadores
     res = json.load(open(HERE / "recursos.json"))

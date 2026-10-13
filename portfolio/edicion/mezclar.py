@@ -18,15 +18,24 @@ for sc in T["scenes"]:
     if sc["kind"] == "N":
         inp += ["-i", str(HERE / "trabajo" / "narracion" / sc["audio"])]
         flt.append(f"[{k}:a]aresample=48000,pan=stereo|c0=c0|c1=c0,adelay={ms}|{ms}[n{k}]"); voz.append(f"[n{k}]")
+    elif sc.get("voz"):                    # toma a cámara con la voz clonada en lugar de tu voz real
+        nin -= 1
+        for v in sc["voz"]:
+            k = nin; nin += 1; ms = int((sc["start"] + v["at"]) * 1000)
+            inp += ["-i", str(HERE / "trabajo" / "narracion" / v["file"])]
+            flt.append(f"[{k}:a]aresample=48000,atempo={v['tempo']},pan=stereo|c0=c0|c1=c0,adelay={ms}|{ms}[n{k}]"); voz.append(f"[n{k}]")
     else:
         inp += ["-ss", str(sc["from"]), "-t", str(sc["dur"]), "-i", str(HERE / "trabajo" / "base_editado.mov")]
         flt.append(f"[{k}:a]aresample=48000,aformat=channel_layouts=stereo,afade=t=in:d=0.08,afade=t=out:st={sc['dur'] - .12:.3f}:d=0.12,adelay={ms}|{ms}[c{k}]"); cam.append(f"[c{k}]")
-m = nin; inp += ["-i", str(HERE / "trabajo" / "musica.wav")]
+m = None
 flt.append("".join(voz) + f"amix=inputs={len(voz)}:normalize=0[vz]")
-flt.append("".join(cam) + f"amix=inputs={len(cam)}:normalize=0[cm0]")
+if not cam:                            # sin audio de cámara: silencio en su lugar
+    inp += ["-f", "lavfi", "-t", f"{total:.3f}", "-i", "anullsrc=r=48000:cl=stereo"]; cam.append(f"[{nin}:a]"); nin += 1
+flt.append("".join(cam) + (f"amix=inputs={len(cam)}:normalize=0[cm0]" if len(cam) > 1 else "anull[cm0]"))
 flt.append("[vz]asplit=3[vz1][vz2][vz3]")
 # ducking: la cámara cae 20 dB cuando suena la narración (ratio alto, umbral bajo)
 flt.append("[cm0][vz2]sidechaincompress=threshold=0.02:ratio=20:attack=20:release=300:makeup=1[cm]")
+m = nin; inp += ["-i", str(HERE / "trabajo" / "musica.wav")]; nin += 1
 flt.append(f"[{m}:a]pan=stereo|c0=c0|c1=c0,volume=-23dB[mu0]")
 flt.append(f"[vz3][cm]amix=inputs=2:normalize=0,apad=whole_dur={total:.3f}[speech]")   # dura hasta el final: si no, el compresor corta la música
 flt.append("[speech]asplit=2[sp1][sp2]")

@@ -26,6 +26,13 @@ PRONUNCIA = {
     "ITU SDGs Digital GameChangers": "ai ti iu, es di yis, diyital gueim cheinyers",
     "NeurIPS 2026": "niurips dos mil veintiséis",
     "São Paulo": "Sao Paulo",
+    "Jacob Coxon": "Yéicob Cócson",
+    "Sam Altman": "Sam Álman,",
+    "junio de 2026": "junio de dos mil veintiséis",
+    "250 jóvenes": "doscientos cincuenta jóvenes",
+    "Dario Amodei": "Dario Amodéi",
+    "la PUCMM": "la Pucamaima",
+    "la IA": "la i a",
 }
 def pronuncia(t):
     for k, v in PRONUNCIA.items(): t = t.replace(k, v)
@@ -51,12 +58,21 @@ def device():
     if getattr(torch.backends, "mps", None) and torch.backends.mps.is_available(): return "mps"
     return "cpu"
 
-def parrafos():
-    out, n = [], 0
+def parrafos(camara=False):
+    """[N] → N1, N2…  Con camara=True, las tomas [C] partidas en frases → C1_1, C2_1, C2_2…
+    (cada frase se coloca luego donde la dices en el vídeo, para que la boca vaya con el audio)."""
+    out, n, c = [], 0, 0
     for line in (HERE / "guion.txt").read_text(encoding="utf-8").splitlines():
         m = re.match(r"\[(N|C)\]\s*(.+)", line.strip())
-        if m and m.group(1) == "N":
-            n += 1; out.append((f"N{n}", m.group(2)))
+        if not m: continue
+        if m.group(1) == "N":
+            n += 1
+            if not camara: out.append((f"N{n}", m.group(2)))
+        else:
+            c += 1
+            if camara:
+                for k, frase in enumerate(re.split(r"(?<=\.)\s+", m.group(2).strip()), 1):
+                    out.append((f"C{c}_{k}", frase))
     return out
 
 def main():
@@ -64,6 +80,7 @@ def main():
     ap.add_argument("--solo", help="regenera solo estos párrafos, p. ej. N3 o N2,N5")
     ap.add_argument("--exag", type=float, default=0.5, help="expresividad (0.25-1.0)")
     ap.add_argument("--cfg", type=float, default=0.5, help="más bajo = ritmo más pausado")
+    ap.add_argument("--camara", action="store_true", help="genera también tu texto a cámara con la voz clonada")
     ap.add_argument("--tomas", type=int, default=1, help="1 = misma semilla en todos los párrafos (una sola voz); >1 elige la toma que mejor se entiende")
     a = ap.parse_args()
     dev = device(); print("dispositivo:", dev, flush=True)
@@ -72,7 +89,7 @@ def main():
     from faster_whisper import WhisperModel
     asr = WhisperModel("medium", device="cpu", compute_type="int8")
     informe = {}
-    for pid, text in parrafos():
+    for pid, text in parrafos() + (parrafos(camara=True) if a.camara else []):
         if a.solo and pid not in a.solo.split(","): continue
         best = None
         for seed in [7, 11, 23, 31, 47][: a.tomas]:
