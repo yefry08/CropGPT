@@ -1,0 +1,7 @@
+node_modules
+trabajo/
+salida/
+entrada/
+*.wav
+*.mp4
+*.mp3

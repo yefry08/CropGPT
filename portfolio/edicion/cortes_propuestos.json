@@ -1,0 +1,17 @@
+{
+  "nota": "PROPUESTA, sin aplicar. Tiempos en segundos sobre entrada/crudo.mp4 (los cuatro clips unidos).",
+  "conservar": [
+    {"de": 0.00,  "a": 8.78,  "que": "Presentación: nombre, edad, postulación y categoría"},
+    {"de": 9.52,  "a": 33.16, "que": "«En mayo de 2026…» hasta «…preparar el futuro.»"},
+    {"de": 34.02, "a": 42.24, "que": "«Quiero seguir llevando mis investigaciones…» hasta «…puedan afrontar»"},
+    {"de": 42.86, "a": 49.46, "que": "«…y convivir con los nuevos avances…» hasta «…obtener trabajo, emprender»"}
+  ],
+  "cortar": [
+    {"de": 8.78,  "a": 9.52,  "motivo": "pausa de 0,94 s y cambio de plano"},
+    {"de": 33.16, "a": 34.02, "motivo": "pausa de 1,06 s"},
+    {"de": 42.24, "a": 42.86, "motivo": "pausa de 0,82 s"},
+    {"de": 49.46, "a": 52.47, "motivo": "frase sin terminar: «y ser…», el clip se corta"},
+    {"de": 52.47, "a": 67.97, "motivo": "toma repetida de «En mayo de 2026…», peor dicción y se corta"},
+    {"de": 67.97, "a": 81.07, "motivo": "toma repetida («En junio de 2026…»), se corta a mitad de frase"}
+  ]
+}
