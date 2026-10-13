@@ -29,7 +29,9 @@ BEAT = 1.08                      # adagio sostenuto
 bar_len = 4 * BEAT
 buf = np.zeros(int(SR * (dur_total + 6)))
 def add(x, at):
-    i = int(at * SR); j = min(len(buf), i + len(x)); buf[i:j] += x[: j - i]
+    i = int(at * SR)
+    if i >= len(buf): return
+    j = min(len(buf), i + len(x)); buf[i:j] += x[: j - i]
 t, k = 0.0, 0
 while t < dur_total + bar_len:
     bass, beats = BARS[k % 4]
