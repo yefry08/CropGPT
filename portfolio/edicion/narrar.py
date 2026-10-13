@@ -19,21 +19,43 @@ OUT = HERE / "trabajo" / "narracion"; OUT.mkdir(parents=True, exist_ok=True)
 # Cómo debe sonar cada nombre en inglés. Solo afecta a lo que se le pasa al sintetizador:
 # los subtítulos siguen saliendo de guion.txt tal cual.
 PRONUNCIA = {
+    # el orden importa: las frases largas antes que sus trozos
+    "ITU SDGs Digital GameChangers Awards": "ai ti iu, es di yis, diyital gueim cheinyers awords",
+    "Climate Change and Innovation Hackathon": "claimet cheinch and inoveishon jacaton",
+    "International Youth Award": "internashonal iut aword",
+    "Charity Entrepreneurship": "cheriti ontreprenership",
+    "Osaka Youth Summit": "Osaka iut samit",
+    "Open Data Summit 2025": "open deita samit dos mil veinticinco",
+    "Climate Startup": "claimet startap",
     "Contractor AI": "Contractor ei ai,",
     "HackCorruption": "Jac corrupchon",
     "Billion Acts Fellow": "Bilio acts felou",
     "3R VideoGame": "tres erre videoguein",
-    "ITU SDGs Digital GameChangers": "ai ti iu, es di yis, diyital gueim cheinyers",
+    "Ready Recycling": "redi ricaiclin",
     "NeurIPS 2026": "niurips dos mil veintiséis",
+    "AI Safety": "ei ai seifti",
+    "SEVENTEEN": "seventin",
+    "Climathon": "claimaton",
+    "EAGx": "i ei yi eks",
+    "IINTAD": "i i ene te a de",
+    "I+D Lab": "I más D lab",
+    "BCIE": "be ce i e",
+    "OEA": "o e a",
     "São Paulo": "Sao Paulo",
     "Jacob Coxon": "Yéicob Cócson",
     "Sam Altman": "Sam Álman,",
+    "Dario Amodei": "Dario Amodéi",
     "junio de 2026": "junio de dos mil veintiséis",
     "250 jóvenes": "doscientos cincuenta jóvenes",
-    "Dario Amodei": "Dario Amodéi",
     "la PUCMM": "la Pucamaima",
     "la IA": "la i a",
+    "En 2024": "En dos mil veinticuatro",
+    "En 2025": "En dos mil veinticinco",
+    "En 2026": "En dos mil veintiséis",
+    "top 20": "top veinte",
+    "27 años": "veintisiete años",
 }
+
 def pronuncia(t):
     for k, v in PRONUNCIA.items(): t = t.replace(k, v)
     return t

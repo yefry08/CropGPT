@@ -1,42 +1,7 @@
 {
-  "nota": "Montaje v2 APLICADO por editar.sh. Cortes 4 y 5 ajustados por energía: Whisper marca el final de palabra antes de tiempo.",
+  "nota": "Montaje v3: dos tomas a cámara, con su audio sustituido por la voz clonada. Tiempos sobre entrada/crudo.mp4.",
   "montaje": [
-    {
-      "orden": 1,
-      "de": 0.0,
-      "a": 8.78,
-      "que": "Presentación: nombre, edad, postulación y categoría (parque)"
-    },
-    {
-      "orden": 2,
-      "de": 68.95,
-      "a": 71.35,
-      "que": "«En junio de 2026,» — tomado de la última toma, la única que dice junio"
-    },
-    {
-      "orden": 3,
-      "de": 11.85,
-      "a": 33.16,
-      "que": "«mucho antes de que… en la Pucamaima de Santo Domingo… preparar el futuro.» (toma larga)"
-    },
-    {
-      "orden": 4,
-      "de": 34.02,
-      "a": 42.56,
-      "que": "«Quiero seguir llevando mis investigaciones… puedan afrontar»"
-    },
-    {
-      "orden": 5,
-      "de": 42.86,
-      "a": 49.55,
-      "que": "«…y convivir con los nuevos avances… obtener trabajo, emprender»"
-    }
-  ],
-  "empalme_junio": "El salto 2→3 une dos tomas del mismo sitio. Se cubre con el rótulo «JUNIO 2026» en cifra grande para que no se vea el salto. La toma de junio suena 2,2 dB más fuerte; se iguala.",
-  "cortado": [
-    "pausas de 0,94 s, 1,06 s y 0,82 s",
-    "«En mayo de 2026,» de la toma larga",
-    "«y ser…» final sin terminar",
-    "el resto de las dos tomas repetidas"
+    {"orden": 1, "de": 0.00,  "a": 8.78,  "que": "Presentación (parque): nombre, edad, postulación y categoría"},
+    {"orden": 2, "de": 52.47, "a": 67.95, "que": "El evento con +250 jóvenes (fuente, clip de 15 s)"}
   ]
 }

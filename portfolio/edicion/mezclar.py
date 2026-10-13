@@ -14,6 +14,7 @@ subprocess.run(["python3", str(HERE / "musica.py"), f"{total + 1:.2f}", str(HERE
 inp, flt, voz, cam = [], [], [], []
 nin = 0                                   # número de entradas de ffmpeg (no de argumentos)
 for sc in T["scenes"]:
+    if sc["kind"] == "T": continue        # rótulos de capítulo: solo música
     k = nin; nin += 1; ms = int((sc["start"] + sc.get("pre", 0)) * 1000)
     if sc["kind"] == "N":
         inp += ["-i", str(HERE / "trabajo" / "narracion" / sc["audio"])]

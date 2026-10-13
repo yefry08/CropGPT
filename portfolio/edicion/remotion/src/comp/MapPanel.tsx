@@ -14,10 +14,15 @@ export const PLACES: Record<string, { ll: [number, number]; iso: string; label: 
   saopaulo: { ll: [-46.63, -23.55], iso: "076", label: "São Paulo, Brasil" },
   kenia: { ll: [36.82, -1.29], iso: "404", label: "Kenia", dy: 16 } as any,
   uganda: { ll: [32.58, 0.35], iso: "800", label: "Uganda", dy: -18 } as any,
+  osaka: { ll: [135.50, 34.69], iso: "392", label: "Osaka, Japón" },
+  corea: { ll: [126.98, 37.57], iso: "410", label: "Corea del Sur", dy: -14 } as any,
+  bangkok: { ll: [100.50, 13.75], iso: "764", label: "Bangkok, Tailandia" },
+  espana: { ll: [-3.70, 40.42], iso: "724", label: "España" },
+  reinounido: { ll: [-0.13, 51.51], iso: "826", label: "Reino Unido" },
 };
 // mapa plano con países resaltados, pines con etiqueta y arcos desde RD
-export const MapPanel: React.FC<{ w: number; h: number; pins: string[]; bbox: [[number, number], [number, number]]; color: string; arcs?: boolean; title?: string }> =
-  ({ w, h, pins, bbox, color, arcs = false, title }) => {
+export const MapPanel: React.FC<{ w: number; h: number; pins: string[]; bbox: [[number, number], [number, number]]; color: string; arcs?: boolean; title?: string; labels?: boolean }> =
+  ({ w, h, pins, bbox, color, arcs = false, title, labels = true }) => {
   const f = useCurrentFrame(); const { inn, out } = useInOut();
   const box = { type: "Feature", geometry: { type: "MultiPoint", coordinates: [bbox[0], bbox[1]] } } as any;
   const proj = geoMercator().fitExtent([[w * .06, h * .1], [w * .94, h * .9]], box);
@@ -42,7 +47,7 @@ export const MapPanel: React.FC<{ w: number; h: number; pins: string[]; bbox: [[
           <circle cx={x} cy={y} r={7} fill={C.white} /><circle cx={x} cy={y} r={4} fill={color} /></g>;
       })}
     </svg>
-    {pins.map((p, i) => {
+    {labels && pins.map((p, i) => {
       const [x, y] = proj(PLACES[p].ll) as [number, number];
       const s = interpolate(f, [18 + i * 6, 28 + i * 6], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
       const right = x < w * .62;

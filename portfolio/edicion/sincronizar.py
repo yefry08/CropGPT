@@ -12,6 +12,7 @@ from faster_whisper import WhisperModel
 
 HERE = Path(__file__).parent
 HOLD = 1.0                     # respiro visual tras cada narración (la narración unida mantiene sus 0,4 s)
+TITLE = 2.4                    # rótulo de capítulo (## …): pantalla propia, solo música
 LEAD = 1.5                     # pausa dramática inicial: música y «DE GUERRA» antes de la voz
 PRE, MIN_DUR = 0.2, 2.0        # el recurso entra 0,2 s antes y dura al menos 2 s
 C1_END = 8.78                  # fin de la presentación dentro de base_editado (tramo 1 del montaje)
@@ -49,12 +50,18 @@ def main():
         segs, _ = model.transcribe(str(path), language="es", word_timestamps=True, condition_on_previous_text=False, **kw)
         return [{"w": w.word.strip(), "s": w.start, "e": w.end} for s in segs for w in s.words]
 
-    lines = [re.match(r"\[(N|C)\]\s*(.+)", l.strip()) for l in (HERE / "guion.txt").read_text(encoding="utf-8").splitlines()]
-    lines = [(m.group(1), m.group(2)) for m in lines if m]
+    lines = []
+    for l in (HERE / "guion.txt").read_text(encoding="utf-8").splitlines():
+        m = re.match(r"\[(N|C)\]\s*(.+)", l.strip()) or re.match(r"(##)\s*(.+)", l.strip())
+        if m: lines.append(("T" if m.group(1) == "##" else m.group(1), m.group(2)))
     base = HERE / "trabajo" / "base_editado.mov"; base_d = dur(base)
     base_words = [w for s in json.load(open(HERE / "trabajo" / "base.json"))["segments"] for w in s["words"]]
-    scenes, t, n, c = [], 0.0, 0, 0
+    scenes, t, n, c, ti = [], 0.0, 0, 0, 0
     for kind, text in lines:
+        if kind == "T":
+            ti += 1
+            scenes.append({"id": f"T{ti}", "kind": "T", "start": round(t, 3), "dur": TITLE, "text": text, "words": []})
+            t += TITLE; continue
         if kind == "N":
             n += 1; sid = f"N{n}"; wav = HERE / "trabajo" / "narracion" / f"{sid}.wav"
             pre = LEAD if n == 1 else 0.0

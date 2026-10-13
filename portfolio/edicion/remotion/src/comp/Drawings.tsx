@@ -90,3 +90,23 @@ export const Medals: React.FC<{ w: number }> = ({ w }) => {
     })}
   </div>;
 };
+
+// Ready Recycling: una escuela con tres contenedores de reciclaje que se van llenando
+export const School: React.FC<{ w: number }> = ({ w }) => {
+  const f = useCurrentFrame();
+  const bins = [["#2E8BFF", "PAPEL"], ["#E8B53A", "PLÁSTICO"], ["#2FBF71", "VIDRIO"]];
+  return <Frame w={w}><svg viewBox="0 0 400 300" width={w}>
+    <path d="M70 120 L200 50 L330 120 Z" fill="#1B2333" stroke={C.green} strokeWidth={4} />
+    <rect x={90} y={120} width={220} height={100} fill="#1B2333" stroke={C.green} strokeWidth={4} />
+    {[0, 1, 2, 3].map(i => <rect key={i} x={106 + i * 52} y={138} width={34} height={30} rx={3} fill={C.green} opacity={.35} />)}
+    <rect x={182} y={178} width={36} height={42} fill={C.green} opacity={.55} />
+    <circle cx={200} cy={92} r={14} fill="none" stroke={C.green} strokeWidth={3} />
+    {bins.map(([col, lab], i) => {
+      const fill = Math.min(1, Math.max(0, (f - 10 - i * 8) / 40));
+      return <g key={i} transform={`translate(${70 + i * 100} 232)`}>
+        <rect width={60} height={56} rx={6} fill="none" stroke={col} strokeWidth={3} />
+        <rect x={3} y={53 - 50 * fill} width={54} height={50 * fill} rx={4} fill={col} opacity={.75} />
+        <text x={30} y={-6} textAnchor="middle" fontSize={11} fontWeight={800} fill={col} fontFamily="Inter">{lab}</text></g>;
+    })}
+  </svg></Frame>;
+};

@@ -10,7 +10,7 @@ IN=entrada/crudo.mp4
 SEGS=$(python3 -c '
 import json
 for m in sorted(json.load(open("cortes_propuestos.json"))["montaje"], key=lambda m: m["orden"]):
-    g = -2.2 if m["de"] > 60 else 0.0
+    g = 0.0
     print(m["de"], m["a"], g)')
 F=""; L=""; i=0
 while read -r a b g; do
