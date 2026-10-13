@@ -1,0 +1,54 @@
+{
+  "expo": {
+    "name": "Ready Recycling",
+    "slug": "ready-recycling",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.readyrecycling.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#1F8A4C",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "com.readyrecycling.app",
+      "versionCode": 1,
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "POST_NOTIFICATIONS"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Ready Recycling usa tu ubicación para mostrarte los contenedores más cercanos."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#1F8A4C"
+        }
+      ],
+      "expo-font"
+    ],
+    "scheme": "readyrecycling",
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
