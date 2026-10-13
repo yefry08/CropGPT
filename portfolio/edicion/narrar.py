@@ -19,13 +19,13 @@ OUT = HERE / "trabajo" / "narracion"; OUT.mkdir(parents=True, exist_ok=True)
 # Cómo debe sonar cada nombre en inglés. Solo afecta a lo que se le pasa al sintetizador:
 # los subtítulos siguen saliendo de guion.txt tal cual.
 PRONUNCIA = {
-    "Contractor AI": "Contráctor Ei Ái",
-    "HackCorruption": "Jack Corrúpshon",
-    "Billion Acts Fellow": "Bílion Acts Félou",
-    "3R VideoGame": "Tres Erre Vídeo Guéim",
-    "ITU SDGs Digital GameChangers": "I Ti Iú, Es Di Yis, Díyital Guéim Chéinyers",
-    "NeurIPS 2026": "Níurips dos mil veintiséis",
-    "São Paulo": "Sao Páulo",
+    "Contractor AI": "Contractor ei ai,",
+    "HackCorruption": "Jac corrupchon",
+    "Billion Acts Fellow": "Bilio acts felou",
+    "3R VideoGame": "tres erre videoguein",
+    "ITU SDGs Digital GameChangers": "ai ti iu, es di yis, diyital gueim cheinyers",
+    "NeurIPS 2026": "niurips dos mil veintiséis",
+    "São Paulo": "Sao Paulo",
 }
 def pronuncia(t):
     for k, v in PRONUNCIA.items(): t = t.replace(k, v)
@@ -62,9 +62,9 @@ def parrafos():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--solo", help="regenera solo estos párrafos, p. ej. N3 o N2,N5")
-    ap.add_argument("--exag", type=float, default=0.45, help="expresividad (0.25-1.0)")
-    ap.add_argument("--cfg", type=float, default=0.35, help="más bajo = ritmo más pausado")
-    ap.add_argument("--tomas", type=int, default=3, help="tomas por párrafo; se queda la que mejor se entiende")
+    ap.add_argument("--exag", type=float, default=0.5, help="expresividad (0.25-1.0)")
+    ap.add_argument("--cfg", type=float, default=0.5, help="más bajo = ritmo más pausado")
+    ap.add_argument("--tomas", type=int, default=1, help="1 = misma semilla en todos los párrafos (una sola voz); >1 elige la toma que mejor se entiende")
     a = ap.parse_args()
     dev = device(); print("dispositivo:", dev, flush=True)
     model = ChatterboxMultilingualTTS.from_pretrained(device=dev)
