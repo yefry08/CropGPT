@@ -943,7 +943,7 @@
    "scene": "N4",
    "kind": "N",
    "s": 3.54,
-   "e": 9.947,
+   "e": 6.88,
    "abs": 37.082
   },
   {
@@ -963,7 +963,7 @@
    "tipo": "grafico",
    "descripcion": "insignia «INTERNATIONAL YOUTH AWARD · IINTAD 2026»",
    "color": "dorado",
-   "capa": "A",
+   "capa": "full",
    "scene": "N4",
    "kind": "N",
    "s": 6.88,
