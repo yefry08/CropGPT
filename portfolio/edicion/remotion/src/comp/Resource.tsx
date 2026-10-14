@@ -77,6 +77,7 @@ export const Resource: React.FC<{ r: any; o: Orient }> = ({ r, o }) => {
     case "en América": return map(["rd", "bogota", "saopaulo"], [[-90, -28], [-35, 22]], C.gold, "AMÉRICA", true);
     case "NeurIPS 2026": { const b = B("full");
       return <Place b={b}><Papers w={b.w * (v ? .9 : .55)} /><Kinetic text="NEURIPS 2026" size={v ? 96 : 92} color={C.blue} delay={6} /><Label text="Revisor científico" color={C.white} size={32} delay={14} /></Place>; }
+    case "investigador en bioinformática": return map(["rd", "salvador"], [[-95, 5], [-55, 25]], C.blue, "INVESTIGADOR EN BIOINFORMÁTICA · EL SALVADOR", true);
     case "estancias de investigación": return map(["rd", "salvador", "saopaulo"], [[-95, -28], [-35, 22]], C.blue, "ESTANCIAS DE INVESTIGACIÓN", true);
     case "AI Safety Dominicana": { const b = B("full");
       return <Place b={b}><Bootcamp w={b.w * (v ? .9 : .5)} /><Kinetic text="AI SAFETY DOMINICANA" size={v ? 70 : 80} color={C.blue} delay={8} />
