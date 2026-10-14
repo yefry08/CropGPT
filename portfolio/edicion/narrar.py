@@ -52,6 +52,7 @@ PRONUNCIA = {
     "En 2024": "En dos mil veinticuatro",
     "En 2025": "En dos mil veinticinco",
     "En 2026": "En dos mil veintiséis",
+    "en 2026": "en dos mil veintiséis",
     "top 20": "top veinte",
     "27 años": "veintisiete años",
 }

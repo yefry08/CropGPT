@@ -47,7 +47,7 @@ export const Resource: React.FC<{ r: any; o: Orient }> = ({ r, o }) => {
       return <Place b={b}><Contractor w={b.w * (v ? .95 : .6)} /><Kinetic text="CONTRACTOR AI" size={v ? 92 : 84} color={C.blue} delay={6} />
         <Label text="Inteligencia artificial contra la corrupción" color={C.white} size={30} delay={14} /></Place>; }
     case "HackCorruption": return <AbsoluteFill>
-        <Place b={B("A")}><Badge title="GANADOR" sub="HackCorruption 2024" size={v ? 400 : 420} /><Kinetic text="PRIMER DOMINICANO" size={v ? 54 : 46} color={C.gold} delay={30} /></Place>
+        <Place b={B("A")}><Badge title="GANADOR" sub="HackCorruption · Bogotá" size={v ? 400 : 420} /><Kinetic text="PRIMER DOMINICANO" size={v ? 54 : 46} color={C.gold} delay={30} /></Place>
         <div style={{ position: "absolute", ...(v ? { left: 60, top: 1000 } : { left: 980, top: 160 }) }}>
           <MapPanel w={v ? 960 : 860} h={v ? 600 : 700} pins={["bogota"]} bbox={[[-82, -5], [-66, 13]]} color={C.gold} /></div></AbsoluteFill>;
     case "la OEA preseleccionó": return <Place b={B("full")}><div style={{ display: "flex", gap: v ? 60 : 140, alignItems: "flex-end" }}>
@@ -63,13 +63,14 @@ export const Resource: React.FC<{ r: any; o: Orient }> = ({ r, o }) => {
     case "Climathon": return <Place b={B("A")}><Badge title="3.er LUGAR" sub="Climathon República Dominicana" color={C.green} size={v ? 360 : 380} /></Place>;
     case "dos veces": return <Place b={B("B")}><Badge title="2× GANADOR" sub="BCIE · Transición Verde" color={C.green} size={v ? 360 : 380} /></Place>;
     case "Billion Acts Fellow": return <Place b={B("A")}><Globe size={v ? 460 : 420} color={C.gold} /><Kinetic text="BILLION ACTS FELLOW" size={v ? 70 : 64} color={C.gold} delay={8} /></Place>;
-    case "cinco mil dólares": return <Place b={B("B")}><Counter to={5000} prefix="US$" size={v ? 170 : 160} color={C.gold} frames={36} /><Label text="para Contractor AI" color={C.white} size={30} delay={12} /></Place>;
+    case "cinco mil dólares": return <Place b={B("B")}><Counter to={5000} prefix="US$" size={v ? 170 : 160} color={C.gold} frames={36} /><Label text="beca Billion Acts" color={C.white} size={30} delay={12} /></Place>;
     case "Joven Emprendedor del Año": { const b = B("full");
       return <Place b={b} center={false}><div style={{ width: "100%", paddingLeft: v ? 20 : 120 }}><AwardList color={C.gold} size={v ? 54 : 58} every={56} items={[
         ["JOVEN EMPRENDEDOR DEL AÑO", "Santo Domingo Este · 2025"], ["2.º LUGAR · I+D LAB", "INDOTEL"], ["FINALISTA", "PROMIPYME Emprende"], ["RECONOCIMIENTO", "Organización de los Estados Americanos"]]} /></div></Place>; }
     case "International Youth Award": return <Place b={B("A")}><Badge title="INTERNATIONAL YOUTH AWARD" sub="IINTAD · 2026" size={v ? 380 : 400} /></Place>;
     case "octava Cumbre": return <Place b={B("B")}><Kinetic text="FINALISTA" size={v ? 110 : 110} color={C.gold} />
         <Label text="VIII Cumbre Internacional por la Juventud y la Democracia" color={C.white} size={v ? 30 : 26} delay={10} /></Place>;
+    case "Dominicana en Asia": return map(["rd", "bogota", "saopaulo", "espana", "kenia", "osaka", "corea", "bangkok"], [[-100, -40], [145, 62]], C.gold, "4 CONTINENTES", true);
     case "En Asia": return map(["osaka", "corea", "bangkok"], [[92, 5], [142, 42]], C.gold, "ASIA");
     case "En Europa": return map(["espana", "reinounido"], [[-12, 34], [12, 58]], C.gold, "EUROPA");
     case "En África": return map(["kenia", "uganda"], [[24, -10], [44, 8]], C.blue, "PAPERS ACEPTADOS · OPEN DATA SUMMIT 2025");
@@ -87,7 +88,7 @@ export const Resource: React.FC<{ r: any; o: Orient }> = ({ r, o }) => {
         <Counter to={250} prefix="+" size={170} color={C.blue} frames={36} /><div><Kinetic text="JÓVENES" size={70} align="left" /><Label text="AI Safety Bootcamp" size={26} delay={14} /></div></div></Place>;
       return <><Place b={bL}><Bootcamp w={bL.w} /><Label text="AI Safety Bootcamp" size={24} delay={14} /></Place>
         <Place b={bR}><Counter to={250} prefix="+" size={170} color={C.blue} frames={36} /><Kinetic text="JÓVENES" size={74} delay={10} /></Place></>; }
-    case "Por eso quiero": return <Place b={B("full")}><Kinetic text="QUIERO GANAR ESTE PREMIO" size={v ? 96 : 104} /><Kinetic text="PARA IMPULSAR MI VOZ" size={v ? 70 : 74} color={C.gold} delay={30} /></Place>;
+    case "Por eso quiero": return <Place b={B("full")}><Kinetic text="QUIERO GANAR ESTE PREMIO" size={v ? 96 : 104} /><Kinetic text="PARA PREPARAR A LOS JÓVENES" size={v ? 70 : 74} color={C.gold} delay={30} /></Place>;
     case "inteligencia artificial, puedan": return <Place b={B("full")}><Kinetic text="FUTURO DEL TRABAJO" size={v ? 92 : 100} /><Kinetic text="IA SEGURA" size={v ? 130 : 140} color={C.blue} delay={10} /></Place>;
     case "Tecnología con propósito": return <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", gap: 24, padding: 60, paddingBottom: v ? 260 : 170 }}>
         <MapPanel w={v ? 980 : 1500} h={v ? 640 : 520} labels={false} pins={["rd", "bogota", "salvador", "saopaulo", "kenia", "uganda", "osaka", "corea", "bangkok", "espana", "reinounido"]}

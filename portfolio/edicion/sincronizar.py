@@ -6,12 +6,12 @@ y sitúa cada disparador de recursos.json. Si un disparador no aparece, lo avisa
 Salida: remotion/src/timeline.json  y  trabajo/disparadores.md
 Uso: python3 sincronizar.py
 """
-import difflib, json, re, subprocess, unicodedata
+import difflib, json, os, re, subprocess, unicodedata
 from pathlib import Path
 from faster_whisper import WhisperModel
 
 HERE = Path(__file__).parent
-HOLD = 1.0                     # respiro visual tras cada narración (la narración unida mantiene sus 0,4 s)
+HOLD = float(os.environ.get("HOLD", 1.0))                    # respiro visual tras cada narración (la narración unida mantiene sus 0,4 s)
 TITLE = 2.4                    # rótulo de capítulo (## …): pantalla propia, solo música
 LEAD = 1.5                     # pausa dramática inicial: música y «DE GUERRA» antes de la voz
 PRE, MIN_DUR = 0.2, 2.0        # el recurso entra 0,2 s antes y dura al menos 2 s

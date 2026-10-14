@@ -1,0 +1,230 @@
+[
+ {
+  "disparador": "De Guerra",
+  "tipo": "grafico",
+  "descripcion": "«DE GUERRA» → «A SER PREMIADO»",
+  "color": "blanco",
+  "capa": "A",
+  "desde_inicio": true
+ },
+ {
+  "disparador": "catorce premios Nobel",
+  "tipo": "grafico",
+  "descripcion": "14 medallas + «UNA INICIATIVA DE 14 PREMIOS NOBEL DE LA PAZ»",
+  "color": "dorado",
+  "capa": "B"
+ },
+ {
+  "disparador": "Yefry Núñez",
+  "tipo": "grafico",
+  "descripcion": "rótulo «YEFRY NÚÑEZ · DOMINICANO · 27 AÑOS»",
+  "color": "blanco"
+ },
+ {
+  "disparador": "Premio Nacional de la Juventud",
+  "tipo": "grafico",
+  "descripcion": "insignia «PREMIO NACIONAL DE LA JUVENTUD»",
+  "color": "dorado"
+ },
+ {
+  "disparador": "Todo empezó",
+  "tipo": "grafico",
+  "descripcion": "pregunta «¿Y SI LA IA VIGILARA EL DINERO PÚBLICO?»",
+  "color": "azul",
+  "capa": "full"
+ },
+ {
+  "disparador": "Contractor AI",
+  "tipo": "imagen",
+  "dibujo": "contractor",
+  "texto": "CONTRACTOR AI · IA CONTRA LA CORRUPCIÓN",
+  "color": "azul",
+  "capa": "full"
+ },
+ {
+  "disparador": "HackCorruption",
+  "tipo": "grafico",
+  "descripcion": "«GANADOR · HACKCORRUPTION 2024» + «PRIMER DOMINICANO» + mapa de Bogotá",
+  "color": "dorado",
+  "capa": "full"
+ },
+ {
+  "disparador": "la OEA preseleccionó",
+  "tipo": "grafico",
+  "descripcion": "contadores «15 experiencias · 12 países» · OEA, Desafío de Datos para la Democracia",
+  "color": "azul",
+  "capa": "full"
+ },
+ {
+  "disparador": "3R VideoGame",
+  "tipo": "imagen",
+  "dibujo": "vr",
+  "texto": "3R VIDEOGAME · REALIDAD VIRTUAL",
+  "color": "verde",
+  "capa": "A"
+ },
+ {
+  "disparador": "Climate Change and Innovation Hackathon",
+  "tipo": "grafico",
+  "descripcion": "insignia «GANADOR · Climate Change & Innovation Hackathon»",
+  "color": "verde",
+  "capa": "B"
+ },
+ {
+  "disparador": "Ready Recycling",
+  "tipo": "imagen",
+  "dibujo": "escuela",
+  "texto": "READY RECYCLING · RECICLAJE EN LAS ESCUELAS",
+  "color": "verde",
+  "capa": "A"
+ },
+ {
+  "disparador": "capital semilla",
+  "tipo": "grafico",
+  "descripcion": "«CAPITAL SEMILLA REGIONAL» para los dos proyectos",
+  "color": "dorado",
+  "capa": "B"
+ },
+ {
+  "disparador": "top 20 mundial",
+  "tipo": "grafico",
+  "descripcion": "«TOP 20 MUNDIAL» · ITU SDGs Digital GameChangers Awards",
+  "color": "verde",
+  "capa": "full"
+ },
+ {
+  "disparador": "Climathon",
+  "tipo": "grafico",
+  "descripcion": "insignia «3.er LUGAR · Climathon RD»",
+  "color": "verde",
+  "capa": "A"
+ },
+ {
+  "disparador": "dos veces",
+  "tipo": "grafico",
+  "descripcion": "insignia «2 VECES GANADOR · BCIE Transición Verde»",
+  "color": "verde",
+  "capa": "B"
+ },
+ {
+  "disparador": "Billion Acts Fellow",
+  "tipo": "grafico",
+  "descripcion": "globo + «BILLION ACTS FELLOW» · 14 premios Nobel de la Paz",
+  "color": "dorado",
+  "capa": "A"
+ },
+ {
+  "disparador": "cinco mil dólares",
+  "tipo": "grafico",
+  "descripcion": "contador «US$5.000» para Contractor AI",
+  "color": "dorado",
+  "capa": "B"
+ },
+ {
+  "disparador": "Joven Emprendedor del Año",
+  "tipo": "grafico",
+  "descripcion": "lista: Joven Emprendedor del Año · 2.º INDOTEL I+D Lab · Finalista PROMIPYME · Reconocimiento OEA",
+  "color": "dorado",
+  "capa": "full"
+ },
+ {
+  "disparador": "International Youth Award",
+  "tipo": "grafico",
+  "descripcion": "insignia «INTERNATIONAL YOUTH AWARD · IINTAD 2026»",
+  "color": "dorado",
+  "capa": "A"
+ },
+ {
+  "disparador": "octava Cumbre",
+  "tipo": "grafico",
+  "descripcion": "«FINALISTA · VIII Cumbre Internacional por la Juventud y la Democracia»",
+  "color": "dorado",
+  "capa": "B"
+ },
+ {
+  "disparador": "En Asia",
+  "tipo": "grafico",
+  "descripcion": "mapa de Asia: Osaka (Japón), Corea del Sur, Bangkok (Tailandia)",
+  "color": "dorado",
+  "capa": "full"
+ },
+ {
+  "disparador": "En Europa",
+  "tipo": "grafico",
+  "descripcion": "mapa de Europa: España, Reino Unido",
+  "color": "dorado",
+  "capa": "full"
+ },
+ {
+  "disparador": "En África",
+  "tipo": "grafico",
+  "descripcion": "mapa: «PAPERS ACEPTADOS · OPEN DATA SUMMIT 2025» en Kenia y Uganda",
+  "color": "azul",
+  "capa": "full"
+ },
+ {
+  "disparador": "en América",
+  "tipo": "grafico",
+  "descripcion": "mapa de América: RD → Bogotá y São Paulo",
+  "color": "dorado",
+  "capa": "full"
+ },
+ {
+  "disparador": "NeurIPS 2026",
+  "tipo": "imagen",
+  "dibujo": "papers",
+  "texto": "NEURIPS 2026 · REVISOR CIENTÍFICO",
+  "color": "azul",
+  "capa": "full"
+ },
+ {
+  "disparador": "estancias de investigación",
+  "tipo": "grafico",
+  "descripcion": "mapa «ESTANCIAS DE INVESTIGACIÓN»: El Salvador y São Paulo",
+  "color": "azul",
+  "capa": "full"
+ },
+ {
+  "disparador": "AI Safety Dominicana",
+  "tipo": "imagen",
+  "dibujo": "bootcamp",
+  "texto": "AI SAFETY DOMINICANA",
+  "color": "azul",
+  "capa": "full"
+ },
+ {
+  "disparador": "junio de 2026",
+  "tipo": "grafico",
+  "descripcion": "«JUNIO 2026» en el panel superior",
+  "color": "blanco",
+  "duracion": 3.4
+ },
+ {
+  "disparador": "250 jóvenes",
+  "tipo": "imagen",
+  "dibujo": "bootcamp",
+  "texto": "+250 JÓVENES",
+  "color": "azul"
+ },
+ {
+  "disparador": "Por eso quiero",
+  "tipo": "grafico",
+  "descripcion": "«QUIERO GANAR ESTE PREMIO» → «PARA IMPULSAR MI VOZ»",
+  "color": "blanco",
+  "capa": "full"
+ },
+ {
+  "disparador": "inteligencia artificial, puedan",
+  "tipo": "grafico",
+  "descripcion": "«FUTURO DEL TRABAJO · IA SEGURA»",
+  "color": "azul",
+  "capa": "full"
+ },
+ {
+  "disparador": "Tecnología con propósito",
+  "tipo": "grafico",
+  "descripcion": "mapa del mundo con todos los puntos + cierre",
+  "color": "blanco",
+  "capa": "full"
+ }
+]

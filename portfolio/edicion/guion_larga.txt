@@ -1,0 +1,28 @@
+# Versión larga. Un párrafo por escena. [N] narración · [C] tu toma a cámara (voz clonada) · ## rótulo de capítulo
+[N] De Guerra a ser premiado por una iniciativa de catorce premios Nobel de la Paz.
+[C] Mi nombre es Yefry Núñez, tengo 27 años y esta es mi postulación al Premio Nacional de la Juventud, en la categoría de superación y logros personales.
+## PROYECTOS
+[N] Todo empezó con una pregunta: ¿y si la inteligencia artificial pudiera vigilar cómo se gasta el dinero público? Así nació Contractor AI, una herramienta que analiza las contrataciones públicas y señala los contratos con riesgo de corrupción.
+[N] En 2024, Contractor AI ganó HackCorruption en Bogotá, Colombia. Fui el primer dominicano en ganar esta competencia.
+[N] En 2026, la OEA preseleccionó Contractor AI entre quince experiencias de doce países, en el Desafío de Datos para la Democracia.
+[N] El clima es mi otro frente. Con 3R VideoGame, un videojuego de realidad virtual que enseña a reducir, reutilizar y reciclar, gané el Climate Change and Innovation Hackathon en República Dominicana.
+[N] Con Ready Recycling llevamos el reciclaje a los centros educativos, para que los estudiantes limpien sus escuelas y le saquen provecho a los residuos. Los dos proyectos recibieron capital semilla regional.
+## RECONOCIMIENTOS
+[N] 3R VideoGame llegó al top 20 mundial de los ITU SDGs Digital GameChangers Awards, de la Unión Internacional de Telecomunicaciones.
+[N] Quedé en tercer lugar en Climathon República Dominicana, y gané dos veces la Iniciativa Dinámica de Transición Verde del BCIE.
+[N] En 2025 fui premiado como Billion Acts Fellow por una iniciativa de catorce premios Nobel de la Paz, con un apoyo de cinco mil dólares para Contractor AI.
+[N] Ese año fui Joven Emprendedor del Año en Santo Domingo Este, segundo lugar en el I+D Lab de INDOTEL y finalista de PROMIPYME Emprende. Y la Organización de los Estados Americanos reconoció mi trabajo en transparencia e innovación cívica.
+[N] En 2026 recibí el International Youth Award de IINTAD en Innovación y Emprendimiento Social, con mención especial a la Innovación Juvenil Destacada, y fui finalista de la octava Cumbre Internacional por la Juventud y la Democracia.
+## EL MUNDO
+[N] En Asia, participé en el Osaka Youth Summit, en Japón; en el hackathon de UNESCO y SEVENTEEN, en Corea del Sur; y fui finalista de Climate Startup en Bangkok, Tailandia.
+[N] En Europa, estuve en la Cumbre de la Alianza para el Gobierno Abierto, en España, y en Charity Entrepreneurship, en el Reino Unido.
+[N] En África, mis papers fueron aceptados en el Open Data Summit 2025, en Kenia y en Uganda.
+[N] Y en América, de Bogotá a São Paulo, donde participé en EAGx.
+## INVESTIGACIÓN
+[N] Hoy soy revisor científico de NeurIPS 2026, una de las conferencias de inteligencia artificial más importantes del mundo.
+[N] He hecho estancias de investigación en El Salvador y en São Paulo, Brasil.
+[N] Y en casa, impulso la comunidad AI Safety Dominicana, para que la inteligencia artificial en nuestro país sea segura, gobernada y responsable.
+## IMPACTO
+[C] En junio de 2026, mucho antes de que Jacob Coxon, Sam Altman y Dario Amodei encendieran las alarmas sobre las problemáticas de la IA, yo ya había desarrollado un evento con más de 250 jóvenes en la PUCMM de Santo Domingo.
+[N] Por eso quiero ganar este premio, para impulsar mi voz y preparar el futuro. Quiero seguir llevando mis investigaciones y mis trabajos para desarrollar un futuro en el que los jóvenes puedan afrontar y convivir con los nuevos avances de la inteligencia artificial, puedan obtener trabajo, emprender.
+[N] Tecnología con propósito. Impacto global desde República Dominicana.
