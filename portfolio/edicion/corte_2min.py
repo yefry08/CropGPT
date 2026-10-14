@@ -54,7 +54,7 @@ def segs():
         (("R", 98.25, 105.95), [("G", 43.6, 4.8, ""), ("R", 14.0, 0.75, ""), ("B", 7.5, 2.15, "z")],
          [(98.25, 101.9, "También fuimos invitados al Osaka Youth Summit, en Japón,"), (101.9, 105.95, "y a la Cumbre Synergy, en Corea del Sur.")],
          (4.8, 2.9, "ASIA", "OSAKA, JAPÓN · COREA DEL SUR")),
-        (("X2", 0.0, d2), [("E", 0.0, round(d2 * 0.45, 3), ""), ("E", 5.0, round(d2 - round(d2 * 0.45, 3), 3), "")],
+        (("X2", 0.0, d2), [("E", 5.0, round(d2 * 0.45, 3), ""), ("E", 0.0, 5.0, ""), ("B", 5.0, round(d2 - round(d2 * 0.45, 3) - 5.0, 3), "z")],
          [(0.0, d2 * 0.45, "Además, fui seleccionado como investigador en bioinformática en El Salvador"),
           (d2 * 0.45, d2 * 0.7, "y como revisor científico de NeurIPS 2026,"),
           (d2 * 0.7, d2, "una de las conferencias de inteligencia artificial más grandes del mundo.")], None),
@@ -126,7 +126,7 @@ def main():
         f.append(f"[{ix[src]}:a]atrim=start={a}:end={b},asetpts=PTS-STARTPTS,aformat=sample_rates=48000:channel_layouts=stereo{gain},"
                  f"afade=t=in:d=0.03,afade=t=out:st={b - a - 0.04:.3f}:d=0.04[x{k}]")
         al.append(f"[x{k}]")
-    f.append(f"{''.join(al)}concat=n={len(S)}:v=0:a=1,highpass=f=80,afftdn=nf=-30,loudnorm=I=-15.2:TP=-1.5:LRA=9[voz]")
+    f.append(f"{''.join(al)}concat=n={len(S)}:v=0:a=1,highpass=f=80,afftdn=nf=-30,loudnorm=I=-14.3:TP=-1.5:LRA=9[voz]")
     f.append("[ha][voz]concat=n=2:v=0:a=1[aout]")
     cmd = ["ffmpeg", "-v", "error", "-y"]
     for p in paths: cmd += ["-i", str(HERE / p)]
