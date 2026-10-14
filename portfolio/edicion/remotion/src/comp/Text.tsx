@@ -22,10 +22,10 @@ export const Label: React.FC<{ text: string; color?: string; size?: number; dela
     transform: `translateY(${(1 - s) * 14}px)` }}>{text}</div>;
 };
 // contador animado
-export const Counter: React.FC<{ to: number; prefix?: string; suffix?: string; size: number; color: string; delay?: number; frames?: number }> =
-  ({ to, prefix = "", suffix = "", size, color, delay = 0, frames = 36 }) => {
+export const Counter: React.FC<{ to: number; prefix?: string; suffix?: string; size: number; color: string; delay?: number; frames?: number; sep?: boolean }> =
+  ({ to, prefix = "", suffix = "", size, color, delay = 0, frames = 36, sep = false }) => {
   const f = useCurrentFrame();
   const p = Math.min(1, Math.max(0, (f - delay) / frames)), e = 1 - Math.pow(1 - p, 4);
   return <div style={{ fontFamily: FONT, fontWeight: 900, fontSize: size, color, lineHeight: .9, letterSpacing: -size * .03,
-    fontVariantNumeric: "tabular-nums", opacity: p > 0 ? 1 : 0 }}>{prefix}{Math.round(to * e)}{suffix}</div>;
+    fontVariantNumeric: "tabular-nums", opacity: p > 0 ? 1 : 0 }}>{prefix}{sep ? Math.round(to * e).toLocaleString("en-US") : Math.round(to * e)}{suffix}</div>;
 };

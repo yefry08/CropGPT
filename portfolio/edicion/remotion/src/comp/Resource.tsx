@@ -63,7 +63,7 @@ export const Resource: React.FC<{ r: any; o: Orient }> = ({ r, o }) => {
     case "Climathon": return <Place b={B("A")}><Badge title="3.er LUGAR" sub="Climathon República Dominicana" color={C.green} size={v ? 360 : 380} /></Place>;
     case "dos veces": return <Place b={B("B")}><Badge title="2× GANADOR" sub="BCIE · Transición Verde" color={C.green} size={v ? 360 : 380} /></Place>;
     case "Billion Acts Fellow": return <Place b={B("A")}><Globe size={v ? 460 : 420} color={C.gold} /><Kinetic text="BILLION ACTS FELLOW" size={v ? 70 : 64} color={C.gold} delay={8} /></Place>;
-    case "cinco mil dólares": return <Place b={B("B")}><Counter to={5000} prefix="US$" size={v ? 170 : 160} color={C.gold} frames={36} /><Label text="beca Billion Acts" color={C.white} size={30} delay={12} /></Place>;
+    case "cinco mil dólares": return <Place b={B("B")}><Counter to={5000} prefix="US$" sep size={v ? 170 : 160} color={C.gold} frames={36} /><Label text="beca Billion Acts" color={C.white} size={30} delay={12} /></Place>;
     case "Joven Emprendedor del Año": { const b = B("full");
       return <Place b={b} center={false}><div style={{ width: "100%", paddingLeft: v ? 20 : 120 }}><AwardList color={C.gold} size={v ? 54 : 58} every={56} items={[
         ["JOVEN EMPRENDEDOR DEL AÑO", "Santo Domingo Este · 2025"], ["2.º LUGAR · I+D LAB", "INDOTEL"], ["FINALISTA", "PROMIPYME Emprende"], ["RECONOCIMIENTO", "Organización de los Estados Americanos"]]} /></div></Place>; }
