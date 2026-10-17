@@ -6,7 +6,7 @@ from faster_whisper import WhisperModel
 HERE = Path(__file__).parent; OUT = HERE / "trabajo/swarovski"
 src = (HERE / "tts_swarovski.py").read_text()
 # reutiliza tok() y puntua() de tts_swarovski.py sin cargar el modelo de voz
-ns = {}; exec(src.split("model = ChatterboxMultilingualTTS")[0].replace("from chatterbox.mtl_tts import ChatterboxMultilingualTTS", ""), ns)
+ns = {"__file__": str(HERE / "tts_swarovski.py")}; exec(src.split("model = ChatterboxMultilingualTTS")[0].replace("from chatterbox.mtl_tts import ChatterboxMultilingualTTS", ""), ns)
 asr = WhisperModel("medium", device="cpu", compute_type="int8")
 for item in json.loads((HERE / "swarovski_guion.json").read_text()):
     pid = item["id"]; text = item.get("tts", item["say"])
