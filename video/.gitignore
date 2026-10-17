@@ -1,0 +1,5 @@
+node_modules/
+out/test-scene.mp4
+# Founder-recorded audio is not versioned.
+assets/narration.mp3
+assets/music.mp3

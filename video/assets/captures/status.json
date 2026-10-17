@@ -1,0 +1,8 @@
+{
+  "ok": false,
+  "url": "[INSERTAR URL PÚBLICA DE LA PLATAFORMA]",
+  "at": "2026-10-17T14:55:01.550Z",
+  "steps": {
+    "url": "PLATFORM_URL no es una URL ([INSERTAR URL PÚBLICA DE LA PLATAFORMA]). Defínela en config.ts."
+  }
+}

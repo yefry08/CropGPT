@@ -1,0 +1,87 @@
+1
+00:00:00,300 --> 00:00:03,100
+Public procurement data is open by law across Latin America.
+
+2
+00:00:03,167 --> 00:00:05,833
+But it is too technical for the people who need it most:
+
+3
+00:00:05,900 --> 00:00:09,533
+small businesses bidding on contracts, and citizens asking where their money goes.
+
+4
+00:00:10,300 --> 00:00:13,100
+Contractor AI reads government contracts
+
+5
+00:00:13,167 --> 00:00:16,500
+and flags prices far above similar past contracts.
+
+6
+00:00:16,567 --> 00:00:20,733
+Each alert shows the buyer, the category, and the contract detail,
+
+7
+00:00:20,800 --> 00:00:24,533
+and it is framed as 'warrants review', never as a verdict.
+
+8
+00:00:25,300 --> 00:00:32,100
+Search by country, buyer, or category.
+
+9
+00:00:32,167 --> 00:00:39,333
+Filter to the anomalies already detected.
+
+10
+00:00:39,400 --> 00:00:49,533
+Open any alert and see the evidence behind it, not just a score.
+
+11
+00:00:50,300 --> 00:00:53,767
+A multilingual language model reads each contract description
+
+12
+00:00:53,833 --> 00:00:56,067
+to find truly comparable purchases.
+
+13
+00:00:56,133 --> 00:00:59,067
+A separate statistical layer checks every country.
+
+14
+00:00:59,133 --> 00:01:01,933
+When both signals agree, the alert is stronger.
+
+15
+00:01:02,000 --> 00:01:04,533
+A person always makes the final decision.
+
+16
+00:01:05,300 --> 00:01:07,800
+8 countries with live data.
+
+17
+00:01:07,867 --> 00:01:10,067
+34,212 contracts ingested.
+
+18
+00:01:10,133 --> 00:01:12,167
+2,271 open anomalies.
+
+19
+00:01:12,233 --> 00:01:16,333
+3.55 million historical contracts used to validate the model.
+
+20
+00:01:16,400 --> 00:01:19,533
+Recognized by the Organization of American States.
+
+21
+00:01:20,300 --> 00:01:25,900
+Transparency should not depend on expensive tools or specialized knowledge.
+
+22
+00:01:25,967 --> 00:01:29,533
+I'm Yefry Núñez, and this is Contractor AI.

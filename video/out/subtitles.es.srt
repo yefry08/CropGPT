@@ -1,0 +1,87 @@
+1
+00:00:00,300 --> 00:00:03,100
+Los datos de compras públicas son abiertos por ley en toda América Latina.
+
+2
+00:00:03,167 --> 00:00:05,833
+Pero son demasiado técnicos para quienes más los necesitan:
+
+3
+00:00:05,900 --> 00:00:09,533
+pequeñas empresas que compiten por contratos y ciudadanos que preguntan a dónde va su dinero.
+
+4
+00:00:10,300 --> 00:00:13,100
+Contractor AI lee contratos gubernamentales
+
+5
+00:00:13,167 --> 00:00:16,500
+y señala precios muy por encima de contratos similares anteriores.
+
+6
+00:00:16,567 --> 00:00:20,733
+Cada alerta muestra el comprador, la categoría y el detalle del contrato,
+
+7
+00:00:20,800 --> 00:00:24,533
+y se presenta como «amerita revisión», nunca como un veredicto.
+
+8
+00:00:25,300 --> 00:00:32,100
+Busca por país, comprador o categoría.
+
+9
+00:00:32,167 --> 00:00:39,333
+Filtra las anomalías ya detectadas.
+
+10
+00:00:39,400 --> 00:00:49,533
+Abre cualquier alerta y ve la evidencia que la respalda, no solo una puntuación.
+
+11
+00:00:50,300 --> 00:00:53,767
+Un modelo de lenguaje multilingüe lee la descripción de cada contrato
+
+12
+00:00:53,833 --> 00:00:56,067
+para encontrar compras realmente comparables.
+
+13
+00:00:56,133 --> 00:00:59,067
+Una capa estadística independiente revisa cada país.
+
+14
+00:00:59,133 --> 00:01:01,933
+Cuando ambas señales coinciden, la alerta es más sólida.
+
+15
+00:01:02,000 --> 00:01:04,533
+Una persona siempre toma la decisión final.
+
+16
+00:01:05,300 --> 00:01:07,800
+8 países con datos en vivo.
+
+17
+00:01:07,867 --> 00:01:10,067
+34,212 contratos ingeridos.
+
+18
+00:01:10,133 --> 00:01:12,167
+2,271 anomalías abiertas.
+
+19
+00:01:12,233 --> 00:01:16,333
+3.55 millones de contratos históricos usados para validar el modelo.
+
+20
+00:01:16,400 --> 00:01:19,533
+Reconocido por la Organización de los Estados Americanos.
+
+21
+00:01:20,300 --> 00:01:25,900
+La transparencia no debería depender de herramientas costosas ni de conocimiento especializado.
+
+22
+00:01:25,967 --> 00:01:29,533
+Soy Yefry Núñez, y esto es Contractor AI.
