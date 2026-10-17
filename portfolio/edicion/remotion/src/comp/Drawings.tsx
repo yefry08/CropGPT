@@ -9,7 +9,7 @@ const Frame: React.FC<{ w: number; children: React.ReactNode }> = ({ w, children
 };
 
 // Contractor AI: portátil revisando contratos públicos, señala los sospechosos
-export const Contractor: React.FC<{ w: number }> = ({ w }) => {
+export const Contractor: React.FC<{ w: number; flagText?: string }> = ({ w, flagText = "RIESGO" }) => {
   const f = useCurrentFrame();
   const scan = (f * 2.2) % 220;
   return <Frame w={w}><svg viewBox="0 0 400 300" width={w}>
@@ -21,7 +21,7 @@ export const Contractor: React.FC<{ w: number }> = ({ w }) => {
         <rect width={74} height={96} rx={6} fill="#F4F1EA" />
         {[0, 1, 2, 3, 4, 5].map(j => <rect key={j} x={10} y={14 + j * 12} width={j === 5 ? 30 : 54} height={5} rx={2} fill="#BFB8A6" />)}
         {flag && <rect x={-4} y={-4} width={82} height={104} rx={8} fill="none" stroke={C.red} strokeWidth={4} />}
-        {flag && <text x={37} y={-12} textAnchor="middle" fontSize={14} fontWeight={800} fill={C.red} fontFamily="Inter">RIESGO</text>}
+        {flag && <text x={37} y={-12} textAnchor="middle" fontSize={14} fontWeight={800} fill={C.red} fontFamily="Inter">{flagText}</text>}
       </g>;
     })}
     <rect x={64} y={44 + scan * .55} width={272} height={4} fill={C.blue} opacity={.75} />
@@ -30,7 +30,7 @@ export const Contractor: React.FC<{ w: number }> = ({ w }) => {
 };
 
 // 3R VideoGame: visor de realidad virtual con flechas de reciclaje
-export const VR: React.FC<{ w: number }> = ({ w }) => {
+export const VR: React.FC<{ w: number; label?: string }> = ({ w, label = "REDUCIR · REUTILIZAR · RECICLAR" }) => {
   const f = useCurrentFrame();
   return <Frame w={w}><svg viewBox="0 0 400 300" width={w} style={{ overflow: "visible" }}>
     <g transform={`rotate(${f * 1.2} 200 150)`}>{[0, 1, 2].map(i => <g key={i} transform={`rotate(${i * 120} 200 150)`}>
@@ -40,7 +40,7 @@ export const VR: React.FC<{ w: number }> = ({ w }) => {
     <rect x={128} y={166} width={66} height={54} rx={16} fill={C.green} opacity={.35} />
     <rect x={206} y={166} width={66} height={54} rx={16} fill={C.green} opacity={.35} />
     <path d="M110 190 q-40 0 -40 -30 M290 190 q40 0 40 -30" stroke="#1B2333" strokeWidth={10} fill="none" strokeLinecap="round" />
-    <text x={200} y={285} textAnchor="middle" fontSize={17} fontWeight={800} fill={C.green} fontFamily="Inter" letterSpacing={2}>REDUCIR · REUTILIZAR · RECICLAR</text>
+    <text x={200} y={285} textAnchor="middle" fontSize={17} fontWeight={800} fill={C.green} fontFamily="Inter" letterSpacing={2}>{label}</text>
   </svg></Frame>;
 };
 
@@ -92,9 +92,9 @@ export const Medals: React.FC<{ w: number }> = ({ w }) => {
 };
 
 // Ready Recycling: una escuela con tres contenedores de reciclaje que se van llenando
-export const School: React.FC<{ w: number }> = ({ w }) => {
+export const School: React.FC<{ w: number; en?: boolean }> = ({ w, en = false }) => {
   const f = useCurrentFrame();
-  const bins = [["#2E8BFF", "PAPEL"], ["#E8B53A", "PLÁSTICO"], ["#2FBF71", "VIDRIO"]];
+  const bins = en ? [["#2E8BFF", "PAPER"], ["#E8B53A", "PLASTIC"], ["#2FBF71", "GLASS"]] : [["#2E8BFF", "PAPEL"], ["#E8B53A", "PLÁSTICO"], ["#2FBF71", "VIDRIO"]];
   return <Frame w={w}><svg viewBox="0 0 400 300" width={w}>
     <path d="M70 120 L200 50 L330 120 Z" fill="#1B2333" stroke={C.green} strokeWidth={4} />
     <rect x={90} y={120} width={220} height={100} fill="#1B2333" stroke={C.green} strokeWidth={4} />
