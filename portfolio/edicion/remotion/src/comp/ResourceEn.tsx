@@ -20,7 +20,7 @@ const Place: React.FC<{ b: Box; children: React.ReactNode }> = ({ b, children })
 export const ResourceEn: React.FC<{ r: any }> = ({ r }) => {
   const { out } = useInOut(0, 10);
   switch (r.disparador as string) {
-    case "name": return <div style={{ position: "absolute", left: 860, top: 700, opacity: out }}>
+    case "name": return <div style={{ position: "absolute", left: 1200, top: 700, opacity: out }}>
         <div style={{ background: C.white, padding: "12px 26px", display: "inline-block" }}><Kinetic text="YEFRY NÚÑEZ" size={64} color={C.bg} align="left" /></div><br />
         <div style={{ background: C.blue, color: C.white, fontFamily: FONT, fontWeight: 700, fontSize: 30, padding: "8px 26px", letterSpacing: 6, display: "inline-block" }}>DOMINICAN REPUBLIC · 27</div></div>;
     case "town": return <Place b={S.R}><Kinetic text="FROM SAN ANTONIO DE GUERRA" size={64} /><Label text="Software & AI developer" color={C.gold} size={32} delay={12} /></Place>;

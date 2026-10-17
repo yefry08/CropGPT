@@ -21,7 +21,7 @@ def puntua(asr, wav, text):
 model = ChatterboxMultilingualTTS.from_pretrained(device="cpu")
 asr = WhisperModel("medium", device="cpu", compute_type="int8")
 for item in GUION:
-    pid, text = item["id"], item["say"]
+    pid, text = item["id"], item.get("tts", item["say"])
     if (OUT / f"{pid}.wav").exists() and "--force" not in sys.argv: continue
     best = None
     for seed in (7, 11, 23):

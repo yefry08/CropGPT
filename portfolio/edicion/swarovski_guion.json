@@ -1,13 +1,51 @@
 [
- {"id": "S01", "say": "Hi, I'm Yefry Núñez, a twenty-seven-year-old software and AI developer from San Antonio de Guerra, a small town in the Dominican Republic."},
- {"id": "S02", "say": "I use technology to solve real-world problems: climate action, transparency, and education."},
- {"id": "S03", "say": "The project I'm applying with is 3R VideoGame, a virtual reality game that teaches children about climate change, and how to mitigate it."},
- {"id": "S04", "say": "Instead of only reading about the planet, children step inside it, and learn to reduce, reuse and recycle."},
- {"id": "S05", "say": "The International Telecommunication Union, the United Nations agency for digital technologies, named 3R one of the top twenty digital transformation initiatives in the world."},
- {"id": "S06", "say": "It also won the Climate Change and Innovation Hackathon, and regional seed funding."},
- {"id": "S07", "say": "I also created Contractor AI, which uses artificial intelligence to flag unusual prices in public contracts."},
- {"id": "S08", "say": "With it, I became the first Dominican to win HackCorruption, it was recognized by the Organization of American States, and it made me a Billion Acts Fellow, an initiative of fourteen Nobel Peace Prize laureates."},
- {"id": "S09", "say": "My ambition is to bring 3R to classrooms across the Dominican Republic and Latin America, to the children who will live with the consequences of climate change."},
- {"id": "S10", "say": "With the support of the Swarovski Foundation, I want to take 3R from an award-winning project to a tool that every school can use."},
- {"id": "S11", "say": "Because creativity and technology can make sustainability something every child can experience, not just read about. Thank you."}
+ {
+  "id": "S01",
+  "say": "Hi, I'm Yefry Núñez, a twenty-seven-year-old software and AI developer from San Antonio de Guerra, a small town in the Dominican Republic.",
+  "tts": "Hi, I'm Yefry Núñez, a twenty-seven-year-old software and A.I. developer from San Antonio de Guerra, a small town in the Dominican Republic."
+ },
+ {
+  "id": "S02",
+  "say": "I use technology to solve real-world problems: climate action, transparency, and education."
+ },
+ {
+  "id": "S03",
+  "say": "The project I'm applying with is 3R VideoGame, a virtual reality game that teaches children about climate change, and how to mitigate it.",
+  "tts": "The project I'm applying with is Three R Video Game, a virtual reality game that teaches children about climate change, and how to mitigate it."
+ },
+ {
+  "id": "S04",
+  "say": "Instead of only reading about the planet, children step inside it, and learn to reduce, reuse and recycle."
+ },
+ {
+  "id": "S05",
+  "say": "The International Telecommunication Union, the United Nations agency for digital technologies, named 3R one of the top twenty digital transformation initiatives in the world.",
+  "tts": "The International Telecommunication Union, the United Nations agency for digital technologies, named Three R, one of the top twenty digital transformation initiatives in the world."
+ },
+ {
+  "id": "S06",
+  "say": "It also won the Climate Change and Innovation Hackathon, and regional seed funding."
+ },
+ {
+  "id": "S07",
+  "say": "I also created Contractor AI, which uses artificial intelligence to flag unusual prices in public contracts."
+ },
+ {
+  "id": "S08",
+  "say": "With it, I became the first Dominican to win HackCorruption, it was recognized by the Organization of American States, and it made me a Billion Acts Fellow, an initiative of fourteen Nobel Peace Prize laureates."
+ },
+ {
+  "id": "S09",
+  "say": "My ambition is to bring 3R to classrooms across the Dominican Republic and Latin America, to the children who will live with the consequences of climate change.",
+  "tts": "My ambition is to bring Three R to classrooms across the Dominican Republic and Latin America, to the children who will live with the consequences of climate change."
+ },
+ {
+  "id": "S10",
+  "say": "With the support of the Swarovski Foundation, I want to take 3R from an award-winning project to a tool that every school can use.",
+  "tts": "With the support of the Swarovski Foundation, I want to take Three R from an award-winning project to a tool that every school can use."
+ },
+ {
+  "id": "S11",
+  "say": "Because creativity and technology can make sustainability something every child can experience, not just read about. Thank you."
+ }
 ]

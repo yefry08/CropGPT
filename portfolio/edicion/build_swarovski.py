@@ -17,7 +17,7 @@ LEAD, GAP, TAIL = 0.5, 0.45, 3.0
 
 # planos recurso de referencia.mp4 (desde, dur) — revisados a 4 fps: sin la camisa negra hablando a cámara
 POOL = {
-    "S01": [(0.0, 6.0), (9.5, 1.25), (12.0, 0.75), (14.0, 0.75)],   # ceremonia, fotos de premios
+    "S01": [(0.0, 6.0, [0, 314, 478, 332]), (9.5, 1.25), (12.0, 0.75), (14.0, 0.75)],   # ceremonia, fotos de premios
     "S04": [(26.3, 2.7), (115.2, 1.7)],                              # Ready Recycling en la escuela, ideatón
     "S06": [(119.0, 3.5), (116.9, 1.7)],                             # cheque RD+ Innovation, ideatón
     "S07": [(37.4, 1.8), (39.6, 3.0)],                               # pantalla Contractor AI, tabla de contratos
@@ -47,9 +47,9 @@ def words_for(wav, text, t0):
 def broll(start, length, pool):
     """Planos del pool hasta llenar la frase; si no alcanzan, el resto queda en fondo de narración."""
     clips, left = [], length
-    for a, d in pool:
+    for a, d, *crop in pool:
         if left <= 0.05: break
-        take = min(d, left); clips.append([a, round(take, 3)]); left -= take
+        take = min(d, left); clips.append([a, round(take, 3), *crop]); left -= take
     return {"kind": "B", "src": "referencia.mp4", "start": round(start, 3), "dur": round(length - max(0, left), 3), "clips": clips}
 
 def main():
