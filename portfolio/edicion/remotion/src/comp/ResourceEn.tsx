@@ -35,6 +35,9 @@ const Panel: React.FC<{ r: any }> = ({ r }) => {
         <Label text="Flags unusual prices in public contracts" color={C.white} size={24} delay={14} /></Place>;
     case "ambition": return <Place b={P}><MapPanel w={760} h={560} labels={false} pins={["rd", "bogota", "salvador", "saopaulo"]} bbox={[[-95, -30], [-32, 25]]} color={C.green} arcs />
         <Kinetic text="CLASSROOMS ACROSS LATIN AMERICA" size={54} color={C.green} delay={10} /></Place>;
+    case "compassion": return <Place b={P}><Label text="Dalai Lama Fellows" color={C.dim} size={30} />
+        <Kinetic text="ETHICAL LEADERSHIP" size={84} delay={6} /><Kinetic text="WITH COMPASSION" size={84} color={C.gold} delay={30} />
+        <Label text="Closer to the communities it serves" color={C.white} size={26} delay={60} /></Place>;
     case "everyschool": return <Place b={P}><School w={560} en /><Label text="From award-winning project" color={C.dim} size={28} delay={8} />
         <Kinetic text="TO A TOOL EVERY SCHOOL CAN USE" size={66} color={C.green} delay={16} /></Place>;
   }
@@ -71,7 +74,17 @@ export const ResourceEn: React.FC<{ r: any }> = ({ r }) => {
         <Place b={S.B}><Label text="From award-winning project" color={C.dim} size={34} /><Kinetic text="TO A TOOL EVERY SCHOOL CAN USE" size={86} color={C.green} delay={14} /></Place></AbsoluteFill>;
     case "close": return <Place b={S.full}><Kinetic text="CREATIVITY + TECHNOLOGY" size={110} />
         <Kinetic text="SUSTAINABILITY EVERY CHILD CAN EXPERIENCE" size={60} color={C.green} delay={24} /></Place>;
-    case "endcard": return <Place b={S.full}><Kinetic text="YEFRY NÚÑEZ" size={150} /><Label text="3R VideoGame · Dominican Republic" color={C.green} size={40} delay={10} /></Place>;
+    case "endcard": return <Place b={S.full}><Kinetic text="YEFRY NÚÑEZ" size={150} /><Label text={r.sub} color={C.green} size={40} delay={10} /></Place>;
+    case "opendata": return <Place b={S.full}><Label text="Public procurement data" color={C.dim} size={34} />
+        <Kinetic text="OPEN BY LAW" size={140} color={C.blue} delay={6} /><Kinetic text="BUT TOO TECHNICAL" size={96} color={C.gold} delay={60} />
+        <Label text="for small businesses and citizens" color={C.white} size={32} delay={80} /></Place>;
+    case "ethics": return <Place b={S.full}><Label text="An ethical choice" color={C.dim} size={34} />
+        <div style={{ display: "flex", gap: 60, alignItems: "center", marginTop: 20 }}>
+          <div style={{ padding: "22px 44px", borderRadius: 999, border: `3px solid ${C.gold}`, background: `${C.gold}22` }}><Kinetic text="WARRANTS REVIEW" size={70} color={C.gold} delay={20} /></div>
+          <div style={{ textDecoration: "line-through", textDecorationColor: C.red, textDecorationThickness: 6 }}><Kinetic text="VERDICT" size={70} color={C.dim} delay={40} /></div></div>
+        <div style={{ marginTop: 50 }}><Kinetic text="A PERSON ALWAYS MAKES THE FINAL DECISION" size={64} delay={110} /></div></Place>;
+    case "close_dl": return <Place b={S.full}><Kinetic text="TRANSPARENCY" size={140} color={C.blue} />
+        <Kinetic text="SHOULD NOT DEPEND ON EXPENSIVE TOOLS" size={58} delay={20} /><Kinetic text="OR SPECIALIZED KNOWLEDGE" size={58} color={C.gold} delay={50} /></Place>;
   }
   return null;
 };

@@ -1,0 +1,66 @@
+[
+ {
+  "id": "D01",
+  "say": "Hi, I'm Yefry Núñez, a twenty-seven-year-old software and AI developer from San Antonio de Guerra, a small town in the Dominican Republic.",
+  "reuse": "trabajo/swarovski/S01.wav",
+  "visual": "cam",
+  "res": "name"
+ },
+ {
+  "id": "D02",
+  "say": "Across Latin America, public procurement data is open by law. But it is too technical for the people who need it most: small businesses, and citizens asking where their money goes.",
+  "visual": "full",
+  "res": "opendata"
+ },
+ {
+  "id": "D03",
+  "say": "That is why I created Contractor AI. It reads government contracts and flags prices far above similar past contracts.",
+  "tts": "That is why I created Contractor A I. It reads government contracts and flags prices far above similar past contracts.",
+  "visual": "broll",
+  "clips": [
+   [
+    37.4,
+    1.8
+   ],
+   [
+    39.6,
+    3.0
+   ]
+  ],
+  "res": "contractor"
+ },
+ {
+  "id": "D04",
+  "say": "For me, building technology is also an ethical choice. Every alert is framed as 'warrants review', never as a verdict, and a person always makes the final decision.",
+  "visual": "full",
+  "res": "ethics"
+ },
+ {
+  "id": "D05",
+  "say": "With this work, I became the first Dominican to win HackCorruption, and it was recognized by the Organization of American States.",
+  "visual": "full",
+  "res": [
+   [
+    "hackcorruption",
+    null
+   ],
+   [
+    "oas",
+    "it$"
+   ]
+  ]
+ },
+ {
+  "id": "D06",
+  "say": "As a Dalai Lama Fellow, I want to learn contemplative practices that help me lead with compassion, and bring this work closer to the communities it is meant to serve.",
+  "visual": "cam",
+  "res": "compassion"
+ },
+ {
+  "id": "D07",
+  "say": "Because transparency should not depend on expensive tools or specialized knowledge. Thank you.",
+  "visual": "full",
+  "res": "close_dl",
+  "endcard": "Contractor AI · Dominican Republic"
+ }
+]

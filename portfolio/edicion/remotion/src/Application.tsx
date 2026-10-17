@@ -1,16 +1,14 @@
 import React from "react";
 import { AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { C, FONT } from "./theme";
-import tl from "./timeline_sw.json";
 import { NarrationBg } from "./comp/Scenes";
 import { ClipScene } from "./comp/Broll";
 import { ResourceEn } from "./comp/ResourceEn";
-// Video de postulación a la Swarovski Foundation (inglés, horizontal). Narración continua (sw_narracion.wav),
-// escenas visuales con tiempos absolutos y subtítulos por palabra (Whisper).
-const T = tl as any;
-const KEY = /^(3r|videogame|contractor|ai|hackcorruption|itu|oas|swarovski|billion|acts|nobel|twenty|fourteen|climate|yefry|núñez)$/i;
+// Videos de postulación en inglés (horizontal), uno por timeline_<nombre>.json que escribe build_application.py.
+// Narración continua, escenas visuales con tiempos absolutos y subtítulos por palabra (Whisper).
+const KEY = /^(3r|videogame|contractor|ai|hackcorruption|itu|oas|swarovski|billion|acts|nobel|twenty|fourteen|climate|yefry|núñez|dalai|lama|compassion|transparency)$/i;
 
-const Subs: React.FC = () => {
+const Subs: React.FC<{ T: any }> = ({ T }) => {
   const t = useCurrentFrame() / useVideoConfig().fps;
   const ws: any[] = T.words;
   const chunks: any[][] = []; let cur: any[] = [];
@@ -25,14 +23,14 @@ const Subs: React.FC = () => {
   </div>;
 };
 
-export const Swarovski: React.FC<{ subs?: boolean }> = ({ subs = true }) => {
+export const Application: React.FC<{ tl: any; subs?: boolean }> = ({ tl: T, subs = true }) => {
   const { fps } = useVideoConfig(); const fr = (s: number) => Math.round(s * fps);
   return <AbsoluteFill style={{ background: C.bg, fontFamily: FONT }}>
     {T.scenes.map((sc: any, i: number) => <Sequence key={i} from={fr(sc.start)} durationInFrames={Math.max(1, fr(sc.dur))}>
       {sc.kind === "V" ? <ClipScene clips={sc.clips} layout={sc.layout} /> : <NarrationBg o="h" />}</Sequence>)}
     {T.resources.map((r: any, i: number) => <Sequence key={"r" + i} from={fr(r.s)} durationInFrames={Math.max(1, fr(r.e - r.s))}>
       <ResourceEn r={r} /></Sequence>)}
-    {subs && <Subs />}
+    {subs && <Subs T={T} />}
     {T.audio && <Audio src={staticFile(T.audio)} />}
     {T.music && <Audio src={staticFile(T.music)} volume={0.07} loop />}
   </AbsoluteFill>;

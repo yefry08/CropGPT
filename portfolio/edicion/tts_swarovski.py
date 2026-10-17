@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-"""English narration with your cloned voice for the Swarovski Foundation application video
-(best of up to 3 seeds by Whisper). Usage: /root/.venv-tts/bin/python tts_swarovski.py"""
-import difflib, json, re, subprocess, sys
+"""English narration with your cloned voice for the application videos (best of up to 3 seeds by Whisper).
+Usage: /root/.venv-tts/bin/python tts_swarovski.py [swarovski|dalailama]"""
+import difflib, json, re, shutil, subprocess, sys
 from pathlib import Path
 HERE = Path(__file__).parent
 import torch, torchaudio as ta
 from chatterbox.mtl_tts import ChatterboxMultilingualTTS
 from faster_whisper import WhisperModel
 
-GUION = json.loads((HERE / "swarovski_guion.json").read_text())
-OUT = HERE / "trabajo/swarovski"; OUT.mkdir(parents=True, exist_ok=True)
+NAME = next((a for a in sys.argv[1:] if not a.startswith("-")), "swarovski")
+GUION = json.loads((HERE / f"{NAME}_guion.json").read_text())
+OUT = HERE / f"trabajo/{NAME}"; OUT.mkdir(parents=True, exist_ok=True)
 def tok(t):
     t = t.lower().replace("3r", "three r").replace("a.i.", "ai").replace("a. i.", "ai")
     return re.sub(r"[^a-z0-9 ]", " ", t).split()
@@ -25,6 +26,7 @@ asr = WhisperModel("medium", device="cpu", compute_type="int8")
 for item in GUION:
     pid, text = item["id"], item.get("tts", item["say"])
     if (OUT / f"{pid}.wav").exists() and "--force" not in sys.argv: continue
+    if "reuse" in item: shutil.copy(HERE / item["reuse"], OUT / f"{pid}.wav"); continue
     best = None
     for seed in (7, 11, 23):
         torch.manual_seed(seed)
