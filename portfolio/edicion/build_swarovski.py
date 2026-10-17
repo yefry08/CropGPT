@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Arma el video de postulación a la Swarovski Foundation (inglés, 1920x1080) a partir de:
 - trabajo/swarovski/S01..S11.wav (tu voz clonada, tts_swarovski.py)
-- entrada/referencia.mp4 (solo planos recurso en los que no hablas a cámara)
+- entrada/crudo.mp4 y entrada/clips/2_210303.mp4 (tus tomas en el parque y frente a la fuente)
 Escribe remotion/src/timeline_sw.json, copia los medios a remotion/public y renderiza.
 Uso: python3 build_swarovski.py   →  salida/swarovski_application.mp4
 """
@@ -15,13 +15,11 @@ OUT = HERE / "salida/swarovski_application.mp4"
 GUION = json.loads((HERE / "swarovski_guion.json").read_text())
 LEAD, GAP, TAIL = 0.5, 0.45, 3.0
 
-# planos recurso de referencia.mp4 (desde, dur) — revisados a 4 fps: sin la camisa negra hablando a cámara
-POOL = {
-    "S01": [(0.0, 6.0, [0, 314, 478, 332]), (9.5, 1.25), (12.0, 0.75), (14.0, 0.75)],   # ceremonia, fotos de premios
-    "S04": [(26.3, 2.7), (115.2, 1.7)],                              # Ready Recycling en la escuela, ideatón
-    "S06": [(119.0, 3.5), (116.9, 1.7)],                             # cheque RD+ Innovation, ideatón
-    "S07": [(37.4, 1.8), (39.6, 3.0)],                               # pantalla Contractor AI, tabla de contratos
-}
+# Tomas de cámara (suéter rosado), en orden: parque y luego la fuente. Revisadas segundo a segundo; se saltan
+# los momentos en que sales de cuadro (crudo 8–9.5 s, 66.8–68 s) y el final de la toma 2 (te tapas la cara).
+CAM = [("crudo.mp4", 0.0, 8.0), ("crudo.mp4", 9.5, 57.3), ("crudo.mp4", 68.0, 12.5), ("toma2.mp4", 0.5, 40.0)]
+# frases con tu toma a la izquierda y el rótulo a la derecha; el resto, rótulos a pantalla completa
+CON_CAMARA = {"S01", "S03", "S04", "S06", "S07", "S09", "S10"}
 RES = {"S01": "name", "S02": "pillars", "S03": "3r", "S04": "rrr", "S05": "itu", "S06": "hackathon",
        "S07": "contractor", "S09": "ambition", "S10": "everyschool", "S11": "close"}
 
@@ -44,17 +42,23 @@ def words_for(wav, text, t0):
         out.append({"w": s, "s": round(t0 + ws, 3), "e": round(t0 + a + (b - a) * acc / tot, 3)})
     return out
 
-def broll(start, length, pool):
-    """Planos del pool hasta llenar la frase; si no alcanzan, el resto queda en fondo de narración."""
-    clips, left = [], length
-    for a, d, *crop in pool:
-        if left <= 0.05: break
-        take = min(d, left); clips.append([a, round(take, 3), *crop]); left -= take
-    return {"kind": "B", "src": "referencia.mp4", "start": round(start, 3), "dur": round(length - max(0, left), 3), "clips": clips}
+class Camara:
+    """Reparte las tomas de cámara entre las frases, sin repetir, en orden."""
+    def __init__(self): self.i, self.pos = 0, CAM[0][1]
+    def take(self, length):
+        clips, left = [], length
+        while left > 0.05 and self.i < len(CAM):
+            src, a, d = CAM[self.i]; avail = a + d - self.pos
+            t = min(avail, left); clips.append({"src": src, "from": round(self.pos, 3), "dur": round(t, 3)})
+            left -= t; self.pos += t
+            if self.pos >= a + d - 0.05:
+                self.i += 1; self.pos = CAM[self.i][1] if self.i < len(CAM) else 0
+        if left > 0.05: raise SystemExit(f"faltan {left:.1f} s de toma de cámara")
+        return clips
 
 def main():
     PUB.mkdir(exist_ok=True)
-    for src, dst in [(HERE / "entrada/referencia.mp4", "referencia.mp4")]:
+    for src, dst in [(HERE / "entrada/crudo.mp4", "crudo.mp4"), (HERE / "entrada/clips/2_210303.mp4", "toma2.mp4")]:
         if not (PUB / dst).exists(): shutil.copy(src, PUB / dst)
     # narración continua con silencios entre frases
     t, times, parts = LEAD, {}, []
@@ -70,15 +74,14 @@ def main():
     subprocess.run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(filt), "-map", "[out]", "-ar", "48000",
                     str(PUB / "sw_narracion.wav")], check=True)
     # escenas visuales y rótulos
-    words, scenes, res = [], [], []
+    words, scenes, res, cam = [], [], [], Camara()
     for g in GUION:
         a, b = times[g["id"]]; ws = words_for(W / f"{g['id']}.wav", g["say"], a); words += ws
         # cada escena dura hasta el inicio de la siguiente frase (o el final)
         nxt = next((times[h["id"]][0] for h in GUION[GUION.index(g) + 1:]), total)
         s0 = 0.0 if g is GUION[0] else a - GAP / 2; s1 = nxt - GAP / 2 if nxt != total else total
-        if g["id"] in POOL:
-            sc = broll(s0, s1 - s0, POOL[g["id"]]); scenes.append(sc)
-            if sc["dur"] < s1 - s0 - .05: scenes.append({"kind": "N", "start": round(s0 + sc["dur"], 3), "dur": round(s1 - s0 - sc["dur"], 3)})
+        if g["id"] in CON_CAMARA:
+            scenes.append({"kind": "V", "layout": "square", "start": round(s0, 3), "dur": round(s1 - s0, 3), "clips": cam.take(s1 - s0)})
         elif g["id"] == "S08":
             # HackCorruption → OEA → Billion Acts, cortado por palabras
             find = lambda pat: next(w for w in ws if re.match(pat, w["w"], re.I))
@@ -95,7 +98,7 @@ def main():
             res += [{"disparador": "close", "s": round(s0, 3), "e": round(narr_end + .3, 3)},
                     {"disparador": "endcard", "s": round(narr_end + .3, 3), "e": total}]
         else:
-            res.append({"disparador": RES[g["id"]], "s": round(s0 + .15, 3), "e": round(s1, 3)})
+            res.append({"disparador": RES[g["id"]], "s": round(s0 + .15, 3), "e": round(s1, 3), "panel": g["id"] in CON_CAMARA})
     tl = {"total": total, "audio": "sw_narracion.wav", "music": None, "scenes": scenes, "resources": res, "words": words}
     if (HERE / "trabajo/musica.wav").exists():
         shutil.copy(HERE / "trabajo/musica.wav", PUB / "sw_musica.wav"); tl["music"] = "sw_musica.wav"

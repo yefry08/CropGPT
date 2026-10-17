@@ -28,7 +28,8 @@
  },
  {
   "id": "S07",
-  "say": "I also created Contractor AI, which uses artificial intelligence to flag unusual prices in public contracts."
+  "say": "I also created Contractor AI, which uses artificial intelligence to flag unusual prices in public contracts.",
+  "tts": "I also created Contractor A.I., which uses artificial intelligence to flag unusual prices in public contracts."
  },
  {
   "id": "S08",

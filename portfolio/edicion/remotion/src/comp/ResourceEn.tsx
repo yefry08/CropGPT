@@ -9,6 +9,8 @@ import { MapPanel, Globe } from "./MapPanel";
 // Rótulos en inglés para el video de la Swarovski Foundation (horizontal).
 // Con plano recurso a la izquierda, los rótulos van en el panel derecho ("R").
 type Box = { left: number; top: number; w: number; h: number };
+// Panel derecho junto a la toma cuadrada del parque / la fuente.
+const P: Box = { left: 1110, top: 40, w: 780, h: 860 };
 const S: Record<string, Box> = {
   R: { left: 820, top: 120, w: 1000, h: 720 }, full: { left: 210, top: 90, w: 1500, h: 760 },
   A: { left: 140, top: 130, w: 780, h: 680 }, B: { left: 1000, top: 130, w: 780, h: 680 },
@@ -17,8 +19,31 @@ const Place: React.FC<{ b: Box; children: React.ReactNode }> = ({ b, children })
   <div style={{ position: "absolute", left: b.left, top: b.top, width: b.w, height: b.h, display: "flex", flexDirection: "column",
     alignItems: "center", justifyContent: "center", gap: 18 }}>{children}</div>;
 
+const Panel: React.FC<{ r: any }> = ({ r }) => {
+  const { out } = useInOut(0, 10);
+  switch (r.disparador as string) {
+    case "name": return <div style={{ position: "absolute", left: P.left + 10, top: 640, opacity: out }}>
+        <div style={{ background: C.white, padding: "12px 24px", display: "inline-block" }}><Kinetic text="YEFRY NÚÑEZ" size={62} color={C.bg} align="left" /></div><br />
+        <div style={{ background: C.blue, color: C.white, fontFamily: FONT, fontWeight: 700, fontSize: 26, padding: "8px 24px", letterSpacing: 5, display: "inline-block" }}>DOMINICAN REPUBLIC · 27</div>
+        <div style={{ marginTop: 18 }}><Label text="Software & AI developer" color={C.gold} size={28} delay={14} /></div></div>;
+    case "3r": return <Place b={P}><VR w={600} label="REDUCE · REUSE · RECYCLE" /><Kinetic text="3R VIDEOGAME" size={84} color={C.green} delay={6} />
+        <Label text="Virtual reality · climate education" color={C.white} size={26} delay={16} /></Place>;
+    case "rrr": return <Place b={P}><Kinetic text="REDUCE" size={120} color={C.green} /><Kinetic text="REUSE" size={120} color={C.green} delay={10} /><Kinetic text="RECYCLE" size={120} color={C.green} delay={20} /></Place>;
+    case "hackathon": return <Place b={P}><Badge title="WINNER" sub="Climate Change & Innovation Hackathon" color={C.green} size={420} />
+        <Kinetic text="+ REGIONAL SEED FUNDING" size={46} color={C.gold} delay={40} /></Place>;
+    case "contractor": return <Place b={P}><Contractor w={620} flagText="RISK" /><Kinetic text="CONTRACTOR AI" size={84} color={C.blue} delay={6} />
+        <Label text="Flags unusual prices in public contracts" color={C.white} size={24} delay={14} /></Place>;
+    case "ambition": return <Place b={P}><MapPanel w={760} h={560} labels={false} pins={["rd", "bogota", "salvador", "saopaulo"]} bbox={[[-95, -30], [-32, 25]]} color={C.green} arcs />
+        <Kinetic text="CLASSROOMS ACROSS LATIN AMERICA" size={54} color={C.green} delay={10} /></Place>;
+    case "everyschool": return <Place b={P}><School w={560} en /><Label text="From award-winning project" color={C.dim} size={28} delay={8} />
+        <Kinetic text="TO A TOOL EVERY SCHOOL CAN USE" size={66} color={C.green} delay={16} /></Place>;
+  }
+  return null;
+};
+
 export const ResourceEn: React.FC<{ r: any }> = ({ r }) => {
   const { out } = useInOut(0, 10);
+  if (r.panel) return <Panel r={r} />;
   switch (r.disparador as string) {
     case "name": return <div style={{ position: "absolute", left: 1200, top: 700, opacity: out }}>
         <div style={{ background: C.white, padding: "12px 26px", display: "inline-block" }}><Kinetic text="YEFRY NÚÑEZ" size={64} color={C.bg} align="left" /></div><br />

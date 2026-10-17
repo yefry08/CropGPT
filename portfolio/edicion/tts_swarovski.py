@@ -10,7 +10,9 @@ from faster_whisper import WhisperModel
 
 GUION = json.loads((HERE / "swarovski_guion.json").read_text())
 OUT = HERE / "trabajo/swarovski"; OUT.mkdir(parents=True, exist_ok=True)
-tok = lambda t: re.sub(r"[^a-z0-9 ]", " ", t.lower()).split()
+def tok(t):
+    t = t.lower().replace("3r", "three r").replace("a.i.", "ai").replace("a. i.", "ai")
+    return re.sub(r"[^a-z0-9 ]", " ", t).split()
 
 def puntua(asr, wav, text):
     segs, _ = asr.transcribe(str(wav), language="en", condition_on_previous_text=False)

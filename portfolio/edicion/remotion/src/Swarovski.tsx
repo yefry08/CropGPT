@@ -3,7 +3,7 @@ import { AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame, useVideoCon
 import { C, FONT } from "./theme";
 import tl from "./timeline_sw.json";
 import { NarrationBg } from "./comp/Scenes";
-import { BrollScene } from "./comp/Broll";
+import { ClipScene } from "./comp/Broll";
 import { ResourceEn } from "./comp/ResourceEn";
 // Video de postulación a la Swarovski Foundation (inglés, horizontal). Narración continua (sw_narracion.wav),
 // escenas visuales con tiempos absolutos y subtítulos por palabra (Whisper).
@@ -29,7 +29,7 @@ export const Swarovski: React.FC<{ subs?: boolean }> = ({ subs = true }) => {
   const { fps } = useVideoConfig(); const fr = (s: number) => Math.round(s * fps);
   return <AbsoluteFill style={{ background: C.bg, fontFamily: FONT }}>
     {T.scenes.map((sc: any, i: number) => <Sequence key={i} from={fr(sc.start)} durationInFrames={Math.max(1, fr(sc.dur))}>
-      {sc.kind === "B" ? <BrollScene src={sc.src} clips={sc.clips} /> : <NarrationBg o="h" />}</Sequence>)}
+      {sc.kind === "V" ? <ClipScene clips={sc.clips} layout={sc.layout} /> : <NarrationBg o="h" />}</Sequence>)}
     {T.resources.map((r: any, i: number) => <Sequence key={"r" + i} from={fr(r.s)} durationInFrames={Math.max(1, fr(r.e - r.s))}>
       <ResourceEn r={r} /></Sequence>)}
     {subs && <Subs />}
