@@ -1,0 +1,85 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>La IA ahorra tiempo · reel</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{height:min(92vh,960px);width:auto;background:#fff;box-shadow:0 0 0 1px #333}
+</style>
+<canvas id="c"></canvas>
+<script src="timing-reel.js"></script>
+<script src="core.js"></script>
+<script src="kit.js"></script>
+<script src="art.js"></script>
+<script>
+/* BRIEF: AI-safety series reel (9:16, 60 s, neon). Why AI saves time but productivity barely moves.
+   Verified (sources in descripcion.md): Paul David's dynamo analogy (1990) · Solow, NYT Book Review, 12 Jul 1987 ·
+   Uber "agentic pods": capital allocation across 150 cities, 15 h → 30 min (CTO's post, Jul 2026) ·
+   INSEAD/HBS field experiment, 515 startups, 1.9x revenue. Charts marked "ilustración" carry no real data.
+   Faces: generic illustrated characters; real people only as name cards. Art stays above y≈1300. */
+setPalette('neon');
+const ORDER = ['r-gancho', 'r-dinamo', 'r-solow', 'r-redisenar', 'r-cierre'], CLK = makeClock(ORDER);
+const hue = (c, id, tau, y = 760) => bloom(c, CX, y, 900, spectrum((CLK.st[id] + tau) / CLK.total), .3);
+
+// time saved climbs, productivity stays flat (illustration)
+function paradoxChart(c, x, y, w, h, p) { if (p <= 0) return; c.save(); glow(c, C.grey, 2, 0); c.globalAlpha = .5; c.beginPath(); c.moveTo(x, y); c.lineTo(x, y + h); c.lineTo(x + w, y + h); c.stroke(); c.globalAlpha = 1;
+  const up = [], flat = []; for (let i = 0; i <= w * p; i += 6) { const u = i / w; up.push([x + i, y + h - h * .85 * (u ** 1.3)]); flat.push([x + i, y + h * .78 - Math.sin(u * 9) * 6]); }
+  glow(c, C.cyan, 6, 22); strokePts(c, up); glow(c, C.magenta, 6, 22); strokePts(c, flat); c.restore(); }
+
+// the factory: one steam engine drives every machine through a shaft and belts → each machine gets its own motor
+function factory(c, x, y, w, tau, mode, p) { if (p <= 0) return; const n = 4, gap = w / n, k = clamp(p * 1.4, 0, 1); c.save(); c.globalAlpha = k;
+  glow(c, C.grey, 3, 8); const roof = [[x - 20, y], [x + w * .25, y - 120], [x + w * .5, y], [x + w * .75, y - 120], [x + w + 20, y]]; strokePts(c, roof); c.strokeRect(x - 20, y, w + 40, 460);
+  for (let i = 0; i < n; i++) { const mx = x + gap * (i + .5), my = y + 330; glow(c, PAL.ink, 3, 10); c.strokeRect(mx - 55, my - 50, 110, 100);
+    if (mode === 0) { glow(c, C.orange, 3, 12); const sy = y + 90; c.beginPath(); c.moveTo(mx - 22, sy); c.lineTo(mx - 30, my - 50); c.moveTo(mx + 22, sy); c.lineTo(mx + 30, my - 50); c.stroke(); }
+    else { const r = 26; glow(c, C.cyan, 4, 20); c.beginPath(); c.arc(mx, my - 100, r, 0, TAU); c.stroke(); c.save(); c.translate(mx, my - 100); c.rotate(tau * 6 + i);
+      c.beginPath(); for (let j = 0; j < 3; j++) { c.moveTo(0, 0); c.lineTo(Math.cos(j * TAU / 3) * r * .8, Math.sin(j * TAU / 3) * r * .8); } c.stroke(); c.restore(); } }
+  if (mode === 0) { glow(c, C.orange, 7, 16); c.beginPath(); c.moveTo(x, y + 90); c.lineTo(x + w, y + 90); c.stroke();          // the line shaft
+    const ex = x + w * .5; glow(c, C.orange, 5, 24); c.strokeRect(ex - 60, y + 150, 120, 110); c.save(); c.translate(ex, y + 90); c.rotate(tau * 3);  // the steam engine's flywheel
+    c.beginPath(); c.arc(0, 0, 50, 0, TAU); for (let j = 0; j < 6; j++) { c.moveTo(0, 0); c.lineTo(Math.cos(j * TAU / 6) * 50, Math.sin(j * TAU / 6) * 50); } c.stroke(); c.restore();
+    for (let j = 0; j < 5; j++) { const t = (tau * .6 + j * .2) % 1; c.globalAlpha = k * (1 - t) * .6; c.fillStyle = C.grey; c.beginPath(); c.arc(ex + 30 + t * 40, y - 20 - t * 160, 14 + t * 30, 0, TAU); c.fill(); } }
+  c.restore(); }
+
+function rGancho(c, tau) {
+  const d = D('r-gancho'), fr = [.5], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hue(c, 'r-gancho', tau);
+  if (b === 0) { face(c, CX, 560, 1.25, C.cyan, tau, { hair: 1, look: -.5, prog: t / .7, seed: 3 }); slam(c, '+ tiempo', CX, 1040, (t - .6) * 1.4, { size: 150, color: C.cyan });
+    label(c, 'ahorrado con IA', CX, 1130, t - 1.2, 52, PAL.ink); }
+  if (b === 1) { paradoxChart(c, 140, 420, 800, 520, t / 2); label(c, 'TIEMPO AHORRADO', 700, 400, t, 38, C.cyan); label(c, 'PRODUCTIVIDAD', 760, 900, t - .6, 38, C.magenta);
+    label(c, 'ilustración', 860, 1000, t, 28); typeGlow(c, '¿Por qué no se mueve?', CX, 1180, (t - 1) / 1.2, { size: 76, accent: C.magenta }); }
+}
+function rDinamo(c, tau) {
+  const d = D('r-dinamo'), fr = [.5, .78], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hue(c, 'r-dinamo', tau);
+  if (b === 0) { slam(c, '1900', CX, 330, t * 1.4, { size: 170, color: C.orange }); factory(c, 160, 560, 760, tau, 0, t / .8);
+    label(c, 'un motor mueve toda la fábrica', CX, 1150, t - 1, 44, PAL.ink); }
+  if (b === 1) { factory(c, 160, 560, 760, tau, 0, 1); glassTile(c, 140, 1090, 800, 150, C.orange, t * 2);
+    typeGlow(c, 'vapor → electricidad', CX, 1160, (t - .3) / 1, { size: 60, accent: C.cyan }); label(c, 'pero todo igual', CX, 1215, t - 1.4, 40, C.pink); }
+  if (b === 2) { factory(c, 160, 560, 760, tau, 1, 1); slam(c, 'REDISEÑO', CX, 330, t * 1.4, { size: 130, color: C.cyan }); label(c, 'un motor por máquina · décadas después', CX, 1150, t - .6, 40, PAL.ink); }
+}
+function rSolow(c, tau) {
+  const d = D('r-solow'), fr = [.62], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hue(c, 'r-solow', tau);
+  if (b === 0) { label(c, 'ROBERT SOLOW · ECONOMISTA · 1987', CX, 420, t, 40, C.violet); glassTile(c, 80, 500, 920, 560, C.violet, t * 2);
+    typeGlow(c, '«La era de la', CX, 640, (t - .3) / .8, { size: 72 }); typeGlow(c, 'computadora se ve', CX, 740, (t - 1) / .8, { size: 72 });
+    typeGlow(c, 'en todas partes…', CX, 840, (t - 1.7) / .8, { size: 72 }); typeGlow(c, 'menos en la productividad»', CX, 960, (t - 3) / 1.2, { size: 58, accent: C.magenta }); }
+  if (b === 1) { ring(c, CX, 720, 60, 700, t / 1.5, C.violet); typeGlow(c, 'Con la IA:', CX, 640, t / .6, { size: 80 }); slam(c, 'la misma pausa', CX, 800, (t - .6) * 1.4, { size: 110, color: C.violet }); }
+}
+function rRedisenar(c, tau) {
+  const d = D('r-redisenar'), fr = [.12, .55], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hue(c, 'r-redisenar', tau);
+  if (b === 0) typeGlow(c, 'rediseñar el proceso', CX, 760, t / 1, { size: 84, accent: C.green });
+  if (b === 1) { label(c, 'UBER · ASIGNACIÓN DE CAPITAL · 150 CIUDADES', CX, 380, t, 34, C.green);
+    slam(c, '15 h', CX, 640, t * 1.4, { size: 200, color: C.grey }); c.save(); glow(c, C.red, 8, 20); c.globalAlpha = sm(.8, 1.2, t); c.beginPath(); c.moveTo(330, 600); c.lineTo(750, 600); c.stroke(); c.restore();
+    slam(c, '30 min', CX, 930, (t - 1.4) * 1.4, { size: 200, color: C.green }); label(c, 'equipos con agentes de IA · julio 2026', CX, 1060, t - 2.4, 36, PAL.ink); }
+  if (b === 2) { label(c, 'INSEAD + HARVARD · EXPERIMENTO', CX, 380, t, 36, C.cyan); slam(c, '515', CX, 560, t * 1.4, { size: 160, color: C.cyan }); label(c, 'startups', CX, 650, t - .5, 46, PAL.ink);
+    bar(c, 140, 760, 420, 60, sm(1, 2, t) * .5, C.grey, (t - 1) * 2); bar(c, 140, 860, 800, 60, sm(1.3, 2.6, t) * .95, C.green, (t - 1.3) * 2);
+    label(c, 'casos genéricos', 350, 750, t - 1.2, 30); label(c, 'casos de reorganización con IA', 540, 850, t - 1.5, 30, C.green);
+    slam(c, '1,9×', CX, 1100, (t - 3) * 1.4, { size: 150, color: C.green }); label(c, 'ingresos', CX, 1180, t - 3.6, 44, PAL.ink); }
+}
+function rCierre(c, tau) {
+  const d = D('r-cierre'), fr = [.45], b = beatOf(tau, d, fr), t = since(tau, d, fr, b), end = d - 3; blackFrame(c); hue(c, 'r-cierre', tau);
+  if (b === 0) { slam(c, '+ tiempo', CX, 600, t * 1.4, { size: 150, color: C.cyan }); typeGlow(c, '¿y qué haces con él?', CX, 780, (t - .8) / 1, { size: 72, accent: C.magenta }); }
+  if (b === 1) { glassTile(c, 100, 470, 400, 260, C.grey, t * 2); glassTile(c, 580, 470, 400, 260, C.green, (t - .4) * 2);
+    typeGlow(c, 'acelerar', 300, 620, (t - .2) / .6, { size: 66, accent: C.grey }); typeGlow(c, 'rediseñar', 780, 620, (t - .7) / .6, { size: 66, accent: C.green });
+    label(c, '¿Tú qué eliges?', CX, 900, t - 1.6, 64, C.pink); }
+  resetT(c);
+  label(c, 'Voz sintética · Animación con IA (Claude) · Ilustración', CX, 1720, (tau - end) / 1.5, 30, C.grey);
+  label(c, 'Fuentes en la descripción · Datos a 18 oct 2026', CX, 1770, (tau - end - .5) / 1.5, 30, C.grey);
+}
+socialFilm('9:16', [['r-gancho', rGancho], ['r-dinamo', rDinamo], ['r-solow', rSolow], ['r-redisenar', rRedisenar], ['r-cierre', rCierre]]);
+</script>

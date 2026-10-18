@@ -1,0 +1,11 @@
+{
+  "title": "La IA ahorra tiempo. ¿Dónde está la productividad?",
+  "language": "es",
+  "sections": [
+    {"id": "r-gancho", "chapter": "La paradoja", "text": "La inteligencia artificial ya le ahorra horas a millones de trabajadores. Entonces, ¿por qué la productividad casi no se mueve?"},
+    {"id": "r-dinamo", "chapter": "La fábrica de 1900", "text": "Ya pasó antes. Hacia 1900, muchas fábricas cambiaron la máquina de vapor por un motor eléctrico, pero dejaron todo igual. El gran salto llegó décadas después, cuando rediseñaron la planta completa alrededor de la electricidad."},
+    {"id": "r-solow", "chapter": "Solow", "text": "En 1987, el economista Robert Solow escribió que la era de la computadora se veía en todas partes, menos en las estadísticas de productividad. Con la inteligencia artificial podríamos estar en esa misma pausa."},
+    {"id": "r-redisenar", "chapter": "Rediseñar", "text": "Lo que funciona es rediseñar el proceso entero. En Uber, un equipo rehízo con agentes la asignación de capital en ciento cincuenta ciudades: de quince horas a treinta minutos. Y en un experimento con quinientas quince startups, las que estudiaron cómo otras se reorganizaron facturaron uno coma nueve veces más."},
+    {"id": "r-cierre", "chapter": "Cierre", "text": "La inteligencia artificial nos regala tiempo. La productividad depende de qué hacemos con él. ¿Tú aceleras lo de siempre, o lo rediseñas?"}
+  ]
+}

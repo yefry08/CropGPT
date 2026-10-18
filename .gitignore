@@ -60,3 +60,8 @@ portfolio/ia-ciencia/audio-reel
 portfolio/ia-ciencia/*.mp4
 portfolio/ia-ciencia/*.log
 portfolio/ia-ciencia/out
+portfolio/ia-productividad/audio
+portfolio/ia-productividad/audio-reel
+portfolio/ia-productividad/*.mp4
+portfolio/ia-productividad/*.log
+portfolio/ia-productividad/out
