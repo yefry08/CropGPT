@@ -1,0 +1,11 @@
+{
+  "title": "La IA llegó a la ciencia",
+  "language": "es",
+  "sections": [
+    {"id": "r-gancho", "chapter": "Gancho", "text": "Lo que les pasó a los programadores hace dos años ahora le está pasando a la ciencia."},
+    {"id": "r-mate", "chapter": "Matemáticas", "text": "En octubre, OpenAI publicó setecientos veintidós manuscritos matemáticos hechos por un modelo interno. Solo ciento sesenta y dos están verificados formalmente."},
+    {"id": "r-fisica", "chapter": "Física y astronomía", "text": "Google y un físico de Maryland hallaron contraejemplos útiles para diseñar reactores de fusión. Y un aficionado en España, con agentes de inteligencia artificial y datos de la NASA, encontró un posible planeta, aún sin confirmar."},
+    {"id": "r-tao", "chapter": "El problema", "text": "Terence Tao advierte de la indigestión de pruebas: se generan demostraciones más rápido de lo que podemos entenderlas."},
+    {"id": "r-cierre", "chapter": "Cierre", "text": "El reto no es frenar la ciencia, sino verificarla al mismo ritmo. ¿Estamos listos?"}
+  ]
+}

@@ -1,0 +1,52 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>La IA llegó a la ciencia · reel</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{height:min(92vh,960px);width:auto;background:#fff;box-shadow:0 0 0 1px #333}
+</style>
+<canvas id="c"></canvas>
+<script src="timing-reel.js"></script>
+<script src="core.js"></script>
+<script src="kit.js"></script>
+<script src="art.js"></script>
+<script>
+/* Reel 9:16 of "La IA llegó a la ciencia": same verified facts as the long film, condensed (sections-reel.json).
+   Art stays above y≈1300; generic faces only, real people as name cards. */
+setPalette('neon');
+const ORDER = ['r-gancho', 'r-mate', 'r-fisica', 'r-tao', 'r-cierre'], CLK = makeClock(ORDER);
+const hue = (c, id, tau, y = 760) => bloom(c, CX, y, 900, spectrum((CLK.st[id] + tau) / CLK.total), .3);
+
+function rGancho(c, tau) {
+  const d = D('r-gancho'), fr = [.45], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hue(c, 'r-gancho', tau);
+  if (b === 0) { face(c, CX, 620, 1.3, C.cyan, tau, { hair: 0, look: .3, prog: t / .8 }); codeRain(c, 80, 1000, 920, 300, tau, 0); label(c, 'PROGRAMADORES · HACE DOS AÑOS', CX, 260, t, 40, C.cyan); }
+  if (b === 1) { codeRain(c, 60, 200, 960, 1100, tau + 3, sm(0, 1.6, t)); slam(c, 'AHORA', CX, 680, t * 1.5, { size: 190, color: C.magenta }); typeGlow(c, 'LA CIENCIA', CX, 860, (t - .5) / .8, { size: 120, accent: C.magenta }); }
+}
+function rMate(c, tau) {
+  const d = D('r-mate'), fr = [.5], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hue(c, 'r-mate', tau);
+  if (b === 0) { paperRain(c, 60, 260, 960, 1000, tau, t / 2); slam(c, '722', CX, 760, t * 1.4, { size: 300, color: C.magenta }); label(c, 'manuscritos matemáticos', CX, 900, t - .6, 52, PAL.ink); label(c, 'OPENAI · OCTUBRE 2026', CX, 380, t, 40, C.cyan); }
+  if (b === 1) { label(c, 'VERIFICADOS CON LEAN', CX, 520, t, 46, C.green); bar(c, 140, 600, 800, 70, sm(.2, 1.6, t) * 162 / 722, C.green, t * 2);
+    slam(c, '162', CX, 900, (t - 1) * 1.4, { size: 220, color: C.green }); label(c, 'de 722', CX, 1010, t - 1.6, 56, PAL.ink); }
+}
+function rFisica(c, tau) {
+  const d = D('r-fisica'), fr = [.45], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hue(c, 'r-fisica', tau);
+  if (b === 0) { stellarator(c, CX, 640, 310, tau, sm(0, 2, t)); label(c, 'FUSIÓN NUCLEAR', CX, 300, t, 50, C.violet);
+    typeGlow(c, 'Google + Maryland', CX, 1000, (t - 1) / 1, { size: 76, accent: C.cyan }); label(c, 'contraejemplos útiles para diseñar reactores', CX, 1090, t - 2, 36, PAL.ink); }
+  if (b === 1) { stars(c, tau, 120); const dip = Math.sin(tau * 2.4) > .7 ? 1 : 0; star(c, CX, 420, 30, tau, dip); lightCurve(c, 120, 640, 840, 260, sm(0, 2, t), tau);
+    typeGlow(c, '¿Un planeta nuevo?', CX, 1060, (t - 1) / 1, { size: 84, accent: C.orange }); label(c, 'un aficionado · datos de la NASA · sin confirmar', CX, 1150, t - 2, 34, PAL.ink); label(c, 'ilustración', 900, 620, t, 28); }
+}
+function rTao(c, tau) {
+  const d = D('r-tao'), fr = [.4], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hue(c, 'r-tao', tau);
+  if (b === 0) { glassTile(c, 140, 560, 800, 260, C.violet, t * 2); typeGlow(c, 'Terence Tao', CX, 710, (t - .3) / .8, { size: 96, accent: C.violet }); label(c, 'matemático', CX, 780, t - 1, 40); }
+  if (b === 1) { shockwave(c, CX, 700, t, .1, C.magenta); slam(c, 'indigestión', CX, 700, t * 1.4, { size: 150, color: C.magenta }); typeGlow(c, 'de pruebas', CX, 840, (t - .6) / .7, { size: 100, accent: C.magenta }); }
+}
+function rCierre(c, tau) {
+  const d = D('r-cierre'), fr = [.5], b = beatOf(tau, d, fr), t = since(tau, d, fr, b), end = d - 3; blackFrame(c); hue(c, 'r-cierre', tau);
+  if (b === 0) { typeGlow(c, 'No frenar', CX, 620, t / .7, { size: 110 }); typeGlow(c, 'verificar', CX, 780, (t - .7) / .7, { size: 130, accent: C.green }); label(c, 'al mismo ritmo', CX, 880, t - 1.4, 56, PAL.ink); }
+  if (b === 1) { typeGlow(c, '¿Estamos', CX, 680, t / .6, { size: 130, accent: C.violet }); typeGlow(c, 'listos?', CX, 840, (t - .5) / .6, { size: 130, accent: C.violet }); }
+  resetT(c);
+  label(c, 'Voz sintética (Kokoro) · Animación con IA (Claude)', CX, 1720, (tau - end) / 1.5, 30, C.grey);
+  label(c, 'Ilustración, no imágenes reales · Fuentes en la descripción', CX, 1770, (tau - end - .5) / 1.5, 30, C.grey);
+}
+socialFilm('9:16', [['r-gancho', rGancho], ['r-mate', rMate], ['r-fisica', rFisica], ['r-tao', rTao], ['r-cierre', rCierre]]);
+</script>

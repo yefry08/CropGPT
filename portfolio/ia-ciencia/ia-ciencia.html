@@ -1,0 +1,121 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>La IA llegó a la ciencia</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{width:min(96vw,1280px);height:auto;background:#fff;box-shadow:0 0 0 1px #333}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center}
+  button{background:#222;color:#ddd;border:1px solid #444;padding:4px 10px;cursor:pointer;font:inherit}
+  input[type=range]{width:320px}
+</style>
+<canvas id="c"></canvas>
+<script src="timing.js"></script>
+<script src="core.js"></script>
+<script src="kit.js"></script>
+<script src="art.js"></script>
+<script>
+/* BRIEF: AI-safety series. "La IA llegó a la ciencia" (~3:50, neon). Verified facts only (sources in descripcion.md):
+   GPT-6 Astra (OpenAI, 3 Sep 2026, "Critical" cyber threshold) · Gemini 4 Argon + Matt Landreman, Grad conjecture
+   counterexamples (Google-reported) · OpenAI's 722 manuscripts (6 Oct 2026; 162 Lean-checked, 3 retracted) ·
+   Pavel Rabtsevich's unconfirmed TESS candidate · Terence Tao's "proof indigestion" (ICM, Jul 2026) ·
+   AWS's verified ML-KEM, NIST PQC 2024, ANA turbulence AI. Left out: unconfirmed benchmarks, "AI accelerates
+   PQC standards", "local efficient AI devices". Faces are generic illustrated characters; real people = name cards. */
+setPalette('neon');
+
+const ORDER = ['gancho', 'astra', 'fusion', 'papers', 'aficionado', 'tao', 'futuro', 'cierre'], CLK = makeClock(ORDER);
+const F = (id, tau) => (CLK.st[id] + tau) / CLK.total;
+const hue = (c, id, tau, x = CX, y = CY) => bloom(c, x, y, 900, spectrum(F(id, tau)), .28);
+
+function sGancho(c, tau) {
+  const d = D('gancho'), fr = [.34, .64], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hue(c, 'gancho', tau);
+  if (b === 0) { face(c, 520, 470, 1.15, C.cyan, tau, { hair: 0, talk: 0, look: .8, prog: t / 1.2 }); codeRain(c, 980, 180, 760, 640, tau, 0);
+    label(c, 'HACE DOS AÑOS · PROGRAMADORES', 1360, 860, t - .4, 38, C.cyan); }
+  if (b === 1) { codeRain(c, 160, 160, 1600, 700, tau + 4, sm(0, 2.4, t)); slam(c, '2026', CX, 470, t * 1.4, { size: 210, color: C.magenta });
+    typeGlow(c, 'llega a la ciencia', CX, 620, (t - .8) / 1.2, { size: 84, accent: C.magenta }); }
+  if (b === 2) { ['Física', 'Matemáticas', 'Astronomía'].forEach((s, k) => { const x = 360 + k * 600; glassTile(c, x - 250, 360, 500, 220, [C.cyan, C.violet, C.orange][k], (t - k * .5) * 2);
+      typeGlow(c, s, x, 495, (t - k * .5 - .2) / .7, { size: 70, accent: [C.cyan, C.violet, C.orange][k] }); });
+    label(c, 'y no todos lo celebran', CX, 760, t - 2.2, 46, C.pink); }
+}
+function sAstra(c, tau) {
+  const d = D('astra'), fr = [.4, .72], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hue(c, 'astra', tau);
+  if (b === 0) { label(c, '3 DE SEPTIEMBRE DE 2026 · OPENAI', CX, 330, t, 42, C.cyan); ring(c, CX, 470, 40, 700, t / 1.6, C.cyan); slam(c, 'GPT-6 Astra', CX, 540, t * 1.3, { size: 170, color: C.cyan });
+    label(c, '«un salto generacional» en software y ciencia', CX, 680, t - 1, 44, PAL.ink); }
+  if (b === 1) { shockwave(c, CX, 450, t, .1, C.red); slam(c, 'CRÍTICO', CX, 520, t * 1.5, { size: 200, color: C.red });
+    label(c, 'su propio umbral interno de riesgo en ciberseguridad', CX, 650, t - .8, 42, PAL.ink); label(c, '→ acceso limitado a sus capacidades más avanzadas', CX, 720, t - 1.8, 40, C.pink); }
+  if (b === 2) { glassTile(c, 260, 330, 640, 300, C.cyan, t * 2); glassTile(c, 1020, 330, 640, 300, C.red, (t - .7) * 2);
+    typeGlow(c, 'acelera la ciencia', 580, 500, (t - .3) / 1, { size: 62, accent: C.cyan }); typeGlow(c, 'puede atacar sistemas', 1340, 500, (t - 1) / 1, { size: 58, accent: C.red });
+    label(c, 'la misma herramienta', CX, 760, t - 2, 46, C.violet); }
+}
+function sFusion(c, tau) {
+  const d = D('fusion'), fr = [.3, .55, .84], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hue(c, 'fusion', tau);
+  if (b === 0) { stellarator(c, CX, 470, 380, tau, sm(0, 2.5, t)); label(c, 'ESTELARÁTOR', CX, 200, t, 46, C.violet);
+    label(c, 'atrapa plasma más caliente que el centro del Sol', CX, 820, t - 2, 42, PAL.ink); }
+  if (b === 1) { stellarator(c, 1400, 470, 260, tau, 1); label(c, 'OCTUBRE 2026 · GOOGLE', 640, 330, t, 40, C.cyan);
+    typeGlow(c, 'Gemini 4 Argon', 640, 450, (t - .3) / 1, { size: 80, accent: C.cyan }); typeGlow(c, '+ Matt Landreman', 640, 560, (t - 1.2) / 1, { size: 64, accent: C.violet });
+    label(c, 'Universidad de Maryland', 640, 640, t - 2.2, 38); }
+  if (b === 2) { slam(c, '1967', 560, 500, t * 1.5, { size: 200, color: C.magenta }); label(c, 'la conjetura de Grad', 560, 600, t - .6, 44, PAL.ink);
+    glassTile(c, 1000, 330, 720, 340, C.violet, (t - 1.2) * 2); typeGlow(c, 'contraejemplos', 1360, 460, (t - 1.5) / .8, { size: 64, accent: C.violet });
+    typeGlow(c, '= pruebas para los simuladores', 1360, 560, (t - 2.4) / 1.2, { size: 40, accent: C.cyan }); }
+  if (b === 3) { stellarator(c, CX, 430, 300, tau, 1); glassTile(c, 560, 740, 800, 110, C.grey, t * 2); label(c, 'resultado reportado por la propia Google', CX, 810, t - .3, 40, PAL.ink); }
+}
+function sPapers(c, tau) {
+  const d = D('papers'), fr = [.3, .56, .8], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hue(c, 'papers', tau);
+  if (b === 0) { paperRain(c, 140, 160, 1640, 700, tau, t / 2.5); slam(c, '722', CX, 560, t * 1.4, { size: 280, color: C.magenta });
+    label(c, 'manuscritos · un modelo interno de OpenAI · 6 de octubre', CX, 700, t - .8, 42, PAL.ink); }
+  if (b === 1) { glassTile(c, 300, 330, 560, 320, C.cyan, t * 2); glassTile(c, 1060, 330, 560, 320, C.violet, (t - .8) * 2);
+    slam(c, '~4.000', 580, 520, (t - .3) * 1.4, { size: 120, color: C.cyan }); label(c, 'problemas', 580, 600, t - .9, 40);
+    slam(c, '372', 1340, 520, (t - 1.1) * 1.4, { size: 120, color: C.violet }); label(c, 'familias de resultados', 1340, 600, t - 1.7, 40);
+    c.save(); glow(c, C.grey, 3, 8); c.globalAlpha = sm(.8, 1.2, t); c.beginPath(); c.moveTo(880, 490); c.lineTo(1040, 490); c.stroke(); c.restore(); }
+  if (b === 2) { label(c, 'VERIFICADOS CON LEAN (resultado principal)', CX, 340, t, 40, C.green);
+    bar(c, 360, 400, 1200, 60, sm(.3, 2, t) * 162 / 722, C.green, t * 2); typeGlow(c, '162 de 722', CX, 560, (t - 1.6) / .8, { size: 80, accent: C.green });
+    slam(c, '3 retirados', CX, 720, (t - 2.6) * 1.5, { size: 72, color: C.red }); }
+  if (b === 3) { face(c, 560, 460, 1.05, C.violet, tau, { hair: 2, glasses: true, look: .6, prog: t / 1 }); paperRain(c, 950, 200, 800, 560, tau, 1, 40, 5);
+    label(c, 'revisión en curso · algunos con cientos de páginas', CX, 860, t - .8, 40, PAL.ink); }
+}
+function sAficionado(c, tau) {
+  const d = D('aficionado'), fr = [.27, .52, .76], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hue(c, 'aficionado', tau);
+  if (b === 0) { laptop(c, 500, 600, 1.15, t, t / .8);
+    glassTile(c, 900, 340, 900, 300, C.orange, (t - .5) * 2); typeGlow(c, 'Pavel Rabtsevich', 1350, 470, (t - .8) / 1, { size: 72, accent: C.orange });
+    label(c, 'gerente de producto en España', 1350, 545, t - 1.8, 34, PAL.ink); label(c, 'sin formación en astronomía', 1350, 595, t - 2.2, 34, PAL.ink); }
+  if (b === 1) { stars(c, tau); star(c, CX, 420, 26, tau, 0); label(c, 'TESS · NASA · DATOS PÚBLICOS', CX, 700, t, 42, C.cyan); label(c, 'una estrella a ~116 años luz', CX, 770, t - 1, 40, PAL.ink); }
+  if (b === 2) { stars(c, tau, 80); const dip = (Math.sin(tau * 2.2) > .7) ? 1 : 0; star(c, 360, 300, 20, tau, dip);
+    lightCurve(c, 620, 220, 1100, 300, sm(0, 2.5, t), tau); label(c, 'brillo · ilustración', 1170, 190, t, 32);
+    typeGlow(c, '¿un planeta 1,4 veces la Tierra?', CX, 680, (t - 1.8) / 1.4, { size: 64, accent: C.cyan }); }
+  if (b === 3) { slam(c, '74', CX, 470, t * 1.4, { size: 240, color: C.orange }); label(c, 'pruebas diseñadas para desmentirse', CX, 590, t - .6, 44, PAL.ink);
+    glassTile(c, 460, 680, 1000, 120, C.pink, (t - 1.6) * 2); label(c, 'candidato sin confirmar · TESS lo observa en noviembre', CX, 755, t - 1.9, 36, PAL.ink); }
+}
+function sTao(c, tau) {
+  const d = D('tao'), fr = [.2, .52, .74], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hue(c, 'tao', tau);
+  if (b === 0) { glassTile(c, 460, 360, 1000, 240, C.violet, t * 2); typeGlow(c, 'Terence Tao', CX, 500, (t - .3) / 1, { size: 96, accent: C.violet });
+    label(c, 'Congreso Internacional de Matemáticos · julio 2026', CX, 680, t - 1.3, 40); }
+  if (b === 1) { [['GENERAR', C.cyan, 2.2], ['VERIFICAR', C.blue, 3.4], ['DIGERIR', C.magenta, 22]].forEach(([s, col, sp], k) => { const y = 300 + k * 170;
+      typeGlow(c, s, 420, y + 40, (t - k * .4) / .6, { size: 58, accent: col, align: 'right' }); bar(c, 480, y, 1100, 56, sm(k * .4 + .3, k * .4 + .3 + sp, t), col, (t - k * .4) * 2); });
+    label(c, 'la IA acelera los dos primeros, no el tercero', CX, 830, t - 3, 42, PAL.ink); }
+  if (b === 2) { shockwave(c, CX, 470, t, .1, C.magenta); slam(c, 'indigestión', CX, 470, t * 1.4, { size: 160, color: C.magenta }); typeGlow(c, 'de pruebas', CX, 590, (t - .7) / .7, { size: 90, accent: C.magenta });
+    label(c, 'de la escasez a la abundancia de demostraciones', CX, 720, t - 1.6, 42, PAL.ink); }
+  if (b === 3) { face(c, 520, 460, 1.1, C.pink, tau, { hair: 1, look: .7, prog: t / 1, seed: 4 });
+    typeGlow(c, '¿Qué motivará', 1300, 420, (t - .6) / .8, { size: 70, accent: C.pink }); typeGlow(c, 'a un estudiante?', 1300, 520, (t - 1.4) / .8, { size: 70, accent: C.pink });
+    label(c, 'años para un problema que una máquina resuelve en días', 1300, 620, t - 2.4, 30, PAL.ink); }
+}
+function sFuturo(c, tau) {
+  const d = D('futuro'), fr = [.5, .72], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); blackFrame(c); hue(c, 'futuro', tau);
+  if (b === 0) { padlock(c, 500, 420, 1.3, t / .8, tau); typeGlow(c, 'Software más seguro', 1260, 380, (t - .4) / 1, { size: 72, accent: C.green });
+    label(c, 'Amazon verificó matemáticamente', 1260, 470, t - 1.4, 38, PAL.ink); label(c, 'su cifrado poscuántico (ML-KEM)', 1260, 520, t - 1.8, 38, PAL.ink);
+    glassTile(c, 960, 590, 600, 110, C.cyan, (t - 3) * 2); label(c, 'estándares NIST · 2024', 1260, 660, t - 3.3, 36, C.cyan); }
+  if (b === 1) { stellarator(c, 520, 460, 260, tau, 1); typeGlow(c, 'Energía limpia', 1260, 440, t / .8, { size: 80, accent: C.violet }); label(c, 'mejores herramientas para diseñar reactores', 1260, 530, t - 1, 36, PAL.ink); }
+  if (b === 2) { plane(c, 760, 330, 1.2, tau, t / .6); typeGlow(c, 'Vuelos más tranquilos', CX, 760, (t - .6) / 1, { size: 72, accent: C.orange });
+    label(c, 'ANA predice turbulencias que el radar no ve', CX, 840, t - 1.6, 38, PAL.ink); }
+}
+function sCierre(c, tau) {
+  const d = D('cierre'), fr = [.3, .56], b = beatOf(tau, d, fr), t = since(tau, d, fr, b), end = d - 6.5; blackFrame(c); hue(c, 'cierre', tau);
+  if (b === 0) { typeGlow(c, 'producción', 360, 400, t / .6, { size: 56, accent: C.cyan, align: 'right' }); bar(c, 420, 360, 1200, 60, sm(.2, 1.6, t), C.cyan, t * 2);
+    typeGlow(c, 'revisión', 360, 560, (t - .4) / .6, { size: 56, accent: C.magenta, align: 'right' }); bar(c, 420, 520, 1200, 60, sm(.4, 12, t) * .5, C.magenta, (t - .4) * 2);
+    label(c, 'lo que descubre también puede dañar', CX, 740, t - 2, 44, C.pink); }
+  if (b === 1) { typeGlow(c, 'No frenar la ciencia.', CX, 460, t / 1, { size: 92 }); typeGlow(c, 'Verificarla al mismo ritmo.', CX, 600, (t - 1.2) / 1.2, { size: 92, accent: C.green }); }
+  if (b === 2) { typeGlow(c, '¿Estamos listos?', CX, 470, t / 1, { size: 110, accent: C.violet }); label(c, '¿Tú qué opinas?', CX, 610, t - 1.4, 56, C.pink); }
+  resetT(c);
+  label(c, 'Voz sintética (Kokoro, local) · Animación hecha con IA (Claude) · Ilustración, no imágenes reales', CX, 960, (tau - end) / 2, 30, C.grey);
+  label(c, 'Rostros ilustrativos, no representan a personas reales · Fuentes en la descripción · Datos a 17 oct 2026', CX, 1010, (tau - end - 1) / 2, 30, C.grey);
+}
+socialFilm('16:9', [['gancho', sGancho], ['astra', sAstra], ['fusion', sFusion], ['papers', sPapers], ['aficionado', sAficionado], ['tao', sTao], ['futuro', sFuturo], ['cierre', sCierre]]);
+</script>

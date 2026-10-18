@@ -55,3 +55,8 @@ portfolio/ia-miedo/audio-reel
 portfolio/ia-miedo/*.mp4
 portfolio/ia-miedo/*.log
 portfolio/ia-miedo/out
+portfolio/ia-ciencia/audio
+portfolio/ia-ciencia/audio-reel
+portfolio/ia-ciencia/*.mp4
+portfolio/ia-ciencia/*.log
+portfolio/ia-ciencia/out
