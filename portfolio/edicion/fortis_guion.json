@@ -1,0 +1,85 @@
+[
+ {
+  "id": "F01",
+  "say": "Hi, I'm Yefry Núñez, a twenty-seven-year-old software and AI developer from San Antonio de Guerra, a small town in the Dominican Republic.",
+  "reuse": "trabajo/swarovski/S01.wav",
+  "visual": "cam",
+  "res": "name"
+ },
+ {
+  "id": "F02",
+  "say": "I was raised by one parent, in a rural community with few opportunities, where money was a regular worry. I paid for my university studies by selling door to door across the country.",
+  "visual": "full",
+  "res": [
+   [
+    "roots",
+    null
+   ],
+   [
+    "doortodoor",
+    "paid$"
+   ]
+  ]
+ },
+ {
+  "id": "F03",
+  "say": "That taught me perseverance, and it is why I build technology for people who are usually left out.",
+  "visual": "cam",
+  "res": "perseverance"
+ },
+ {
+  "id": "F04",
+  "say": "I created Contractor AI, which flags unusual prices in public contracts, and 3R VideoGame, which teaches children about climate change.",
+  "tts": "I created Contractor A I, which flags unusual prices in public contracts, and Three R Video Game, which teaches children about climate change.",
+  "visual": "cam",
+  "res": [
+   [
+    "contractor",
+    null
+   ],
+   [
+    "3r",
+    "and$"
+   ]
+  ]
+ },
+ {
+  "id": "F05",
+  "say": "They took me from Guerra to winning HackCorruption in Bogotá, to recognition from the Organization of American States, and to the top twenty of the United Nations' ITU.",
+  "tts": "They took me from Guerra to winning HackCorruption in Bogotá, to recognition from the Organization of American States, and to the top twenty of the United Nations' I T U.",
+  "visual": "full",
+  "res": "journey"
+ },
+ {
+  "id": "F06",
+  "say": "But people from backgrounds like mine rarely have a network to turn to.",
+  "visual": "full",
+  "res": "network"
+ },
+ {
+  "id": "F07",
+  "say": "I want to join the Fortis Fellowship to learn from leaders who also come from humble beginnings, across sectors and continents.",
+  "visual": "cam",
+  "res": "fortis"
+ },
+ {
+  "id": "F08",
+  "say": "I want mentors and peers who challenge my ideas, and help me turn my projects into lasting institutions in government and public policy.",
+  "visual": "full",
+  "res": "mentors"
+ },
+ {
+  "id": "F09",
+  "say": "And I want to give back, sharing what I have learned about using AI for transparency with others who are building their own path.",
+  "tts": "And I want to give back, sharing what I have learned about using A I for transparency with others who are building their own path.",
+  "visual": "cam",
+  "res": "giveback"
+ },
+ {
+  "id": "F10",
+  "say": "Meeting the cohort in Medellín, in the region I want to serve, would mean a lot. Thank you.",
+  "visual": "full",
+  "res": "medellin",
+  "endcard": "Contractor AI · 3R VideoGame · Dominican Republic"
+ }
+]

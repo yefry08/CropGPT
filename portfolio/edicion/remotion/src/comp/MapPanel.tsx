@@ -10,6 +10,7 @@ const LAND: any = feature(world as any, (world as any).objects.countries);
 export const PLACES: Record<string, { ll: [number, number]; iso: string; label: string; dy?: number }> = {
   rd: { ll: [-69.93, 18.48], iso: "214", label: "República Dominicana" },
   bogota: { ll: [-74.07, 4.71], iso: "170", label: "Bogotá, Colombia" },
+  medellin: { ll: [-75.57, 6.25], iso: "170", label: "Medellín, Colombia" },
   salvador: { ll: [-89.19, 13.69], iso: "222", label: "El Salvador" },
   saopaulo: { ll: [-46.63, -23.55], iso: "076", label: "São Paulo, Brasil" },
   kenia: { ll: [36.82, -1.29], iso: "404", label: "Kenia", dy: 16 } as any,

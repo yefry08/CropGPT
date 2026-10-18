@@ -6,14 +6,14 @@
 Cada frase del guion dice su visual ("cam": tu toma + rótulo a la derecha; "full": rótulo a pantalla completa;
 "broll": planos de referencia y luego tu toma) y su rótulo ("res": nombre, o [[nombre, palabra donde empieza], ...]).
 Escribe remotion/src/timeline_<nombre>.json, copia los medios a remotion/public y renderiza.
-Uso: python3 build_application.py swarovski|dalailama   →  salida/<nombre>_application.mp4
+Uso: python3 build_application.py swarovski|dalailama|fortis   →  salida/<nombre>_application.mp4
 """
 import json, re, shutil, subprocess, sys
 from pathlib import Path
 
 HERE = Path(__file__).parent
 NAME = next((a for a in sys.argv[1:] if not a.startswith("-")), "swarovski")
-COMP = {"swarovski": "Swarovski", "dalailama": "DalaiLama"}[NAME]
+COMP = {"swarovski": "Swarovski", "dalailama": "DalaiLama", "fortis": "Fortis"}[NAME]
 W = HERE / f"trabajo/{NAME}"
 PUB = HERE / "remotion/public"
 OUT = HERE / f"salida/{NAME}_application.mp4"

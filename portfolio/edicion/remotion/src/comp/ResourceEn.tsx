@@ -6,6 +6,7 @@ import { Kinetic, Label, Counter } from "./Text";
 import { Badge } from "./Badge";
 import { Contractor, VR, Medals, School } from "./Drawings";
 import { MapPanel, Globe } from "./MapPanel";
+import { AwardList } from "./Extra";
 // Rótulos en inglés para el video de la Swarovski Foundation (horizontal).
 // Con plano recurso a la izquierda, los rótulos van en el panel derecho ("R").
 type Box = { left: number; top: number; w: number; h: number };
@@ -38,6 +39,12 @@ const Panel: React.FC<{ r: any }> = ({ r }) => {
     case "compassion": return <Place b={P}><Label text="Dalai Lama Fellows" color={C.dim} size={30} />
         <Kinetic text="ETHICAL LEADERSHIP" size={84} delay={6} /><Kinetic text="WITH COMPASSION" size={84} color={C.gold} delay={30} />
         <Label text="Closer to the communities it serves" color={C.white} size={26} delay={60} /></Place>;
+    case "perseverance": return <Place b={P}><Kinetic text="PERSEVERANCE" size={96} color={C.gold} />
+        <Label text="Technology for people who are usually left out" color={C.white} size={26} delay={30} /></Place>;
+    case "fortis": return <Place b={P}><Label text="Fortis Fellowship" color={C.dim} size={30} />
+        <Kinetic text="HUMBLE BEGINNINGS" size={84} color={C.gold} delay={6} /><Kinetic text="ACROSS SECTORS & CONTINENTS" size={56} delay={40} /></Place>;
+    case "giveback": return <Place b={P}><Kinetic text="GIVE BACK" size={120} color={C.green} />
+        <Label text="AI for transparency · for others building their own path" color={C.white} size={24} delay={30} /></Place>;
     case "everyschool": return <Place b={P}><School w={560} en /><Label text="From award-winning project" color={C.dim} size={28} delay={8} />
         <Kinetic text="TO A TOOL EVERY SCHOOL CAN USE" size={66} color={C.green} delay={16} /></Place>;
   }
@@ -75,6 +82,18 @@ export const ResourceEn: React.FC<{ r: any }> = ({ r }) => {
     case "close": return <Place b={S.full}><Kinetic text="CREATIVITY + TECHNOLOGY" size={110} />
         <Kinetic text="SUSTAINABILITY EVERY CHILD CAN EXPERIENCE" size={60} color={C.green} delay={24} /></Place>;
     case "endcard": return <Place b={S.full}><Kinetic text="YEFRY NÚÑEZ" size={150} /><Label text={r.sub} color={C.green} size={40} delay={10} /></Place>;
+    case "roots": return <Place b={S.full}><Kinetic text="SAN ANTONIO DE GUERRA" size={96} />
+        <Label text="Raised by one parent · rural community · few opportunities" color={C.gold} size={32} delay={20} /></Place>;
+    case "doortodoor": return <Place b={S.full}><Label text="I paid for university" color={C.dim} size={36} />
+        <Kinetic text="SELLING DOOR TO DOOR" size={120} color={C.gold} delay={8} /><Label text="across the Dominican Republic" color={C.white} size={32} delay={30} /></Place>;
+    case "journey": return <Place b={S.full}><div style={{ width: "100%", paddingLeft: 160 }}><AwardList color={C.gold} size={64} every={70} items={[
+        ["FROM GUERRA", "Dominican Republic"], ["WINNER · HACKCORRUPTION", "Bogotá"], ["RECOGNIZED", "Organization of American States"], ["TOP 20 WORLDWIDE", "ITU · United Nations"]]} /></div></Place>;
+    case "network": return <Place b={S.full}><Label text="People from backgrounds like mine" color={C.dim} size={36} />
+        <Kinetic text="RARELY HAVE A NETWORK" size={110} delay={10} /><Kinetic text="TO TURN TO" size={110} color={C.gold} delay={30} /></Place>;
+    case "mentors": return <Place b={S.full}><Kinetic text="MENTORS & PEERS" size={120} color={C.blue} />
+        <Kinetic text="LASTING INSTITUTIONS" size={90} color={C.gold} delay={50} /><Label text="Government & public policy" color={C.white} size={32} delay={70} /></Place>;
+    case "medellin": return <Place b={S.full}><MapPanel w={1300} h={520} labels={false} pins={["rd", "medellin"]} bbox={[[-90, -5], [-60, 22]]} color={C.gold} arcs />
+        <Kinetic text="MEDELLÍN · JUNE 2027" size={90} color={C.gold} delay={10} /></Place>;
     case "opendata": return <Place b={S.full}><Label text="Public procurement data" color={C.dim} size={34} />
         <Kinetic text="OPEN BY LAW" size={140} color={C.blue} delay={6} /><Kinetic text="BUT TOO TECHNICAL" size={96} color={C.gold} delay={60} />
         <Label text="for small businesses and citizens" color={C.white} size={32} delay={80} /></Place>;
