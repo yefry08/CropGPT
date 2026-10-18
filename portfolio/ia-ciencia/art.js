@@ -9,7 +9,7 @@ function label(c, s, x, y, t, size = 40, col = C.grey) { typeGlow(c, s, x, y, cl
 
 // glowing stroke helper
 function glow(c, col, w = 4, blur = 18) { c.strokeStyle = col; c.lineWidth = w; c.shadowColor = col; c.shadowBlur = blur; c.lineCap = 'round'; c.lineJoin = 'round'; }
-function strokePts(c, pts, prog = 1, close = false) { const n = Math.max(2, Math.ceil(pts.length * clamp(prog, 0, 1))); c.beginPath();
+function strokePts(c, pts, prog = 1, close = false) { if (pts.length < 2) return; const n = Math.min(pts.length, Math.max(2, Math.ceil(pts.length * clamp(prog, 0, 1)))); c.beginPath();
   for (let i = 0; i < n; i++) i ? c.lineTo(pts[i][0], pts[i][1]) : c.moveTo(pts[i][0], pts[i][1]); if (close && prog >= 1) c.closePath(); c.stroke(); }
 
 // ---------- a generic face in neon line art: smooth contours, soft fills, blinks, talks, breathes ----------
