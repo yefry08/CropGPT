@@ -1,0 +1,62 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>La IA llegó a la ciencia · reel Sprouts</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{height:min(92vh,960px);width:auto;background:#fff;box-shadow:0 0 0 1px #333}
+</style>
+<canvas id="c"></canvas>
+<script src="timing-reel.js"></script>
+<script src="core.js"></script>
+<script src="kit.js"></script>
+<script src="sprout.js"></script>
+<script>
+/* Reel 9:16 of "La IA llegó a la ciencia" in a Sprouts-like style: same verified script as reel.html (sections-reel.json).
+   Facts: OpenAI's 722 manuscripts (162 Lean-checked) · Gemini 4 Argon + Maryland, Grad counterexamples for stellarator codes ·
+   an amateur's unconfirmed TESS candidate · Terence Tao's "proof indigestion". Generic characters only; real people as name cards. */
+setPalette('rainbow');
+
+function rGancho(c, tau) {
+  const d = D('r-gancho'), fr = [.48], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  if (b === 0) { page(c, P.sky, 2); person(c, 380, 760, 1.6, grow(t, .7), tau, { shirt: P.blue, skin: P.skin[1], arm: .2, seed: 2 });
+    drawArt(c, [...laptopS(760, 1180, 1.05), ...codeLines(760, 1180, 1.05)], grow(t - .2, .8), 4); say(c, 'Hace dos años:', CX, 330, t / .5, { size: 72 }); say(c, 'los programadores', CX, 430, (t - .4) / .6, { size: 80, under: P.blue }); }
+  if (b === 1) { page(c, P.mint, 4); person(c, 360, 760, 1.6, grow(t, .7), tau, { shirt: '#ffffff', skin: P.skin[2], style: 2, hair: P.ink, glasses: true, arm: .9, wave: 1, mouth: 'o', seed: 5 });
+    drawArt(c, flask(780, 1100, 1.6, P.green), grow(t - .2, .7), 6); say(c, 'Ahora:', CX, 330, t / .3, { size: 72 }); say(c, 'la ciencia', CX, 440, (t - .3) / .5, { size: 110, color: P.green, under: P.green }); }
+}
+function rMate(c, tau) {
+  const d = D('r-mate'), fr = [.5], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); page(c, P.yellow, 6);
+  if (b === 0) { drawArt(c, botS(300, 1060, 1.3), grow(t, .8), 8);
+    const n = Math.floor(clamp((t - .6) / 3.5, 0, 1) * 18); for (let i = 0; i < n; i++) drawArt(c, sheet(640 + (i % 2) * 40, 1200 - i * 26, .9, (i % 3 - 1) * .08), 1, 20 + i);
+    say(c, 'OpenAI · octubre', CX, 300, t / .5, { size: 60 }); say(c, '722', CX, 470, (t - .5) / .4, { size: 190, color: P.red }); say(c, 'manuscritos matemáticos', CX, 580, (t - .9) / .6, { size: 60 }); }
+  if (b === 1) { for (let i = 0; i < 18; i++) drawArt(c, sheet(640 + (i % 2) * 40, 1200 - i * 26, .9, (i % 3 - 1) * .08), 1, 20 + i);
+    drawArt(c, checkS(300, 1000, 110), grow(t - .3, .6), 30); say(c, 'Verificados', CX, 320, t / .5, { size: 76 }); say(c, 'solo 162', CX, 480, (t - .5) / .5, { size: 140, color: P.green, under: P.green });
+    say(c, 'con Lean, un verificador formal', CX, 600, (t - 1.2) / .6, { size: 46 }); }
+}
+function rFisica(c, tau) {
+  const d = D('r-fisica'), fr = [.45], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  if (b === 0) { page(c, '#d9ccff', 8); drawArt(c, stellaratorS(CX, 900, 380, tau), grow(t, 1.2), 10);
+    say(c, 'Fusión nuclear', CX, 330, t / .5, { size: 86, under: P.violet }); say(c, 'Google + U. de Maryland', CX, 1300, (t - 1.2) / .6, { size: 60 }); say(c, 'contraejemplos para', CX, 1400, (t - 1.8) / .5, { size: 50 }); say(c, 'diseñar reactores', CX, 1470, (t - 2.2) / .5, { size: 50 }); }
+  if (b === 1) { page(c, '#cfe6ff', 12); person(c, 300, 1040, 1.3, grow(t, .7), tau, { shirt: P.peach, skin: P.skin[0], style: 1, hair: '#6b3e26', arm: .6, seed: 8 });
+    drawArt(c, telescopeS(620, 1180, 1.2), grow(t - .2, .6), 14); const dim = Math.sin(tau * 2.3) > .75; drawArt(c, starS(820, 420, dim ? 48 : 64, dim ? '#e9d48a' : P.yellow), 1, 15);
+    drawArt(c, curveS(160, 640, 760, 120, tau), grow(t - .6, 1.2), 16); say(c, 'ilustración', 860, 610, t, { size: 30, color: '#8a8270' });
+    say(c, 'Un aficionado + datos de la NASA', CX, 300, t / .7, { size: 52 }); say(c, '¿un planeta nuevo?', CX, 1420, (t - 1.4) / .6, { size: 78, color: P.blue }); say(c, 'sin confirmar', CX, 1520, (t - 2.2) / .4, { size: 54, color: P.red }); }
+}
+function rTao(c, tau) {
+  const d = D('r-tao'), fr = [.38], b = beatOf(tau, d, fr), t = since(tau, d, fr, b); page(c, P.peach, 14);
+  if (b === 0) { drawArt(c, [box(160, 640, 760, 300, { fill: '#ffffff', w: 7 })], grow(t, .5), 17); say(c, 'Terence Tao', CX, 800, (t - .3) / .6, { size: 100 }); say(c, 'matemático', CX, 880, (t - .8) / .4, { size: 50, color: '#8a8270' }); }
+  if (b === 1) { for (let i = 0; i < 12; i++) { const u = ((tau * .7 + i / 12) % 1); drawArt(c, sheet(260 + (i * 97) % 560, 380 + u * 330, .7, i * .4), 1, 40 + i); }
+    drawArt(c, funnelS(CX, 820, 1), 1, 18); drawArt(c, brainS(CX, 1180, 1.2), grow(t, .6), 19);
+    say(c, 'indigestión de pruebas', CX, 1420, (t - .4) / .7, { size: 80, color: P.red, under: P.red }); say(c, 'más pruebas de las que podemos entender', CX, 1510, (t - 1.2) / .7, { size: 40 }); }
+}
+function rCierre(c, tau) {
+  const d = D('r-cierre'), fr = [.5], b = beatOf(tau, d, fr), t = since(tau, d, fr, b), end = d - 3; page(c, P.mint, 16);
+  if (b === 0) { person(c, 330, 900, 1.25, grow(t, .6), tau, { shirt: P.red, skin: P.skin[3], arm: .7, wave: 1, seed: 11 }); person(c, 760, 900, 1.25, grow(t - .3, .6), tau, { shirt: P.blue, skin: P.skin[1], style: 1, hair: '#3a2a1a', glasses: true, mouth: 'flat', seed: 12 });
+    drawArt(c, magnifierS(880, 1020, 1.2), grow(t - .6, .5), 21); say(c, 'descubrir', 330, 1300, (t - .4) / .4, { size: 58, color: P.red }); say(c, 'verificar', 760, 1300, (t - .7) / .4, { size: 58, color: P.blue });
+    say(c, 'al mismo ritmo', CX, 360, (t - 1) / .6, { size: 84, under: P.green }); }
+  if (b === 1) { say(c, '¿Estamos', CX, 700, t / .4, { size: 140 }); say(c, 'listos?', CX, 860, (t - .3) / .4, { size: 140, color: P.green, under: P.green }); }
+  resetT(c);
+  txt(c, 'Voz sintética · Animación con IA (Claude) · Ilustración', CX, 1730, { size: 32, weight: 400, color: '#6f6858', prog: clamp((tau - end) / 1.2, 0, 1) });
+  txt(c, 'Personajes genéricos, no personas reales · Fuentes en la descripción', CX, 1780, { size: 32, weight: 400, color: '#6f6858', prog: clamp((tau - end - .5) / 1.2, 0, 1) });
+}
+socialFilm('9:16', [['r-gancho', rGancho], ['r-mate', rMate], ['r-fisica', rFisica], ['r-tao', rTao], ['r-cierre', rCierre]]);
+</script>
