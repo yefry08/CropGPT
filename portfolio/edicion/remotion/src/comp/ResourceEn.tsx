@@ -4,7 +4,7 @@ import { C, FONT } from "../theme";
 import { useInOut } from "./anim";
 import { Kinetic, Label, Counter } from "./Text";
 import { Badge } from "./Badge";
-import { Contractor, VR, Medals, School } from "./Drawings";
+import { Contractor, VR, Medals, School, SolarHouse, Providers, Irradiance } from "./Drawings";
 import { MapPanel, Globe } from "./MapPanel";
 import { AwardList } from "./Extra";
 // Rótulos en inglés para el video de la Swarovski Foundation (horizontal).
@@ -41,6 +41,15 @@ const Panel: React.FC<{ r: any }> = ({ r }) => {
         <Label text="Closer to the communities it serves" color={C.white} size={26} delay={60} /></Place>;
     case "perseverance": return <Place b={P}><Kinetic text="PERSEVERANCE" size={96} color={C.gold} />
         <Label text="Technology for people who are usually left out" color={C.white} size={26} delay={30} /></Place>;
+    case "mission": return <Place b={P}><Kinetic text="AFFORDABLE" size={96} color={C.green} /><Kinetic text="RELIABLE" size={96} color={C.gold} delay={10} />
+        <Kinetic text="RENEWABLE ENERGY" size={72} delay={20} /><Label text="Easier to access" color={C.white} size={28} delay={40} /></Place>;
+    case "benergy": return <Place b={P}><SolarHouse w={560} /><Kinetic text="B ENERGY" size={96} color={C.gold} delay={6} />
+        <Label text="Find the right solar provider for your needs and location" color={C.white} size={24} delay={16} /></Place>;
+    case "experience": return <Place b={P}><div style={{ width: "100%", paddingLeft: 30 }}><AwardList color={C.green} size={44} every={60} items={[
+        ["CLIMATE INNOVATION", "Hackathon winner · 3R VideoGame"], ["ENTREPRENEURSHIP", "Founder · Contractor AI"], ["TECHNOLOGY", "Software & AI developer"]]} /></div>
+        <div style={{ marginTop: 30 }}><Kinetic text="PRACTICAL SOLUTIONS" size={60} color={C.gold} delay={150} /></div></Place>;
+    case "who": return <Place b={P}><Kinetic text="LIMITED RESOURCES" size={70} /><Kinetic text="LIMITED TECHNICAL KNOWLEDGE" size={50} color={C.dim} delay={12} />
+        <Kinetic text="MOST TO GAIN" size={96} color={C.green} delay={60} /></Place>;
     case "fortis": return <Place b={P}><Label text="Fortis Fellowship" color={C.dim} size={30} />
         <Kinetic text="HUMBLE BEGINNINGS" size={84} color={C.gold} delay={6} /><Kinetic text="ACROSS SECTORS & CONTINENTS" size={56} delay={40} /></Place>;
     case "giveback": return <Place b={P}><Kinetic text="GIVE BACK" size={120} color={C.green} />
@@ -81,6 +90,23 @@ export const ResourceEn: React.FC<{ r: any }> = ({ r }) => {
         <Place b={S.B}><Label text="From award-winning project" color={C.dim} size={34} /><Kinetic text="TO A TOOL EVERY SCHOOL CAN USE" size={86} color={C.green} delay={14} /></Place></AbsoluteFill>;
     case "close": return <Place b={S.full}><Kinetic text="CREATIVITY + TECHNOLOGY" size={110} />
         <Kinetic text="SUSTAINABILITY EVERY CHILD CAN EXPERIENCE" size={60} color={C.green} delay={24} /></Place>;
+    case "sunlight": return <Place b={S.full}><MapPanel w={1400} h={520} labels={false} pins={["rd", "bogota", "salvador", "saopaulo"]} bbox={[[-100, -35], [-30, 28]]} color={C.gold} />
+        <Kinetic text="SUNLIGHT IS NOT THE PROBLEM" size={88} color={C.gold} delay={10} /></Place>;
+    case "access": return <Place b={S.full}><Kinetic text="ACCESS IS" size={170} color={C.white} />
+        <Label text="Households and small businesses don't know where to start" color={C.gold} size={34} delay={20} /></Place>;
+    case "questions": return <Place b={S.full}><div style={{ width: "100%", paddingLeft: 260 }}><AwardList color={C.gold} size={66} every={55} items={[
+        ["WHICH PROVIDER CAN I TRUST?", "Providers"], ["WHAT WILL IT REALLY COST?", "Budget"], ["WILL IT WORK WHERE I LIVE?", "Location"]]} /></div></Place>;
+    case "nasapower": return <AbsoluteFill><Place b={S.A}><Irradiance w={720} /></Place>
+        <Place b={S.B}><Label text="Prototype" color={C.dim} size={34} /><Kinetic text="NASA POWER" size={110} color={C.gold} delay={6} />
+          <Kinetic text="+ GEOGRAPHIC SERVICES" size={56} color={C.blue} delay={20} /><Label text="Starting from the real conditions of each place" color={C.white} size={30} delay={40} /></Place></AbsoluteFill>;
+    case "steps": return <Place b={S.full}><div style={{ display: "flex", gap: 50, alignItems: "center" }}>
+        {[["1", "YOUR LOCATION", C.blue, 0], ["2", "YOUR NEEDS", C.gold, 25], ["3", "SOLAR RESOURCE", C.gold, 50]].map(([n, t, c, d]: any) =>
+          <div key={n} style={{ textAlign: "center" }}><Kinetic text={n} size={120} color={c} delay={d} /><Label text={t} color={C.white} size={30} delay={d + 6} /></div>)}</div>
+        <div style={{ marginTop: 40 }}><Providers w={900} /></div></Place>;
+    case "next": return <Place b={S.full}><div style={{ width: "100%", paddingLeft: 260 }}><AwardList color={C.green} size={66} every={65} items={[
+        ["ACCESSIBLE DIGITAL TOOLS", "Keep developing"], ["RENEWABLE ENERGY STAKEHOLDERS", "Collaborate"], ["INFORMED DECISIONS", "With communities"]]} /></div></Place>;
+    case "close_be": return <Place b={S.full}><Kinetic text="CLEAN ENERGY" size={150} color={C.green} />
+        <Kinetic text="EASIER TO UNDERSTAND" size={80} delay={20} /><Kinetic text="EASIER TO ADOPT" size={80} color={C.gold} delay={45} /></Place>;
     case "endcard": return <Place b={S.full}><Kinetic text="YEFRY NÚÑEZ" size={150} /><Label text={r.sub} color={C.green} size={40} delay={10} /></Place>;
     case "roots": return <Place b={S.full}><Kinetic text="SAN ANTONIO DE GUERRA" size={96} />
         <Label text="Raised by one parent · rural community · few opportunities" color={C.gold} size={32} delay={20} /></Place>;

@@ -6,7 +6,7 @@ import { ClipScene } from "./comp/Broll";
 import { ResourceEn } from "./comp/ResourceEn";
 // Videos de postulación en inglés (horizontal), uno por timeline_<nombre>.json que escribe build_application.py.
 // Narración continua, escenas visuales con tiempos absolutos y subtítulos por palabra (Whisper).
-const KEY = /^(3r|videogame|contractor|ai|hackcorruption|itu|oas|swarovski|billion|acts|nobel|twenty|fourteen|climate|yefry|núñez|dalai|lama|compassion|transparency)$/i;
+const KEY = /^(3r|videogame|contractor|ai|hackcorruption|itu|oas|swarovski|billion|acts|nobel|twenty|fourteen|climate|yefry|núñez|dalai|lama|compassion|transparency|solar|energy|nasa|power|clean|renewable)$/i;
 
 const Subs: React.FC<{ T: any }> = ({ T }) => {
   const t = useCurrentFrame() / useVideoConfig().fps;

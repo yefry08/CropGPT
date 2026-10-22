@@ -110,3 +110,60 @@ export const School: React.FC<{ w: number; en?: boolean }> = ({ w, en = false })
     })}
   </svg></Frame>;
 };
+
+// B Energy: una casa con paneles solares; el sol sale y los paneles se van "cargando"
+export const SolarHouse: React.FC<{ w: number }> = ({ w }) => {
+  const f = useCurrentFrame();
+  const sun = interpolate(f, [0, 40], [60, 0], { extrapolateRight: "clamp" });
+  const charge = Math.min(1, Math.max(0, (f - 25) / 50));
+  return <Frame w={w}><svg viewBox="0 0 400 300" width={w} style={{ overflow: "visible" }}>
+    <g transform={`translate(320 ${70 + sun})`}>
+      <g transform={`rotate(${f * .8})`}>{Array.from({ length: 12 }, (_, i) =>
+        <rect key={i} x={-3} y={-58} width={6} height={16} rx={3} fill={C.gold} transform={`rotate(${i * 30})`} />)}</g>
+      <circle r={34} fill={C.gold} /></g>
+    <path d="M60 150 L170 80 L280 150 Z" fill="#1B2333" stroke={C.green} strokeWidth={4} />
+    {[0, 1, 2].map(i => <g key={i} transform={`translate(${118 + i * 36} ${126 - i * 0}) skewX(-20)`}>
+      <rect width={32} height={20} fill={C.blue} opacity={.35 + .65 * charge} stroke="#9CC6FF" strokeWidth={1.5} />
+      <line x1={16} y1={0} x2={16} y2={20} stroke="#9CC6FF" strokeWidth={1} /></g>)}
+    <rect x={80} y={150} width={180} height={110} fill="#1B2333" stroke={C.green} strokeWidth={4} />
+    <rect x={155} y={200} width={34} height={60} fill={C.green} opacity={.5} />
+    <rect x={100} y={170} width={36} height={30} rx={3} fill={C.gold} opacity={.25 + .6 * charge} />
+    <rect x={208} y={170} width={36} height={30} rx={3} fill={C.gold} opacity={.25 + .6 * charge} />
+    <line x1={20} y1={260} x2={380} y2={260} stroke={C.line} strokeWidth={3} />
+  </svg></Frame>;
+};
+
+// tres proveedores; uno queda resaltado como el que encaja
+export const Providers: React.FC<{ w: number }> = ({ w }) => {
+  const f = useCurrentFrame();
+  return <div style={{ width: w, display: "flex", gap: w * .05, justifyContent: "center" }}>
+    {["PROVIDER A", "PROVIDER B", "PROVIDER C"].map((p, i) => {
+      const s = interpolate(f, [i * 8, i * 8 + 12], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+      const pick = i === 1 && f > 55;
+      return <svg key={i} width={w * .28} viewBox="0 0 120 160" style={{ opacity: s, transform: `translateY(${(1 - s) * 30}px) scale(${pick ? 1.08 : 1})` }}>
+        <rect x={4} y={4} width={112} height={152} rx={12} fill={C.bg2} stroke={pick ? C.green : C.line} strokeWidth={pick ? 5 : 3} />
+        <circle cx={60} cy={44} r={20} fill={C.gold} opacity={.8} />
+        {[0, 1, 2].map(j => <rect key={j} x={22} y={80 + j * 16} width={j === 2 ? 46 : 76} height={7} rx={3} fill="#4A5468" />)}
+        <text x={60} y={140} textAnchor="middle" fontSize={11} fontWeight={800} fill={C.dim} fontFamily="Inter">{p}</text>
+        {pick && <g transform="translate(96 22)"><circle r={16} fill={C.green} /><path d="M-7 0 l5 5 l9 -10" stroke="#fff" strokeWidth={3.5} fill="none" /></g>}
+      </svg>;
+    })}
+  </div>;
+};
+
+// datos de radiación solar: una cuadrícula que se colorea por celda, con un pin
+export const Irradiance: React.FC<{ w: number }> = ({ w }) => {
+  const f = useCurrentFrame();
+  const cols = 14, rows = 8;
+  return <Frame w={w}><svg viewBox="0 0 420 260" width={w}>
+    {Array.from({ length: cols * rows }, (_, k) => {
+      const c = k % cols, r = Math.floor(k / cols);
+      const v = .5 + .5 * Math.sin(c * .55 + r * .35) * Math.cos(r * .5 - c * .2);
+      const on = f > (c + r) * 1.6;
+      return <rect key={k} x={10 + c * 28.5} y={10 + r * 28.5} width={26} height={26} rx={4}
+        fill={v > .66 ? C.gold : v > .4 ? "#B9862A" : "#5A4A2A"} opacity={on ? .35 + .6 * v : .05} />;
+    })}
+    {f > 45 && <g transform="translate(240 120)"><circle r={14} fill="none" stroke={C.white} strokeWidth={4} />
+      <circle r={5} fill={C.white} /><circle r={14 + (f % 30)} fill="none" stroke={C.white} strokeWidth={2} opacity={1 - (f % 30) / 30} /></g>}
+  </svg></Frame>;
+};
