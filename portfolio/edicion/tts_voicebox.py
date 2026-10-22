@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Narrate a script with your cloned voice through the local Voicebox server (http://127.0.0.1:17493).
 Each line is tried with up to 4 seeds and kept when Whisper hears the script back best.
-Lines with "real": [a, b] are not synthesized (that span is taken from your own recording by the cut script).
+Optional "tts_variants": alternative spellings tried in turn. Lines with "real": [a, b] are not synthesized (that span is taken from your own recording by the cut script).
 Usage: python3 tts_voicebox.py zfellows_guion.json trabajo/zfellows [--lang en] [--force]
 """
 import difflib, json, re, shutil, subprocess, sys, time, urllib.request
@@ -37,15 +37,19 @@ for item in json.loads(GUION.read_text()):
     if "real" in item: continue
     dst = OUT / f"{item['id']}.wav"
     if dst.exists() and "--force" not in sys.argv: continue
-    text, best = item.get("tts", item["say"]), None
-    for seed in (7, 11, 23, 42):
+    texts = item.get("tts_variants") or [item.get("tts", item["say"])]
+    need_ai = "AI" in item["say"].split() or "AI," in item["say"] or "AI." in item["say"]
+    best = None
+    for text, seed in [(x, s) for x in texts for s in (7, 11, 23)]:
         g = call("/generate", {"profile_id": PROFILE, "text": text, "language": LANG, "engine": "chatterbox", "seed": seed})
         h = wait(g["id"])
         if h["status"] != "completed": print(item["id"], seed, "failed", h.get("error")); continue
         src = Path("/root/voicebox-data/generations") / f"{g['id']}.wav"
         sc, heard = score(src, text); print(f"{item['id']} seed {seed}: {sc:.0%} «{heard}»", flush=True)
+        ai_ok = not need_ai or re.search(r"\bA\.? ?I\b", heard)   # "AI" must be heard as AI, not "eye"/"OI"
+        if ai_ok: sc += 1                                            # any take that says AI beats one that doesn't
         if best is None or sc > best[0]: best = (sc, src)
-        if sc >= .97: break
+        if ai_ok and sc >= 1.9: break
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(best[1]), "-af",
                     "silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=start_periods=1:start_threshold=-45dB,areverse",
                     "-ar", "48000", "-ac", "1", str(dst)], check=True)

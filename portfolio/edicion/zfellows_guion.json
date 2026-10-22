@@ -1,11 +1,42 @@
 [
- {"id": "Z0", "say": "I am Yefry Núñez,", "real": [0.0, 3.25]},
- {"id": "Z1", "say": "a machine learning engineer from the Dominican Republic, and the founder of Contractor AI.",
-  "tts": "a machine learning engineer from the Dominican Republic, and the founder of Contractor A.I."},
- {"id": "Z2", "say": "I won first place at HackCorruption in Bogotá, the Organization of American States recognized the project, and it has earned fifteen thousand dollars in prizes. I also founded AI Safety Dominicana, my country's first AI safety community.",
-  "tts": "I won first place at Hack Corruption in Bogotá, the Organization of American States recognized the project, and it has earned fifteen thousand dollars in prizes. I also founded A.I. Safety Dominicana, my country's first A.I. safety community."},
- {"id": "Z3", "say": "I studied medicine before switching to computer science. When I realize I'm on the wrong path, I change course, even when it costs me time."},
- {"id": "Z4", "say": "Contractor AI reads live public procurement data from eight Latin American countries and flags contracts priced far above similar past ones, with the evidence behind every alert, so overpricing is caught before the money is gone.",
-  "tts": "Contractor A.I. reads live public procurement data from eight Latin American countries and flags contracts priced far above similar past ones, with the evidence behind every alert, so overpricing is caught before the money is gone."},
- {"id": "Z5", "say": "I built it myself, on about a hundred dollars a month. Now I want to put it in the hands of the people who can act on it. Thanks for watching."}
+ {
+  "id": "Z0",
+  "say": "I am Yefry Núñez,",
+  "real": [
+   0.0,
+   3.25
+  ]
+ },
+ {
+  "id": "Z1",
+  "say": "a machine learning engineer from the Dominican Republic, and the founder of Contractor AI.",
+  "tts": "a machine learning engineer from the Dominican Republic, and the founder of Contractor A.I.",
+  "tts_variants": [
+   "a machine learning engineer from the Dominican Republic, and the founder of Contractor A I.",
+   "a machine learning engineer from the Dominican Republic, and the founder of Contractor, A. I.",
+   "a machine learning engineer from the Dominican Republic, and the founder of Contractor Ay Eye."
+  ]
+ },
+ {
+  "id": "Z2",
+  "say": "I won first place at HackCorruption in Bogotá, the Organization of American States recognized the project, and it has earned fifteen thousand dollars in prizes. I also founded my country's first AI safety community.",
+  "tts": "I won first place at Hack Corruption in Bogotá, the Organization of American States recognized the project, and it has earned fifteen thousand dollars in prizes. I also founded A.I. Safety Dominicana, my country's first A.I. safety community.",
+  "tts_variants": [
+   "I won first place at Hack Corruption in Bogotá, the Organization of American States recognized the project, and it has earned fifteen thousand dollars in prizes. I also founded my country's first A I safety community.",
+   "I won first place at Hack Corruption in Bogotá, the Organization of American States recognized the project, and it has earned fifteen thousand dollars in prizes. I also founded my country's first Ay Eye safety community."
+  ]
+ },
+ {
+  "id": "Z3",
+  "say": "I studied medicine before switching to computer science. When I realize I'm on the wrong path, I change course, even when it costs me time."
+ },
+ {
+  "id": "Z4",
+  "say": "Contractor AI reads live public procurement data from eight Latin American countries and flags contracts priced far above similar past ones, with the evidence behind every alert, so overpricing is caught before the money is gone.",
+  "tts": "Contractor A.I. reads live public procurement data from eight Latin American countries and flags contracts priced far above similar past ones, with the evidence behind every alert, so overpricing is caught before the money is gone."
+ },
+ {
+  "id": "Z5",
+  "say": "I built it myself, on about a hundred dollars a month. Now I want to put it in the hands of the people who can act on it. Thanks for watching."
+ }
 ]
