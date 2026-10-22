@@ -4,7 +4,7 @@ over your own take (entrada/zfellows_escena.mp4). The opening "I am Yefry Núñe
 Adds English captions, title cards (facts from your application) and an end card.
 Usage: python3 zfellows_voicebox.py  →  salida/zfellows_voicebox.mp4
 """
-import json, re, subprocess
+import difflib, json, re, subprocess
 from pathlib import Path
 
 HERE = Path(__file__).parent
@@ -13,7 +13,10 @@ TTS = HERE / "trabajo/zfellows"
 OUT = HERE / "salida/zfellows_voicebox.mp4"
 ASS = HERE / "trabajo/zfellows_vb.ass"
 GUION = json.loads((HERE / "zfellows_guion.json").read_text())
-W, H, FPS, GAP, END = 1080, 1920, 30, 0.35, 5.0
+W, H, FPS, END = 1080, 1920, 30, 5.0
+# pauses so it breathes like a person: between blocks (varied), after a sentence, after a comma
+GAPS = {"Z1": .55, "Z2": .8, "Z3": .9, "Z4": .85, "Z5": .75}
+SENT_PAUSE, COMMA_PAUSE = .45, .16
 # title cards, keyed by script line: (big line, small line)
 CARDS = {"Z1": [("ML ENGINEER", "Dominican Republic"), ("FOUNDER", "Contractor AI")],
          "Z2": [("1ST PLACE", "HackCorruption · Bogotá"), ("RECOGNIZED BY THE OAS", "Organization of American States"),
@@ -35,15 +38,42 @@ def chunks(text, n=7):
     if cur: out.append(" ".join(cur))
     return out
 
+def breathe(src, dst, script):
+    """Add pauses where the script has punctuation: SENT_PAUSE after a sentence, COMMA_PAUSE after a comma.
+    The cut goes in the middle of the gap between the two words (Whisper word timestamps), so no word is clipped."""
+    ws = word_times(src, 0.0, text=True); sw = script.split(); cuts = []
+    norm = lambda w: re.sub(r"[^a-z0-9]", "", w.lower())
+    # match script words to heard words (Whisper may write "$100" for "a hundred dollars")
+    sm = difflib.SequenceMatcher(None, [norm(w) for w in sw], [norm(w[2]) for w in ws], autojunk=False)
+    heard_of = {i: j for blk in sm.get_matching_blocks() for i, j in zip(range(blk.a, blk.a + blk.size), range(blk.b, blk.b + blk.size))}
+    for k in range(len(sw) - 1):
+        extra = SENT_PAUSE if re.search(r"[.!?]$", sw[k]) else COMMA_PAUSE if sw[k].endswith(",") else 0
+        j = heard_of.get(k)
+        if extra and j is not None and j + 1 < len(ws): cuts.append(((ws[j][1] + ws[j + 1][0]) / 2, extra))
+    parts, prev, f = [], 0.0, []
+    for k, (m, extra) in enumerate(cuts):
+        f.append(f"[0:a]atrim={prev}:{m},asetpts=PTS-STARTPTS[p{k}];aevalsrc=0:d={extra}:s=48000[z{k}]"); parts += [f"[p{k}]", f"[z{k}]"]; prev = m
+    f.append(f"[0:a]atrim={prev},asetpts=PTS-STARTPTS[pl]"); parts.append("[pl]")
+    f.append(f"{''.join(parts)}concat=n={len(parts)}:v=0:a=1[o]")
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(src), "-filter_complex", ";".join(f), "-map", "[o]", "-ar", "48000", "-ac", "1", str(dst)], check=True)
+
+def word_times(wav, t0, text=False):
+    from faster_whisper import WhisperModel
+    global ASR
+    if "ASR" not in globals(): ASR = WhisperModel("small", device="cpu", compute_type="int8")
+    return [(t0 + w.start, t0 + w.end) + ((w.word.strip(),) if text else ()) for s in ASR.transcribe(str(wav), language="en", word_timestamps=True)[0] for w in s.words]
+
 def main():
     # audio timeline
     real = next(g for g in GUION if "real" in g); ra, rb = real["real"]
-    t0, spans, inputs, filt = 0.0, {}, ["-i", str(SRC)], []
+    t0, spans, words, inputs, filt = 0.0, {}, {}, ["-i", str(SRC)], []
     spans[real["id"]] = (0.0, rb - ra); t0 = rb - ra + .15
     for k, g in enumerate([g for g in GUION if "real" not in g]):
-        p = TTS / f"{g['id']}.wav"; d = dur(p); spans[g["id"]] = (t0, t0 + d); inputs += ["-i", str(p)]
-        filt.append(f"[{k + 1}:a]adelay={int(t0 * 1000)}|{int(t0 * 1000)},volume=-1dB[n{k}]"); t0 += d + GAP
-    body = t0 - GAP + .4; total = body + END; n = len(GUION) - 1
+        p = TTS / f"{g['id']}_pausas.wav"; breathe(TTS / f"{g['id']}.wav", p, g["say"])
+        t0 += GAPS.get(g["id"], .6) if k else 0
+        d = dur(p); spans[g["id"]] = (t0, t0 + d); words[g["id"]] = word_times(p, t0); inputs += ["-i", str(p)]
+        filt.append(f"[{k + 1}:a]adelay={int(t0 * 1000)}|{int(t0 * 1000)},volume=-1dB[n{k}]"); t0 += d
+    body = t0 + .6; total = body + END; n = len(GUION) - 1
     filt.append(f"[0:a]atrim={ra}:{rb},asetpts=PTS-STARTPTS,highpass=f=80,afftdn=nf=-28,loudnorm=I=-16[r]")
     filt.append(f"[r]{''.join(f'[n{k}]' for k in range(n))}amix=inputs={n + 1}:normalize=0,apad,atrim=0:{total},loudnorm=I=-14:TP=-1.5:LRA=9[aout]")
     # captions + cards
@@ -56,9 +86,15 @@ def main():
            "Style: E2,DejaVu Sans,50,&H003FD2FF,&H00FFFFFF,&H00000000,&H64000000,1,0,0,0,100,100,1,0,1,4,2,5,60,60,0,1",
            "", "[Events]", "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text"]
     for g in GUION:
-        a, b = spans[g["id"]]; cs = chunks(g["say"]); tot = sum(len(x) for x in cs); acc = a
-        for x in cs:
-            d = (b - a) * len(x) / tot; ass.append(f"Dialogue: 0,{t(acc)},{t(acc + d - .04)},Sub,,0,0,0,,{{\\fad(60,60)}}{x}"); acc += d
+        a, b = spans[g["id"]]; cs = chunks(g["say"]); ws = words.get(g["id"], []); nw = sum(len(x.split()) for x in cs)
+        if len(ws) == nw:   # captions follow the words actually spoken, pauses included
+            i = 0
+            for x in cs:
+                k = len(x.split()); ass.append(f"Dialogue: 0,{t(ws[i][0])},{t(ws[i + k - 1][1] + .25)},Sub,,0,0,0,,{{\\fad(60,60)}}{x}"); i += k
+        else:
+            tot = sum(len(x) for x in cs); acc = a
+            for x in cs:
+                d = (b - a) * len(x) / tot; ass.append(f"Dialogue: 0,{t(acc)},{t(acc + d - .04)},Sub,,0,0,0,,{{\\fad(60,60)}}{x}"); acc += d
         cards = CARDS.get(g["id"], [])
         for k, (l1, l2) in enumerate(cards):
             ca = a + (b - a) * k / len(cards) + .1; cb = a + (b - a) * (k + 1) / len(cards) - .1
