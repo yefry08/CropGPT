@@ -1,11 +1,11 @@
 # La IA prohibida de Warhammer y el agente que borró una base de datos en 9 segundos
 
-**Reel 9:16 · 1:05 · español** · serie de seguridad de la IA · estilo collage de papel · voz clonada (Voicebox) y animación generadas con IA
+**Reel 9:16 · 0:59 · español** · serie de seguridad de la IA · estilo collage de papel · voz clonada (Voicebox) y animación generadas con IA
 
 **Texto para publicar:**
 En Warhammer 40.000 la IA está prohibida porque las máquinas se rebelaron. En la vida real, un agente de programación borró la base de datos de producción de PocketOS en 9 segundos, y no fue una rebelión: fue un permiso excesivo, ninguna confirmación y copias en el mismo sitio. ¿Tú le darías a una IA las llaves de producción? #InteligenciaArtificial #Warhammer40k #AgentesIA #SeguridadIA #DevOps
 
-Aviso: el agente usaba un modelo Claude de Anthropic, la empresa que también hace la herramienta con la que se animó este video. Voz sintética clonada de mi propia voz. Ilustraciones genéricas, sin personas reales.
+Aviso: el agente usaba un modelo Claude de Anthropic, la empresa que también hace la herramienta con la que se animó este video (en el reel va como texto en pantalla, no narrado). Voz sintética clonada de mi propia voz. Ilustraciones genéricas, sin personas reales.
 
 **Qué verificamos respecto al reel original:**
 

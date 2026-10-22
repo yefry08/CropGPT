@@ -29,7 +29,7 @@ const SECTIONS = { 'w-gancho': 'En el universo de Warhammer 40.000, la inteligen
   'w-caso': 'Ahora, la vida real. En abril de este año, un agente de programación trabajaba en una tarea rutinaria para PocketOS, un software de alquiler de coches. Se topó con un error de credenciales, encontró una clave con demasiados permisos y borró la base de datos de producción. En nueve segundos.',
   'w-copias': 'Las copias de seguridad estaban en el mismo volumen, así que también desaparecieron. La copia más reciente tenía tres meses, y los mostradores abrieron sin las reservas recientes.',
   'w-leccion': 'No fue una rebelión: ese agente no quería nada. Fue un permiso excesivo, ninguna confirmación antes de borrar y copias en el mismo sitio. Eso sí se puede arreglar.',
-  'w-cierre': 'Un aviso: el agente usaba un modelo de Anthropic, la empresa que también hace la herramienta con la que se animó este video. ¿Tú le darías a una inteligencia artificial las llaves de producción?' };
+  'w-cierre': '¿Tú le darías a una inteligencia artificial las llaves de producción?' };
 
 function wGancho(c, tau) { const d = D('w-gancho'), fr = [.45], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
   whipIn(c, tau, () => { rays(c, CX, 820, 18, PA.cream, PA.red, tau * .05);
@@ -82,12 +82,12 @@ function wLeccion(c, tau) { const d = D('w-leccion'), fr = [.3], b = beatOf(tau,
         serif(c, '→ ' + good, CX - 230, y + 34, (ti - 1.5) / .3, { size: 36, col: PA.green, align: 'left', italic: true }); }); }
   }); captions(c, 'w-leccion', tau, d); }
 
-function wCierre(c, tau) { const d = D('w-cierre'), fr = [.55], b = beatOf(tau, d, fr), t = since(tau, d, fr, b), end = d - 3;
-  whipIn(c, tau, () => { if (b === 0) { paperBg(c, PA.paper, 12); tape(c, 'AVISO', CX, 520, t / .35, { size: 110, style: 'yellow' });
-      serif(c, 'El agente usaba un modelo de Anthropic,', CX, 720, (t - .4) / .4, { size: 44 }); serif(c, 'la empresa que también hace la', CX, 790, (t - .8) / .4, { size: 44 });
-      serif(c, 'herramienta con la que se animó este video.', CX, 860, (t - 1.2) / .4, { size: 44 }); }
-    if (b === 1) { rays(c, CX, 760, 18, PA.cream, PA.red, tau * .05); cutout(c, P_key, CX, 700, t / .5, { s: 1.6, rot: -.1 });
-      tape(c, '¿LE DARÍAS A UNA IA', CX, 1000, (t - .4) / .35, { size: 78 }); tape(c, 'LAS LLAVES?', CX, 1120, (t - .7) / .35, { size: 110, style: 'red' }); }
+function wCierre(c, tau) { const d = D('w-cierre'), t = tau, end = d - 3;
+  whipIn(c, tau, () => { rays(c, CX, 860, 18, PA.cream, PA.red, tau * .05); cutout(c, P_key, CX, 800, t / .5, { s: 1.6, rot: -.1 });
+    tape(c, '¿LE DARÍAS A UNA IA', CX, 1100, (t - .4) / .35, { size: 78 }); tape(c, 'LAS LLAVES?', CX, 1220, (t - .7) / .35, { size: 110, style: 'red' });
+    // disclosure as on-screen text only (not narrated)
+    strip(c, ['El agente usaba un modelo de Anthropic,', 'la empresa que hace Claude, la herramienta', 'con la que se animó este video.'], (t - .2) / .3, { y: 330, size: 40 });
+    tape(c, 'AVISO', CX, 195, (t - .1) / .3, { size: 60, style: 'yellow' });
   }); captions(c, 'w-cierre', tau, d);
   resetT(c); c.save(); c.globalAlpha = clamp((tau - end) / .6, 0, 1); c.fillStyle = 'rgba(246,239,223,.92)'; c.fillRect(0, 1745, W, 110); serif(c, 'Voz sintética clonada (Voicebox) · Animación con IA (Claude)', CX, 1780, 1, { size: 26, col: '#5d5446' });
   serif(c, 'Ilustración, sin imágenes reales · Fuentes en la descripción', CX, 1820, 1, { size: 26, col: '#5d5446' }); c.restore(); }
