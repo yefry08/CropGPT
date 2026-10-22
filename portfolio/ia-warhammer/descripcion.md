@@ -11,7 +11,7 @@ Aviso: el agente usaba un modelo Claude de Anthropic, la empresa que también ha
 
 | El reel original decía | Lo que dicen las fuentes |
 |---|---|
-| Una IA "se volvió loca" y borró la base de datos | El agente (Cursor con Claude Opus 4.6) hacía una tarea rutinaria en staging, chocó con un error de credenciales y usó un token de API con demasiados permisos que encontró en un archivo no relacionado. Borró el volumen de Railway con la base de datos de producción en unos 9 segundos. |
+| Una IA borró la base de datos de una empresa | El agente (Cursor con Claude Opus 4.6) hacía una tarea rutinaria en staging, chocó con un error de credenciales y usó un token de API con demasiados permisos que encontró en un archivo no relacionado. Borró el volumen de Railway con la base de datos de producción en unos 9 segundos. |
 | Se perdieron todas las copias | Las copias de seguridad estaban en el mismo volumen y desaparecieron con él. La copia más reciente en otro lugar tenía 3 meses. |
 | Pérdidas de millones de euros | Sin fuente verificable; no lo usamos. |
 | En Warhammer la IA está prohibida | Confirmado en el lore: tras la rebelión de los Hombres de Hierro (Men of Iron), la "inteligencia abominable" es herejía en el Imperio. |
