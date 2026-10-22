@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Narrate a script with your cloned voice through the local Voicebox server (http://127.0.0.1:17493).
-Each line is tried with up to 4 seeds and kept when Whisper hears the script back best.
+Each line is tried with up to 3 seeds per spelling and kept when Whisper hears the script back best.
 Optional "tts_variants": alternative spellings tried in turn. Lines with "real": [a, b] are not synthesized (that span is taken from your own recording by the cut script).
 Usage: python3 tts_voicebox.py zfellows_guion.json trabajo/zfellows [--lang en] [--force]
 """
@@ -47,9 +47,10 @@ for item in json.loads(GUION.read_text()):
         src = Path("/root/voicebox-data/generations") / f"{g['id']}.wav"
         sc, heard = score(src, text); print(f"{item['id']} seed {seed}: {sc:.0%} «{heard}»", flush=True)
         ai_ok = not need_ai or re.search(r"\bA\.? ?I\b", heard)   # "AI" must be heard as AI, not "eye"/"OI"
+        raw = sc
         if ai_ok: sc += 1                                            # any take that says AI beats one that doesn't
         if best is None or sc > best[0]: best = (sc, src)
-        if ai_ok and sc >= 1.9: break
+        if ai_ok and raw >= .97: break
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(best[1]), "-af",
                     "silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=start_periods=1:start_threshold=-45dB,areverse",
                     "-ar", "48000", "-ac", "1", str(dst)], check=True)
