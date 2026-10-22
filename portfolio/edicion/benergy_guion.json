@@ -1,16 +1,25 @@
 [
  {
   "id": "B01",
-  "say": "Hi, I'm Yefry Núñez, a software and AI developer from the Dominican Republic.",
-  "tts": "Hi, I'm Yefry Núñez, a software and A I developer from the Dominican Republic.",
+  "say": "Hi, I'm Yefry Núñez, a twenty-seven-year-old software and AI developer from San Antonio de Guerra, a small town in the Dominican Republic.",
   "visual": "cam",
-  "res": "name"
+  "res": "name",
+  "reuse": "trabajo/swarovski/S01.wav"
  },
  {
   "id": "B02",
   "say": "Across the Dominican Republic and Latin America, sunlight is not the problem. Access is. Many households and small businesses are interested in solar energy, but they don't know where to start.",
   "visual": "full",
-  "res": [["sunlight", null], ["access", "access"]]
+  "res": [
+   [
+    "sunlight",
+    null
+   ],
+   [
+    "access",
+    "access"
+   ]
+  ]
  },
  {
   "id": "B03",
@@ -45,6 +54,12 @@
   "res": "steps"
  },
  {
+  "id": "B07b",
+  "say": "For a family, that means choosing a system that fits their home and their budget. For a small business, it means planning its energy with real information, not guesswork.",
+  "visual": "cam",
+  "res": "fit"
+ },
+ {
   "id": "B08",
   "say": "My experience in climate innovation, entrepreneurship and technology has taught me that good ideas only matter when people can actually use them. It has strengthened my commitment to practical solutions for the energy transition.",
   "visual": "cam",
@@ -61,6 +76,12 @@
   "say": "Especially for people and small businesses with limited resources or technical knowledge. They often have the most to gain from clean energy, and the least information to choose it.",
   "visual": "cam",
   "res": "who"
+ },
+ {
+  "id": "B10b",
+  "say": "Solar energy should not be a privilege for those who already understand it.",
+  "visual": "full",
+  "res": "privilege"
  },
  {
   "id": "B11",

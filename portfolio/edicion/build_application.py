@@ -18,7 +18,7 @@ W = HERE / f"trabajo/{NAME}"
 PUB = HERE / "remotion/public"
 OUT = HERE / f"salida/{NAME}_application.mp4"
 GUION = json.loads((HERE / f"{NAME}_guion.json").read_text())
-LEAD, GAP, TAIL = 0.5, 0.45, 3.0
+LEAD, GAP, TAIL = 0.5, {"benergy": 0.85}.get(NAME, 0.45), 3.0
 
 # Tomas de cámara (suéter rosado), en orden: parque y luego la fuente. Revisadas segundo a segundo; se saltan
 # los momentos en que sales de cuadro (crudo 8–9.5 s, 66.8–68 s) y el final de la toma 2 (te tapas la cara).

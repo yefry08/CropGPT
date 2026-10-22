@@ -48,6 +48,8 @@ const Panel: React.FC<{ r: any }> = ({ r }) => {
     case "experience": return <Place b={P}><div style={{ width: "100%", paddingLeft: 30 }}><AwardList color={C.green} size={44} every={60} items={[
         ["CLIMATE INNOVATION", "Hackathon winner · 3R VideoGame"], ["ENTREPRENEURSHIP", "Founder · Contractor AI"], ["TECHNOLOGY", "Software & AI developer"]]} /></div>
         <div style={{ marginTop: 30 }}><Kinetic text="PRACTICAL SOLUTIONS" size={60} color={C.gold} delay={150} /></div></Place>;
+    case "fit": return <Place b={P}><Kinetic text="FAMILIES" size={96} color={C.gold} /><Label text="A system that fits their home and budget" color={C.white} size={26} delay={10} />
+        <div style={{ marginTop: 40 }}><Kinetic text="SMALL BUSINESSES" size={80} color={C.green} delay={90} /></div><Label text="Real information, not guesswork" color={C.white} size={26} delay={100} /></Place>;
     case "who": return <Place b={P}><Kinetic text="LIMITED RESOURCES" size={70} /><Kinetic text="LIMITED TECHNICAL KNOWLEDGE" size={50} color={C.dim} delay={12} />
         <Kinetic text="MOST TO GAIN" size={96} color={C.green} delay={60} /></Place>;
     case "fortis": return <Place b={P}><Label text="Fortis Fellowship" color={C.dim} size={30} />
@@ -105,6 +107,8 @@ export const ResourceEn: React.FC<{ r: any }> = ({ r }) => {
         <div style={{ marginTop: 40 }}><Providers w={900} /></div></Place>;
     case "next": return <Place b={S.full}><div style={{ width: "100%", paddingLeft: 260 }}><AwardList color={C.green} size={66} every={65} items={[
         ["ACCESSIBLE DIGITAL TOOLS", "Keep developing"], ["RENEWABLE ENERGY STAKEHOLDERS", "Collaborate"], ["INFORMED DECISIONS", "With communities"]]} /></div></Place>;
+    case "privilege": return <Place b={S.full}><Kinetic text="SOLAR ENERGY" size={130} color={C.gold} />
+        <Kinetic text="SHOULD NOT BE A PRIVILEGE" size={90} delay={20} /></Place>;
     case "close_be": return <Place b={S.full}><Kinetic text="CLEAN ENERGY" size={150} color={C.green} />
         <Kinetic text="EASIER TO UNDERSTAND" size={80} delay={20} /><Kinetic text="EASIER TO ADOPT" size={80} color={C.gold} delay={45} /></Place>;
     case "endcard": return <Place b={S.full}><Kinetic text="YEFRY NÚÑEZ" size={150} /><Label text={r.sub} color={C.green} size={40} delay={10} /></Place>;
