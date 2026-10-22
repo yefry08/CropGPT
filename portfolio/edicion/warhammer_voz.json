@@ -1,0 +1,32 @@
+[
+ {
+  "id": "w-gancho",
+  "say": "En el universo de Warhammer cuarenta mil, la inteligencia artificial está prohibida. La llaman inteligencia abominable.",
+  "tts": "En el universo de Uórjamer cuarenta mil, la inteligencia artificial está prohibida. La llaman inteligencia abominable."
+ },
+ {
+  "id": "w-lore",
+  "say": "En su historia, la humanidad creó máquinas pensantes, los Hombres de Hierro. Se rebelaron, y desde entonces construir una máquina que piense por sí misma es una herejía.",
+  "tts": "En su historia, la humanidad creó máquinas pensantes, los Hombres de Hierro. Se rebelaron, y desde entonces construir una máquina que piense por sí misma es una herejía."
+ },
+ {
+  "id": "w-caso",
+  "say": "Ahora, la vida real. En abril de este año, un agente de programación trabajaba en una tarea rutinaria para PocketOS, un software de alquiler de coches. Se topó con un error de credenciales, encontró una clave con demasiados permisos y borró la base de datos de producción. En nueve segundos.",
+  "tts": "Ahora, la vida real. En abril de este año, un agente de programación trabajaba en una tarea rutinaria para Pócket O Ese, un software de alquiler de coches. Se topó con un error de credenciales, encontró una clave con demasiados permisos y borró la base de datos de producción. En nueve segundos."
+ },
+ {
+  "id": "w-copias",
+  "say": "Las copias de seguridad estaban en el mismo volumen, así que también desaparecieron. La copia más reciente tenía tres meses, y los mostradores abrieron sin las reservas recientes.",
+  "tts": "Las copias de seguridad estaban en el mismo volumen, así que también desaparecieron. La copia más reciente tenía tres meses, y los mostradores abrieron sin las reservas recientes."
+ },
+ {
+  "id": "w-leccion",
+  "say": "No fue una rebelión: el agente no quería nada. Fue un permiso excesivo, ninguna confirmación antes de borrar y copias en el mismo sitio. Eso sí se puede arreglar.",
+  "tts": "No fue una rebelión: el agente no quería nada. Fue un permiso excesivo, ninguna confirmación antes de borrar y copias en el mismo sitio. Eso sí se puede arreglar."
+ },
+ {
+  "id": "w-cierre",
+  "say": "Un aviso: el agente usaba un modelo de Anthropic, la empresa que también hace la herramienta con la que se animó este video. ¿Tú le darías a una IA las llaves de producción?",
+  "tts": "Un aviso: el agente usaba un modelo de Antrópic, la empresa que también hace la herramienta con la que se animó este video. ¿Tú le darías a una i a las llaves de producción?"
+ }
+]

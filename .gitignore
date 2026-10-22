@@ -65,3 +65,8 @@ portfolio/ia-productividad/audio-reel
 portfolio/ia-productividad/*.mp4
 portfolio/ia-productividad/*.log
 portfolio/ia-productividad/out
+portfolio/ia-warhammer/audio
+portfolio/ia-warhammer/audio-reel
+portfolio/ia-warhammer/*.mp4
+portfolio/ia-warhammer/*.log
+portfolio/ia-warhammer/out

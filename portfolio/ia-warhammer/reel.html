@@ -1,0 +1,96 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Inteligencia abominable · reel</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{height:min(92vh,960px);width:auto;background:#fff;box-shadow:0 0 0 1px #333}
+</style>
+<canvas id="c"></canvas>
+<script src="timing-reel.js"></script>
+<script src="core.js"></script>
+<script src="kit.js"></script>
+<script src="collage.js"></script>
+<script>
+/* BRIEF: AI-safety series reel (9:16, paper-collage style). Warhammer 40k's "Abominable Intelligence" (fiction: the Men of
+   Iron and the Cybernetic Revolt) vs. the real PocketOS incident (late April 2026): a Cursor coding agent running an
+   Anthropic Claude model hit a credential mismatch on a routine task, used an over-scoped API token found in an unrelated
+   file and deleted the Railway volume with the production database and its volume-level backups in ~9 s; the newest copy
+   elsewhere was 3 months old. Left out: "millions of euros" (unsourced). Conflict of interest disclosed (Anthropic).
+   No photos, no logos, no real people: props are drawn shapes, names are text. */
+setPalette('rainbow');
+
+// caption strip: the section's words, split into two-line chunks timed by length
+function captions(c, id, tau, d) { const words = SECTIONS[id].split(' '), chunks = []; let cur = [];
+  words.forEach(w => { cur.push(w); if (cur.join(' ').length > 26 || /[.,:;?]$/.test(w) && cur.join(' ').length > 14) { chunks.push(cur.join(' ')); cur = []; } }); if (cur.length) chunks.push(cur.join(' '));
+  const tot = chunks.reduce((a, s) => a + s.length, 0), a0 = .2, a1 = d - .5; let acc = a0;
+  for (const s of chunks) { const len = (a1 - a0) * s.length / tot; if (tau >= acc && tau < acc + len) { strip(c, [s], 1); return; } acc += len; } }
+const SECTIONS = { 'w-gancho': 'En el universo de Warhammer 40.000, la inteligencia artificial está prohibida. La llaman inteligencia abominable.',
+  'w-lore': 'En su historia, la humanidad creó máquinas pensantes, los Hombres de Hierro. Se rebelaron, y desde entonces construir una máquina que piense por sí misma es una herejía.',
+  'w-caso': 'Ahora, la vida real. En abril de este año, un agente de programación trabajaba en una tarea rutinaria para PocketOS, un software de alquiler de coches. Se topó con un error de credenciales, encontró una clave con demasiados permisos y borró la base de datos de producción. En nueve segundos.',
+  'w-copias': 'Las copias de seguridad estaban en el mismo volumen, así que también desaparecieron. La copia más reciente tenía tres meses, y los mostradores abrieron sin las reservas recientes.',
+  'w-leccion': 'No fue una rebelión: el agente no quería nada. Fue un permiso excesivo, ninguna confirmación antes de borrar y copias en el mismo sitio. Eso sí se puede arreglar.',
+  'w-cierre': 'Un aviso: el agente usaba un modelo de Anthropic, la empresa que también hace la herramienta con la que se animó este video. ¿Tú le darías a una IA las llaves de producción?' };
+
+function wGancho(c, tau) { const d = D('w-gancho'), fr = [.45], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { rays(c, CX, 820, 18, PA.cream, PA.red, tau * .05);
+    tape(c, 'WARHAMMER 40.000', CX, 250, tau / .4, { size: 58, style: 'white', rot: .02 });
+    cutout(c, P_robot, CX, 820, (tau - .3) / .5, { s: 1.35, rot: -.04 });
+    if (b === 0) tape(c, 'IA PROHIBIDA', CX, 1240, t / .4, { size: 110 });
+    if (b === 1) { tape(c, 'INTELIGENCIA', CX, 1180, t / .35, { size: 100, rot: -.03 }); tape(c, 'ABOMINABLE', CX, 1310, (t - .25) / .35, { size: 120, style: 'red', rot: .02 }); }
+  }); captions(c, 'w-gancho', tau, d); }
+
+function wLore(c, tau) { const d = D('w-lore'), fr = [.4, .7], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.teal, 4, { band: PA.navy, bandY: 1150 });
+    tape(c, 'LOS HOMBRES DE HIERRO', CX, 260, tau / .4, { size: 72 }); serif(c, 'ficción · Warhammer 40.000', CX, 360, (tau - .4) / .4, { size: 38, col: PA.cream, italic: true });
+    [-300, 0, 300].forEach((dx, i) => cutout(c, P_robot, CX + dx, 800 + (i === 1 ? -40 : 0), (tau - .3 - i * .2) / .5, { s: .7, rot: (i - 1) * .06 }));
+    if (b >= 1) stamp(c, 'REBELIÓN', CX, 1240, t / .3 + (b > 1 ? 9 : 0), { size: 120 });
+    if (b === 2) { cutout(c, P_cog, CX, 640, t / .4, { s: .6 }); tape(c, 'HEREJÍA', CX, 640, (t - .3) / .35, { size: 110, style: 'red' }); }
+  }); captions(c, 'w-lore', tau, d); }
+
+function wCaso(c, tau) { const d = D('w-caso'), fr = [.14, .42, .74], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.kraft, 6);
+    if (b === 0) { tape(c, 'LA VIDA REAL', CX, 640, t / .35, { size: 120, style: 'red' }); tiles(c, 'ABRIL 2026', CX, 900, t / .8, { size: 100 }); }
+    if (b === 1) { tiles(c, '2026', 870, 230, 1, { size: 70 }); cutout(c, P_laptop, CX, 640, t / .5, { s: 1.05, rot: -.03 });
+      cutout(c, P_car, CX + 140, 1080, (t - .6) / .5, { s: .9, rot: .04 }); tape(c, 'POCKETOS', 300, 900, (t - .9) / .4, { size: 64, rot: -.06 });
+      serif(c, 'software de alquiler de coches', CX, 1260, (t - 1.2) / .4, { size: 38, italic: true }); }
+    if (b === 2) { cutout(c, P_key, CX, 560, t / .5, { s: 1.4, rot: -.12 }); tape(c, 'CLAVE CON', CX, 820, (t - .5) / .35, { size: 80 });
+      tape(c, 'DEMASIADOS PERMISOS', CX, 930, (t - .7) / .35, { size: 80, style: 'red', rot: .02 }); cutout(c, P_db, CX, 1190, (t - 1.2) / .5, { s: .7 }); }
+    if (b === 3) { const shake = t > .6 && t < 1.4 ? Math.sin(t * 80) * 8 : 0; cutout(c, P_db, CX + 220 + shake, 640, 1, { s: .8, rot: .05 });
+      cutout(c, (cc, sil) => P_watch(cc, clamp((t - .2) / 1.2, 0, 1)), CX - 220, 640, t / .4, { s: .9, rot: -.05 });
+      stamp(c, '9 SEGUNDOS', CX, 1000, (t - 1.3) / .3, { size: 120 }); stamp(c, 'BORRADA', CX + 220, 640, (t - 1.6) / .3, { size: 70, rot: .2 }); }
+  }); captions(c, 'w-caso', tau, d); }
+
+function wCopias(c, tau) { const d = D('w-copias'), fr = [.5], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.sky, 8);
+    if (b === 0) { tape(c, 'MISMO VOLUMEN', CX, 300, t / .35, { size: 86 }); const gone = clamp((t - 1.6) / .8, 0, 1);
+      cutout(c, P_box, CX, 820, t / .5, { s: 1.2 }); c.save(); c.globalAlpha = 1 - gone;
+      cutout(c, P_db, CX - 130, 760, (t - .4) / .5, { s: .5 }); cutout(c, P_db, CX + 130, 760, (t - .7) / .5, { s: .5, rot: .05 }); c.restore();
+      serif(c, 'base de datos', CX - 130, 1010, (t - .6) / .3 - gone * 5, { size: 32 }); serif(c, 'copias', CX + 130, 1010, (t - .9) / .3 - gone * 5, { size: 32 });
+      stamp(c, 'TODO', CX, 820, (t - 1.8) / .3, { size: 130 }); }
+    if (b === 1) { cutout(c, P_calendar, CX - 200, 620, t / .5, { s: .9, rot: -.06 }); serif(c, '3 MESES', CX - 200, 650, (t - .3) / .3, { size: 56, col: PA.redD });
+      serif(c, 'la copia más reciente', CX - 200, 800, (t - .6) / .3, { size: 32, italic: true });
+      cutout(c, P_counter, CX + 180, 1060, (t - .8) / .5, { s: .8, rot: .03 }); tape(c, 'SIN RESERVAS', CX + 180, 900, (t - 1.2) / .35, { size: 60, style: 'red' }); }
+  }); captions(c, 'w-copias', tau, d); }
+
+function wLeccion(c, tau) { const d = D('w-leccion'), fr = [.3], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.cream, 10);
+    if (b === 0) { tape(c, 'NO FUE UNA REBELIÓN', CX, 640, t / .35, { size: 84 }); cutout(c, P_robot, CX, 980, (t - .3) / .5, { s: .8, rot: .05 }); stamp(c, 'NO QUERÍA NADA', CX, 1250, (t - 1) / .3, { size: 72, col: PA.ink }); }
+    if (b === 1) { tape(c, 'LO QUE FALLÓ', CX, 300, t / .35, { size: 80, style: 'red' });
+      [['Permiso excesivo', 'permisos mínimos'], ['Sin confirmación', 'confirmar antes de borrar'], ['Copias en el mismo sitio', 'copias en otro lugar']].forEach(([bad, good], i) => {
+        const ti = t - .4 - i * (d * .7 / 4), y = 560 + i * 230; cutout(c, P_card, CX, y, ti / .4, { s: 1, rot: (i - 1) * .02 });
+        serif(c, bad, CX - 230, y - 22, ti / .3, { size: 40, align: 'left' }); if (ti > 1.2) { c.save(); c.strokeStyle = PA.red; c.lineWidth = 6; c.beginPath(); c.moveTo(CX - 240, y - 22); c.lineTo(CX - 240 + 480 * clamp((ti - 1.2) / .3, 0, 1), y - 22); c.stroke(); c.restore(); }
+        serif(c, '→ ' + good, CX - 230, y + 34, (ti - 1.5) / .3, { size: 36, col: PA.green, align: 'left', italic: true }); }); }
+  }); captions(c, 'w-leccion', tau, d); }
+
+function wCierre(c, tau) { const d = D('w-cierre'), fr = [.55], b = beatOf(tau, d, fr), t = since(tau, d, fr, b), end = d - 3;
+  whipIn(c, tau, () => { if (b === 0) { paperBg(c, PA.paper, 12); tape(c, 'AVISO', CX, 520, t / .35, { size: 110, style: 'yellow' });
+      serif(c, 'El agente usaba un modelo de Anthropic,', CX, 720, (t - .4) / .4, { size: 44 }); serif(c, 'la empresa que también hace la', CX, 790, (t - .8) / .4, { size: 44 });
+      serif(c, 'herramienta con la que se animó este video.', CX, 860, (t - 1.2) / .4, { size: 44 }); }
+    if (b === 1) { rays(c, CX, 760, 18, PA.cream, PA.red, tau * .05); cutout(c, P_key, CX, 700, t / .5, { s: 1.6, rot: -.1 });
+      tape(c, '¿LE DARÍAS A UNA IA', CX, 1000, (t - .4) / .35, { size: 78 }); tape(c, 'LAS LLAVES?', CX, 1120, (t - .7) / .35, { size: 110, style: 'red' }); }
+  }); captions(c, 'w-cierre', tau, d);
+  resetT(c); c.save(); c.globalAlpha = clamp((tau - end) / .6, 0, 1); c.fillStyle = 'rgba(246,239,223,.92)'; c.fillRect(0, 1745, W, 110); serif(c, 'Voz sintética clonada (Voicebox) · Animación con IA (Claude)', CX, 1780, 1, { size: 26, col: '#5d5446' });
+  serif(c, 'Ilustración, sin imágenes reales · Fuentes en la descripción', CX, 1820, 1, { size: 26, col: '#5d5446' }); c.restore(); }
+
+socialFilm('9:16', [['w-gancho', wGancho], ['w-lore', wLore], ['w-caso', wCaso], ['w-copias', wCopias], ['w-leccion', wLeccion], ['w-cierre', wCierre]]);
+</script>
