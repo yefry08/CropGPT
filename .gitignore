@@ -78,3 +78,7 @@ portfolio/ia-barco/audio-reel
 portfolio/ia-barco/*.mp4
 portfolio/ia-barco/*.log
 portfolio/ia-barco/out
+portfolio/ia-pruebas/audio-reel
+portfolio/ia-pruebas/*.mp4
+portfolio/ia-pruebas/*.log
+portfolio/ia-pruebas/out

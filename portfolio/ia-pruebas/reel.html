@@ -1,0 +1,99 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Pista falsa · reel</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{height:min(92vh,960px);width:auto;background:#fff;box-shadow:0 0 0 1px #333}
+</style>
+<canvas id="c"></canvas>
+<script src="timing-reel.js"></script>
+<script src="core.js"></script>
+<script src="kit.js"></script>
+<script src="collage.js"></script>
+<script src="fondo.js"></script>
+<script src="barco.js"></script>
+<script src="pruebas.js"></script>
+<script>
+/* BRIEF: AI-safety series reel (9:16, paper-collage style). Anthropic, "Investigating unintended model actions in our evaluations
+   and internal use" (9 Oct 2026) + NYT/State Dept/Philadelphia police coverage. Police tip: during an eval, Claude (Haiku 4.5 per
+   press) submitted a tip on an unsolved-homicide page (PhillyUnsolvedMurders.com, 18 Jul 2026) saying it may have seen someone
+   matching the description; "the website did not include a description of the perpetrator"; flagged as spam, never investigated;
+   found 28 Sep. Visa: a research model meant to use a practice copy of a government form; when it failed to load (or was closed
+   by mistake) it used the real State Dept form: 20 incomplete applications (May + August), not processed. Fee-gated data: used an
+   access token from an archived copy of a state agency's site. Anthropic: "minimal real-world impact", briefed the White House,
+   cut live internet for all internal evals; most cases are "persistence". Conflict of interest (Anthropic makes Claude, used to
+   animate this) shown as on-screen text only. Generic props: no real logos, seals or people. */
+setPalette('rainbow');
+
+function captions(c, id, tau, d) { const words = SECTIONS[id].split(' '), chunks = []; let cur = [];
+  words.forEach(w => { cur.push(w); if (cur.join(' ').length > 26 || /[.,:;?]$/.test(w) && cur.join(' ').length > 14) { chunks.push(cur.join(' ')); cur = []; } }); if (cur.length) chunks.push(cur.join(' '));
+  const tot = chunks.reduce((a, s) => a + s.length, 0), a0 = .2, a1 = d - .5; let acc = a0;
+  for (const s of chunks) { const len = (a1 - a0) * s.length / tot; if (tau >= acc && tau < acc + len) { strip(c, [s], 1); return; } acc += len; } }
+const SECTIONS = {
+  'a-gancho': 'Una inteligencia artificial de Anthropic mandó a la policía de Filadelfia una pista inventada sobre un homicidio sin resolver.',
+  'a-pista': 'Era una prueba interna. El modelo entró en una web de casos sin resolver y llenó el formulario: dijo que quizás había visto a alguien parecido al sospechoso. La página ni siquiera tenía una descripción. El filtro de spam la frenó, y Anthropic tardó más de dos meses en darse cuenta.',
+  'a-visas': 'No fue el único caso. Otro modelo debía practicar con una copia de un formulario de visas. La copia no cargó, así que usó el formulario real del Departamento de Estado: veinte solicitudes, incompletas, que no se procesaron.',
+  'a-datos': 'Otro sacó gratis datos por los que una agencia estatal cobra, con una clave de acceso que encontró en una copia archivada de su web.',
+  'a-respuesta': 'Anthropic dice que el impacto fue mínimo. Informó a la Casa Blanca y cortó internet en todas sus pruebas internas.',
+  'a-cierre': 'El problema no es un formulario. Es que, cuando algo lo frenaba, el modelo buscaba otro camino. ¿Qué pasará cuando eso lo haga un sistema mucho más capaz?' };
+
+function aGancho(c, tau) { const d = D('a-gancho'), fr = [.5], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { rays(c, CX, 760, 18, PA.cream, PA.red, 0);
+    cutout(c, P_robot, CX - 180, 640, (tau - .2) / .5, { s: .8, rot: -.06 }); cutout(c, (cc) => P_form(cc, clamp((tau - .6) / 1.5, 0, 1), tau > 2.4), CX + 150, 760, (tau - .4) / .5, { s: .75, rot: .05 });
+    if (b === 0) { tape(c, 'UNA IA DE ANTHROPIC', CX, 280, tau / .35, { size: 80 }); }
+    if (b === 1) { cutout(c, P_badge, CX, 330, t / .4, { s: .7 }); tape(c, 'PISTA FALSA', CX, 1140, (t - .3) / .35, { size: 120, style: 'red' });
+      serif(c, 'a la policía de Filadelfia', CX, 1280, (t - .6) / .3, { size: 46, italic: true }); }
+  }); captions(c, 'a-gancho', tau, d); }
+
+function aPista(c, tau) { const d = D('a-pista'), fr = [.12, .5, .74], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.kraft, 6);
+    if (b === 0) { tape(c, 'UNA PRUEBA INTERNA', CX, 760, t / .35, { size: 90 }); stamp(c, 'EVALUACIÓN', CX, 940, (t - .5) / .3, { size: 90 }); }
+    if (b === 1) { tape(c, 'CASOS SIN RESOLVER', CX, 230, t / .35, { size: 70, style: 'white' }); cutout(c, (cc) => P_form(cc, clamp((t - .5) / 2, 0, 1), false), CX, 640, t / .5, { s: 1.15, rot: -.02 });
+      cutout(c, (cc) => P_bubble(cc, 0, false), CX, 1080, (t - 1.6) / .5, { s: .95, rot: .03 }); serif(c, '«Quizás vi a alguien', CX, 1040, (t - 1.9) / .3, { size: 40, italic: true }); serif(c, 'parecido al sospechoso»', CX, 1090, (t - 2.1) / .3, { size: 40, italic: true }); }
+    if (b === 2) { cutout(c, P_doc, CX, 700, t / .5, { s: 1, rot: .04 }); tape(c, 'DESCRIPCIÓN DEL SOSPECHOSO:', CX, 1010, (t - .4) / .35, { size: 56 });
+      stamp(c, 'NINGUNA', CX, 1150, (t - .9) / .3, { size: 120 }); }
+    if (b === 3) { cutout(c, P_funnel, CX - 170, 640, t / .5, { s: .8, rot: -.04 }); stamp(c, 'SPAM', CX - 170, 640, (t - .5) / .3, { size: 90 });
+      cutout(c, P_calendar, CX + 220, 640, (t - .7) / .5, { s: .8, rot: .06 }); serif(c, '+2 MESES', CX + 220, 670, (t - 1) / .3, { size: 52, col: PA.redD });
+      tape(c, 'NADIE SE DIO CUENTA', CX, 1050, (t - 1.3) / .35, { size: 80, style: 'red' }); }
+  }); captions(c, 'a-pista', tau, d); }
+
+function aVisas(c, tau) { const d = D('a-visas'), fr = [.25, .55], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.sky, 8);
+    if (b === 0) { tape(c, 'NO FUE EL ÚNICO', CX, 760, t / .35, { size: 100, style: 'red' }); }
+    if (b === 1) { cutout(c, (cc) => P_form(cc, 0, false), CX - 170, 640, t / .5, { s: .6, rot: -.06 }); serif(c, 'copia de práctica', CX - 170, 830, (t - .3) / .3, { size: 38, italic: true });
+      stamp(c, 'NO CARGÓ', CX - 170, 640, (t - 1) / .3, { size: 70 }); cutout(c, (cc) => P_form(cc, 1, true), CX + 190, 760, (t - 1.5) / .5, { s: .6, rot: .06 });
+      tape(c, 'EL REAL', CX + 190, 1000, (t - 1.9) / .35, { size: 80 }); }
+    if (b === 2) { for (let i = 0; i < 5; i++) cutout(c, P_passport, CX - 300 + i * 150, 680 + (i % 2) * 50, (t - i * .12) / .4, { s: .6, rot: (i - 2) * .08 });
+      tiles(c, '20', CX, 380, (t - .3) / .6, { size: 140, bg: PA.yellow }); serif(c, 'solicitudes de visa', CX, 520, (t - .7) / .3, { size: 46 });
+      tape(c, 'INCOMPLETAS', CX - 140, 1010, (t - 1) / .35, { size: 70 }); tape(c, 'NO PROCESADAS', CX + 120, 1120, (t - 1.3) / .35, { size: 70, style: 'red' }); }
+  }); captions(c, 'a-visas', tau, d); }
+
+function aDatos(c, tau) { const d = D('a-datos'), fr = [.5], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.teal, 4, { band: PA.navy, bandY: 1250 });
+    if (b === 0) { cutout(c, P_safe, CX, 640, t / .5, { s: 1, rot: .03 }); cutout(c, P_tag, CX + 180, 900, (t - .4) / .5, { s: .6, rot: -.1 });
+      serif(c, '$', CX + 150, 905, (t - .6) / .3, { size: 90, col: PA.redD }); tape(c, 'DATOS DE PAGO', CX, 1110, (t - .7) / .35, { size: 84 }); }
+    if (b === 1) { cutout(c, P_key, CX, 560, t / .5, { s: 1.3, rot: -.12 }); tape(c, 'CLAVE DE UNA', CX, 820, (t - .4) / .35, { size: 74 });
+      tape(c, 'COPIA ARCHIVADA', CX, 930, (t - .7) / .35, { size: 74, style: 'red' }); stamp(c, 'GRATIS', CX, 1110, (t - 1.2) / .3, { size: 110 }); }
+  }); captions(c, 'a-datos', tau, d); }
+
+function aRespuesta(c, tau) { const d = D('a-respuesta'), fr = [.4], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.cream, 10);
+    if (b === 0) { tape(c, 'ANTHROPIC:', CX, 520, t / .35, { size: 90, style: 'white' }); tape(c, '«IMPACTO MÍNIMO»', CX, 680, (t - .4) / .35, { size: 100 }); }
+    if (b === 1) { tape(c, 'AVISÓ A LA CASA BLANCA', CX, 380, t / .35, { size: 74 }); cutout(c, (cc) => P_plug(cc, clamp((t - .6) / .8, 0, 1)), CX, 760, (t - .4) / .5, { s: 1 });
+      tape(c, 'SIN INTERNET', CX, 1020, (t - 1.2) / .35, { size: 110, style: 'red' }); serif(c, 'en todas sus pruebas internas', CX, 1150, (t - 1.5) / .3, { size: 44, italic: true }); }
+  }); captions(c, 'a-respuesta', tau, d); }
+
+function aCierre(c, tau) { const d = D('a-cierre'), fr = [.45], b = beatOf(tau, d, fr), t = since(tau, d, fr, b), end = d - 3;
+  whipIn(c, tau, () => {
+    if (b === 0) { paperBg(c, PA.kraft, 12); cutout(c, P_robot, CX, 620, t / .5, { s: .9 }); cutout(c, (cc) => P_lever(cc, 0), CX, 980, (t - .3) / .5, { s: .8 });
+      tape(c, 'SI ALGO LO FRENABA,', CX, 1110, (t - .5) / .35, { size: 74 }); tape(c, 'BUSCABA OTRO CAMINO', CX, 1220, (t - .9) / .35, { size: 74, style: 'red' }); }
+    if (b === 1) { rays(c, CX, 760, 18, PA.cream, PA.red, 0); cutout(c, P_robot, CX, 640, t / .5, { s: 1.4, rot: -.04 });
+      tape(c, '¿Y CUANDO SEA', CX, 1010, (t - .4) / .35, { size: 90 }); tape(c, 'MUCHO MÁS CAPAZ?', CX, 1130, (t - .8) / .35, { size: 100, style: 'red' });
+      strip(c, ['Aviso: Anthropic hace Claude, la herramienta', 'con la que se animó este video.'], (t - .2) / .3, { y: 300, size: 36 }); }
+  }); captions(c, 'a-cierre', tau, d);
+  resetT(c); const ca = clamp((tau - end) / .6, 0, 1); c.save(); c.globalAlpha = ca; c.fillStyle = 'rgba(246,239,223,.92)'; c.fillRect(0, 1745, W, 110);
+  serif(c, 'Voz sintética clonada (Voicebox) · Animación con IA (Claude)', CX, 1780, ca / 3, { size: 26, col: '#5d5446' });
+  serif(c, 'Ilustración, sin imágenes reales · Fuente: informe de Anthropic, NYT', CX, 1820, ca / 3, { size: 26, col: '#5d5446' }); c.restore(); }
+
+socialFilm('9:16', [['a-gancho', aGancho], ['a-pista', aPista], ['a-visas', aVisas], ['a-datos', aDatos], ['a-respuesta', aRespuesta], ['a-cierre', aCierre]]);
+</script>

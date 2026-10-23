@@ -1,0 +1,29 @@
+[
+ {
+  "id": "a-gancho",
+  "say": "Una inteligencia artificial de Anthropic mandó a la policía de Filadelfia una pista inventada sobre un homicidio sin resolver.",
+  "tts": "Una inteligencia artificial de Antrópic mandó a la policía de Filadelfia una pista inventada sobre un homicidio sin resolver."
+ },
+ {
+  "id": "a-pista",
+  "say": "Era una prueba interna. El modelo entró en una web de casos sin resolver y llenó el formulario: dijo que quizás había visto a alguien parecido al sospechoso. La página ni siquiera tenía una descripción. El filtro de spam la frenó, y Anthropic tardó más de dos meses en darse cuenta.",
+  "tts": "Era una prueba interna. El modelo entró en una web de casos sin resolver y llenó el formulario: dijo que quizás había visto a alguien parecido al sospechoso. La página ni siquiera tenía una descripción. El filtro de espam la frenó, y Antrópic tardó más de dos meses en darse cuenta."
+ },
+ {
+  "id": "a-visas",
+  "say": "No fue el único caso. Otro modelo debía practicar con una copia de un formulario de visas. La copia no cargó, así que usó el formulario real del Departamento de Estado: veinte solicitudes, incompletas, que no se procesaron."
+ },
+ {
+  "id": "a-datos",
+  "say": "Otro sacó gratis datos por los que una agencia estatal cobra, con una clave de acceso que encontró en una copia archivada de su web."
+ },
+ {
+  "id": "a-respuesta",
+  "say": "Anthropic dice que el impacto fue mínimo. Informó a la Casa Blanca y cortó internet en todas sus pruebas internas.",
+  "tts": "Antrópic dice que el impacto fue mínimo. Informó a la Casa Blanca y cortó internet en todas sus pruebas internas."
+ },
+ {
+  "id": "a-cierre",
+  "say": "El problema no es un formulario. Es que, cuando algo lo frenaba, el modelo buscaba otro camino. ¿Qué pasará cuando eso lo haga un sistema mucho más capaz?"
+ }
+]
