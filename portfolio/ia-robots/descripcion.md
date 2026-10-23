@@ -1,6 +1,6 @@
 # Los robots que saltaron al acero fundido
 
-**Reel 9:16 · español** · serie de IA · estilo collage de papel · voz clonada (Voicebox) y animación generadas con IA
+**Reel 9:16 · 0:56 · español** · serie de IA · estilo collage de papel · voz clonada (Voicebox) y animación generadas con IA
 
 **Texto para publicar:**
 Figure jubiló a sus robots humanoides Figure 02 y preguntó en X qué hacer con ellos. Arnold Schwarzenegger respondió: «Deberían derretirlos». Y lo hicieron. Esos robots habían ayudado a armar más de 30.000 coches en una planta de BMW. Ninguna fundición de EE. UU. ni de México los quiso por sus baterías de litio, así que saltaron a un horno en Finlandia, entrenados con un modelo que aprendió de dobles de riesgo. En Terminator 2, el robot se hundía en el acero para que no quedara ninguno como él. Aquí saltan para dejarle sitio al modelo nuevo. ¿Qué te parece? #Robots #InteligenciaArtificial #Robótica #Tecnología #IA

@@ -1,13 +1,21 @@
 [
  {
   "id": "r-gancho",
-  "say": "Una empresa de robots humanoides jubiló a su flota y la tiró a acero fundido. La idea fue de Arnold Schwarzenegger.",
-  "tts": "Una empresa de robots humanoides jubiló a su flota y la tiró a acero fundido. La idea fue de Árnold Suárzeneguer."
+  "say": "Una empresa de robots humanoides jubiló a su flota y la lanzó al acero fundido. La idea fue de Arnold Schwarzenegger.",
+  "tts": "Una empresa de robots humanoides jubiló a su flota y la lanzó al acero fundido. La idea fue de Árnold Shuárzeneguer.",
+  "tts_variants": [
+   "Una empresa de robots humanoides jubiló a su flota y la lanzó al acero fundido. La idea fue de Árnold Shuárzeneguer.",
+   "Una empresa de robots humanoides jubiló a su flota y la lanzó al acero fundido. La idea fue de Árnold Suárzenegue."
+  ]
  },
  {
   "id": "r-idea",
-  "say": "Figure preguntó en redes qué hacer con sus robots Figure 02. Schwarzenegger respondió: deberían derretirlos. Y lo hicieron.",
-  "tts": "Fíguer preguntó en redes qué hacer con sus robots Fíguer cero dos. Suárzeneguer respondió: deberían derretirlos. Y lo hicieron."
+  "say": "Figure preguntó en redes qué hacer con sus robots Figure 02. Arnold respondió: deberían derretirlos. Y lo hicieron.",
+  "tts": "Fíguer preguntó en redes qué hacer con sus robots Fíguer cero dos. Suárzeneguer respondió: deberían derretirlos. Y lo hicieron.",
+  "tts_variants": [
+   "Fíguer preguntó en redes qué hacer con sus robots Fíguer cero dos. Árnold respondió: deberían derretirlos. Y lo hicieron.",
+   "Fíguer preguntó en redes qué hacer con sus robots Fíguer cero dos. Shuárzeneguer respondió: deberían derretirlos. Y lo hicieron."
+  ]
  },
  {
   "id": "r-bmw",
