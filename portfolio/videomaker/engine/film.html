@@ -1,0 +1,72 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>videomaker · film</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{height:min(92vh,960px);width:auto;background:#fff;box-shadow:0 0 0 1px #333}
+</style>
+<canvas id="c"></canvas>
+<script src="timing-reel.js"></script>
+<script src="spec.js"></script>
+<script src="core.js"></script>
+<script src="kit.js"></script>
+<script src="collage.js"></script>
+<script src="fondo.js"></script>
+<script src="barco.js"></script>
+<script src="pruebas.js"></script>
+<script src="robots.js"></script>
+<script src="neveras.js"></script>
+<script src="futuros.js"></script>
+<script>
+/* videomaker: one generic paper-collage reel driven by spec.js (window.SPEC), written by the pipeline from the approved script.
+   Each section is split evenly into its beats; each beat lists items (tape, tiles, stamp, serif, prop) that pop in one after
+   another. The last section shows the disclosure (if any) and the credits. Props are generic drawn shapes only. */
+setPalette('rainbow');
+
+const PROPS = { robot: P_robot, cog: P_cog, db: P_db, key: P_key, laptop: P_laptop, car: P_car, watch: (c) => P_watch(c, .6), calendar: P_calendar,
+  box: P_box, card: P_card, counter: P_counter, chart_down: (c) => P_chart(c, 1, true), chart_up: (c) => P_chart(c, 1, false), doc: P_doc, coin: P_coin,
+  lever: (c) => P_lever(c, .2), chip: P_chip, phone: (c) => P_phone(c, 0), tag: P_tag, safe: P_safe, ship: P_ship, plane: P_plane,
+  bubble: (c) => P_bubble(c, 0, false), folder: P_folder, trefoil: P_trefoil, book: P_book, lens: P_lens, form: (c) => P_form(c, 1, false),
+  badge: P_badge, passport: P_passport, funnel: P_funnel, plug: (c) => P_plug(c, 1), humanoid: (c) => P_humanoid(c, 0), furnace: (c) => P_furnace(c, 1),
+  airbag: P_airbag, battery: P_battery, ingot: P_ingot, fridge: (c) => P_fridge(c, 0), thermo: (c) => P_thermo(c, .7), ctrl: (c) => P_ctrl(c, 0),
+  bin: P_bin, flame: (c) => P_flame(c, 0), gorilla: P_gorilla, person: (c) => P_person(c), cage: (c) => P_cage(c, false), eye: (c) => P_eye(c, 0),
+  shield: P_shield, crown: P_crown, equal: P_equal, hand: P_hand };
+
+function background(c, kind) {
+  const R = { rays_red: [PA.cream, PA.red], rays_blue: [PA.cream, PA.sky], rays_teal: [PA.cream, PA.teal] }[kind];
+  if (R) return rays(c, CX, 760, 18, R[0], R[1], 0);
+  const P = { kraft: PA.kraft, navy: PA.navy, teal: PA.teal, sky: PA.sky, cream: PA.cream, green: PA.green }[kind] || PA.cream;
+  paperBg(c, P, 7);
+}
+const DARK = new Set(['navy', 'teal', 'green']);
+
+function drawItem(c, it, t, dark) {
+  const x = CX + (it.x || 0), y = it.y;
+  if (it.kind === 'tape') tape(c, it.text, x, y, t / .35, { size: it.size || 84, style: it.style || 'black' });
+  else if (it.kind === 'tiles') tiles(c, it.text, x, y, t / .7, { size: it.size || 110, bg: it.style === 'yellow' ? PA.yellow : PA.paper });
+  else if (it.kind === 'stamp') stamp(c, it.text, x, y, t / .3, { size: it.size || 100 });
+  else if (it.kind === 'serif') serif(c, it.text, x, y, t / .3, { size: it.size || 46, italic: true, col: dark ? PA.cream : PA.ink });
+  else if (it.kind === 'prop' && PROPS[it.prop]) cutout(c, PROPS[it.prop], x, y, t / .5, { s: (it.size || 100) / 100, rot: ((it.y * 7 + it.x) % 9 - 4) * .01 });
+}
+
+function captions(c, id, tau, d) { const words = SPEC.sections.find(s => s.id === id).text.split(' '), chunks = []; let cur = [];
+  words.forEach(w => { cur.push(w); if (cur.join(' ').length > 26 || /[.,:;?]$/.test(w) && cur.join(' ').length > 14) { chunks.push(cur.join(' ')); cur = []; } }); if (cur.length) chunks.push(cur.join(' '));
+  const tot = chunks.reduce((a, s) => a + s.length, 0), a0 = .2, a1 = d - .5; let acc = a0;
+  for (const s of chunks) { const len = (a1 - a0) * s.length / tot; if (tau >= acc && tau < acc + len) { strip(c, [s], 1); return; } acc += len; } }
+
+// wrap a long line into several lines of at most n characters
+function wrap(s, n) { const out = []; let cur = ''; s.split(' ').forEach(w => { if ((cur + ' ' + w).trim().length > n) { out.push(cur.trim()); cur = w; } else cur += ' ' + w; }); if (cur.trim()) out.push(cur.trim()); return out; }
+
+function makeScene(sec, last) {
+  return (c, tau) => { const d = D(sec.id), n = Math.max(1, sec.beats.length), fr = Array.from({ length: n - 1 }, (_, i) => (i + 1) / n);
+    const b = Math.min(beatOf(tau, d, fr), n - 1), t = since(tau, d, fr, b), dark = DARK.has(sec.background);
+    whipIn(c, tau, () => { background(c, sec.background); (sec.beats[b] ? sec.beats[b].items : []).forEach((it, i) => drawItem(c, it, t - .1 - i * .3, dark)); });
+    captions(c, sec.id, tau, d);
+    if (!last) return;
+    if (SPEC.disclosure) strip(c, wrap(SPEC.disclosure, 44), clamp((tau - .5) / .3, 0, 1), { y: 1430, size: 32 });
+    const end = d - 3, ca = clamp((tau - end) / .6, 0, 1); resetT(c); c.save(); c.globalAlpha = ca; c.fillStyle = 'rgba(246,239,223,.92)'; c.fillRect(0, 1745, W, 110);
+    SPEC.credits.slice(0, 2).forEach((l, i) => serif(c, l, CX, 1780 + i * 40, ca / 3, { size: 26, col: '#5d5446' })); c.restore(); };
+}
+
+socialFilm('9:16', SPEC.sections.map((s, i) => [s.id, makeScene(s, i === SPEC.sections.length - 1)]));
+</script>

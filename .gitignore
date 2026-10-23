@@ -94,3 +94,5 @@ portfolio/ia-futuros/audio-reel
 portfolio/ia-futuros/*.mp4
 portfolio/ia-futuros/*.log
 portfolio/ia-futuros/out
+portfolio/videomaker/jobs/
+portfolio/videomaker/__pycache__/

@@ -1,0 +1,508 @@
+{
+ "title": "Hackearon las neveras de 700 supermercados (muestra)",
+ "audio_from": "portfolio/ia-neveras/audio-reel/raw",
+ "facts": [
+  {
+   "claim": "Hackearon las neveras de unos 700 supermercados en Francia",
+   "finding": "Cifra oficial del ministro de Economía, Roland Lescure: unos 700 de los cerca de 10.000 supermercados del país (Intermarché, Carrefour, Coopérative U, Monoprix, entre otros)."
+  },
+  {
+   "claim": "La noche del 11 al 12 de octubre",
+   "finding": "Confirmado: la noche del 11 de octubre de 2026."
+  },
+  {
+   "claim": "Los pusieron a descongelar sin parar; algunos llegaron a 50 grados",
+   "finding": "Confirmado: unos 50 °C tras seis horas (una tienda en Normandía reportó 80 °C). Añadimos que no saltó ninguna alarma."
+  },
+  {
+   "claim": "Se tiraron productos y la fiscalía investiga principios de incendio",
+   "finding": "Confirmado: hubo equipos derretidos o incendiados y daños por rociadores. La fiscalía de París abrió una investigación con la oficina anticibercrimen (OFAC) y la ANSSI."
+  },
+  {
+   "claim": "Nadie se adjudicó el ataque; no hay evidencia de IA",
+   "finding": "Confirmado."
+  },
+  {
+   "claim": "La agencia pidió desconectar, actualizar y cambiar las contraseñas de fábrica",
+   "finding": "El CERT-FR y la ANSSI pidieron desconectar o filtrar las interfaces de internet, aplicar los parches y renovar las credenciales. Decimos «cambiar las credenciales»."
+  },
+  {
+   "claim": "(No lo decía)",
+   "finding": "Cómo entraron: controladores de Danfoss, Copeland y Dixell expuestos a internet, con firmware antiguo (algunos modelos sin soporte desde 2016 o 2021) y accesos muy fáciles de adivinar, según The Guardian y Claroty."
+  }
+ ],
+ "sources": [
+  {
+   "title": "Wikipedia, «2026 French supermarket refrigerator hack»",
+   "url": "https://en.wikipedia.org/wiki/2026_French_supermarket_refrigerator_hack"
+  },
+  {
+   "title": "CNN",
+   "url": "https://www.cnn.com/2026/10/14/europe/france-cyberattack-supermarket-fridges-intl"
+  },
+  {
+   "title": "CBC",
+   "url": "https://www.cbc.ca/news/business/france-fridge-hack-smart-devices-food-system-9.7379613"
+  },
+  {
+   "title": "Malwarebytes",
+   "url": "https://www.malwarebytes.com/fr/blog/news/2026/10/hackers-heat-up-supermarket-fridges-spoiling-food-across-france"
+  },
+  {
+   "title": "Sud Radio, la alerta de la ANSSI",
+   "url": "https://www.sudradio.fr/sud-radio/cyberattaque-des-supermarches-la-vague-se-poursuit-en-france-et-setend-en-europe"
+  },
+  {
+   "title": "Solutions Numériques",
+   "url": "https://www.solutions-numeriques.com/frigos-de-supermarches-sabotes-les-cyberattaques-qui-vident-les-rayons/"
+  }
+ ],
+ "disclosure": "",
+ "post_text": "En una sola noche hackearon las neveras de unos 700 supermercados en Francia. Los atacantes entraron en los controladores que manejan el frío a distancia y los pusieron a descongelar sin parar: algunas llegaron a 50 °C y no saltó ninguna alarma. Se tiraron toneladas de comida, hubo equipos quemados y la fiscalía de París investiga. Muchos aparatos estaban abiertos a internet, con software viejo y accesos fáciles de adivinar. Nadie se ha atribuido el ataque, y no hay pruebas de que haya una IA detrás. Cuando todo está conectado, un fallo en internet puede terminar en comida en la basura. ¿Qué te parece? #Ciberseguridad #Hackeo #Tecnología #Francia #IoT",
+ "sections": [
+  {
+   "id": "h-gancho",
+   "chapter": "Una noche",
+   "text": "En una sola noche, hackearon las neveras de unos setecientos supermercados en Francia. Y hubo que tirar la comida.",
+   "tts": "En una sola noche, hackearon las neveras de unos setecientos supermercados en Francia. Y hubo que tirar la comida.",
+   "background": "rays_blue",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "HACKEO",
+       "prop": "none",
+       "x": 0,
+       "y": 260,
+       "style": "red",
+       "size": 120
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "fridge",
+       "x": -120,
+       "y": 760,
+       "style": "black",
+       "size": 95
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "thermo",
+       "x": 290,
+       "y": 760,
+       "style": "black",
+       "size": 75
+      },
+      {
+       "kind": "tiles",
+       "text": "~700",
+       "prop": "none",
+       "x": 0,
+       "y": 1250,
+       "style": "yellow",
+       "size": 120
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "fridge",
+       "x": -120,
+       "y": 760,
+       "style": "black",
+       "size": 95
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "bin",
+       "x": 300,
+       "y": 1220,
+       "style": "black",
+       "size": 55
+      },
+      {
+       "kind": "tape",
+       "text": "A LA BASURA",
+       "prop": "none",
+       "x": -140,
+       "y": 1250,
+       "style": "red",
+       "size": 90
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "h-noche",
+   "chapter": "Descongelar",
+   "text": "Fue la noche del once de octubre. Los atacantes entraron en los controladores que manejan el frío a distancia y los pusieron a descongelar sin parar. Algunas neveras llegaron a cincuenta grados, y no saltó ninguna alarma.",
+   "tts": "Fue la noche del once de octubre. Los atacantes entraron en los controladores que manejan el frío a distancia y los pusieron a descongelar sin parar. Algunas neveras llegaron a cincuenta grados, y no saltó ninguna alarma.",
+   "background": "navy",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "11 OCT",
+       "prop": "none",
+       "x": 0,
+       "y": 640,
+       "style": "black",
+       "size": 130
+      },
+      {
+       "kind": "serif",
+       "text": "de noche",
+       "prop": "none",
+       "x": 0,
+       "y": 800,
+       "style": "black",
+       "size": 56
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "CONTROL DEL FRÍO A DISTANCIA",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "white",
+       "size": 62
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "ctrl",
+       "x": 0,
+       "y": 680,
+       "style": "black",
+       "size": 120
+      },
+      {
+       "kind": "tape",
+       "text": "DESCONGELAR SIN PARAR",
+       "prop": "none",
+       "x": 0,
+       "y": 1060,
+       "style": "red",
+       "size": 76
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "thermo",
+       "x": -200,
+       "y": 720,
+       "style": "black",
+       "size": 90
+      },
+      {
+       "kind": "tiles",
+       "text": "50°C",
+       "prop": "none",
+       "x": 190,
+       "y": 640,
+       "style": "yellow",
+       "size": 110
+      },
+      {
+       "kind": "stamp",
+       "text": "SIN ALARMAS",
+       "prop": "none",
+       "x": 180,
+       "y": 900,
+       "style": "black",
+       "size": 80
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "h-danos",
+   "chapter": "Los daños",
+   "text": "Se tiraron toneladas de productos frescos y congelados. Hubo equipos que se derritieron o se incendiaron, y la fiscalía de París abrió una investigación.",
+   "tts": "Se tiraron toneladas de productos frescos y congelados. Hubo equipos que se derritieron o se incendiaron, y la fiscalía de París abrió una investigación.",
+   "background": "kraft",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "bin",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "tape",
+       "text": "TONELADAS DE COMIDA",
+       "prop": "none",
+       "x": 0,
+       "y": 1110,
+       "style": "red",
+       "size": 80
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "fridge",
+       "x": -160,
+       "y": 720,
+       "style": "black",
+       "size": 75
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "flame",
+       "x": 230,
+       "y": 640,
+       "style": "black",
+       "size": 80
+      },
+      {
+       "kind": "tape",
+       "text": "EQUIPOS QUEMADOS",
+       "prop": "none",
+       "x": 0,
+       "y": 1070,
+       "style": "black",
+       "size": 80
+      },
+      {
+       "kind": "serif",
+       "text": "la fiscalía de París investiga",
+       "prop": "none",
+       "x": 0,
+       "y": 1190,
+       "style": "black",
+       "size": 44
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "h-como",
+   "chapter": "Cómo entraron",
+   "text": "¿Cómo entraron? Muchos de esos aparatos estaban abiertos a internet, con un software viejo que ya no recibía actualizaciones y accesos muy fáciles de adivinar.",
+   "tts": "¿Cómo entraron? Muchos de esos aparatos estaban abiertos a internet, con un software viejo que ya no recibía actualizaciones y accesos muy fáciles de adivinar.",
+   "background": "sky",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "¿CÓMO ENTRARON?",
+       "prop": "none",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "ctrl",
+       "x": 0,
+       "y": 470,
+       "style": "black",
+       "size": 80
+      },
+      {
+       "kind": "tape",
+       "text": "ABIERTO A INTERNET",
+       "prop": "none",
+       "x": 0,
+       "y": 800,
+       "style": "black",
+       "size": 66
+      },
+      {
+       "kind": "tape",
+       "text": "SOFTWARE SIN ACTUALIZAR",
+       "prop": "none",
+       "x": 0,
+       "y": 940,
+       "style": "red",
+       "size": 66
+      },
+      {
+       "kind": "tape",
+       "text": "ACCESO FÁCIL DE ADIVINAR",
+       "prop": "none",
+       "x": 0,
+       "y": 1080,
+       "style": "white",
+       "size": 66
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "h-respuesta",
+   "chapter": "La respuesta",
+   "text": "La agencia de ciberseguridad francesa pidió desconectarlos de internet, actualizarlos y cambiar las credenciales. Nadie se ha atribuido el ataque, y no hay pruebas de que haya una inteligencia artificial detrás.",
+   "tts": "La agencia de ciberseguridad francesa pidió desconectarlos de internet, actualizarlos y cambiar las credenciales. Nadie se ha atribuido el ataque, y no hay pruebas de que haya una inteligencia artificial detrás.",
+   "background": "cream",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "CIBERSEGURIDAD FRANCESA:",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 66
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "plug",
+       "x": 0,
+       "y": 600,
+       "style": "black",
+       "size": 90
+      },
+      {
+       "kind": "tape",
+       "text": "DESCONECTAR",
+       "prop": "none",
+       "x": 0,
+       "y": 860,
+       "style": "red",
+       "size": 72
+      },
+      {
+       "kind": "tape",
+       "text": "ACTUALIZAR",
+       "prop": "none",
+       "x": 0,
+       "y": 990,
+       "style": "black",
+       "size": 72
+      },
+      {
+       "kind": "tape",
+       "text": "CAMBIAR CLAVES",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 72
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "stamp",
+       "text": "SIN AUTOR",
+       "prop": "none",
+       "x": 0,
+       "y": 560,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "tape",
+       "text": "NI PRUEBAS DE IA",
+       "prop": "none",
+       "x": 0,
+       "y": 820,
+       "style": "yellow",
+       "size": 96
+      },
+      {
+       "kind": "serif",
+       "text": "hasta ahora",
+       "prop": "none",
+       "x": 0,
+       "y": 950,
+       "style": "black",
+       "size": 46
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "h-cierre",
+   "chapter": "Cierre",
+   "text": "Cuando todo está conectado, un fallo en internet puede terminar en un pasillo de comida en la basura.",
+   "tts": "Cuando todo está conectado, un fallo en internet puede terminar en un pasillo de comida en la basura.",
+   "background": "rays_red",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "ctrl",
+       "x": -200,
+       "y": 560,
+       "style": "black",
+       "size": 60
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "bin",
+       "x": 200,
+       "y": 620,
+       "style": "black",
+       "size": 70
+      },
+      {
+       "kind": "tape",
+       "text": "TODO CONECTADO",
+       "prop": "none",
+       "x": 0,
+       "y": 1000,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "tape",
+       "text": "DAÑO REAL",
+       "prop": "none",
+       "x": 0,
+       "y": 1130,
+       "style": "red",
+       "size": 110
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

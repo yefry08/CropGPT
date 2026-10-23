@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>videomaker · app</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="top"><div class="wrap">
+  <a class="logo tape" href="/">videomaker</a>
+  <div class="links"><a href="/">Inicio</a></div>
+</div></nav>
+
+<main class="wrap app">
+  <aside>
+    <div class="card">
+      <h3>Nuevo video</h3>
+      <form id="new">
+        <label for="topic">Tema, resumen o enlace</label>
+        <textarea id="topic" rows="7" placeholder="Pega aquí el resumen de un video, una noticia o tu idea…"></textarea>
+        <label for="lang">Idioma de la narración</label>
+        <select id="lang"><option value="es">Español</option><option value="en">English</option></select>
+        <label for="sample">O prueba con una muestra (sin clave de API)</label>
+        <select id="sample"><option value="">— ninguna —</option></select>
+        <div class="row" style="margin-top:16px"><button class="btn" type="submit" id="go">Investigar y escribir</button></div>
+        <div class="status" id="status"></div>
+      </form>
+    </div>
+    <div class="card" style="margin-top:26px">
+      <h3>Tus videos</h3>
+      <ul class="jobs" id="jobs"></ul>
+    </div>
+  </aside>
+
+  <section id="detail"><div class="card empty">Elige un video o empieza uno nuevo.</div></section>
+</main>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const LABEL = { researching: 'Investigando', review: 'Revisa el guion', narrating: 'Narrando', rendering: 'Renderizando', done: 'Listo', error: 'Error' };
+let current = null, timer = null;
+
+async function api(path, body) {
+  const r = await fetch(path, body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : {});
+  const j = await r.json(); if (!r.ok) throw new Error(j.error || r.statusText); return j;
+}
+
+async function status() {
+  const s = await api('/api/status');
+  $('#status').innerHTML = `<span class="dot ${s.claude ? 'ok' : 'no'}"></span>Claude ${s.claude ? 'conectado' : 'sin clave (usa una muestra)'} · `
+    + `<span class="dot ${s.voicebox ? 'ok' : ''}"></span>Voicebox ${s.voicebox ? 'activo' : 'se iniciará al narrar'}`;
+}
+async function samples() { (await api('/api/samples')).forEach((s) => $('#sample').insertAdjacentHTML('beforeend', `<option value="${esc(s)}">${esc(s)}</option>`)); }
+async function list() {
+  const js = await api('/api/jobs');
+  $('#jobs').innerHTML = js.length ? js.map((j) => `<li data-id="${esc(j.id)}"><strong>${esc(j.topic.slice(0, 60))}</strong><small><span class="pill ${esc(j.status)}">${esc(LABEL[j.status] || j.status)}</span> ${new Date(j.created * 1000).toLocaleString()}</small></li>`).join('')
+    : '<li class="empty" style="padding:10px">Todavía no hay videos.</li>';
+  document.querySelectorAll('#jobs li[data-id]').forEach((li) => li.onclick = () => open(li.dataset.id));
+}
+
+function scriptView(j) {
+  const s = j.script, editable = j.status === 'review' || j.status === 'error';
+  return `<h3>${esc(s.title)}</h3>
+    ${s.sections.map((x) => `<div class="section-edit"><div class="meta"><span class="tape white" style="font-size:13px">${esc(x.chapter)}</span> · ${x.beats.length} momento(s) · fondo ${esc(x.background)}</div>
+      ${editable ? `<textarea rows="3" data-sec="${esc(x.id)}">${esc(x.text)}</textarea>` : `<p>${esc(x.text)}</p>`}</div>`).join('')}
+    <label>Aviso en pantalla (vacío si no hace falta)</label>
+    ${editable ? `<input type="text" id="disclosure" value="${esc(s.disclosure)}">` : `<p>${esc(s.disclosure || '—')}</p>`}
+    <h3 style="margin-top:26px">Qué se verificó</h3>
+    <table class="facts"><tr><th>Se decía</th><th>Lo que dicen las fuentes</th></tr>${(s.facts || []).map((f) => `<tr><td>${esc(f.claim)}</td><td>${esc(f.finding)}</td></tr>`).join('')}</table>
+    <h3 style="margin-top:22px">Fuentes</h3><ul>${(s.sources || []).map((x) => `<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a></li>`).join('')}</ul>
+    ${editable ? `<div class="row" style="margin-top:20px"><button class="btn" id="approve">Aprobar y crear el video</button><span class="status">Se narra con tu voz y se renderiza; tarda varios minutos.</span></div>` : ''}`;
+}
+
+function render(j) {
+  const done = j.status === 'done';
+  $('#detail').innerHTML = `<div class="card">
+      <div class="row"><span class="pill ${esc(j.status)}">${esc(LABEL[j.status] || j.status)}</span><small>${esc(j.id)}</small></div>
+      ${done ? `<div style="margin:20px 0"><video controls src="/api/jobs/${esc(j.id)}/video.mp4"></video>
+        <div class="row" style="margin-top:14px"><a class="btn" href="/api/jobs/${esc(j.id)}/video.mp4">Descargar video</a><a class="btn ghost" href="/api/jobs/${esc(j.id)}/descripcion.md">Descripción y fuentes</a></div></div>` : ''}
+      ${j.script ? scriptView(j) : '<p class="status">Investigando y verificando el tema… esto tarda unos minutos.</p>'}
+      <h3 style="margin-top:26px">Registro</h3><div class="log">${esc(j.log.join('\n'))}</div></div>`;
+  const b = $('#approve');
+  if (b) b.onclick = async () => { b.disabled = true;
+    try { const sections = [...document.querySelectorAll('[data-sec]')].map((t) => ({ id: t.dataset.sec, text: t.value.trim() }));
+      await api(`/api/jobs/${encodeURIComponent(j.id)}/approve`, { sections, disclosure: $('#disclosure').value.trim() }); poll(); }
+    catch (e) { alert(e.message); b.disabled = false; } };
+}
+
+async function open(id) { current = id; clearTimeout(timer); poll(); }
+async function poll() {
+  if (!current) return;
+  const j = await api(`/api/jobs/${encodeURIComponent(current)}`);
+  const editing = document.activeElement && document.activeElement.closest && document.activeElement.closest('#detail') && j.status === 'review';
+  if (!editing) render(j);
+  list();
+  if (!['review', 'done', 'error'].includes(j.status)) timer = setTimeout(poll, 3000);
+}
+
+$('#new').onsubmit = async (e) => { e.preventDefault(); $('#go').disabled = true;
+  try { const j = await api('/api/jobs', { topic: $('#topic').value, lang: $('#lang').value, sample: $('#sample').value }); $('#topic').value = ''; open(j.id); }
+  catch (err) { alert(err.message); } finally { $('#go').disabled = false; } };
+
+status(); samples(); list();
+</script>
+</body>
+</html>
