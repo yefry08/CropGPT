@@ -1,0 +1,92 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Neveras hackeadas · reel</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{height:min(92vh,960px);width:auto;background:#fff;box-shadow:0 0 0 1px #333}
+</style>
+<canvas id="c"></canvas>
+<script src="timing-reel.js"></script>
+<script src="core.js"></script>
+<script src="kit.js"></script>
+<script src="collage.js"></script>
+<script src="fondo.js"></script>
+<script src="barco.js"></script>
+<script src="pruebas.js"></script>
+<script src="neveras.js"></script>
+<script>
+/* BRIEF: tech/security reel (9:16, paper-collage style). French supermarket refrigeration hack, night of 11 Oct 2026: ~700 of ~10,000
+   supermarkets (Finance Minister Roland Lescure); remotely managed refrigeration controllers (Danfoss AK-SM800/AK-SC355, Copeland and
+   Dixell XWEB) exposed to the internet, old/end-of-life firmware, trivially guessable logins; set to continuous defrost; ~50 °C after
+   6 h (one store 80 °C); no alarms; tons of fresh/frozen food discarded; some units melted or caught fire; Paris prosecutor opened a
+   probe (OFAC) with ANSSI; CERT-FR/ANSSI: disconnect from the internet, patch, renew credentials. No claim of responsibility; no
+   evidence of AI involvement. Generic drawn props: no store or maker logos. */
+setPalette('rainbow');
+
+function captions(c, id, tau, d) { const words = SECTIONS[id].split(' '), chunks = []; let cur = [];
+  words.forEach(w => { cur.push(w); if (cur.join(' ').length > 26 || /[.,:;?]$/.test(w) && cur.join(' ').length > 14) { chunks.push(cur.join(' ')); cur = []; } }); if (cur.length) chunks.push(cur.join(' '));
+  const tot = chunks.reduce((a, s) => a + s.length, 0), a0 = .2, a1 = d - .5; let acc = a0;
+  for (const s of chunks) { const len = (a1 - a0) * s.length / tot; if (tau >= acc && tau < acc + len) { strip(c, [s], 1); return; } acc += len; } }
+const SECTIONS = {
+  'h-gancho': 'En una sola noche, hackearon las neveras de unos setecientos supermercados en Francia. Y hubo que tirar la comida.',
+  'h-noche': 'Fue la noche del once de octubre. Los atacantes entraron en los controladores que manejan el frío a distancia y los pusieron a descongelar sin parar. Algunas neveras llegaron a cincuenta grados, y no saltó ninguna alarma.',
+  'h-danos': 'Se tiraron toneladas de productos frescos y congelados. Hubo equipos que se derritieron o se incendiaron, y la fiscalía de París abrió una investigación.',
+  'h-como': '¿Cómo entraron? Muchos de esos aparatos estaban abiertos a internet, con un software viejo que ya no recibía actualizaciones y accesos muy fáciles de adivinar.',
+  'h-respuesta': 'La agencia de ciberseguridad francesa pidió desconectarlos de internet, actualizarlos y cambiar las credenciales. Nadie se ha atribuido el ataque, y no hay pruebas de que haya una inteligencia artificial detrás.',
+  'h-cierre': 'Cuando todo está conectado, un fallo en internet puede terminar en un pasillo de comida en la basura.' };
+
+function hGancho(c, tau) { const d = D('h-gancho'), fr = [.6], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { rays(c, CX, 760, 18, PA.cream, PA.sky, 0);
+    const heat = clamp((tau - 1) / 3, 0, 1); cutout(c, (cc) => P_fridge(cc, heat), CX - 120, 760, (tau - .2) / .5, { s: .95, rot: -.03 });
+    cutout(c, (cc) => P_thermo(cc, heat), CX + 290, 760, (tau - .5) / .5, { s: .75, rot: .06 });
+    if (b === 0) { tape(c, 'HACKEO', CX, 260, tau / .35, { size: 120, style: 'red' }); tiles(c, '~700', CX, 1250, (tau - 1) / .7, { size: 120, bg: PA.yellow }); serif(c, 'supermercados · Francia', CX, 1380, (tau - 1.6) / .3, { size: 46 }); }
+    if (b === 1) { cutout(c, P_bin, CX + 300, 1220, t / .5, { s: .55, rot: .05 }); tape(c, 'A LA BASURA', CX - 140, 1250, (t - .3) / .35, { size: 90, style: 'red' }); }
+  }); captions(c, 'h-gancho', tau, d); }
+
+function hNoche(c, tau) { const d = D('h-noche'), fr = [.25, .7], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.navy, 5);
+    if (b === 0) { tiles(c, '11 OCT', CX, 640, t / .7, { size: 130 }); serif(c, 'de noche', CX, 800, (t - .7) / .3, { size: 56, col: PA.cream, italic: true }); }
+    if (b === 1) { cutout(c, (cc) => P_ctrl(cc, tau), CX, 680, t / .5, { s: 1.2, rot: -.02 }); tape(c, 'CONTROL DEL FRÍO A DISTANCIA', CX, 300, t / .35, { size: 62, style: 'white' });
+      tape(c, 'DESCONGELAR SIN PARAR', CX, 1060, (t - .9) / .35, { size: 76, style: 'red' }); }
+    if (b === 2) { const v = clamp(t / 1.6, 0, 1); cutout(c, (cc) => P_thermo(cc, v), CX - 200, 720, t / .4, { s: .9, rot: -.04 });
+      tiles(c, String(Math.round(4 + v * 46)) + '°C', CX + 190, 640, 1, { size: 110, bg: v > .8 ? PA.yellow : PA.paper });
+      stamp(c, 'SIN ALARMAS', CX + 180, 900, (t - 1.8) / .3, { size: 80 }); }
+  }); captions(c, 'h-noche', tau, d); }
+
+function hDanos(c, tau) { const d = D('h-danos'), fr = [.45], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.kraft, 6);
+    if (b === 0) { cutout(c, P_bin, CX, 760, t / .5, { s: 1, rot: -.03 }); for (let i = 0; i < 5; i++) { const k = clamp((t - .4 - i * .2) / .6, 0, 1); if (k <= 0) continue;
+        cutout(c, P_box, CX - 120 + i * 60, 280 + k * 380, 1, { s: .22, rot: i * .4 + k }); }
+      tape(c, 'TONELADAS DE COMIDA', CX, 1110, (t - .8) / .35, { size: 80, style: 'red' }); }
+    if (b === 1) { cutout(c, (cc) => P_fridge(cc, 1), CX - 160, 720, t / .5, { s: .75, rot: -.04 }); cutout(c, (cc) => P_flame(cc, tau), CX + 230, 640, (t - .3) / .4, { s: .8 });
+      tape(c, 'EQUIPOS QUEMADOS', CX, 1070, (t - .6) / .35, { size: 80 }); serif(c, 'la fiscalía de París investiga', CX, 1190, (t - 1) / .3, { size: 44, italic: true }); }
+  }); captions(c, 'h-danos', tau, d); }
+
+function hComo(c, tau) { const d = D('h-como'), fr = [.2], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.sky, 8);
+    if (b === 0) { tape(c, '¿CÓMO ENTRARON?', CX, 760, t / .35, { size: 110 }); }
+    if (b === 1) { cutout(c, (cc) => P_ctrl(cc, tau), CX, 470, t / .5, { s: .8, rot: .03 });
+      [['ABIERTO A INTERNET', 'black', 0], ['SOFTWARE SIN ACTUALIZAR', 'red', .9], ['ACCESO FÁCIL DE ADIVINAR', 'white', 1.8]].forEach(([s, st, dl], i) =>
+        tape(c, s, CX, 800 + i * 140, (t - .4 - dl) / .35, { size: 66, style: st, rot: (i - 1) * .02 })); }
+  }); captions(c, 'h-como', tau, d); }
+
+function hRespuesta(c, tau) { const d = D('h-respuesta'), fr = [.5], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.cream, 10);
+    if (b === 0) { tape(c, 'CIBERSEGURIDAD FRANCESA:', CX, 300, t / .35, { size: 66 });
+      cutout(c, (cc) => P_plug(cc, clamp((t - .4) / .8, 0, 1)), CX, 600, (t - .2) / .5, { s: .9 });
+      [['DESCONECTAR', 0], ['ACTUALIZAR', .7], ['CAMBIAR CLAVES', 1.4]].forEach(([s, dl], i) => tape(c, s, CX, 860 + i * 130, (t - .6 - dl) / .35, { size: 72, style: i === 0 ? 'red' : 'black' })); }
+    if (b === 1) { stamp(c, 'SIN AUTOR', CX, 560, t / .3, { size: 110 }); tape(c, 'NI PRUEBAS DE IA', CX, 820, (t - .8) / .35, { size: 96, style: 'yellow' });
+      serif(c, 'hasta ahora', CX, 950, (t - 1.2) / .3, { size: 46, italic: true }); }
+  }); captions(c, 'h-respuesta', tau, d); }
+
+function hCierre(c, tau) { const d = D('h-cierre'), end = d - 3;
+  whipIn(c, tau, () => { rays(c, CX, 760, 18, PA.cream, PA.red, 0); cutout(c, (cc) => P_ctrl(cc, tau), CX - 200, 560, tau / .5, { s: .6, rot: -.05 });
+    cutout(c, P_bin, CX + 200, 620, (tau - .3) / .5, { s: .7, rot: .05 }); serif(c, '→', CX, 580, (tau - .6) / .3, { size: 120 });
+    tape(c, 'TODO CONECTADO', CX, 1000, (tau - .6) / .35, { size: 96 }); tape(c, 'DAÑO REAL', CX, 1130, (tau - 1.1) / .35, { size: 110, style: 'red' }); });
+  captions(c, 'h-cierre', tau, d);
+  resetT(c); const ca = clamp((tau - end) / .6, 0, 1); c.save(); c.globalAlpha = ca; c.fillStyle = 'rgba(246,239,223,.92)'; c.fillRect(0, 1745, W, 110);
+  serif(c, 'Voz sintética clonada (Voicebox) · Animación con IA (Claude)', CX, 1780, ca / 3, { size: 26, col: '#5d5446' });
+  serif(c, 'Ilustración, sin marcas reales · Fuentes en la descripción', CX, 1820, ca / 3, { size: 26, col: '#5d5446' }); c.restore(); }
+
+socialFilm('9:16', [['h-gancho', hGancho], ['h-noche', hNoche], ['h-danos', hDanos], ['h-como', hComo], ['h-respuesta', hRespuesta], ['h-cierre', hCierre]]);
+</script>

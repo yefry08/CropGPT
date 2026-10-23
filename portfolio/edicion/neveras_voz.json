@@ -1,0 +1,26 @@
+[
+ {
+  "id": "h-gancho",
+  "say": "En una sola noche, hackearon las neveras de unos setecientos supermercados en Francia. Y hubo que tirar la comida."
+ },
+ {
+  "id": "h-noche",
+  "say": "Fue la noche del once de octubre. Los atacantes entraron en los controladores que manejan el frío a distancia y los pusieron a descongelar sin parar. Algunas neveras llegaron a cincuenta grados, y no saltó ninguna alarma."
+ },
+ {
+  "id": "h-danos",
+  "say": "Se tiraron toneladas de productos frescos y congelados. Hubo equipos que se derritieron o se incendiaron, y la fiscalía de París abrió una investigación."
+ },
+ {
+  "id": "h-como",
+  "say": "¿Cómo entraron? Muchos de esos aparatos estaban abiertos a internet, con un software viejo que ya no recibía actualizaciones y accesos muy fáciles de adivinar."
+ },
+ {
+  "id": "h-respuesta",
+  "say": "La agencia de ciberseguridad francesa pidió desconectarlos de internet, actualizarlos y cambiar las credenciales. Nadie se ha atribuido el ataque, y no hay pruebas de que haya una inteligencia artificial detrás."
+ },
+ {
+  "id": "h-cierre",
+  "say": "Cuando todo está conectado, un fallo en internet puede terminar en un pasillo de comida en la basura."
+ }
+]

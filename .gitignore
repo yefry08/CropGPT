@@ -86,3 +86,7 @@ portfolio/ia-robots/audio-reel
 portfolio/ia-robots/*.mp4
 portfolio/ia-robots/*.log
 portfolio/ia-robots/out
+portfolio/ia-neveras/audio-reel
+portfolio/ia-neveras/*.mp4
+portfolio/ia-neveras/*.log
+portfolio/ia-neveras/out
