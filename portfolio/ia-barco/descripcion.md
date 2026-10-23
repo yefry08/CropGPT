@@ -1,6 +1,6 @@
 # El chatbot que casi provoca el abordaje de un barco chino
 
-**Reel 9:16 · español** · serie de seguridad de la IA · estilo collage de papel · voz clonada (Voicebox) y animación generadas con IA
+**Reel 9:16 · 0:59 · español** · serie de seguridad de la IA · estilo collage de papel · voz clonada (Voicebox) y animación generadas con IA
 
 **Texto para publicar:**
 Según CNN, un analista militar de EE. UU. le preguntó a un chatbot qué llevaba un barco chino. La respuesta mezcló fuentes abiertas con inteligencia secreta y concluyó que transportaba piezas nucleares rumbo a Irán. Hubo aviones en el aire antes de que alguien notara que el informe lo había escrito, en parte, una IA. Una fuente lo llamó «totalmente falso». Esta vez alguien revisó a tiempo. ¿Y la próxima? #InteligenciaArtificial #IA #Alucinaciones #SeguridadIA #Pentágono
