@@ -1,0 +1,108 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Robots al acero · reel</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{height:min(92vh,960px);width:auto;background:#fff;box-shadow:0 0 0 1px #333}
+</style>
+<canvas id="c"></canvas>
+<script src="timing-reel.js"></script>
+<script src="core.js"></script>
+<script src="kit.js"></script>
+<script src="collage.js"></script>
+<script src="fondo.js"></script>
+<script src="barco.js"></script>
+<script src="robots.js"></script>
+<script>
+/* BRIEF: AI/robotics reel (9:16, paper-collage style). Figure's "F.02 Decommission" (30 Sep 2026): CEO Brett Adcock asked on X what
+   to do with the retired Figure 02 fleet; Arnold Schwarzenegger replied "You should melt them". US and Mexican foundries refused
+   (lithium-ion batteries); a foundry in Imatra, Finland agreed (75-ton electric arc furnace, 6 melts in 24 h). Trained in San Jose
+   to jump from a second floor onto airbags, with a simulation-trained model using stunt performers as reference; per Figure they
+   jumped autonomously. F.02 at BMW Spartanburg: >90,000 parts loaded, helped build >30,000 X3s. Why not sell/dismantle: protect IP,
+   save engineering time for F.04. Metal sold as bars, $500–1,900. T2: the T-800 asks to be lowered into molten steel.
+   Corrected from the source reel: "one sank with a thumbs-up" (Schwarzenegger and a robot traded a thumbs-up). Generic drawn
+   humanoid, not Figure's design; real people only as names in text. */
+setPalette('rainbow');
+
+function captions(c, id, tau, d) { const words = SECTIONS[id].split(' '), chunks = []; let cur = [];
+  words.forEach(w => { cur.push(w); if (cur.join(' ').length > 26 || /[.,:;?]$/.test(w) && cur.join(' ').length > 14) { chunks.push(cur.join(' ')); cur = []; } }); if (cur.length) chunks.push(cur.join(' '));
+  const tot = chunks.reduce((a, s) => a + s.length, 0), a0 = .2, a1 = d - .5; let acc = a0;
+  for (const s of chunks) { const len = (a1 - a0) * s.length / tot; if (tau >= acc && tau < acc + len) { strip(c, [s], 1); return; } acc += len; } }
+const SECTIONS = {
+  'r-gancho': 'Una empresa de robots humanoides jubiló a su flota y la tiró a acero fundido. La idea fue de Arnold Schwarzenegger.',
+  'r-idea': 'Figure preguntó en redes qué hacer con sus robots Figure 02. Schwarzenegger respondió: deberían derretirlos. Y lo hicieron.',
+  'r-bmw': 'Esos robots habían trabajado en una planta de BMW en Estados Unidos: movieron más de noventa mil piezas y ayudaron a armar más de treinta mil coches.',
+  'r-salto': 'Ninguna fundición de Estados Unidos ni de México los quiso, por sus baterías de litio. Aceptó una en Finlandia. Los entrenaron a saltar desde un segundo piso a colchones de aire, con un modelo que aprendió de dobles de riesgo. Según Figure, saltaron solos al horno.',
+  'r-porque': '¿Por qué no venderlos? Para no regalar su tecnología ni perder tiempo de ingeniería. Ahora vende lingotes de ese metal, de quinientos a mil novecientos dólares.',
+  'r-cierre': 'En Terminator 2, el robot pedía que lo bajaran al acero para que no quedara ninguno como él. Aquí saltan para dejarle sitio al modelo nuevo.' };
+
+// glowing furnace scene backdrop: dark paper + orange glow from below
+function forge(c, tau) { paperBg(c, PA.navy, 5); resetT(c); c.save(); const g = c.createRadialGradient(CX, 1500, 50, CX, 1500, 900);
+  g.addColorStop(0, `rgba(240,140,40,${.55 + .1 * Math.sin(tau * 6)})`); g.addColorStop(1, 'rgba(240,140,40,0)'); c.fillStyle = g; c.fillRect(0, 0, W, H); c.restore(); }
+
+function rGancho(c, tau) { const d = D('r-gancho'), fr = [.55], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { forge(c, tau); cutout(c, (cc) => P_furnace(cc, .5 + .5 * Math.sin(tau * 5)), CX, 1180, 1, { s: 1.1 });
+    const y = b === 0 ? 640 : 640 + Math.min(1, t / 1.2) ** 2 * 520; c.save(); if (b === 1) { c.beginPath(); c.rect(0, 0, W, 1105); c.clip(); }
+    cutout(c, (cc) => P_humanoid(cc, b === 0 ? 0 : .6), CX, y, tau / .5, { s: 1, rot: b === 1 ? .2 : 0 }); c.restore();
+    if (b === 0) tape(c, 'JUBILADOS', CX, 260, tau / .35, { size: 110 });
+    if (b === 1) { tape(c, 'AL ACERO FUNDIDO', CX, 260, t / .35, { size: 90, style: 'red' }); serif(c, 'idea de Arnold Schwarzenegger', CX, 380, (t - .5) / .3, { size: 46, col: PA.cream, italic: true }); }
+  }); captions(c, 'r-gancho', tau, d); }
+
+function rIdea(c, tau) { const d = D('r-idea'), fr = [.45, .8], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.sky, 8);
+    if (b === 0) { cutout(c, (cc) => P_bubble(cc, 0, false), CX, 620, t / .5, { s: 1.1, rot: -.03 }); serif(c, '¿Qué hacemos con', CX, 590, (t - .4) / .3, { size: 52 }); serif(c, 'los Figure 02?', CX, 660, (t - .6) / .3, { size: 52 });
+      tape(c, 'FIGURE PREGUNTA EN X', CX, 300, t / .35, { size: 74 }); serif(c, 'el director, Brett Adcock', CX, 900, (t - 1) / .3, { size: 40, italic: true }); }
+    if (b === 1) { cutout(c, (cc) => P_bubble(cc, 0, false), CX, 640, t / .5, { s: 1.1, rot: .04 }); serif(c, '«Deberían', CX, 600, (t - .3) / .3, { size: 60 }); serif(c, 'derretirlos»', CX, 680, (t - .5) / .3, { size: 60 });
+      tape(c, 'SCHWARZENEGGER', CX, 940, (t - .6) / .35, { size: 90, style: 'red' }); }
+    if (b === 2) { stamp(c, 'Y LO HICIERON', CX, 760, t / .3, { size: 120 }); }
+  }); captions(c, 'r-idea', tau, d); }
+
+function rBmw(c, tau) { const d = D('r-bmw'), fr = [.4], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.kraft, 6);
+    tape(c, 'PLANTA DE BMW · EE. UU.', CX, 240, tau / .35, { size: 74, style: 'white' });
+    cutout(c, (cc) => P_humanoid(cc, .3), CX - 230, 820, (tau - .2) / .5, { s: .8, rot: -.03 });
+    if (b === 0) { for (let i = 0; i < 3; i++) cutout(c, P_box, CX + 200, 980 - i * 150, (t - .3 - i * .2) / .4, { s: .35, rot: (i - 1) * .06 });
+      tiles(c, '90.000', CX + 180, 470, (t - .6) / .7, { size: 90, bg: PA.yellow }); serif(c, 'piezas movidas', CX + 180, 570, (t - 1) / .3, { size: 42 }); }
+    if (b === 1) { cutout(c, P_car, CX + 190, 900, t / .5, { s: .75, rot: .04 }); tiles(c, '30.000', CX + 180, 470, (t - .2) / .7, { size: 90, bg: PA.yellow });
+      serif(c, 'coches armados', CX + 180, 570, (t - .6) / .3, { size: 42 }); }
+  }); captions(c, 'r-bmw', tau, d); }
+
+function rSalto(c, tau) { const d = D('r-salto'), fr = [.3, .72], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => {
+    if (b === 0) { paperBg(c, PA.cream, 9); cutout(c, P_battery, CX, 640, t / .5, { s: .9, rot: -.05 });
+      stamp(c, 'EE. UU.: NO', CX - 200, 1000, (t - .6) / .3, { size: 70 }); stamp(c, 'MÉXICO: NO', CX + 200, 1080, (t - .9) / .3, { size: 70 });
+      tape(c, 'FINLANDIA: SÍ', CX, 1220, (t - 1.5) / .35, { size: 90, style: 'yellow' }); }
+    if (b === 1) { paperBg(c, PA.sky, 10); resetT(c); c.save(); c.fillStyle = PA.kraftD; c.fillRect(0, 520, 380, 30); c.restore();
+      const k = clamp((t - .8) / 1.4, 0, 1), x = 220 + k * 380, y = 400 + k * k * 620; cutout(c, (cc) => P_humanoid(cc, .7), x, y, t / .4, { s: .55, rot: k * .9 });
+      cutout(c, P_airbag, CX + 120, 1180, (t - .3) / .5, { s: .9 }); tape(c, 'ENTRENAMIENTO', CX, 240, t / .35, { size: 90 });
+      serif(c, 'segundo piso → colchón de aire', CX, 340, (t - .4) / .3, { size: 40, italic: true }); serif(c, 'modelo que aprendió de dobles de riesgo', CX, 1340, (t - 1.2) / .3, { size: 38, italic: true }); }
+    if (b === 2) { forge(c, tau); cutout(c, (cc) => P_furnace(cc, .5 + .5 * Math.sin(tau * 5)), CX, 1180, 1, { s: 1.1 });
+      for (let i = 0; i < 3; i++) { const ti = t - i * .7, k = clamp(ti / 1.1, 0, 1); if (ti <= 0 || k >= 1) continue; c.save(); c.beginPath(); c.rect(0, 0, W, 1105); c.clip();
+        cutout(c, (cc) => P_humanoid(cc, .6), CX - 200 + i * 200, 500 + k * k * 640, 1, { s: .55, rot: k * .5 }); c.restore(); }
+      tape(c, 'SALTARON SOLOS', CX, 260, (t - .2) / .35, { size: 96, style: 'red' }); serif(c, 'según Figure', CX, 370, (t - .5) / .3, { size: 44, col: PA.cream, italic: true }); }
+  }); captions(c, 'r-salto', tau, d); }
+
+function rPorque(c, tau) { const d = D('r-porque'), fr = [.5], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.teal, 4, { band: PA.navy, bandY: 1250 });
+    if (b === 0) { tape(c, '¿POR QUÉ NO VENDERLOS?', CX, 300, t / .35, { size: 80 }); cutout(c, P_safe, CX - 200, 720, (t - .4) / .5, { s: .7, rot: -.05 });
+      serif(c, 'proteger su tecnología', CX - 200, 940, (t - .7) / .3, { size: 38, col: PA.cream }); cutout(c, P_calendar, CX + 210, 720, (t - .9) / .5, { s: .7, rot: .05 });
+      serif(c, 'no perder tiempo', CX + 210, 940, (t - 1.2) / .3, { size: 38, col: PA.cream }); }
+    if (b === 1) { for (let i = 0; i < 3; i++) cutout(c, P_ingot, CX, 820 - i * 120, (t - i * .25) / .45, { s: .8, rot: (i - 1) * .04 });
+      tape(c, 'LINGOTES A LA VENTA', CX, 340, t / .35, { size: 84, style: 'yellow' }); tiles(c, '$500-1.900', CX, 1060, (t - .9) / .8, { size: 80 }); serif(c, 'por lingote', CX, 1160, (t - 1.6) / .3, { size: 40, col: PA.cream }); }
+  }); captions(c, 'r-porque', tau, d); }
+
+function rCierre(c, tau) { const d = D('r-cierre'), fr = [.5], b = beatOf(tau, d, fr), t = since(tau, d, fr, b), end = d - 3;
+  whipIn(c, tau, () => {
+    if (b === 0) { forge(c, tau); cutout(c, (cc) => P_furnace(cc, .5 + .5 * Math.sin(tau * 5)), CX, 1180, 1, { s: 1.1 });
+      c.save(); c.beginPath(); c.rect(0, 0, W, 1105); c.clip(); cutout(c, (cc) => P_humanoid(cc, 1, true), CX, 900 + clamp(t / 4, 0, 1) * 200, t / .5, { s: .9 }); c.restore();
+      tape(c, 'TERMINATOR 2', CX, 260, t / .35, { size: 90, style: 'white' }); serif(c, 'que no quede ninguno como él', CX, 380, (t - .5) / .3, { size: 46, col: PA.cream, italic: true }); }
+    if (b === 1) { rays(c, CX, 760, 18, PA.cream, PA.red, 0); cutout(c, (cc) => P_humanoid(cc, 0), CX - 200, 760, t / .5, { s: .8, rot: -.05 }); stamp(c, 'VIEJO', CX - 200, 760, (t - .4) / .3, { size: 70 });
+      cutout(c, (cc) => P_humanoid(cc, .3), CX + 200, 740, (t - .6) / .5, { s: .9, rot: .04 }); tape(c, 'NUEVO', CX + 200, 1060, (t - .9) / .35, { size: 80, style: 'yellow' });
+      tape(c, 'SALTAN PARA DEJAR SITIO', CX, 300, (t - .2) / .35, { size: 74, style: 'red' }); }
+  }); captions(c, 'r-cierre', tau, d);
+  resetT(c); const ca = clamp((tau - end) / .6, 0, 1); c.save(); c.globalAlpha = ca; c.fillStyle = 'rgba(246,239,223,.92)'; c.fillRect(0, 1745, W, 110);
+  serif(c, 'Voz sintética clonada (Voicebox) · Animación con IA (Claude)', CX, 1780, ca / 3, { size: 26, col: '#5d5446' });
+  serif(c, 'Ilustración, robot genérico · Fuentes en la descripción', CX, 1820, ca / 3, { size: 26, col: '#5d5446' }); c.restore(); }
+
+socialFilm('9:16', [['r-gancho', rGancho], ['r-idea', rIdea], ['r-bmw', rBmw], ['r-salto', rSalto], ['r-porque', rPorque], ['r-cierre', rCierre]]);
+</script>

@@ -1,0 +1,36 @@
+{
+  "title": "Los robots que saltaron al acero fundido",
+  "language": "es",
+  "sections": [
+    {
+      "id": "r-gancho",
+      "chapter": "Al acero",
+      "text": "Una empresa de robots humanoides jubiló a su flota y la tiró a acero fundido. La idea fue de Arnold Schwarzenegger."
+    },
+    {
+      "id": "r-idea",
+      "chapter": "La idea",
+      "text": "Figure preguntó en redes qué hacer con sus robots Figure 02. Schwarzenegger respondió: deberían derretirlos. Y lo hicieron."
+    },
+    {
+      "id": "r-bmw",
+      "chapter": "La fábrica",
+      "text": "Esos robots habían trabajado en una planta de BMW en Estados Unidos: movieron más de noventa mil piezas y ayudaron a armar más de treinta mil coches."
+    },
+    {
+      "id": "r-salto",
+      "chapter": "El salto",
+      "text": "Ninguna fundición de Estados Unidos ni de México los quiso, por sus baterías de litio. Aceptó una en Finlandia. Los entrenaron a saltar desde un segundo piso a colchones de aire, con un modelo que aprendió de dobles de riesgo. Según Figure, saltaron solos al horno."
+    },
+    {
+      "id": "r-porque",
+      "chapter": "¿Por qué?",
+      "text": "¿Por qué no venderlos? Para no regalar su tecnología ni perder tiempo de ingeniería. Ahora vende lingotes de ese metal, de quinientos a mil novecientos dólares."
+    },
+    {
+      "id": "r-cierre",
+      "chapter": "Cierre",
+      "text": "En Terminator 2, el robot pedía que lo bajaran al acero para que no quedara ninguno como él. Aquí saltan para dejarle sitio al modelo nuevo."
+    }
+  ]
+}

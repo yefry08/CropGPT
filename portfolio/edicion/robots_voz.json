@@ -1,0 +1,31 @@
+[
+ {
+  "id": "r-gancho",
+  "say": "Una empresa de robots humanoides jubiló a su flota y la tiró a acero fundido. La idea fue de Arnold Schwarzenegger.",
+  "tts": "Una empresa de robots humanoides jubiló a su flota y la tiró a acero fundido. La idea fue de Árnold Suárzeneguer."
+ },
+ {
+  "id": "r-idea",
+  "say": "Figure preguntó en redes qué hacer con sus robots Figure 02. Schwarzenegger respondió: deberían derretirlos. Y lo hicieron.",
+  "tts": "Fíguer preguntó en redes qué hacer con sus robots Fíguer cero dos. Suárzeneguer respondió: deberían derretirlos. Y lo hicieron."
+ },
+ {
+  "id": "r-bmw",
+  "say": "Esos robots habían trabajado en una planta de BMW en Estados Unidos: movieron más de noventa mil piezas y ayudaron a armar más de treinta mil coches.",
+  "tts": "Esos robots habían trabajado en una planta de be eme uve doble en Estados Unidos: movieron más de noventa mil piezas y ayudaron a armar más de treinta mil coches."
+ },
+ {
+  "id": "r-salto",
+  "say": "Ninguna fundición de Estados Unidos ni de México los quiso, por sus baterías de litio. Aceptó una en Finlandia. Los entrenaron a saltar desde un segundo piso a colchones de aire, con un modelo que aprendió de dobles de riesgo. Según Figure, saltaron solos al horno.",
+  "tts": "Ninguna fundición de Estados Unidos ni de México los quiso, por sus baterías de litio. Aceptó una en Finlandia. Los entrenaron a saltar desde un segundo piso a colchones de aire, con un modelo que aprendió de dobles de riesgo. Según Fíguer, saltaron solos al horno."
+ },
+ {
+  "id": "r-porque",
+  "say": "¿Por qué no venderlos? Para no regalar su tecnología ni perder tiempo de ingeniería. Ahora vende lingotes de ese metal, de quinientos a mil novecientos dólares."
+ },
+ {
+  "id": "r-cierre",
+  "say": "En Terminator 2, el robot pedía que lo bajaran al acero para que no quedara ninguno como él. Aquí saltan para dejarle sitio al modelo nuevo.",
+  "tts": "En Términeitor dos, el robot pedía que lo bajaran al acero para que no quedara ninguno como él. Aquí saltan para dejarle sitio al modelo nuevo."
+ }
+]

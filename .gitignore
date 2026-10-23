@@ -82,3 +82,7 @@ portfolio/ia-pruebas/audio-reel
 portfolio/ia-pruebas/*.mp4
 portfolio/ia-pruebas/*.log
 portfolio/ia-pruebas/out
+portfolio/ia-robots/audio-reel
+portfolio/ia-robots/*.mp4
+portfolio/ia-robots/*.log
+portfolio/ia-robots/out
