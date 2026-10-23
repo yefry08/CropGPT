@@ -1,0 +1,36 @@
+{
+  "title": "El chatbot que casi provoca el abordaje de un barco chino",
+  "language": "es",
+  "sections": [
+    {
+      "id": "c-gancho",
+      "chapter": "El barco",
+      "text": "Este año, un informe hecho con ayuda de un chatbot casi lleva a Estados Unidos a abordar un barco chino."
+    },
+    {
+      "id": "c-informe",
+      "chapter": "El informe",
+      "text": "Según CNN, un analista del Comando de Operaciones Especiales del Pacífico le preguntó a un chatbot por la carga de ese barco. La respuesta mezcló fuentes abiertas con inteligencia secreta, y concluyó que llevaba piezas de un programa de armas nucleares rumbo a Irán."
+    },
+    {
+      "id": "c-casi",
+      "chapter": "Casi",
+      "text": "El informe circuló como si fuera real. Se preparó la operación para tomar el barco y había aviones en el aire. Hasta que alguien lo miró de cerca y vio que lo había escrito, en parte, una máquina. Una fuente lo llamó totalmente falso."
+    },
+    {
+      "id": "c-alucina",
+      "chapter": "Alucinación",
+      "text": "Eso se llama alucinación: la inteligencia artificial afirma algo falso con total seguridad. Si te inventa un libro, es una anécdota. Si te inventa un cargamento nuclear entre dos potencias, casi es una guerra."
+    },
+    {
+      "id": "c-contexto",
+      "chapter": "El contexto",
+      "text": "En enero, el Pentágono se propuso poner la inteligencia artificial primero. Y todavía no se sabe qué chatbot era, ni qué llevaba de verdad el barco."
+    },
+    {
+      "id": "c-cierre",
+      "chapter": "Cierre",
+      "text": "Esta vez alguien revisó a tiempo. ¿Quién revisará la próxima?"
+    }
+  ]
+}

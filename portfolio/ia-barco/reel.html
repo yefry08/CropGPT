@@ -1,0 +1,100 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Barco y chatbot · reel</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{height:min(92vh,960px);width:auto;background:#fff;box-shadow:0 0 0 1px #333}
+</style>
+<canvas id="c"></canvas>
+<script src="timing-reel.js"></script>
+<script src="core.js"></script>
+<script src="kit.js"></script>
+<script src="collage.js"></script>
+<script src="barco.js"></script>
+<script>
+/* BRIEF: AI-safety series reel (9:16, paper-collage style). CNN exclusive (18 Sep 2026): an analyst tied to US Special Operations
+   Command Pacific asked a chatbot about a Chinese ship's cargo; it blended open-source info with classified signals intelligence
+   and concluded the ship carried nuclear-weapons-program components bound for Iran (during the Iran war). The report circulated,
+   the military prepared to seize the ship and warplanes were in the air, until officials saw a chatbot had helped write it.
+   A source: "entirely false", "almost started a war". Unknown: which chatbot (commercial or government) and the real cargo.
+   Context: January 2026 Hegseth memo, "AI-first" Pentagon. Corrected from the source reel: "era todo inventado" (the cargo is
+   unknown; the report's conclusion was called false) and "poco antes de la operación" (timing not reported).
+   Generic drawn props only: no flags, no insignia, no real people. */
+setPalette('rainbow');
+
+function captions(c, id, tau, d) { const words = SECTIONS[id].split(' '), chunks = []; let cur = [];
+  words.forEach(w => { cur.push(w); if (cur.join(' ').length > 26 || /[.,:;?]$/.test(w) && cur.join(' ').length > 14) { chunks.push(cur.join(' ')); cur = []; } }); if (cur.length) chunks.push(cur.join(' '));
+  const tot = chunks.reduce((a, s) => a + s.length, 0), a0 = .2, a1 = d - .5; let acc = a0;
+  for (const s of chunks) { const len = (a1 - a0) * s.length / tot; if (tau >= acc && tau < acc + len) { strip(c, [s], 1); return; } acc += len; } }
+const SECTIONS = {
+  'c-gancho': 'Este año, un informe hecho con ayuda de un chatbot casi lleva a Estados Unidos a abordar un barco chino.',
+  'c-informe': 'Según CNN, un analista del Comando de Operaciones Especiales del Pacífico le preguntó a un chatbot por la carga de ese barco. La respuesta mezcló fuentes abiertas con inteligencia secreta, y concluyó que llevaba piezas de un programa de armas nucleares rumbo a Irán.',
+  'c-casi': 'El informe circuló como si fuera real. Se preparó la operación para tomar el barco y había aviones en el aire. Hasta que alguien lo miró de cerca y vio que lo había escrito, en parte, una máquina. Una fuente lo llamó «totalmente falso».',
+  'c-alucina': 'Eso se llama alucinación: la inteligencia artificial afirma algo falso con total seguridad. Si te inventa un libro, es una anécdota. Si te inventa un cargamento nuclear entre dos potencias, casi es una guerra.',
+  'c-contexto': 'En enero, el Pentágono se propuso poner la inteligencia artificial primero. Y todavía no se sabe qué chatbot era, ni qué llevaba de verdad el barco.',
+  'c-cierre': 'Esta vez alguien revisó a tiempo. ¿Quién revisará la próxima?' };
+
+// sea band with gentle waves (drawn per frame: cheap)
+function sea(c, y, tau) { resetT(c); c.save(); c.fillStyle = PA.teal; c.fillRect(0, y, W, H - y); c.strokeStyle = 'rgba(239,228,204,.5)'; c.lineWidth = 6;
+  for (let k = 0; k < 4; k++) { c.beginPath(); for (let x = 0; x <= W; x += 20) { const yy = y + 40 + k * 90 + Math.sin(x / 60 + tau * 2 + k) * 10; x ? c.lineTo(x, yy) : c.moveTo(x, yy); } c.stroke(); } c.restore(); }
+
+function cGancho(c, tau) { const d = D('c-gancho'), fr = [.5], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { rays(c, CX, 700, 18, PA.cream, PA.red, 0); sea(c, 1050, tau);
+    cutout(c, P_ship, CX, 980 + Math.sin(tau * 2) * 8, (tau - .2) / .5, { s: 1.15, rot: Math.sin(tau * 1.5) * .02 });
+    if (b === 0) { cutout(c, (cc) => P_bubble(cc, tau), CX - 120, 470, (tau - .4) / .5, { s: .9, rot: -.05 }); tape(c, 'UN CHATBOT', CX + 160, 300, (tau - .7) / .35, { size: 80 }); }
+    if (b === 1) { tape(c, 'CASI', CX, 380, t / .3, { size: 140, style: 'red' }); tape(c, 'UN ABORDAJE', CX, 540, (t - .3) / .35, { size: 100 }); }
+  }); captions(c, 'c-gancho', tau, d); }
+
+function cInforme(c, tau) { const d = D('c-informe'), fr = [.3, .66], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.kraft, 6);
+    tape(c, 'SEGÚN CNN', CX, 220, tau / .35, { size: 70, style: 'white' });
+    if (b === 0) { tape(c, 'UN ANALISTA', CX, 520, t / .35, { size: 96 }); serif(c, 'Comando de Operaciones Especiales', CX, 660, (t - .4) / .3, { size: 44 }); serif(c, 'del Pacífico (EE. UU.)', CX, 720, (t - .6) / .3, { size: 44 });
+      cutout(c, (cc) => P_bubble(cc, tau, false), CX, 1000, (t - 1) / .5, { s: .9, rot: .04 }); serif(c, '¿Qué lleva este barco?', CX, 980, (t - 1.4) / .3, { size: 42 }); }
+    if (b === 1) { cutout(c, P_folder, CX - 150, 640, t / .5, { s: .7, rot: -.08 }); stamp(c, 'SECRETO', CX - 150, 650, (t - .4) / .3, { size: 70 });
+      cutout(c, P_lens, CX + 200, 560, (t - .3) / .5, { s: .7, rot: .1 }); serif(c, 'fuentes abiertas', CX + 200, 800, (t - .6) / .3, { size: 38, italic: true });
+      tape(c, 'MEZCLADO', CX, 1050, (t - 1.2) / .35, { size: 110, style: 'red' }); }
+    if (b === 2) { cutout(c, P_trefoil, CX, 640, t / .5, { s: 1, rot: -.06 }); tape(c, 'PIEZAS NUCLEARES', CX, 930, (t - .5) / .35, { size: 84 });
+      tape(c, 'RUMBO A IRÁN', CX, 1060, (t - .9) / .35, { size: 84, style: 'red' }); serif(c, 'según el chatbot', CX, 1180, (t - 1.3) / .3, { size: 40, italic: true }); }
+  }); captions(c, 'c-informe', tau, d); }
+
+function cCasi(c, tau) { const d = D('c-casi'), fr = [.22, .6], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => {
+    if (b === 0) { paperBg(c, PA.cream, 9); for (let i = 0; i < 4; i++) cutout(c, P_folder, CX - 210 + i * 140, 700 + i * 40, (t - i * .2) / .4, { s: .55, rot: (i - 1.5) * .1 });
+      tape(c, 'CIRCULÓ COMO REAL', CX, 1150, (t - .9) / .35, { size: 80 }); }
+    if (b === 1) { paperBg(c, PA.sky, 8); sea(c, 1150, tau); cutout(c, P_ship, CX - 60, 1130, 1, { s: .8 });
+      [[-260, 380], [60, 300], [300, 480]].forEach(([dx, y], i) => { const k = clamp((t - .3 - i * .3) / 1.4, 0, 1); cutout(c, P_plane, CX + dx + 200 * (1 - k), y + 60 * (1 - k), (t - .3 - i * .3) / .4, { s: .55, rot: Math.PI * 1.35 }); });
+      tape(c, 'AVIONES EN EL AIRE', CX, 760, (t - 1.4) / .35, { size: 84, style: 'red' }); }
+    if (b === 2) { paperBg(c, PA.kraft, 10); cutout(c, P_folder, CX, 700, t / .5, { s: 1, rot: -.03 }); cutout(c, P_lens, CX + 140, 640, (t - .4) / .5, { s: .9, rot: .1 });
+      tape(c, 'LO ESCRIBIÓ, EN PARTE,', CX, 1020, (t - .9) / .35, { size: 70 }); tape(c, 'UNA MÁQUINA', CX, 1130, (t - 1.2) / .35, { size: 96, style: 'red' });
+      stamp(c, 'TOTALMENTE FALSO', CX, 1300, (t - 2.2) / .3, { size: 84 }); }
+  }); captions(c, 'c-casi', tau, d); }
+
+function cAlucina(c, tau) { const d = D('c-alucina'), fr = [.4, .62], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => {
+    if (b === 0) { rays(c, CX, 760, 18, PA.cream, PA.teal, 0); cutout(c, (cc) => P_bubble(cc, 0, false), CX, 680, t / .5, { s: 1.1, rot: -.04 });
+      serif(c, '100 % seguro.', CX, 650, (t - .5) / .3, { size: 70 }); tape(c, 'ALUCINACIÓN', CX, 1050, (t - .8) / .35, { size: 120, style: 'red' }); }
+    if (b === 1) { paperBg(c, PA.cream, 11); cutout(c, P_book, CX, 700, t / .5, { s: 1, rot: .06 }); serif(c, '¿un libro que no existe?', CX, 1050, (t - .4) / .3, { size: 48, italic: true });
+      tape(c, 'ANÉCDOTA', CX, 1180, (t - .8) / .35, { size: 90, style: 'white' }); }
+    if (b === 2) { rays(c, CX, 760, 18, PA.cream, PA.red, 0); cutout(c, P_trefoil, CX, 640, t / .5, { s: 1.1, rot: .05 });
+      serif(c, '¿un cargamento nuclear?', CX, 970, (t - .4) / .3, { size: 48, italic: true }); tape(c, 'CASI UNA GUERRA', CX, 1120, (t - .8) / .35, { size: 100, style: 'red' }); }
+  }); captions(c, 'c-alucina', tau, d); }
+
+function cContexto(c, tau) { const d = D('c-contexto'), fr = [.45], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.navy, 12);
+    if (b === 0) { tiles(c, 'ENERO 2026', CX, 380, t / .8, { size: 90 }); tape(c, 'PENTÁGONO', CX, 640, (t - .5) / .35, { size: 110, style: 'white' });
+      tape(c, '"AI-FIRST"', CX, 820, (t - .9) / .35, { size: 120, style: 'yellow' }); serif(c, 'la inteligencia artificial, primero', CX, 960, (t - 1.2) / .3, { size: 44, col: PA.cream, italic: true }); }
+    if (b === 1) { tape(c, 'SIN RESPUESTA', CX, 340, t / .35, { size: 90, style: 'red' });
+      cutout(c, (cc) => P_bubble(cc, tau), CX - 230, 700, (t - .3) / .5, { s: .6, rot: -.06 }); serif(c, '¿qué chatbot?', CX - 230, 920, (t - .6) / .3, { size: 46, col: PA.cream });
+      cutout(c, P_ship, CX + 210, 700, (t - .6) / .5, { s: .55, rot: .04 }); serif(c, '¿qué carga?', CX + 210, 920, (t - .9) / .3, { size: 46, col: PA.cream }); }
+  }); captions(c, 'c-contexto', tau, d); }
+
+function cCierre(c, tau) { const d = D('c-cierre'), end = d - 3;
+  whipIn(c, tau, () => { rays(c, CX, 760, 18, PA.cream, PA.red, 0); cutout(c, P_lens, CX, 650, tau / .5, { s: 1.4, rot: -.08 });
+    tape(c, 'ESTA VEZ, A TIEMPO.', CX, 1000, (tau - .4) / .35, { size: 84 }); tape(c, '¿Y LA PRÓXIMA?', CX, 1140, (tau - 1.4) / .35, { size: 120, style: 'red' }); });
+  captions(c, 'c-cierre', tau, d);
+  resetT(c); const ca = clamp((tau - end) / .6, 0, 1); c.save(); c.globalAlpha = ca; c.fillStyle = 'rgba(246,239,223,.92)'; c.fillRect(0, 1745, W, 110);
+  serif(c, 'Voz sintética clonada (Voicebox) · Animación con IA (Claude)', CX, 1780, ca / 3, { size: 26, col: '#5d5446' });
+  serif(c, 'Ilustración, sin imágenes reales · Fuente: CNN · Más en la descripción', CX, 1820, ca / 3, { size: 26, col: '#5d5446' }); c.restore(); }
+
+socialFilm('9:16', [['c-gancho', cGancho], ['c-informe', cInforme], ['c-casi', cCasi], ['c-alucina', cAlucina], ['c-contexto', cContexto], ['c-cierre', cCierre]]);
+</script>
