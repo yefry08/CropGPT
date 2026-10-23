@@ -1,0 +1,36 @@
+{
+  "title": "Del ensayo viral al rescate de Citadel: el fondo de IA que perdió dos tercios en un mes",
+  "language": "es",
+  "sections": [
+    {
+      "id": "f-gancho",
+      "chapter": "Un solo mes",
+      "text": "Un fondo que apostaba todo a la inteligencia artificial perdió dos tercios de su cartera en un solo mes. Su fundador tiene veinticinco años."
+    },
+    {
+      "id": "f-ascenso",
+      "chapter": "El ascenso",
+      "text": "Leopold Aschenbrenner trabajó en OpenAI y fue despedido en 2024. Ese verano publicó un ensayo que anunciaba la superinteligencia, y con él lanzó un fondo, Situational Awareness. Empezó con unos doscientos millones de dólares y superó los veinte mil millones."
+    },
+    {
+      "id": "f-apuesta",
+      "chapter": "La apuesta",
+      "text": "El truco era el dinero prestado: según la prensa, llegó a operar con un apalancamiento de hasta cuatro a uno, casi todo en chips, memoria y centros de datos."
+    },
+    {
+      "id": "f-caida",
+      "chapter": "La caída",
+      "text": "En julio esas acciones se desplomaron. Los bancos le exigieron más garantías, las llamadas de margen. No había efectivo, así que tuvo que vender."
+    },
+    {
+      "id": "f-citadel",
+      "chapter": "Citadel",
+      "text": "El comprador fue Citadel, el fondo de Ken Griffin. Se quedó con unos dieciséis mil millones en acciones, con más de un diez por ciento de descuento. Al día siguiente el mercado rebotó, y Citadel tuvo su mejor mes desde 2022."
+    },
+    {
+      "id": "f-cierre",
+      "chapter": "La lección",
+      "text": "El fondo conservó su parte privada, incluida una participación en Anthropic de unos cinco mil millones. La lección: con dinero prestado, tener razón a largo plazo no sirve si el mercado te tumba antes."
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Fondo de IA · reel</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{height:min(92vh,960px);width:auto;background:#fff;box-shadow:0 0 0 1px #333}
+</style>
+<canvas id="c"></canvas>
+<script src="timing-reel.js"></script>
+<script src="core.js"></script>
+<script src="kit.js"></script>
+<script src="collage.js"></script>
+<script src="fondo.js"></script>
+<script>
+/* BRIEF: AI-safety series reel (9:16, paper-collage style). Situational Awareness LP (Leopold Aschenbrenner, 25) in July 2026:
+   launched 2024 with ~$225M after his essay; >$20B AUM (WSJ; CNBC: up to $45B); leverage up to ~4:1 (press); AI-infrastructure
+   longs fell; margin calls from prime brokers; portfolio -67% in July (FT, investor letter); ~$16B public book sold to Citadel at
+   >10% discount (~29–30 July); tech rebounded next day; Citadel's Wellington had its best month since 2022 (+5.94%); fund kept
+   private book incl. ~$5B Anthropic stake (FT). Corrected from the summary: "$35B lost in 72 hours" (it was over weeks; the sale
+   took ~2 days). Conflict of interest (Anthropic) shown as on-screen text. Real people only as names in text; no drawings of them,
+   no logos. */
+setPalette('rainbow');
+
+function captions(c, id, tau, d) { const words = SECTIONS[id].split(' '), chunks = []; let cur = [];
+  words.forEach(w => { cur.push(w); if (cur.join(' ').length > 26 || /[.,:;?]$/.test(w) && cur.join(' ').length > 14) { chunks.push(cur.join(' ')); cur = []; } }); if (cur.length) chunks.push(cur.join(' '));
+  const tot = chunks.reduce((a, s) => a + s.length, 0), a0 = .2, a1 = d - .5; let acc = a0;
+  for (const s of chunks) { const len = (a1 - a0) * s.length / tot; if (tau >= acc && tau < acc + len) { strip(c, [s], 1); return; } acc += len; } }
+const SECTIONS = {
+  'f-gancho': 'Un fondo que apostaba todo a la inteligencia artificial perdió dos tercios de su cartera en un solo mes. Su fundador tiene veinticinco años.',
+  'f-ascenso': 'Leopold Aschenbrenner trabajó en OpenAI y fue despedido en 2024. Ese verano publicó un ensayo que anunciaba la superinteligencia, y con él lanzó un fondo, Situational Awareness. Empezó con unos doscientos millones de dólares y superó los veinte mil millones.',
+  'f-apuesta': 'El truco era el dinero prestado: según la prensa, llegó a operar con un apalancamiento de hasta cuatro a uno, casi todo en chips, memoria y centros de datos.',
+  'f-caida': 'En julio esas acciones se desplomaron. Los bancos le exigieron más garantías, las llamadas de margen. No había efectivo, así que tuvo que vender.',
+  'f-citadel': 'El comprador fue Citadel, el fondo de Ken Griffin. Se quedó con unos dieciséis mil millones en acciones, con más de un diez por ciento de descuento. Al día siguiente el mercado rebotó, y Citadel tuvo su mejor mes desde 2022.',
+  'f-cierre': 'El fondo conservó su parte privada, incluida una participación en Anthropic de unos cinco mil millones. La lección: con dinero prestado, tener razón a largo plazo no sirve si el mercado te tumba antes.' };
+
+function fGancho(c, tau) { const d = D('f-gancho'), fr = [.6], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { rays(c, CX, 760, 18, PA.cream, PA.red, 0);
+    cutout(c, (cc) => P_chart(cc, clamp((tau - .3) / 2.2, 0, 1)), CX, 700, (tau - .2) / .5, { s: 1.4, rot: -.03 });
+    if (b === 0) { tape(c, 'FONDO DE IA', CX, 260, tau / .35, { size: 90 }); stamp(c, '-67%', CX + 160, 1110, (tau - 2.4) / .3, { size: 150 });
+      tape(c, 'EN UN SOLO MES', CX - 60, 1280, (tau - 2.8) / .35, { size: 76, style: 'red' }); }
+    if (b === 1) { tape(c, 'SU FUNDADOR:', CX, 1130, t / .35, { size: 70 }); tiles(c, '25', CX, 1300, (t - .3) / .6, { size: 150 }); serif(c, 'años', CX + 190, 1320, (t - .8) / .3, { size: 56 }); }
+  }); captions(c, 'f-gancho', tau, d); }
+
+function fAscenso(c, tau) { const d = D('f-ascenso'), fr = [.3, .62], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.kraft, 6);
+    tape(c, 'LEOPOLD ASCHENBRENNER', CX, 230, tau / .35, { size: 70, style: 'white' });
+    if (b === 0) { tape(c, 'EX-OPENAI', CX, 600, t / .35, { size: 110 }); stamp(c, 'DESPEDIDO · 2024', CX, 860, (t - 1.4) / .3, { size: 90 }); }
+    if (b === 1) { cutout(c, P_doc, CX, 760, t / .5, { s: 1.15, rot: -.05 }); tape(c, 'SITUATIONAL AWARENESS', CX, 1110, (t - .5) / .35, { size: 66, style: 'red' });
+      serif(c, 'el ensayo · junio 2024', CX, 1220, (t - .9) / .3, { size: 40, italic: true }); }
+    if (b === 2) { serif(c, 'el fondo empezó con', CX, 470, t / .3, { size: 44 }); tiles(c, '$225M', CX, 600, (t - .2) / .7, { size: 110 });
+      serif(c, 'y superó', CX, 800, (t - 1.3) / .3, { size: 44 }); tiles(c, '$20.000M', CX, 940, (t - 1.5) / .8, { size: 110, bg: PA.yellow });
+      serif(c, 'según el WSJ · CNBC habló de hasta $45.000M', CX, 1110, (t - 2.4) / .3, { size: 32, italic: true }); }
+  }); captions(c, 'f-ascenso', tau, d); }
+
+function fApuesta(c, tau) { const d = D('f-apuesta'), fr = [.55], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.teal, 4, { band: PA.navy, bandY: 1250 });
+    if (b === 0) { tape(c, 'APALANCAMIENTO', CX, 260, t / .35, { size: 96 }); const tilt = .22 * clamp((t - 1.4) / .6, 0, 1);
+      cutout(c, (cc) => P_lever(cc, tilt), CX, 900, (t - .2) / .5, { s: 1.2 });
+      const L = (dx) => [CX + Math.cos(tilt) * dx * 1.2, 900 + 55 * 1.2 + Math.sin(tilt) * dx * 1.2 - 100];
+      const [lx, ly] = L(-270); cutout(c, P_coin, lx, ly, (t - .5) / .4, { s: .8 }); serif(c, 'tuyo', lx, ly - 110, (t - .6) / .3, { size: 40, col: PA.cream });
+      for (let i = 0; i < 4; i++) { const [rx, ry] = L(270); cutout(c, P_coin, rx, ry - i * 70, (t - .8 - i * .15) / .4, { s: .8, rot: i * .1 }); }
+      const [rx, ry] = L(270); serif(c, 'prestado', rx, ry - 370, (t - 1.2) / .3, { size: 40, col: PA.cream });
+      tiles(c, '4:1', CX, 520, (t - 1.6) / .6, { size: 110, bg: PA.yellow }); }
+    if (b === 1) { [-280, 0, 280].forEach((dx, i) => cutout(c, P_chip, CX + dx, 700 + (i === 1 ? -40 : 0), (t - i * .2) / .5, { s: .8, rot: (i - 1) * .08 }));
+      tape(c, 'CHIPS', CX - 250, 980, (t - .5) / .35, { size: 70 }); tape(c, 'MEMORIA', CX + 40, 1080, (t - .8) / .35, { size: 70, style: 'red' });
+      tape(c, 'CENTROS DE DATOS', CX, 1190, (t - 1.1) / .35, { size: 70, style: 'white' }); }
+  }); captions(c, 'f-apuesta', tau, d); }
+
+function fCaida(c, tau) { const d = D('f-caida'), fr = [.35, .72], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.sky, 8);
+    if (b === 0) { tiles(c, 'JULIO 2026', CX, 260, t / .8, { size: 90 }); cutout(c, (cc) => P_chart(cc, .55 + .45 * clamp(t / 1.2, 0, 1)), CX, 760, t / .5, { s: 1.4, rot: .03 });
+      stamp(c, 'DESPLOME', CX, 1180, (t - 1.2) / .3, { size: 120 }); }
+    if (b === 1) { cutout(c, (cc) => P_phone(cc, t < 2 ? t : 0), CX, 720, t / .5, { s: 1.2, rot: -.04 });
+      tape(c, 'LLAMADA DE MARGEN', CX, 1040, (t - .4) / .35, { size: 84, style: 'red' }); serif(c, 'los bancos piden más garantías', CX, 1160, (t - .8) / .3, { size: 40, italic: true }); }
+    if (b === 2) { cutout(c, P_safe, CX, 720, t / .5, { s: .9, rot: .04 }); stamp(c, 'SIN EFECTIVO', CX, 720, (t - .5) / .3, { size: 96 });
+      tape(c, 'TOCA VENDER', CX, 1080, (t - 1) / .35, { size: 110 }); }
+  }); captions(c, 'f-caida', tau, d); }
+
+function fCitadel(c, tau) { const d = D('f-citadel'), fr = [.28, .62], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.cream, 10, { band: PA.navy, bandY: 1300 });
+    if (b === 0) { tape(c, 'EL COMPRADOR', CX, 520, t / .35, { size: 80 }); tape(c, 'CITADEL', CX, 700, (t - .3) / .35, { size: 150, style: 'red' });
+      serif(c, 'el fondo de Ken Griffin', CX, 860, (t - .7) / .3, { size: 46, italic: true }); }
+    if (b === 1) { tiles(c, '$16.000M', CX, 420, t / .8, { size: 110 }); serif(c, 'en acciones', CX, 560, (t - .6) / .3, { size: 44 });
+      cutout(c, P_tag, CX, 860, (t - .8) / .5, { s: 1.2, rot: -.08 }); serif(c, '-10%', CX - 30, 870, (t - 1.1) / .3, { size: 130, col: PA.redD });
+      serif(c, 'o más de descuento', CX, 1080, (t - 1.4) / .3, { size: 40, italic: true }); }
+    if (b === 2) { cutout(c, (cc) => P_chart(cc, clamp(t / 1.2, 0, 1), false), CX, 640, t / .5, { s: 1.2, rot: -.03 });
+      tape(c, 'AL DÍA SIGUIENTE: REBOTE', CX, 960, (t - .6) / .35, { size: 66 });
+      tape(c, 'SU MEJOR MES DESDE 2022', CX, 1090, (t - 1.4) / .35, { size: 66, style: 'yellow' }); }
+  }); captions(c, 'f-citadel', tau, d); }
+
+function fCierre(c, tau) { const d = D('f-cierre'), fr = [.45], b = beatOf(tau, d, fr), t = since(tau, d, fr, b), end = d - 3;
+  whipIn(c, tau, () => {
+    if (b === 0) { paperBg(c, PA.kraft, 12); tape(c, 'LO QUE CONSERVÓ', CX, 330, t / .35, { size: 84 });
+      cutout(c, P_safe, CX, 760, (t - .2) / .5, { s: 1.1, rot: -.03 }); tape(c, 'ANTHROPIC', CX, 1080, (t - .7) / .35, { size: 90, style: 'white' });
+      tiles(c, '~$5.000M', CX, 1240, (t - 1.1) / .8, { size: 90, bg: PA.yellow });
+      strip(c, ['Aviso: Anthropic hace Claude, la herramienta', 'con la que se animó este video.'], (t - 1.6) / .3, { y: 1440, size: 34 }); }
+    if (b === 1) { rays(c, CX, 760, 18, PA.cream, PA.red, 0); cutout(c, P_coin, CX, 640, t / .5, { s: 2.2, rot: -.1 });
+      tape(c, 'CON DINERO PRESTADO,', CX, 940, (t - .4) / .35, { size: 74 }); tape(c, 'TENER RAZÓN', CX, 1060, (t - .8) / .35, { size: 96, style: 'red' });
+      tape(c, 'NO BASTA', CX, 1180, (t - 1.1) / .35, { size: 110 }); }
+  }); captions(c, 'f-cierre', tau, d);
+  resetT(c); const ca = clamp((tau - end) / .6, 0, 1); c.save(); c.globalAlpha = ca; c.fillStyle = 'rgba(246,239,223,.92)'; c.fillRect(0, 1745, W, 110); serif(c, 'Voz sintética clonada (Voicebox) · Animación con IA (Claude) · No es consejo financiero', CX, 1780, ca / 3, { size: 24, col: '#5d5446' });
+  serif(c, 'Ilustración, sin imágenes reales · Fuentes en la descripción', CX, 1820, ca / 3, { size: 24, col: '#5d5446' }); c.restore(); }
+
+socialFilm('9:16', [['f-gancho', fGancho], ['f-ascenso', fAscenso], ['f-apuesta', fApuesta], ['f-caida', fCaida], ['f-citadel', fCitadel], ['f-cierre', fCierre]]);
+</script>
