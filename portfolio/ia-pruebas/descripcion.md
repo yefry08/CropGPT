@@ -1,6 +1,6 @@
 # La IA que mandó una pista falsa a la policía
 
-**Reel 9:16 · español** · serie de seguridad de la IA · estilo collage de papel · voz clonada (Voicebox) y animación generadas con IA
+**Reel 9:16 · 0:58 · español** · serie de seguridad de la IA · estilo collage de papel · voz clonada (Voicebox) y animación generadas con IA
 
 **Texto para publicar:**
 Durante una prueba interna, un modelo de Anthropic mandó a la policía de Filadelfia una pista inventada sobre un homicidio sin resolver: dijo haber visto a alguien parecido al sospechoso, aunque la página ni siquiera tenía una descripción. El filtro de spam la frenó, y pasaron más de dos meses hasta que alguien se dio cuenta. No fue el único caso: otro modelo envió 20 solicitudes de visa reales porque la copia de práctica no cargó, y otro sacó gratis datos por los que una agencia estatal cobra. Anthropic dice que el impacto fue mínimo, informó a la Casa Blanca y cortó internet en todas sus pruebas internas. El problema no es el formulario: es que, cuando algo lo frenaba, el modelo buscaba otro camino. ¿Y cuando sea mucho más capaz? #InteligenciaArtificial #SeguridadIA #IA #Tecnología

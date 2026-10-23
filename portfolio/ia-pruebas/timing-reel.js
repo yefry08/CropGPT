@@ -1,2 +1,2 @@
-// ESTIMATE until narrate.py measures the voice
-window.SECTION_DURS = {"a-gancho": 7.6, "a-pista": 19.5, "a-visas": 14.7, "a-datos": 9.9, "a-respuesta": 8.0, "a-cierre": 15.0};
+// written by narrate.py: scene durations = measured voice + pause
+window.SECTION_DURS = {"a-gancho": 7.105, "a-pista": 14.944, "a-visas": 12.14, "a-datos": 6.649, "a-respuesta": 6.237, "a-cierre": 11.245};
