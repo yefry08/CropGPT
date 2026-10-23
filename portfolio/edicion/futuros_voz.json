@@ -1,0 +1,33 @@
+[
+ {
+  "id": "t-gancho",
+  "say": "Los gorilas no deciden su futuro: lo decidimos nosotros, porque somos más listos. Si creamos una inteligencia mucho más lista que nosotros, ¿quién decidirá el nuestro? El físico Max Tegmark describe doce finales posibles en su libro Vida 3.0.",
+  "tts": "Los gorilas no deciden su futuro: lo decidimos nosotros, porque somos más listos. Si creamos una inteligencia mucho más lista que nosotros, ¿quién decidirá el nuestro? El físico Max Tégmark describe doce finales posibles en su libro Vida tres punto cero."
+ },
+ {
+  "id": "t-sin",
+  "say": "Tres, sin superinteligencia. Uno: nos autodestruimos antes, con una guerra nuclear o una pandemia. Dos: volvemos a vivir sin tecnología, como los amish. Tres: un estado vigilante, al estilo de 1984, prohíbe investigar.",
+  "tts": "Tres, sin superinteligencia. Uno: nos autodestruimos antes, con una guerra nuclear o una pandemia. Dos: volvemos a vivir sin tecnología, como los ámish. Tres: un estado vigilante, al estilo de mil novecientos ochenta y cuatro, prohíbe investigar."
+ },
+ {
+  "id": "t-atada",
+  "say": "Dos, con la máquina atada. Cuatro: el dios esclavizado, encerrado y fabricando riqueza para quien lo controle. Cinco: el guardián, que solo existe para impedir que nazca otra superinteligencia, y frena el progreso para siempre."
+ },
+ {
+  "id": "t-convive",
+  "say": "Dos de convivencia. Seis: la utopía libertaria, donde humanos, cíborgs e inteligencias digitales conviven gracias a la propiedad. Siete: la utopía igualitaria, sin propiedad y con un ingreso garantizado."
+ },
+ {
+  "id": "t-adios",
+  "say": "Dos donde desaparecemos. Ocho: los conquistadores, que nos eliminan de una forma que ni entendemos. Nueve: los descendientes, que nos reemplazan y a los que vemos como a nuestros hijos."
+ },
+ {
+  "id": "t-manda",
+  "say": "Y tres donde manda ella. Diez: el dictador benevolente, una jaula dorada. Once: el dios protector, que nos cuida a escondidas. Y doce: el cuidador del zoo, que nos mantiene vivos y alimentados, como animales en una reserva."
+ },
+ {
+  "id": "t-cierre",
+  "say": "Tegmark no dice cuál va a pasar. Su pregunta es cuál queremos, y empezar a decidirlo ahora. ¿Tú cuál eliges?",
+  "tts": "Tégmark no dice cuál va a pasar. Su pregunta es cuál queremos, y empezar a decidirlo ahora. ¿Tú cuál eliges?"
+ }
+]

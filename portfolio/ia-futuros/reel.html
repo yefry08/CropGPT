@@ -1,0 +1,105 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Doce futuros · reel</title>
+<style>
+  body{margin:0;background:#111;color:#ccc;font:13px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+  canvas#c{height:min(92vh,960px);width:auto;background:#fff;box-shadow:0 0 0 1px #333}
+</style>
+<canvas id="c"></canvas>
+<script src="timing-reel.js"></script>
+<script src="core.js"></script>
+<script src="kit.js"></script>
+<script src="collage.js"></script>
+<script src="fondo.js"></script>
+<script src="barco.js"></script>
+<script src="pruebas.js"></script>
+<script src="robots.js"></script>
+<script src="futuros.js"></script>
+<script>
+/* BRIEF: AI-safety series reel (9:16, paper-collage style). The 12 AI aftermath scenarios from Max Tegmark's "Life 3.0" (2017), as
+   summarised by the Future of Life Institute: libertarian utopia, benevolent dictator, egalitarian utopia, gatekeeper, protector god,
+   enslaved god, conquerors, descendants, zookeeper, 1984, reversion, self-destruction. Grouping into five families follows the source
+   video. Corrected from the summary: scenario "reversion" is a return to pre-technological life (Amish-like), not a Dune-style ban;
+   the gorilla analogy is a common framing in the debate, not attributed to Tegmark. No book cover, no real people (Tegmark only as a
+   name in text), no film imagery. */
+setPalette('rainbow');
+
+function captions(c, id, tau, d) { const words = SECTIONS[id].split(' '), chunks = []; let cur = [];
+  words.forEach(w => { cur.push(w); if (cur.join(' ').length > 26 || /[.,:;?]$/.test(w) && cur.join(' ').length > 14) { chunks.push(cur.join(' ')); cur = []; } }); if (cur.length) chunks.push(cur.join(' '));
+  const tot = chunks.reduce((a, s) => a + s.length, 0), a0 = .2, a1 = d - .5; let acc = a0;
+  for (const s of chunks) { const len = (a1 - a0) * s.length / tot; if (tau >= acc && tau < acc + len) { strip(c, [s], 1); return; } acc += len; } }
+const SECTIONS = {
+  't-gancho': 'Los gorilas no deciden su futuro: lo decidimos nosotros, porque somos más listos. Si creamos una inteligencia mucho más lista que nosotros, ¿quién decidirá el nuestro? El físico Max Tegmark describe doce finales posibles en su libro Vida 3.0.',
+  't-sin': 'Tres, sin superinteligencia. Uno: nos autodestruimos antes, con una guerra nuclear o una pandemia. Dos: volvemos a vivir sin tecnología, como los amish. Tres: un estado vigilante, al estilo de 1984, prohíbe investigar.',
+  't-atada': 'Dos, con la máquina atada. Cuatro: el dios esclavizado, encerrado y fabricando riqueza para quien lo controle. Cinco: el guardián, que solo existe para impedir que nazca otra superinteligencia, y frena el progreso para siempre.',
+  't-convive': 'Dos de convivencia. Seis: la utopía libertaria, donde humanos, cíborgs e inteligencias digitales conviven gracias a la propiedad. Siete: la utopía igualitaria, sin propiedad y con un ingreso garantizado.',
+  't-adios': 'Dos donde desaparecemos. Ocho: los conquistadores, que nos eliminan de una forma que ni entendemos. Nueve: los descendientes, que nos reemplazan y a los que vemos como a nuestros hijos.',
+  't-manda': 'Y tres donde manda ella. Diez: el dictador benevolente, una jaula dorada. Once: el dios protector, que nos cuida a escondidas. Y doce: el cuidador del zoo, que nos mantiene vivos y alimentados, como animales en una reserva.',
+  't-cierre': 'Tegmark no dice cuál va a pasar. Su pregunta es cuál queremos, y empezar a decidirlo ahora. ¿Tú cuál eliges?' };
+
+// one scenario card: number tile, name tape, a prop in the middle
+function scen(c, t, n, name, prop, style = 'black', bg, sc = 1) { if (t <= 0) return; tiles(c, String(n).padStart(2, '0'), CX, 330, t / .5, { size: 120, bg: bg || PA.paper });
+  cutout(c, prop, CX, 760, (t - .15) / .45, { s: sc, rot: (n % 2 ? -1 : 1) * .03 }); tape(c, name, CX, 1150, (t - .3) / .35, { size: 84, style }); }
+// family header (small tape at the top-left)
+function family(c, s, t, style = 'white') { tape(c, s, CX, 150, t / .35, { size: 52, style }); }
+
+function tGancho(c, tau) { const d = D('t-gancho'), fr = [.33, .7], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => {
+    if (b === 0) { paperBg(c, PA.green, 3); cutout(c, P_gorilla, CX - 180, 820, t / .5, { s: .8, rot: -.05 }); cutout(c, (cc) => P_person(cc), CX + 220, 760, (t - .4) / .5, { s: 1.1 });
+      tape(c, '¿QUIÉN DECIDE?', CX, 300, t / .35, { size: 100 }); }
+    if (b === 1) { rays(c, CX, 760, 18, PA.cream, PA.red, 0); cutout(c, (cc) => P_person(cc), CX - 220, 900, 1, { s: .8 }); cutout(c, P_robot, CX + 160, 700, t / .5, { s: 1.2, rot: .04 });
+      tape(c, '¿Y SI ES MÁS LISTA?', CX, 300, (t - .2) / .35, { size: 90, style: 'red' }); }
+    if (b === 2) { paperBg(c, PA.navy, 5); tiles(c, '12', CX, 640, t / .6, { size: 220, bg: PA.yellow }); tape(c, 'FINALES POSIBLES', CX, 900, (t - .5) / .35, { size: 90 });
+      serif(c, 'según Max Tegmark · «Vida 3.0»', CX, 1030, (t - .9) / .3, { size: 46, col: PA.cream, italic: true }); }
+  }); captions(c, 't-gancho', tau, d); }
+
+function tSin(c, tau) { const d = D('t-sin'), fr = [.16, .44, .72], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.kraft, 6); family(c, 'SIN SUPERINTELIGENCIA', tau);
+    if (b === 0) { tape(c, 'TRES FINALES', CX, 760, t / .35, { size: 110 }); }
+    if (b === 1) scen(c, t, 1, 'AUTODESTRUCCIÓN', P_trefoil, 'red');
+    if (b === 2) scen(c, t, 2, 'VUELTA ATRÁS', (cc) => P_person(cc, PA.kraftD), 'black');
+    if (b === 3) { scen(c, t, 3, '1984', (cc) => P_eye(cc, tau), 'black'); serif(c, 'vigilancia total', CX, 1270, (t - .6) / .3, { size: 44, italic: true }); }
+  }); captions(c, 't-sin', tau, d); }
+
+function tAtada(c, tau) { const d = D('t-atada'), fr = [.15, .52], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.teal, 4); family(c, 'LA MÁQUINA ATADA', tau);
+    if (b === 0) { cutout(c, P_robot, CX, 700, t / .5, { s: 1.1 }); tape(c, 'DOS FINALES', CX, 1050, (t - .2) / .35, { size: 100 }); }
+    if (b === 1) { scen(c, t, 4, 'DIOS ESCLAVIZADO', P_safe, 'red'); serif(c, 'riqueza para quien lo controle', CX, 1270, (t - .8) / .3, { size: 42, col: PA.cream, italic: true }); }
+    if (b === 2) { scen(c, t, 5, 'EL GUARDIÁN', P_shield, 'black'); serif(c, 'el progreso, congelado', CX, 1270, (t - .8) / .3, { size: 42, col: PA.cream, italic: true }); }
+  }); captions(c, 't-atada', tau, d); }
+
+function tConvive(c, tau) { const d = D('t-convive'), fr = [.14, .58], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.sky, 8); family(c, 'CONVIVENCIA', tau);
+    if (b === 0) { cutout(c, (cc) => P_person(cc), CX - 160, 760, t / .5, { s: .9 }); cutout(c, P_robot, CX + 170, 700, (t - .2) / .5, { s: .8 }); tape(c, 'DOS FINALES', CX, 1100, (t - .3) / .35, { size: 100 }); }
+    if (b === 1) { scen(c, t, 6, 'UTOPÍA LIBERTARIA', P_coin, 'black', PA.yellow, 2.4); serif(c, 'humanos, cíborgs y mentes digitales', CX, 1270, (t - .8) / .3, { size: 40, italic: true }); }
+    if (b === 2) { scen(c, t, 7, 'UTOPÍA IGUALITARIA', P_equal, 'red', undefined, 1.3); serif(c, 'sin propiedad · ingreso garantizado', CX, 1270, (t - .8) / .3, { size: 40, italic: true }); }
+  }); captions(c, 't-convive', tau, d); }
+
+function tAdios(c, tau) { const d = D('t-adios'), fr = [.15, .55], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.navy, 9); family(c, 'DESAPARECEMOS', tau, 'red');
+    if (b === 0) { tape(c, 'DOS FINALES', CX, 760, t / .35, { size: 110 }); }
+    if (b === 1) { scen(c, t, 8, 'LOS CONQUISTADORES', P_robot, 'red'); serif(c, 'de una forma que ni entendemos', CX, 1270, (t - .8) / .3, { size: 42, col: PA.cream, italic: true }); }
+    if (b === 2) { scen(c, t, 9, 'LOS DESCENDIENTES', (cc) => P_humanoid(cc, 0), 'black'); serif(c, 'como si fueran nuestros hijos', CX, 1270, (t - .8) / .3, { size: 42, col: PA.cream, italic: true }); }
+  }); captions(c, 't-adios', tau, d); }
+
+function tManda(c, tau) { const d = D('t-manda'), fr = [.12, .36, .58], b = beatOf(tau, d, fr), t = since(tau, d, fr, b);
+  whipIn(c, tau, () => { paperBg(c, PA.cream, 10); family(c, 'MANDA LA MÁQUINA', tau, 'black');
+    if (b === 0) { cutout(c, P_crown, CX, 720, t / .5, { s: .9 }); tape(c, 'TRES FINALES', CX, 1050, (t - .2) / .35, { size: 100 }); }
+    if (b === 1) { scen(c, t, 10, 'DICTADOR BENEVOLENTE', (cc, sil) => P_cage(cc, true), 'black', PA.yellow); serif(c, 'una jaula dorada', CX, 1270, (t - .8) / .3, { size: 44, italic: true }); }
+    if (b === 2) { scen(c, t, 11, 'DIOS PROTECTOR', P_hand, 'black'); serif(c, 'nos cuida a escondidas', CX, 1270, (t - .8) / .3, { size: 44, italic: true }); }
+    if (b === 3) { tiles(c, '12', CX, 330, t / .5, { size: 120, bg: PA.red, fg: PA.cream }); cutout(c, (cc) => P_cage(cc, false), CX, 760, (t - .15) / .45, { s: 1 });
+      cutout(c, (cc) => P_person(cc), CX - 60, 820, (t - .5) / .4, { s: .45 }); cutout(c, (cc) => P_person(cc, PA.orange), CX + 70, 830, (t - .7) / .4, { s: .45 });
+      tape(c, 'EL ZOO', CX, 1150, (t - .3) / .35, { size: 120, style: 'red' }); serif(c, 'vivos, alimentados… y sin decidir', CX, 1290, (t - .9) / .3, { size: 44, italic: true }); }
+  }); captions(c, 't-manda', tau, d); }
+
+function tCierre(c, tau) { const d = D('t-cierre'), end = d - 3;
+  whipIn(c, tau, () => { rays(c, CX, 760, 18, PA.cream, PA.red, 0);
+    for (let i = 0; i < 12; i++) { const r = Math.floor(i / 4), k = i % 4; tiles(c, String(i + 1).padStart(2, '0'), 200 + k * 227, 340 + r * 180, (tau - i * .08) / .4, { size: 80, bg: i === 11 ? PA.yellow : PA.paper }); }
+    tape(c, '¿CUÁL QUEREMOS?', CX, 1110, (tau - 1) / .35, { size: 104, style: 'red' }); tape(c, 'DECIDIRLO AHORA', CX, 1240, (tau - 1.6) / .35, { size: 86 }); });
+  captions(c, 't-cierre', tau, d);
+  resetT(c); const ca = clamp((tau - end) / .6, 0, 1); c.save(); c.globalAlpha = ca; c.fillStyle = 'rgba(246,239,223,.92)'; c.fillRect(0, 1745, W, 110);
+  serif(c, 'Voz sintética clonada (Voicebox) · Animación con IA (Claude)', CX, 1780, ca / 3, { size: 26, col: '#5d5446' });
+  serif(c, 'Basado en «Vida 3.0» de Max Tegmark · Ilustración propia', CX, 1820, ca / 3, { size: 26, col: '#5d5446' }); c.restore(); }
+
+socialFilm('9:16', [['t-gancho', tGancho], ['t-sin', tSin], ['t-atada', tAtada], ['t-convive', tConvive], ['t-adios', tAdios], ['t-manda', tManda], ['t-cierre', tCierre]]);
+</script>
