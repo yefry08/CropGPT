@@ -1,6 +1,6 @@
 # El fondo de IA que perdió dos tercios en un mes
 
-**Reel 9:16 · ~1:05 · español** · serie de IA · estilo collage de papel · voz clonada (Voicebox) y animación generadas con IA
+**Reel 9:16 · 1:13 · español** · serie de IA · estilo collage de papel · voz clonada (Voicebox) y animación generadas con IA
 
 **Texto para publicar:**
 Escribió el ensayo más leído sobre la llegada de la superinteligencia, montó un fondo que superó los 20.000 millones y en julio de 2026 lo perdió casi todo en bolsa por el dinero prestado. Citadel compró sus acciones con descuento y el mercado rebotó al día siguiente. ¿Tener razón sobre la IA basta para ganar? #InteligenciaArtificial #Finanzas #Bolsa #HedgeFund #Citadel
