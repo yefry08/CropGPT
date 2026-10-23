@@ -1,6 +1,6 @@
 # Doce futuros con superinteligencia, según Max Tegmark
 
-**Reel 9:16 · español** · serie de seguridad de la IA · estilo collage de papel · voz clonada (Voicebox) y animación generadas con IA
+**Reel 9:16 · 1:26 · español** · serie de seguridad de la IA · estilo collage de papel · voz clonada (Voicebox) y animación generadas con IA
 
 **Texto para publicar:**
 Los gorilas no deciden su futuro: lo decidimos nosotros. Si creamos una inteligencia mucho más lista que nosotros, ¿quién decidirá el nuestro? En «Vida 3.0», el físico Max Tegmark (MIT) describe 12 finales posibles: desde autodestruirnos antes de llegar, hasta una IA que nos cuida a escondidas o nos mantiene como en un zoo. Él no dice cuál pasará. Su pregunta es cuál queremos. ¿Tú cuál eliges? 👇 #InteligenciaArtificial #SeguridadIA #Superinteligencia #MaxTegmark #Vida30
