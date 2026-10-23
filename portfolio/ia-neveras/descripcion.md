@@ -1,6 +1,6 @@
 # Hackearon las neveras de 700 supermercados
 
-**Reel 9:16 · español** · serie de tecnología y seguridad · estilo collage de papel · voz clonada (Voicebox) y animación generadas con IA
+**Reel 9:16 · 0:54 · español** · serie de tecnología y seguridad · estilo collage de papel · voz clonada (Voicebox) y animación generadas con IA
 
 **Texto para publicar:**
 En una sola noche hackearon las neveras de unos 700 supermercados en Francia. Los atacantes entraron en los controladores que manejan el frío a distancia y los pusieron a descongelar sin parar: algunas llegaron a 50 °C y no saltó ninguna alarma. Se tiraron toneladas de comida, hubo equipos quemados y la fiscalía de París investiga. Muchos aparatos estaban abiertos a internet, con software viejo y accesos fáciles de adivinar. Nadie se ha atribuido el ataque, y no hay pruebas de que haya una IA detrás. Cuando todo está conectado, un fallo en internet puede terminar en comida en la basura. ¿Qué te parece? #Ciberseguridad #Hackeo #Tecnología #Francia #IoT

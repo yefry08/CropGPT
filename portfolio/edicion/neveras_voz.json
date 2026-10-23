@@ -1,7 +1,10 @@
 [
  {
   "id": "h-gancho",
-  "say": "En una sola noche, hackearon las neveras de unos setecientos supermercados en Francia. Y hubo que tirar la comida."
+  "say": "En una sola noche, hackearon las neveras de unos setecientos supermercados en Francia. Y hubo que tirar la comida.",
+  "tts_variants": [
+   "En una sola noche, jaquearon las neveras de unos setecientos supermercados en Francia. Y hubo que tirar la comida."
+  ]
  },
  {
   "id": "h-noche",
@@ -13,7 +16,10 @@
  },
  {
   "id": "h-como",
-  "say": "¿Cómo entraron? Muchos de esos aparatos estaban abiertos a internet, con un software viejo que ya no recibía actualizaciones y accesos muy fáciles de adivinar."
+  "say": "¿Cómo entraron? Muchos de esos aparatos estaban abiertos a internet, con un software viejo que ya no recibía actualizaciones y accesos muy fáciles de adivinar.",
+  "tts_variants": [
+   "¿Cómo entraron? Muchos de esos aparatos estaban abiertos a internet, con un software viejo que ya no recibía actualizaciones, y accesos muy fáciles de adivinar."
+  ]
  },
  {
   "id": "h-respuesta",
