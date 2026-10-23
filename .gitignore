@@ -96,3 +96,7 @@ portfolio/ia-futuros/*.log
 portfolio/ia-futuros/out
 portfolio/videomaker/jobs/
 portfolio/videomaker/__pycache__/
+portfolio/videomaker/desktop/.venv/
+portfolio/videomaker/desktop/**/audio/
+portfolio/videomaker/desktop/**/*.mp4
+portfolio/videomaker/desktop/**/__pycache__/
