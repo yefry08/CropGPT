@@ -7,6 +7,7 @@ from pathlib import Path
 import cairo
 
 from . import draw as D
+from . import explainer as EXS
 from .draw import CX, PA, TAU, W, H, Sprite, clamp, ease_out, pop, rgb, rng, sprite
 from .props import PROPS
 
@@ -14,6 +15,7 @@ FPS = 24
 BACKGROUNDS = ["rays_red", "rays_blue", "rays_teal", "kraft", "navy", "teal", "sky", "cream", "green"]
 DARK = {"navy", "teal", "green"}
 KINDS = ["tape", "tiles", "stamp", "serif", "prop"]
+VISUAL_STYLES = {"collage": "Collage de papel", "explainer": "Explicativo (tipo Vox)"}
 STYLES = ["black", "red", "white", "yellow"]
 TAPE = {"black": (PA["ink"], "#f4eee2"), "red": (PA["red"], "#fff6ea"), "white": ("#f4eee2", PA["ink"]), "yellow": (PA["yellow"], PA["ink"])}
 
@@ -23,6 +25,7 @@ class Film:
 
     def __init__(self, project):
         self.p = project
+        self.style = project.get("style", "collage")
         self.bg, self.sp = {}, {}
         self.starts, t = [], 0.0
         for s in project["sections"]:
@@ -31,6 +34,10 @@ class Film:
 
     # ---------- backgrounds ----------
     def background(self, kind):
+        if self.style == "explainer":
+            if ("ex", kind) not in self.bg:
+                self.bg[("ex", kind)] = EXS.background(kind)
+            return self.bg[("ex", kind)]
         if kind not in self.bg:
             s = cairo.ImageSurface(cairo.FORMAT_RGB24, W, H); c = cairo.Context(s)
             if kind.startswith("rays_"):
@@ -142,6 +149,8 @@ class Film:
         if t <= 0:
             return
         x, y, kind, size = CX + it.get("x", 0), it.get("y", 760), it["kind"], it.get("size") or 0
+        if self.style == "explainer":
+            return self.item_explainer(c, it, t, dark, x, y, kind, size)
         if kind == "tape" and it.get("text"):
             k = pop(t / .35); self.tape_sprite(it["text"], size or 84, it.get("style", "black")).paint(c, x, y, k)
         elif kind == "tiles" and it.get("text"):
@@ -167,6 +176,25 @@ class Film:
             if k > 0:
                 self.prop_sprite(it["prop"], (size or 100) / 100).paint(c, x, y + (1 - clamp(tt * 1.5)) * 60, k, rot=rot)
 
+    def item_explainer(self, c, it, t, dark, x, y, kind, size):
+        txt = it.get("text") or ""
+        if kind == "tape" and txt:
+            EXS.headline(c, txt, x, y, t, size or 84, it.get("style", "black"), dark)
+        elif kind == "tiles" and txt:
+            EXS.counter(c, txt, x, y, t, size or 110, it.get("style", "black"), dark)
+        elif kind == "stamp" and txt:
+            EXS.annotation(c, txt, x, y, t, int((size or 100) * .7), dark)
+        elif kind == "serif" and txt:
+            EXS.typewriter(c, txt, x, y, t, size or 46, dark)
+        elif kind == "prop" and it.get("prop") in PROPS:
+            key = ("mono", it["prop"], round((size or 100) / 100, 2))
+            sp = self._cached(key, lambda: EXS.mono(self.prop_sprite(it["prop"], (size or 100) / 100)))
+            u = ease_out(clamp(t / .55)); side = -1 if it.get("x", 0) < 0 else 1; sc = (size or 100) / 100
+            # a flat colour disc behind the black-and-white cut-out, the style's accent
+            accent = (EXS.EX["yellow"], EXS.EX["red"], EXS.EX["blue"])[(abs(it.get("x", 0)) // 50 + it.get("y", 0) // 100) % 3]
+            c.save(); c.set_source_rgba(*D.col(accent)[:3], .9 * clamp(t / .4)); c.arc(x + 40 * sc, y + 30 * sc, 230 * sc * ease_out(clamp(t / .4)), 0, TAU); c.fill(); c.restore()
+            sp.paint(c, x + side * (1 - u) * 90, y, 1, alpha=clamp(t / .3))
+
     # ---------- captions ----------
     @staticmethod
     def chunks(text):
@@ -184,7 +212,11 @@ class Film:
         for s in cs:
             ln = (a1 - a0) * len(s) / tot
             if acc <= tau < acc + ln:
-                self.strip_sprite([s]).paint(c, CX, 1590); return
+                if self.style == "explainer":
+                    EXS.caption_bar(c, s)
+                else:
+                    self.strip_sprite([s]).paint(c, CX, 1590)
+                return
             acc += ln
 
     @staticmethod
@@ -210,8 +242,12 @@ class Film:
         d = sec["duration"]; beats = sec.get("beats") or [{"items": []}]; n = len(beats)
         b = min(int(tau / d * n), n - 1) if d > 0 else 0; t = tau - d * b / n
         c.set_source_surface(self.background(sec.get("background", "cream")), 0, 0); c.paint()
+        c.save()
+        if self.style == "explainer":   # slow camera push over the whole scene
+            z = 1 + .03 * clamp(tau / d) if d > 0 else 1; c.translate(CX, 760); c.scale(z, z); c.translate(-CX, -760)
         for i, it in enumerate(beats[b].get("items", [])):
             self.item(c, it, t - .1 - i * .3, sec.get("background") in DARK)
+        c.restore()
 
     def frame(self, t):
         out = cairo.ImageSurface(cairo.FORMAT_RGB24, W, H); c = cairo.Context(out)
@@ -227,8 +263,12 @@ class Film:
                 self.scene(cairo.Context(prev), ps, ps["duration"] - .01); c.set_source_surface(prev, 0, 0); c.paint()
             else:
                 rgb(c, PA["cream"]); c.paint()
-            for k in range(5):
-                c.set_source_surface(tmp, -off + (k - 2) * blur / 4, 0); c.paint_with_alpha(1 / (k + 1))
+            if self.style == "explainer":   # clean push: the old scene slides out left as the new one enters
+                c2 = cairo.ImageSurface(cairo.FORMAT_RGB24, W, H); cc = cairo.Context(c2); cc.set_source_surface(out, 0, 0); cc.paint()
+                rgb(c, "#141414"); c.paint(); c.set_source_surface(c2, off - W * .9 - 0, 0); c.paint(); c.set_source_surface(tmp, off, 0); c.paint()
+            else:
+                for k in range(5):
+                    c.set_source_surface(tmp, -off + (k - 2) * blur / 4, 0); c.paint_with_alpha(1 / (k + 1))
         self.caption(c, sec["text"], tau, d)
         if i == len(self.p["sections"]) - 1:
             if self.p.get("disclosure"):

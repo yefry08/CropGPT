@@ -11,7 +11,7 @@ WORDS_PER_SEC = 2.6
 
 
 def new(title="Nuevo video", lang="es"):
-    return {"title": title, "lang": lang, "profile_id": "", "gap": .45, "tail": 2.8, "tempo": 1.08, "disclosure": "", "post_text": "",
+    return {"title": title, "lang": lang, "style": "collage", "profile_id": "", "gap": .45, "tail": 2.8, "tempo": 1.08, "disclosure": "", "post_text": "",
             "sources": [], "facts": [], "credits": CREDITS[lang],
             "sections": [section("s1", "Gancho", "Escribe aquí lo que dirá tu voz en esta escena.")]}
 
@@ -31,7 +31,7 @@ def new_id(p):
 
 def load(folder):
     p = json.loads((Path(folder) / "project.json").read_text(encoding="utf-8"))
-    p.setdefault("credits", CREDITS.get(p.get("lang", "es"), CREDITS["en"]))
+    p.setdefault("credits", CREDITS.get(p.get("lang", "es"), CREDITS["en"])); p.setdefault("style", "collage")
     for s in p["sections"]:
         s.setdefault("seed", 7); s.setdefault("tts", "")
     return p

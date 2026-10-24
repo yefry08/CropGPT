@@ -20,7 +20,7 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QDoubleSpinBox, QFileDia
                                QVBoxLayout, QWidget)
 
 from vmk import project as P, voice
-from vmk.film import BACKGROUNDS, FPS, KINDS, STYLES, Film, render
+from vmk.film import BACKGROUNDS, FPS, KINDS, STYLES, VISUAL_STYLES, Film, render
 from vmk.props import PROPS
 
 HERE = Path(__file__).resolve().parent
@@ -127,6 +127,10 @@ class Main(QMainWindow):
         # --- publishing tab
         pub = QWidget(); tabs.addTab(pub, "Publicación y ajustes"); pf = QFormLayout(pub)
         self.title = QLineEdit(); self.title.textEdited.connect(self.meta_edited); pf.addRow("Título del video", self.title)
+        self.vstyle = QComboBox()
+        for key, label in VISUAL_STYLES.items():
+            self.vstyle.addItem(label, key)
+        self.vstyle.currentIndexChanged.connect(self.meta_edited); pf.addRow("Estilo visual", self.vstyle)
         self.lang = QComboBox(); self.lang.addItems(["es", "en"]); self.lang.currentTextChanged.connect(self.meta_edited); pf.addRow("Idioma de la voz", self.lang)
         prow = QHBoxLayout(); self.profile = QComboBox(); self.profile.currentIndexChanged.connect(self.meta_edited); prow.addWidget(self.profile)
         b = QPushButton("Buscar perfiles en Voicebox"); b.clicked.connect(self.load_profiles); prow.addWidget(b); pf.addRow("Perfil de voz", prow)
@@ -155,7 +159,7 @@ class Main(QMainWindow):
 
     def _load_into_ui(self):
         self.loading = True; p = self.p
-        self.title.setText(p["title"]); self.lang.setCurrentText(p.get("lang", "es")); self.disclosure.setText(p.get("disclosure", ""))
+        self.title.setText(p["title"]); self.lang.setCurrentText(p.get("lang", "es")); self.vstyle.setCurrentIndex(max(0, self.vstyle.findData(p.get("style", "collage")))); self.disclosure.setText(p.get("disclosure", ""))
         self.gap.setValue(p.get("gap", .45)); self.tail.setValue(p.get("tail", 2.8)); self.tempo.setValue(p.get("tempo", 1.08))
         self.credits.setPlainText("\n".join(p.get("credits", []))); self.post.setPlainText(p.get("post_text", ""))
         self.facts.setPlainText("\n".join(f"{f['claim']} | {f['finding']}" for f in p.get("facts", [])))
@@ -189,7 +193,7 @@ class Main(QMainWindow):
     def meta_edited(self, *_):
         if self.loading:
             return
-        p = self.p; p["title"] = self.title.text(); p["lang"] = self.lang.currentText(); p["disclosure"] = self.disclosure.text()
+        p = self.p; p["title"] = self.title.text(); p["lang"] = self.lang.currentText(); p["style"] = self.vstyle.currentData() or "collage"; p["disclosure"] = self.disclosure.text()
         p["profile_id"] = self.profile.currentData() or ""; p["gap"], p["tail"], p["tempo"] = self.gap.value(), self.tail.value(), self.tempo.value()
         p["credits"] = [l for l in self.credits.toPlainText().splitlines() if l.strip()][:2]; p["post_text"] = self.post.toPlainText()
         p["facts"] = [dict(zip(("claim", "finding"), [x.strip() for x in l.split("|", 1)])) for l in self.facts.toPlainText().splitlines() if "|" in l]
