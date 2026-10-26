@@ -8,6 +8,7 @@ import cairo
 
 from . import draw as D
 from . import explainer as EXS
+from . import papercut as PCS
 from .draw import CX, PA, TAU, W, H, Sprite, clamp, ease_out, pop, rgb, rng, sprite
 from .props import PROPS
 
@@ -15,7 +16,7 @@ FPS = 24
 BACKGROUNDS = ["rays_red", "rays_blue", "rays_teal", "kraft", "navy", "teal", "sky", "cream", "green"]
 DARK = {"navy", "teal", "green"}
 KINDS = ["tape", "tiles", "stamp", "serif", "prop"]
-VISUAL_STYLES = {"collage": "Collage de papel", "explainer": "Explicativo (tipo Vox)"}
+VISUAL_STYLES = {"collage": "Collage de papel", "papercut": "Recorte de papel (tipo Vox)", "explainer": "Explicativo con subrayador"}
 STYLES = ["black", "red", "white", "yellow"]
 TAPE = {"black": (PA["ink"], "#f4eee2"), "red": (PA["red"], "#fff6ea"), "white": ("#f4eee2", PA["ink"]), "yellow": (PA["yellow"], PA["ink"])}
 
@@ -34,6 +35,10 @@ class Film:
 
     # ---------- backgrounds ----------
     def background(self, kind):
+        if self.style == "papercut":
+            if ("pc", kind) not in self.bg:
+                self.bg[("pc", kind)] = PCS.background(kind)
+            return self.bg[("pc", kind)]
         if self.style == "explainer":
             if ("ex", kind) not in self.bg:
                 self.bg[("ex", kind)] = EXS.background(kind)
@@ -151,6 +156,8 @@ class Film:
         x, y, kind, size = CX + it.get("x", 0), it.get("y", 760), it["kind"], it.get("size") or 0
         if self.style == "explainer":
             return self.item_explainer(c, it, t, dark, x, y, kind, size)
+        if self.style == "papercut":
+            return self.item_papercut(c, it, t, dark, x, y, kind, size)
         if kind == "tape" and it.get("text"):
             k = pop(t / .35); self.tape_sprite(it["text"], size or 84, it.get("style", "black")).paint(c, x, y, k)
         elif kind == "tiles" and it.get("text"):
@@ -195,6 +202,24 @@ class Film:
             c.save(); c.set_source_rgba(*D.col(accent)[:3], .9 * clamp(t / .4)); c.arc(x + 40 * sc, y + 30 * sc, 230 * sc * ease_out(clamp(t / .4)), 0, TAU); c.fill(); c.restore()
             sp.paint(c, x + side * (1 - u) * 90, y, 1, alpha=clamp(t / .3))
 
+    def item_papercut(self, c, it, t, dark, x, y, kind, size):
+        txt = it.get("text") or ""; seed = abs(int(it.get("x", 0))) + int(it.get("y", 0))
+        if kind == "tape" and txt:
+            PCS.headline(c, txt, x, y, t, int((size or 84) * 1.15), it.get("style", "black"), dark)
+        elif kind == "tiles" and txt:
+            PCS.card(c, txt, x, y, t, int((size or 110) * .8), seed)
+        elif kind == "stamp" and txt:
+            PCS.tag(c, txt, x, y, t, int((size or 100) * .5), it.get("style", "red"), seed)
+        elif kind == "serif" and txt:
+            PCS.note(c, txt, x, y, t, size or 42, dark)
+        elif kind == "prop" and it.get("prop") in PROPS:
+            sc = (size or 100) / 100
+            sp = self._cached(("sepia", it["prop"], round(sc, 2)), lambda: PCS.sepia(self.prop_sprite(it["prop"], sc)))
+            l, _, r, b = self._cached(("pcbox", it["prop"], round(sc, 2)), lambda: PCS.solid_box(sp))
+            PCS.strip_under(c, x + (l + r) / 2, y + b - 34, (r - l) * 1.3, t, seed)
+            u = ease_out(clamp(t / .6)); drift = math.sin(t * .6 + seed) * 6
+            sp.paint(c, x + (1 - u) * 120 * (-1 if it.get("x", 0) < 0 else 1) + drift, y + (1 - u) * 20, 1, alpha=clamp(t / .25))
+
     # ---------- captions ----------
     @staticmethod
     def chunks(text):
@@ -214,6 +239,8 @@ class Film:
             if acc <= tau < acc + ln:
                 if self.style == "explainer":
                     EXS.caption_bar(c, s)
+                elif self.style == "papercut":
+                    PCS.caption(c, s, True)
                 else:
                     self.strip_sprite([s]).paint(c, CX, 1590)
                 return
@@ -243,16 +270,17 @@ class Film:
         b = min(int(tau / d * n), n - 1) if d > 0 else 0; t = tau - d * b / n
         c.set_source_surface(self.background(sec.get("background", "cream")), 0, 0); c.paint()
         c.save()
-        if self.style == "explainer":   # slow camera push over the whole scene
+        if self.style in ("explainer", "papercut"):   # slow camera push over the whole scene
             z = 1 + .03 * clamp(tau / d) if d > 0 else 1; c.translate(CX, 760); c.scale(z, z); c.translate(-CX, -760)
         for i, it in enumerate(beats[b].get("items", [])):
-            self.item(c, it, t - .1 - i * .3, sec.get("background") in DARK)
+            bgk = sec.get("background", "cream"); dark = bgk not in PCS.MAP_BG if self.style == "papercut" else bgk in DARK
+            self.item(c, it, t - .1 - i * .3, dark)
         c.restore()
 
     def frame(self, t):
         out = cairo.ImageSurface(cairo.FORMAT_RGB24, W, H); c = cairo.Context(out)
         i = self.section_at(t); sec = self.p["sections"][i]; tau = t - self.starts[i]; d = sec["duration"]
-        u = clamp(tau / .3)
+        u = clamp(tau / (.45 if self.style == "papercut" else .3))
         if u >= 1:
             self.scene(c, sec, tau)
         else:   # whip-pan in: the new scene slides from the right with a motion blur
@@ -263,7 +291,10 @@ class Film:
                 self.scene(cairo.Context(prev), ps, ps["duration"] - .01); c.set_source_surface(prev, 0, 0); c.paint()
             else:
                 rgb(c, PA["cream"]); c.paint()
-            if self.style == "explainer":   # clean push: the old scene slides out left as the new one enters
+            if self.style == "papercut":
+                c2 = cairo.ImageSurface(cairo.FORMAT_RGB24, W, H); cc = cairo.Context(c2); cc.set_source_surface(out, 0, 0); cc.paint()
+                PCS.wipe(c, c2, tmp, clamp(tau / .45))
+            elif self.style == "explainer":   # clean push: the old scene slides out left as the new one enters
                 c2 = cairo.ImageSurface(cairo.FORMAT_RGB24, W, H); cc = cairo.Context(c2); cc.set_source_surface(out, 0, 0); cc.paint()
                 rgb(c, "#141414"); c.paint(); c.set_source_surface(c2, off - W * .9 - 0, 0); c.paint(); c.set_source_surface(tmp, off, 0); c.paint()
             else:
