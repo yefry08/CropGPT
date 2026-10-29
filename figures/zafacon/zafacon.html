@@ -805,6 +805,7 @@ const ISO_CSS = `
 @media (prefers-reduced-motion:reduce){.iso-line[data-flow],.iso-dots circle[data-pulse]{animation:none}}
 `;
 
+const LANG_TEXT = {"dec":",","phases":{"fill":"Llenando","press":"Compactando","hold":"Compactando","return":"Placa subiendo","full":"LLENO · alerta enviada","empty":"Recolección"}};
 const P = {"origin":[300,373.1251333342075],"scale":1.8360465585169996,"azimuth":45,"elevation":30};
 const M = {"H":44,"AREA":2685.844200459186,"BOTTLE_CM3":1200,"BOTTLE_G":20,"RATIO":0.35,"TRIGGER":0.85,"FULL":0.68,"FILL_RATE":6,"PLATE_V":22,"PLATE_T":3,"PILE_R":27.5};
 const Z = {"floor":0,"plinth":3,"body":12,"seam":50,"label":59,"entry":73,"led":84,"band":88,"bandH":5,"cap":104,"capTop":108,"sill":15,"header":80,"lift":34,"tray":18,"trayTop":20,"maxPile":64,"plateHome":82,"gland":87,"actuator":88,"gear":92,"beam":95,"beamTop":98,"tof":92.6,"lens":92,"dropStart":70};
@@ -872,12 +873,12 @@ function step(s0, dt) {
   }
   return s;
 }
-function say(s) {
+function say(s, T = LANG_TEXT) {
   const top = Z.trayTop + s.hc + s.hl;
   const level = Math.round(((s.hc + s.hl) / M.H) * 100);
-  const kg = ((s.bottles * M.BOTTLE_G) / 1000).toFixed(1).replace(".", ",");
+  const kg = ((s.bottles * M.BOTTLE_G) / 1000).toFixed(1).replace(".", T.dec);
   const tof = Math.round(Z.lens - top);
-  const name = { fill: "Llenando", press: "Compactando", hold: "Compactando", return: "Placa subiendo", full: "LLENO · alerta enviada", empty: "Recolección" }[s.phase];
+  const name = T.phases[s.phase];
   return `${name} · ${level} % · ToF ${tof} cm · ${kg} kg`;
 }
 const stage = document.querySelector(".iso-stage");

@@ -11,6 +11,29 @@ import * as M from "./model.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const theme = process.argv.includes("--light") ? "light" : "dark";
+const lang = process.argv.includes("--en") ? "en" : "es";
+const TXT = {
+  es: {
+    label: "Cinco zafacones hexagonales de plástico reciclado acoplados en panal, uno por tipo de residuo. El de plástico está abierto en corte: dentro se ven la placa de compresión colgada de un actuador lineal, el sensor de distancia que mide el llenado, la bandeja sobre tres celdas de carga, la placa con el ESP32, la radio y la batería, y en la tapa el panel solar y la antena.",
+    chips: { plastico: "Plástico · boca redonda", papel: "Papel y cartón · ranura", vidrio: "Vidrio · boca con aletas", metal: "Metal · boca pequeña", organico: "Orgánico · compuerta" },
+    title: "Zafacón inteligente · Ready Recycling",
+    hint: "Clic: echar botellas · C: compactar",
+    keys: ["Placa de compresión y haz del sensor ToF: lo que se mueve", "Cuerpo de HDPE reciclado, corte en el módulo de plástico"],
+    caption: "Cada módulo mide 68 cm de vértice a vértice y 108 cm de alto, y encaja con sus vecinos en panal mediante grapas en la tapa. En el de plástico, el VL53L0X del travesaño mide la distancia hasta los residuos a través de un orificio en la placa. Cuando el nivel llega al 85 %, el ESP32 activa el actuador lineal de 12 V, que baja la placa y reduce las botellas sueltas un 65 %. Las celdas de carga bajo la bandeja pesan lo acumulado, y el sensor de temperatura vigila el riesgo de incendio. Cuando ni compactando queda sitio, el módulo avisa al centro de acopio por Wi-Fi o LoRaWAN. Lo alimentan la batería de 18650 y el panel solar de la tapa, que aquí aparece levantada para ver el interior. En el recorrido, cuatro compactaciones dejan caber unas 197 botellas de 500 ml donde sueltas cabrían 84.",
+    aria: "Zafacón inteligente: Intro o clic echa botellas, C compacta",
+    page: "Zafacón inteligente",
+  },
+  en: {
+    label: "Five hexagonal bins of recycled plastic joined in a honeycomb, one per kind of waste. The plastics bin is cut open: inside are the compaction plate hanging from a linear actuator, the distance sensor that measures the fill level, the tray on three load cells, the board with the ESP32, the radio and the battery, and on the lid the solar panel and the antenna.",
+    chips: { plastico: "Plastic · round mouth", papel: "Paper and cardboard · slot", vidrio: "Glass · flapped mouth", metal: "Metal · small mouth", organico: "Organic · hatch" },
+    title: "Smart bin · Ready Recycling",
+    hint: "Click: drop bottles · C: compact",
+    keys: ["Compaction plate and ToF sensor beam: what moves", "Recycled HDPE body, cut away on the plastics module"],
+    caption: "Each module is 68 cm from corner to corner and 108 cm tall, and clips to its neighbours in a honeycomb at the lid. In the plastics module, the VL53L0X on the cross beam measures the distance to the waste through a hole in the plate. When the level reaches 85 %, the ESP32 drives the 12 V linear actuator, which lowers the plate and squeezes loose bottles by 65 %. Load cells under the tray weigh what has built up, and a temperature sensor watches for fire risk. When even compacting leaves no room, the module alerts the collection centre over Wi-Fi or LoRaWAN. An 18650 battery and the solar panel on the lid, shown lifted here to reveal the inside, power it. In the tour, four compactions fit about 197 half-litre bottles where only 84 would fit loose.",
+    aria: "Smart bin: Enter or click drops bottles, C compacts",
+    page: "Smart bin",
+  },
+}[lang];
 
 const WIDTH = 600;
 const HEIGHT = 440;
@@ -409,8 +432,7 @@ const others = byDepth(CELLS.filter((c) => !c.cut), (c) => c.at);
 const svg = k.figureSvg({
   width: WIDTH,
   height: HEIGHT,
-  label:
-    "Cinco zafacones hexagonales de plástico reciclado acoplados en panal, uno por tipo de residuo. El de plástico está abierto en corte: dentro se ven la placa de compresión colgada de un actuador lineal, el sensor de distancia que mide el llenado, la bandeja sobre tres celdas de carga, la placa con el ESP32, la radio y la batería, y en la tapa el panel solar y la antena.",
+  label: TXT.label,
   body: [...others.map(module), clips(), cutModule()],
 });
 
@@ -441,6 +463,7 @@ const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
 const SPECKS = Array.from({ length: 70 }, () => [rnd() < 0.5 ? 0 : 5, 0.06 + rnd() * 0.88, rnd(), 0.35 + rnd() * 0.35]);
 
 const live = `
+const LANG_TEXT = ${JSON.stringify(M.TEXT[lang])};
 const P = ${JSON.stringify(P)};
 const M = ${JSON.stringify(M.CONST)};
 const Z = ${JSON.stringify(Z)};
@@ -524,29 +547,22 @@ stage.addEventListener("keydown", (event) => {
 draw();
 `;
 
-const chips = `<div class="zf-chips" aria-hidden="true">${[
-  ["plastico", "Plástico · boca redonda"],
-  ["papel", "Papel y cartón · ranura"],
-  ["vidrio", "Vidrio · boca con aletas"],
-  ["metal", "Metal · boca pequeña"],
-  ["organico", "Orgánico · compuerta"],
-].map(([key, label]) => `<span class="zf-chip"><i style="--c:var(--zf-${key})"></i>${label}</span>`).join("")}</div>`;
+const chips = `<div class="zf-chips" aria-hidden="true">${Object.entries(TXT.chips).map(([key, label]) => `<span class="zf-chip"><i style="--c:var(--zf-${key})"></i>${label}</span>`).join("")}</div>`;
 
 const plateBody = k.plateHtml({
   fig: "Fig 1",
-  title: "Zafacón inteligente · Ready Recycling",
-  hint: "Clic: echar botellas · C: compactar",
-  readout: M.say(M.initial(false)),
+  title: TXT.title,
+  hint: TXT.hint,
+  readout: M.say(M.initial(false), M.TEXT[lang]),
   keys: [
-    { mark: "lit", label: "Placa de compresión y haz del sensor ToF: lo que se mueve" },
-    { mark: "raised", label: "Cuerpo de HDPE reciclado, corte en el módulo de plástico" },
+    { mark: "lit", label: TXT.keys[0] },
+    { mark: "raised", label: TXT.keys[1] },
   ],
-  caption:
-    "Cada módulo mide 68 cm de vértice a vértice y 108 cm de alto, y encaja con sus vecinos en panal mediante grapas en la tapa. En el de plástico, el VL53L0X del travesaño mide la distancia hasta los residuos a través de un orificio en la placa. Cuando el nivel llega al 85 %, el ESP32 activa el actuador lineal de 12 V, que baja la placa y reduce las botellas sueltas un 65 %. Las celdas de carga bajo la bandeja pesan lo acumulado, y el sensor de temperatura vigila el riesgo de incendio. Cuando ni compactando queda sitio, el módulo avisa al centro de acopio por Wi-Fi o LoRaWAN. Lo alimentan la batería de 18650 y el panel solar de la tapa, que aquí aparece levantada para ver el interior. En el recorrido, cuatro compactaciones dejan caber unas 197 botellas de 500 ml donde sueltas cabrían 84.",
-  body: `<div class="iso-stage" tabindex="0" role="button" aria-label="Zafacón inteligente: Intro o clic echa botellas, C compacta">${svg}</div>`,
+  caption: TXT.caption,
+  body: `<div class="iso-stage" tabindex="0" role="button" aria-label="${TXT.aria}">${svg}</div>`,
 }).replace("</figure>", `${chips}</figure>`);
 
-const file = theme === "light" ? "zafacon-light.html" : "zafacon.html";
-const html = k.pageHtml({ title: "Zafacón inteligente", theme, body: plateBody, script: kitScript() + live, width: 680 }).replace("</style>", CSS + "</style>").replace('<html lang="en">', '<html lang="es">');
+const file = `zafacon${lang === "en" ? "-en" : ""}${theme === "light" ? "-light" : ""}.html`;
+const html = k.pageHtml({ title: TXT.page, theme, body: plateBody, script: kitScript() + live, width: 680 }).replace("</style>", CSS + "</style>").replace('<html lang="en">', `<html lang="${lang}">`);
 writeFileSync(join(HERE, file), html);
 console.log("wrote", file, (html.length / 1024).toFixed(0) + " KB");

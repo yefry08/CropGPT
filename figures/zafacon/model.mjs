@@ -100,12 +100,18 @@ export function step(s0, dt) {
   return s;
 }
 
-export function say(s) {
+export const TEXT = {
+  es: { dec: ",", phases: { fill: "Llenando", press: "Compactando", hold: "Compactando", return: "Placa subiendo", full: "LLENO · alerta enviada", empty: "Recolección" } },
+  en: { dec: ".", phases: { fill: "Filling", press: "Compacting", hold: "Compacting", return: "Plate rising", full: "FULL · alert sent", empty: "Collection" } },
+};
+const LANG_TEXT = TEXT.es;
+
+export function say(s, T = LANG_TEXT) {
   const top = Z.trayTop + s.hc + s.hl;
   const level = Math.round(((s.hc + s.hl) / M.H) * 100);
-  const kg = ((s.bottles * M.BOTTLE_G) / 1000).toFixed(1).replace(".", ",");
+  const kg = ((s.bottles * M.BOTTLE_G) / 1000).toFixed(1).replace(".", T.dec);
   const tof = Math.round(Z.lens - top);
-  const name = { fill: "Llenando", press: "Compactando", hold: "Compactando", return: "Placa subiendo", full: "LLENO · alerta enviada", empty: "Recolección" }[s.phase];
+  const name = T.phases[s.phase];
   return `${name} · ${level} % · ToF ${tof} cm · ${kg} kg`;
 }
 
