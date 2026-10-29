@@ -100,3 +100,5 @@ portfolio/videomaker/desktop/.venv/
 portfolio/videomaker/desktop/**/audio/
 portfolio/videomaker/desktop/**/*.mp4
 portfolio/videomaker/desktop/**/__pycache__/
+portfolio/ia-espejo/audio/
+portfolio/ia-espejo/*.mp4

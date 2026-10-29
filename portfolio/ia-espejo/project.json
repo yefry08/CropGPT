@@ -1,0 +1,607 @@
+{
+ "title": "La IA como ritual: qué hay de cierto",
+ "lang": "es",
+ "style": "papercut",
+ "profile_id": "",
+ "gap": 0.45,
+ "tail": 2.8,
+ "tempo": 1.08,
+ "disclosure": "",
+ "post_text": "¿Crear inteligencia artificial es un ritual? Un ensayo viral compara los chips con espejos de obsidiana y cita a Silicon Valley hablando de «invocar demonios». Revisamos qué es cierto: la cita de Musk existe, Lemoine fue despedido tras decir que LaMDA era consciente, el Vaticano pide que las decisiones morales sigan siendo humanas, y Loab se explica como un efecto del espacio latente. La pregunta que queda es real: ¿a qué voz le estamos confiando nuestras decisiones? #InteligenciaArtificial #IA #Ética #Fe #Tecnología",
+ "sources": [
+  {
+   "title": "Salon, Musk: «summoning the demon» (2014)",
+   "url": "https://www.salon.com/2014/10/27/elon_musk_warns_about_artificial_intelligence_were_summoning_the_demon"
+  },
+  {
+   "title": "CBS News, Musk y la IA",
+   "url": "https://www.cbsnews.com/news/elon-musk-artificial-intelligence-is-like-summoning-the-demon"
+  },
+  {
+   "title": "Engadget, Google despide a Blake Lemoine",
+   "url": "https://www.engadget.com/blake-lemoide-fired-google-lamda-sentient-001746197.html"
+  },
+  {
+   "title": "Al Jazeera, el papa en el G7 (2024)",
+   "url": "https://www.aljazeera.com/news/2024/6/14/pope-calls-for-a-ban-on-lethal-autonomous-weapons-at-g7"
+  },
+  {
+   "title": "Catholic Review, «Antiqua et nova» (2025)",
+   "url": "https://catholicreview.org/morality-of-ai-depends-on-human-choices-vatican-says-in-new-document/"
+  },
+  {
+   "title": "TechCrunch, Loab",
+   "url": "https://techcrunch.com/?p=2395187"
+  },
+  {
+   "title": "Hilo original de Loab (Supercomposite)",
+   "url": "https://threadreaderapp.com/scrolly/1567162288087470081"
+  }
+ ],
+ "facts": [
+  {
+   "claim": "Los chips se graban con luz invisible sobre obleas de silicio",
+   "finding": "Correcto: la litografía de ultravioleta extremo (13,5 nm) graba los circuitos más pequeños. La comparación con los espejos de obsidiana es una metáfora del ensayo."
+  },
+  {
+   "claim": "Musk usó la palabra «invocar» para la IA",
+   "finding": "Confirmado: MIT, simposio AeroAstro, octubre de 2014: «Con la inteligencia artificial estamos invocando al demonio»."
+  },
+  {
+   "claim": "Hinton habla de «invocar», «altar» o «demonio»",
+   "finding": "No encontramos esas palabras atribuidas a Geoffrey Hinton; advierte de riesgos de la IA, pero no lo citamos con ese lenguaje."
+  },
+  {
+   "claim": "Blake Lemoine afirmó que LaMDA era consciente",
+   "finding": "Confirmado (2022). Google lo despidió alegando violación de políticas de confidencialidad y calificó sus afirmaciones de infundadas; la comunidad científica no las respalda."
+  },
+  {
+   "claim": "El Vaticano y el papa Francisco advierten sobre ceder la agencia moral",
+   "finding": "Confirmado: discurso ante el G7 (14 de junio de 2024) pidiendo prohibir las armas autónomas letales, y la nota «Antiqua et nova» (enero de 2025)."
+  },
+  {
+   "claim": "Loab persistía pese a los esfuerzos por eliminarla",
+   "finding": "La artista (Supercomposite, 2022) la encontró con pesos negativos en el prompt y vio que reaparecía al combinar imágenes; ella lo explica como una zona del espacio latente. Hay escepticismo sobre los detalles y nada sobrenatural."
+  }
+ ],
+ "credits": [
+  "Voz sintética clonada (Voicebox) · Animación hecha con código",
+  "Ilustración, sin imágenes reales · Fuentes en la descripción"
+ ],
+ "sections": [
+  {
+   "id": "e1",
+   "chapter": "¿Ritual?",
+   "text": "¿Y si crear una inteligencia artificial se pareciera más a un ritual que a la ingeniería? Es la idea de un ensayo que circula en redes. Veamos qué hay de cierto.",
+   "tts": "",
+   "seed": 7,
+   "background": "navy",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "¿RITUAL",
+       "prop": "none",
+       "x": 0,
+       "y": 280,
+       "style": "black",
+       "size": 120
+      },
+      {
+       "kind": "tape",
+       "text": "O INGENIERÍA?",
+       "prop": "none",
+       "x": 0,
+       "y": 420,
+       "style": "red",
+       "size": 110
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "chip",
+       "x": 0,
+       "y": 820,
+       "style": "black",
+       "size": 110
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "eye",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "stamp",
+       "text": "un ensayo viral",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "white",
+       "size": 100
+      },
+      {
+       "kind": "serif",
+       "text": "veamos qué hay de cierto",
+       "prop": "none",
+       "x": 0,
+       "y": 1250,
+       "style": "black",
+       "size": 44
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "e2",
+   "chapter": "El espejo de silicio",
+   "text": "Los chips se graban con luz ultravioleta extrema, invisible para el ojo, sobre obleas de silicio pulidas como espejos. El ensayo los compara con los espejos de obsidiana que culturas antiguas usaban para mirar más allá de lo visible. Es una metáfora, no un hecho técnico.",
+   "tts": "",
+   "seed": 7,
+   "background": "kraft",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "LUZ INVISIBLE",
+       "prop": "none",
+       "x": 0,
+       "y": 260,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "chip",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 120
+      },
+      {
+       "kind": "stamp",
+       "text": "ultravioleta extrema",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "red",
+       "size": 100
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "ESPEJOS DE OBSIDIANA",
+       "prop": "none",
+       "x": 0,
+       "y": 260,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "eye",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "para mirar más allá de lo visible",
+       "prop": "none",
+       "x": 0,
+       "y": 1150,
+       "style": "black",
+       "size": 44
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "METÁFORA",
+       "prop": "none",
+       "x": 0,
+       "y": 640,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "stamp",
+       "text": "no es un hecho técnico",
+       "prop": "none",
+       "x": 0,
+       "y": 900,
+       "style": "yellow",
+       "size": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "e3",
+   "chapter": "El lenguaje",
+   "text": "Las palabras ayudan al misterio. En dos mil catorce, Elon Musk dijo que con la inteligencia artificial estamos invocando al demonio. En dos mil veintidós, el ingeniero Blake Lemoine aseguró que LaMDA, de Google, era consciente. Google lo despidió y los expertos lo negaron.",
+   "tts": "Las palabras ayudan al misterio. En dos mil catorce, Ílon Mosk dijo que con la inteligencia artificial estamos invocando al demonio. En dos mil veintidós, el ingeniero Bléik Lemóin aseguró que Lamda, de Gúgol, era consciente. Gúgol lo despidió y los expertos lo negaron.",
+   "seed": 7,
+   "background": "navy",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "2014",
+       "prop": "none",
+       "x": 0,
+       "y": 330,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "bubble",
+       "x": 0,
+       "y": 720,
+       "style": "black",
+       "size": 90
+      },
+      {
+       "kind": "stamp",
+       "text": "«estamos invocando al demonio»",
+       "prop": "none",
+       "x": 0,
+       "y": 1040,
+       "style": "white",
+       "size": 96
+      },
+      {
+       "kind": "serif",
+       "text": "Elon Musk · MIT",
+       "prop": "none",
+       "x": 0,
+       "y": 1170,
+       "style": "black",
+       "size": 44
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "2022",
+       "prop": "none",
+       "x": 0,
+       "y": 330,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "humanoid",
+       "x": 0,
+       "y": 800,
+       "style": "black",
+       "size": 80
+      },
+      {
+       "kind": "tape",
+       "text": "¿CONSCIENTE?",
+       "prop": "none",
+       "x": 0,
+       "y": 1130,
+       "style": "red",
+       "size": 100
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "stamp",
+       "text": "despedido",
+       "prop": "none",
+       "x": 0,
+       "y": 560,
+       "style": "red",
+       "size": 110
+      },
+      {
+       "kind": "tape",
+       "text": "LOS EXPERTOS: NO",
+       "prop": "none",
+       "x": 0,
+       "y": 820,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "serif",
+       "text": "LaMDA imitaba, no sentía",
+       "prop": "none",
+       "x": 0,
+       "y": 960,
+       "style": "black",
+       "size": 44
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "e4",
+   "chapter": "La advertencia",
+   "text": "La Iglesia también habla. En dos mil veinticuatro, el papa Francisco pidió ante el G siete que ninguna máquina decida quitarle la vida a una persona. Y en dos mil veinticinco el Vaticano escribió que las decisiones morales deben seguir siendo humanas.",
+   "tts": "La Iglesia también habla. En dos mil veinticuatro, el papa Francisco pidió ante el Ge Siete que ninguna máquina decida quitarle la vida a una persona. Y en dos mil veinticinco el Vaticano escribió que las decisiones morales deben seguir siendo humanas.",
+   "seed": 7,
+   "background": "teal",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "G7 · 2024",
+       "prop": "none",
+       "x": 0,
+       "y": 330,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "shield",
+       "x": 0,
+       "y": 780,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "tape",
+       "text": "NINGUNA MÁQUINA",
+       "prop": "none",
+       "x": 0,
+       "y": 1100,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "tape",
+       "text": "DEBE DECIDIR UNA VIDA",
+       "prop": "none",
+       "x": 0,
+       "y": 1220,
+       "style": "red",
+       "size": 80
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "2025",
+       "prop": "none",
+       "x": 0,
+       "y": 330,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "doc",
+       "x": 0,
+       "y": 780,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "stamp",
+       "text": "Antiqua et nova",
+       "prop": "none",
+       "x": 0,
+       "y": 1100,
+       "style": "white",
+       "size": 100
+      },
+      {
+       "kind": "serif",
+       "text": "las decisiones morales, humanas",
+       "prop": "none",
+       "x": 0,
+       "y": 1230,
+       "style": "black",
+       "size": 44
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "e5",
+   "chapter": "Loab",
+   "text": "Y está Loab. En dos mil veintidós, una artista le pidió a un generador de imágenes lo contrario de un texto, y apareció el rostro de una mujer que volvía una y otra vez. Ella lo explica como un rincón extraño del espacio latente, no como un fantasma.",
+   "tts": "Y está Lo-ab. En dos mil veintidós, una artista le pidió a un generador de imágenes lo contrario de un texto, y apareció el rostro de una mujer que volvía una y otra vez. Ella lo explica como un rincón extraño del espacio latente, no como un fantasma.",
+   "seed": 7,
+   "background": "navy",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "LOAB",
+       "prop": "none",
+       "x": 0,
+       "y": 280,
+       "style": "red",
+       "size": 140
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "form",
+       "x": 0,
+       "y": 780,
+       "style": "black",
+       "size": 90
+      },
+      {
+       "kind": "stamp",
+       "text": "lo contrario de un texto",
+       "prop": "none",
+       "x": 0,
+       "y": 1130,
+       "style": "white",
+       "size": 96
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "person",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "tape",
+       "text": "VOLVÍA UNA Y OTRA VEZ",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 84
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "ESPACIO LATENTE",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "lens",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "stamp",
+       "text": "no un fantasma",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "yellow",
+       "size": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "e6",
+   "chapter": "La pregunta",
+   "text": "La pregunta de fondo sí es real: ¿qué pasa cuando millones de personas confían sus decisiones íntimas a una voz que imita lo humano, sin saber qué hay al otro lado?",
+   "tts": "",
+   "seed": 7,
+   "background": "navy",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "bubble",
+       "x": 0,
+       "y": 700,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "tape",
+       "text": "UNA VOZ QUE IMITA",
+       "prop": "none",
+       "x": 0,
+       "y": 1050,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "tape",
+       "text": "LO HUMANO",
+       "prop": "none",
+       "x": 0,
+       "y": 1170,
+       "style": "red",
+       "size": 110
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "¿QUÉ HAY AL",
+       "prop": "none",
+       "x": 0,
+       "y": 600,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "tape",
+       "text": "OTRO LADO?",
+       "prop": "none",
+       "x": 0,
+       "y": 740,
+       "style": "red",
+       "size": 120
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "eye",
+       "x": 0,
+       "y": 1050,
+       "style": "black",
+       "size": 70
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
