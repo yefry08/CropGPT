@@ -1,0 +1,595 @@
+{
+ "title": "¿Una singularidad el 13 de noviembre de 2026?",
+ "lang": "es",
+ "style": "papercut",
+ "profile_id": "",
+ "gap": 0.45,
+ "tail": 2.8,
+ "tempo": 1.08,
+ "disclosure": "",
+ "post_text": "En 1960, un artículo en Science calculó, medio en broma, que la población llegaría al infinito el viernes 13 de noviembre de 2026. La curva se frenó, pero hoy hay quien cree que la inteligencia artificial podría volver a dispararla: chips diseñados por IA, una posible explosión solo de software y una explosión industrial en tres fases. ¿Estamos preparados? #InteligenciaArtificial #Singularidad #IA #Futuro #Ciencia",
+ "sources": [
+  {
+   "title": "Popular Science, la predicción de 1960",
+   "url": "https://www.popsci.com/science/world-end-overpopulation-doomsday-november-2026/"
+  },
+  {
+   "title": "Slate Star Codex, «1960: The Year The Singularity Was Cancelled»",
+   "url": "https://slatestarcodex.com/2019/04/22/1960-the-year-the-singularity-was-cancelled/"
+  },
+  {
+   "title": "Google DeepMind, How AlphaChip transformed computer chip design",
+   "url": "https://deepmind.google/discover/blog/how-alphachip-transformed-computer-chip-design"
+  },
+  {
+   "title": "Forethought, The Industrial Explosion",
+   "url": "https://www.forethought.org/research/the-industrial-explosion"
+  }
+ ],
+ "facts": [
+  {
+   "claim": "Una predicción científica de 1960 señaló el 13 de noviembre de 2026",
+   "finding": "Correcto: von Foerster, Mora y Amiot, «Doomsday: Friday, 13 November, A.D. 2026», Science (4 de noviembre de 1960). Ajustaron la población a una curva hiperbólica; el tono era en parte irónico."
+  },
+  {
+   "claim": "La población y la economía crecieron de forma hiperbólica y luego se frenaron",
+   "finding": "La población dejó la trayectoria hiperbólica justo después de 1960; la transición demográfica redujo la natalidad mundial a menos de la mitad desde entonces."
+  },
+  {
+   "claim": "La IA ya optimiza el diseño de chips (AlphaChip)",
+   "finding": "Google DeepMind dice que AlphaChip diseñó la disposición de bloques de tres generaciones de sus TPU. El método tuvo críticas académicas; Nature revisó el artículo y publicó un addendum en 2024."
+  },
+  {
+   "claim": "Una «singularidad solo de software»",
+   "finding": "Es un escenario teórico discutido por investigadores (por ejemplo, de Forethought): IA que automatiza la investigación en IA. No hay evidencia de que esté ocurriendo."
+  },
+  {
+   "claim": "La explosión industrial en tres fases",
+   "finding": "Coincide con el ensayo «The Industrial Explosion» (Davidson y Hadshar, Forethought, 2025): trabajo humano dirigido por IA, fábricas de robots autónomas y nanotecnología. Los autores lo presentan como una nota de investigación preliminar."
+  }
+ ],
+ "credits": [
+  "Voz sintética clonada (Voicebox) · Animación hecha con código",
+  "Ilustración, sin imágenes reales · Fuentes en la descripción"
+ ],
+ "sections": [
+  {
+   "id": "g1",
+   "chapter": "Una fecha",
+   "text": "En 1960, tres científicos publicaron en la revista Science una fecha para el fin del mundo: el viernes 13 de noviembre de 2026. Era medio en broma, pero su matemática tenía algo serio.",
+   "tts": "En mil novecientos sesenta, tres científicos publicaron en la revista Sáiens una fecha para el fin del mundo: el viernes trece de noviembre de dos mil veintiséis. Era medio en broma, pero su matemática tenía algo serio.",
+   "seed": 7,
+   "background": "navy",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "1960",
+       "prop": "none",
+       "x": 0,
+       "y": 330,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "doc",
+       "x": 0,
+       "y": 780,
+       "style": "black",
+       "size": 95
+      },
+      {
+       "kind": "stamp",
+       "text": "revista Science",
+       "prop": "none",
+       "x": 0,
+       "y": 1110,
+       "style": "white",
+       "size": 100
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "EL FIN DEL MUNDO:",
+       "prop": "none",
+       "x": 0,
+       "y": 280,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "calendar",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "tiles",
+       "text": "13·11·2026",
+       "prop": "none",
+       "x": 0,
+       "y": 1100,
+       "style": "black",
+       "size": 90
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "MEDIO EN BROMA",
+       "prop": "none",
+       "x": 0,
+       "y": 600,
+       "style": "red",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "pero con matemática seria",
+       "prop": "none",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 46
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "g2",
+   "chapter": "La curva",
+   "text": "Durante siglos, la población creció de forma hiperbólica: cuanto más éramos, más rápido crecíamos. Llevada al extremo, esa curva llegaba al infinito en noviembre de 2026. Pero justo después de 1960 se frenó: llegó la transición demográfica y las familias tuvieron menos hijos.",
+   "tts": "Durante siglos, la población creció de forma hiperbólica: cuanto más éramos, más rápido crecíamos. Llevada al extremo, esa curva llegaba al infinito en noviembre de dos mil veintiséis. Pero justo después de mil novecientos sesenta se frenó: llegó la transición demográfica y las familias tuvieron menos hijos.",
+   "seed": 7,
+   "background": "kraft",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "CRECIMIENTO HIPERBÓLICO",
+       "prop": "none",
+       "x": 0,
+       "y": 270,
+       "style": "black",
+       "size": 84
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "chart_up",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "cuanto más éramos, más rápido crecíamos",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 40
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "HACIA EL INFINITO",
+       "prop": "none",
+       "x": 0,
+       "y": 270,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "chart_up",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "tiles",
+       "text": "2026",
+       "prop": "none",
+       "x": 0,
+       "y": 1110,
+       "style": "black",
+       "size": 110
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "SE FRENÓ",
+       "prop": "none",
+       "x": 0,
+       "y": 270,
+       "style": "black",
+       "size": 120
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "person",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "stamp",
+       "text": "transición demográfica",
+       "prop": "none",
+       "x": 0,
+       "y": 1110,
+       "style": "red",
+       "size": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "g3",
+   "chapter": "La IA acelera",
+   "text": "Algunos investigadores creen que la inteligencia artificial podría reactivar esa curva, porque acelera la innovación. Ya ayuda a diseñar chips: AlphaChip, de Google DeepMind, ha diseñado partes de sus procesadores para IA.",
+   "tts": "Algunos investigadores creen que la inteligencia artificial podría reactivar esa curva, porque acelera la innovación. Ya ayuda a diseñar chips: Álfa Chip, de Gúgol Dip Máind, ha diseñado partes de sus procesadores para inteligencia artificial.",
+   "seed": 7,
+   "background": "navy",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "¿REACTIVAR LA CURVA?",
+       "prop": "none",
+       "x": 0,
+       "y": 280,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "robot",
+       "x": 0,
+       "y": 780,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "stamp",
+       "text": "acelera la innovación",
+       "prop": "none",
+       "x": 0,
+       "y": 1110,
+       "style": "white",
+       "size": 100
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "ALPHACHIP",
+       "prop": "none",
+       "x": 0,
+       "y": 280,
+       "style": "red",
+       "size": 120
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "chip",
+       "x": 0,
+       "y": 780,
+       "style": "black",
+       "size": 120
+      },
+      {
+       "kind": "serif",
+       "text": "diseño de chips con IA · Google DeepMind",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 40
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "g4",
+   "chapter": "Solo software",
+   "text": "El escenario más extremo es una explosión solo de software: una IA que mejora sus propios algoritmos y genera sus propios datos, sin necesitar más hardware. Podría ser rapidísima, y difícil de controlar.",
+   "tts": "",
+   "seed": 7,
+   "background": "teal",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "EXPLOSIÓN",
+       "prop": "none",
+       "x": 0,
+       "y": 270,
+       "style": "black",
+       "size": 120
+      },
+      {
+       "kind": "tape",
+       "text": "SOLO DE SOFTWARE",
+       "prop": "none",
+       "x": 0,
+       "y": 400,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "laptop",
+       "x": 0,
+       "y": 820,
+       "style": "black",
+       "size": 100
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "cog",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 90
+      },
+      {
+       "kind": "stamp",
+       "text": "se mejora a sí misma",
+       "prop": "none",
+       "x": 0,
+       "y": 1080,
+       "style": "white",
+       "size": 100
+      },
+      {
+       "kind": "serif",
+       "text": "sin más hardware",
+       "prop": "none",
+       "x": 0,
+       "y": 1210,
+       "style": "black",
+       "size": 44
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "¿CONTROLABLE?",
+       "prop": "none",
+       "x": 0,
+       "y": 600,
+       "style": "red",
+       "size": 120
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "key",
+       "x": 0,
+       "y": 900,
+       "style": "black",
+       "size": 90
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "g5",
+   "chapter": "Explosión industrial",
+   "text": "Y luego, la explosión industrial, en tres fases: primero la IA dirige el trabajo humano; después, fábricas de robots que construyen robots; y al final, máquinas que trabajan a escala molecular, como la biología.",
+   "tts": "",
+   "seed": 7,
+   "background": "kraft",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "EXPLOSIÓN INDUSTRIAL",
+       "prop": "none",
+       "x": 0,
+       "y": 270,
+       "style": "black",
+       "size": 90
+      },
+      {
+       "kind": "tiles",
+       "text": "1",
+       "prop": "none",
+       "x": 0,
+       "y": 520,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "person",
+       "x": 0,
+       "y": 840,
+       "style": "black",
+       "size": 90
+      },
+      {
+       "kind": "stamp",
+       "text": "la IA dirige a humanos",
+       "prop": "none",
+       "x": 0,
+       "y": 1180,
+       "style": "white",
+       "size": 96
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "2",
+       "prop": "none",
+       "x": 0,
+       "y": 330,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "humanoid",
+       "x": 0,
+       "y": 800,
+       "style": "black",
+       "size": 80
+      },
+      {
+       "kind": "stamp",
+       "text": "robots que hacen robots",
+       "prop": "none",
+       "x": 0,
+       "y": 1150,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "3",
+       "prop": "none",
+       "x": 0,
+       "y": 330,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "lens",
+       "x": 0,
+       "y": 780,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "stamp",
+       "text": "escala molecular",
+       "prop": "none",
+       "x": 0,
+       "y": 1110,
+       "style": "yellow",
+       "size": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "g6",
+   "chapter": "La pregunta",
+   "text": "El mundo no se va a acabar el 13 de noviembre. Pero la pregunta es real: si la inteligencia artificial vuelve a disparar la curva, ¿estamos preparados para lo que viene?",
+   "tts": "El mundo no se va a acabar el trece de noviembre. Pero la pregunta es real: si la inteligencia artificial vuelve a disparar la curva, ¿estamos preparados para lo que viene?",
+   "seed": 7,
+   "background": "navy",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "calendar",
+       "x": 0,
+       "y": 700,
+       "style": "black",
+       "size": 90
+      },
+      {
+       "kind": "stamp",
+       "text": "no es el fin del mundo",
+       "prop": "none",
+       "x": 0,
+       "y": 1060,
+       "style": "white",
+       "size": 100
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "¿ESTAMOS",
+       "prop": "none",
+       "x": 0,
+       "y": 560,
+       "style": "black",
+       "size": 120
+      },
+      {
+       "kind": "tape",
+       "text": "PREPARADOS?",
+       "prop": "none",
+       "x": 0,
+       "y": 700,
+       "style": "red",
+       "size": 130
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "chart_up",
+       "x": 0,
+       "y": 1050,
+       "style": "black",
+       "size": 70
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -102,3 +102,5 @@ portfolio/videomaker/desktop/**/*.mp4
 portfolio/videomaker/desktop/**/__pycache__/
 portfolio/ia-espejo/audio/
 portfolio/ia-espejo/*.mp4
+portfolio/ia-singularidad/audio/
+portfolio/ia-singularidad/*.mp4
