@@ -1,0 +1,590 @@
+{
+ "title": "La IA contra la burocracia: recortes en Países Bajos, avalancha de quejas en Reino Unido",
+ "lang": "es",
+ "style": "papercut",
+ "profile_id": "",
+ "gap": 0.45,
+ "tail": 2.8,
+ "tempo": 1.08,
+ "disclosure": "",
+ "post_text": "Países Bajos quiere recortar 25.000 puestos públicos hasta 2035, con la IA como una de sus herramientas (aunque cuánto aportará aún no está calculado). En Reino Unido pasa lo contrario: los ciudadanos usan chatbots para reclamar al Estado, y las quejas llegan más largas y numerosas. The Economist lo llamó 'inundación agéntica'. ¿Obligará al Estado a simplificar o lo hará crecer? Basado en un análisis de Juan Ramón Rallo. #InteligenciaArtificial #Burocracia #Estado #PaisesBajos #ReinoUnido",
+ "sources": [
+  {
+   "title": "The Next Web: Netherlands to cut 25,000 government jobs as it turns to AI",
+   "url": "https://thenextweb.com/news/dutch-government-jobs-25000-cuts-ai"
+  },
+  {
+   "title": "Gulf News: Netherlands plans to cut 25,000 government jobs",
+   "url": "https://gulfnews.com/world/europe/netherlands-plans-to-cut-25000-government-jobs-using-ai-to-reduce-costs-1.500725982"
+  },
+  {
+   "title": "Siècle Digital: les Pays-Bas misent sur l'IA",
+   "url": "https://siecledigital.fr/2026/10/27/les-pays-bas-misent-sur-lia-pour-supprimer-25-000-emplois-dans-la-fonction-publique/"
+  },
+  {
+   "title": "Freevacy (resumen de The Economist): AI is weaponising claims and appeals against the government",
+   "url": "https://www.freevacy.com/news/the-ecomnomist/ai-is-weaponising-claims-and-appeals-against-the-government/7624"
+  },
+  {
+   "title": "The Star (Sheffield): AI could be responsible for huge increase in social care complaints",
+   "url": "https://www.thestar.co.uk/news/politics/council/ai-could-be-responsible-for-huge-increase-in-sheffield-social-care-complaints-9297226"
+  },
+  {
+   "title": "IanVisits: TfL facing surge in FOI appeals as people turn to AI",
+   "url": "https://www.ianvisits.co.uk/articles/tfl-facing-surge-in-foi-appeals-as-people-turn-to-artificial-intelligence-92261/"
+  },
+  {
+   "title": "AI Understanding (resumen de la BBC): AI-assisted complaints increasing pressure on councils and schools",
+   "url": "https://aiunderstanding.org/news/bbc-reports-ai-assisted-complaints-are-increasing-pressure-on-councils-and-schools"
+  },
+  {
+   "title": "Portsmouth News: AI generated complaints create extra work for council officers",
+   "url": "https://www.portsmouth.co.uk/news/politics/ai-generated-complaints-create-extra-work-for-portsmouth-council-officers-9079104"
+  }
+ ],
+ "facts": [
+  {
+   "claim": "Países Bajos busca reducir su administración central en 25.000 puestos para 2035",
+   "finding": "Confirmado: anuncio del 26 de octubre de 2026, unos 25.000 puestos a tiempo completo de una plantilla récord de unos 160.000 (41 % más que en 2018). Ahorro previsto: 900 millones de euros en 2027 y 3.500 millones al año desde 2035. Policía y Defensa quedan fuera."
+  },
+  {
+   "claim": "Cuatro pilares: estandarización, simplificación normativa, poda del aparato consultivo e IA",
+   "finding": "Confirmado: sistemas informáticos estándar y compras conjuntas; al menos 500 normas al año eliminadas o simplificadas; menos de los 28 consejos asesores permanentes y unos 150 comités; e IA, con mociones parlamentarias que piden un 20 % más de productividad."
+  },
+  {
+   "claim": "(Matiz) La IA sustituirá puestos",
+   "finding": "Aún no cuantificado: el gabinete fijará los objetivos de IA y su ahorro en el primer trimestre de 2027. Cifras atribuidas a la IA publicadas en la prensa vienen de fuentes anónimas."
+  },
+  {
+   "claim": "El aparato estatal tiende a resistirse a los recortes",
+   "finding": "Es la opinión de Rallo. Como contexto: gobiernos anteriores prometieron reducir plantilla y esta creció un 41 % desde 2018."
+  },
+  {
+   "claim": "'Inundación agéntica' en Reino Unido: ciudadanos usan IA para presentar masivamente quejas y recursos",
+   "finding": "Confirmado: el término es de The Economist (agosto de 2026). BBC y ayuntamientos informan de quejas más largas y complejas: en Sheffield, +79 % de quejas de servicios sociales para adultos, en parte atribuido a la IA; Transporte de Londres cita más recursos y más complejos."
+  },
+  {
+   "claim": "Está rompiendo el sistema burocrático",
+   "finding": "Exagerado: las fuentes describen presión y más carga de trabajo, no un colapso; no hay datos nacionales de volumen. The Economist cita además un aumento del 55 % en el atasco de los tribunales laborales."
+  },
+  {
+   "claim": "El sistema está diseñado para ser costoso y lento para el usuario",
+   "finding": "Es una interpretación del autor del video, no un dato; el reel lo plantea como que reclamar 'siempre costó tiempo y paciencia'."
+  }
+ ],
+ "credits": [
+  "Voz sintética (Piper, de código abierto) · Animación hecha con código",
+  "Ilustración, sin imágenes reales · Fuentes en la descripción"
+ ],
+ "sections": [
+  {
+   "id": "e1",
+   "chapter": "El recorte",
+   "text": "Países Bajos quiere recortar veinticinco mil puestos de su administración central hasta 2035. Y la inteligencia artificial es parte del plan.",
+   "tts": "Países Bajos quiere recortar veinticinco mil puestos de su administración central hasta dos mil treinta y cinco. Y la inteligencia artificial es parte del plan.",
+   "seed": 27,
+   "background": "navy",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "PAÍSES BAJOS",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "tiles",
+       "text": "-25.000",
+       "prop": "none",
+       "x": 0,
+       "y": 720,
+       "style": "black",
+       "size": 120
+      },
+      {
+       "kind": "serif",
+       "text": "puestos hasta 2035",
+       "prop": "none",
+       "x": 0,
+       "y": 900,
+       "style": "white",
+       "size": 76
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "stamp",
+       "text": "con ayuda de la IA",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "robot",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "e2",
+   "chapter": "El plan",
+   "text": "La plantilla llegó a ciento sesenta mil funcionarios en 2025, un cuarenta y uno por ciento más que en 2018. El plan: estandarizar sistemas, eliminar al menos quinientas normas al año, podar consejos asesores y usar inteligencia artificial.",
+   "tts": "La plantilla llegó a ciento sesenta mil funcionarios en dos mil veinticinco, un cuarenta y uno por ciento más que en dos mil dieciocho. El plan: estandarizar sistemas, eliminar al menos quinientas normas al año, podar consejos asesores y usar inteligencia artificial.",
+   "seed": 31,
+   "background": "kraft",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "160.000",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 120
+      },
+      {
+       "kind": "serif",
+       "text": "funcionarios en 2025",
+       "prop": "none",
+       "x": 0,
+       "y": 460,
+       "style": "black",
+       "size": 72
+      },
+      {
+       "kind": "tape",
+       "text": "+41% DESDE 2018",
+       "prop": "none",
+       "x": 0,
+       "y": 1100,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "1 · ESTANDARIZAR",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "cog",
+       "x": 0,
+       "y": 620,
+       "style": "black",
+       "size": 80
+      },
+      {
+       "kind": "tape",
+       "text": "2 · -500 NORMAS AL AÑO",
+       "prop": "none",
+       "x": 0,
+       "y": 900,
+       "style": "white",
+       "size": 72
+      },
+      {
+       "kind": "tape",
+       "text": "3 · MENOS CONSEJOS",
+       "prop": "none",
+       "x": 0,
+       "y": 1040,
+       "style": "white",
+       "size": 72
+      },
+      {
+       "kind": "tape",
+       "text": "4 · IA",
+       "prop": "none",
+       "x": 0,
+       "y": 1180,
+       "style": "red",
+       "size": 80
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "e3",
+   "chapter": "El matiz",
+   "text": "Ojo: cuántos puestos sustituirá la inteligencia artificial aún no se ha calculado; esos objetivos llegarán en 2027. Y, como advierte el economista Juan Ramón Rallo, la burocracia se resiste: lo que se recorta por un lado puede crecer por otro.",
+   "tts": "Ojo: cuántos puestos sustituirá la inteligencia artificial aún no se ha calculado; esos objetivos llegarán en dos mil veintisiete. Y, como advierte el economista Juan Ramón Rayo, la burocracia se resiste: lo que se recorta por un lado puede crecer por otro.",
+   "seed": 35,
+   "background": "teal",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "stamp",
+       "text": "¿cuánto aporta la IA?",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "lens",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "tape",
+       "text": "SIN CALCULAR",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 96
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "JUAN RAMÓN RALLO",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "serif",
+       "text": "economista",
+       "prop": "none",
+       "x": 0,
+       "y": 420,
+       "style": "white",
+       "size": 66
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "folder",
+       "x": 0,
+       "y": 780,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "la burocracia se resiste",
+       "prop": "none",
+       "x": 0,
+       "y": 1150,
+       "style": "white",
+       "size": 72
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "e4",
+   "chapter": "Reino Unido",
+   "text": "Mientras, en Reino Unido pasa lo contrario: los ciudadanos usan chatbots para escribir quejas, recursos y reclamaciones. La revista The Economist lo llamó inundación agéntica.",
+   "tts": "Mientras, en Reino Unido pasa lo contrario: los ciudadanos usan chatbots para escribir quejas, recursos y reclamaciones. La revista The Ikónomist lo llamó inundación agéntica.",
+   "seed": 39,
+   "background": "rays_blue",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "REINO UNIDO",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "bubble",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "stamp",
+       "text": "quejas con chatbot",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "INUNDACIÓN",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 110
+      },
+      {
+       "kind": "tape",
+       "text": "AGÉNTICA",
+       "prop": "none",
+       "x": 0,
+       "y": 450,
+       "style": "red",
+       "size": 110
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "doc",
+       "x": 0,
+       "y": 820,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "según The Economist",
+       "prop": "none",
+       "x": 0,
+       "y": 1170,
+       "style": "black",
+       "size": 66
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "e5",
+   "chapter": "Los datos",
+   "text": "En Sheffield, las quejas sobre servicios sociales para adultos subieron un setenta y nueve por ciento, y el ayuntamiento cree que la inteligencia artificial puede ser parte de la causa. Transporte de Londres dice que sus recursos son más numerosos y complejos.",
+   "tts": "En Shéfild, las quejas sobre servicios sociales para adultos subieron un setenta y nueve por ciento, y el ayuntamiento cree que la inteligencia artificial puede ser parte de la causa. Transporte de Londres dice que sus recursos son más numerosos y complejos.",
+   "seed": 43,
+   "background": "cream",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "SHEFFIELD",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "tiles",
+       "text": "+79%",
+       "prop": "none",
+       "x": 0,
+       "y": 700,
+       "style": "black",
+       "size": 140
+      },
+      {
+       "kind": "serif",
+       "text": "quejas de servicios sociales",
+       "prop": "none",
+       "x": 0,
+       "y": 900,
+       "style": "black",
+       "size": 66
+      },
+      {
+       "kind": "stamp",
+       "text": "¿por la IA?",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "TRANSPORTE DE LONDRES",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 80
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "form",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "más recursos y más largos",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 70
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "e6",
+   "chapter": "La balanza",
+   "text": "Reclamar al Estado siempre costó tiempo y paciencia. La inteligencia artificial abarata ese coste para cualquiera. El problema: muchos escritos salen larguísimos, repetitivos o citan leyes mal.",
+   "tts": "Reclamar al Estado siempre costó tiempo y paciencia. La inteligencia artificial abarata ese coste para cualquiera. El problema: muchos escritos salen larguísimos, repetitivos o citan leyes mal.",
+   "seed": 47,
+   "background": "sky",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "RECLAMAR CUESTA",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "watch",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "stamp",
+       "text": "ya no tanto",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "stamp",
+       "text": "larguísimos",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "book",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "repetitivos o con leyes mal citadas",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 62
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "e7",
+   "chapter": "Cierre",
+   "text": "Entonces, ¿esta avalancha obligará al Estado a simplificar, o lo hará crecer para contestar a las máquinas?",
+   "tts": "Entonces, ¿esta avalancha obligará al Estado a simplificar, o lo hará crecer para contestar a las máquinas?",
+   "seed": 51,
+   "background": "rays_red",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "¿SIMPLIFICAR",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "funnel",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "tape",
+       "text": "O CRECER?",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
