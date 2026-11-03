@@ -57,8 +57,8 @@ export function ParcelMap({ draft, onChange, fixtures, activeFixture, onPickFixt
       const m = new maplibregl.Map({
         container: el.current!,
         style: style as string | StyleSpecification,
-        center: [0, 20],
-        zoom: 1.8,
+        center: [-70.15, 18.8],
+        zoom: 7.2,
         doubleClickZoom: false,
         attributionControl: { compact: true },
       })
@@ -148,7 +148,7 @@ export function ParcelMap({ draft, onChange, fixtures, activeFixture, onPickFixt
       featuredMarkers.current = FEATURED_LOCATIONS.map((loc) => {
         const node = document.createElement("button")
         node.type = "button"
-        node.title = `${loc.emoji} ${loc.name} · ${loc.country}\n${loc.note}`
+        node.title = `${loc.emoji} ${loc.name} · ${loc.region}\n${loc.note}`
         node.className =
           "text-[11px] leading-none rounded-full border border-[#5ec8e5]/50 bg-[#05070d]/80 px-1.5 py-0.5 text-[#5ec8e5] shadow hover:bg-[#5ec8e5]/20 transition-colors"
         node.textContent = loc.emoji
@@ -214,7 +214,7 @@ export function ParcelMap({ draft, onChange, fixtures, activeFixture, onPickFixt
           type="text"
           value={query}
           onChange={(e) => { setQuery(e.target.value); setGeoError(null) }}
-          placeholder="Search any place…"
+          placeholder="Buscar lugar…"
           className="w-44 bg-transparent text-[12px] text-foreground outline-none placeholder:text-muted-foreground"
         />
         {searching && <Loader2 className="h-3 w-3 animate-spin text-muted-foreground" />}
@@ -228,7 +228,7 @@ export function ParcelMap({ draft, onChange, fixtures, activeFixture, onPickFixt
 
       {staticMode && (
         <div className="absolute bottom-2 left-2 right-10 z-10 rounded-md border border-border/50 bg-background/80 px-2.5 py-1.5 text-[10px] leading-snug text-muted-foreground backdrop-blur">
-          Click a dot to load a precomputed example, or explore the map.
+          Haz clic en un punto para cargar un ejemplo, o explora el mapa.
         </div>
       )}
     </div>

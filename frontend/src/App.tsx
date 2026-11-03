@@ -76,8 +76,8 @@ export default function App() {
     if (api.isStatic && !fixture) {
       setLoading(false)
       setError(
-        "This static demo can only load the three precomputed examples (see below the Run button). " +
-        "For live analysis of any location, clone the repo and run `make demo-live`.",
+        "Este demo estático solo puede cargar los tres ejemplos precomputados (ver debajo del botón). " +
+        "Para análisis en vivo de cualquier ubicación, clona el repositorio y ejecuta `make demo-live`.",
       )
       return
     }
@@ -108,9 +108,9 @@ export default function App() {
     <main className="min-h-screen w-full bg-background text-foreground">
       <AirlockHero
         title="FIND YOUR FIELD'S TWIN"
-        tagline="Somewhere on Earth, land like yours already has a playbook."
+        tagline="En algún lugar del mundo, un campo igual al tuyo ya tiene su manual."
         scrollHint="SCROLL"
-        skipLabel="Skip to the engine"
+        skipLabel="Ir al análisis"
       />
 
       <header className="no-print sticky top-0 z-20 border-b border-border bg-background/85 backdrop-blur">
@@ -121,10 +121,10 @@ export default function App() {
             <span className="text-[13px] text-muted-foreground">Analog Engine</span>
           </div>
           <nav className="hidden items-center gap-5 text-[13px] text-muted-foreground md:flex">
-            <a href="#parcel" className="hover:text-foreground">Parcel</a>
-            <a href="#results" className="hover:text-foreground">Analogs</a>
-            <a href="#techniques" className="hover:text-foreground">Techniques</a>
-            <a href="#sources" className="hover:text-foreground">Sources</a>
+            <a href="#parcel" className="hover:text-foreground">Parcela</a>
+            <a href="#results" className="hover:text-foreground">Análogos</a>
+            <a href="#techniques" className="hover:text-foreground">Técnicas</a>
+            <a href="#sources" className="hover:text-foreground">Fuentes</a>
           </nav>
           <Badge variant={meta?.mode === "live" ? "default" : "warn"} title="DEMO_MODE">
             <Satellite className="h-3 w-3" /> {meta ? (meta.static ? "static demo" : `${meta.mode} mode`) : "connecting…"}
@@ -133,23 +133,20 @@ export default function App() {
       </header>
 
       <section className="mx-auto max-w-7xl px-5 pb-6 pt-14">
-        <p className="eyebrow">Analog matching, not crop prediction</p>
+        <p className="eyebrow">Matching analógico — no predicción de cosecha</p>
         <h2 className="mt-3 max-w-3xl text-3xl font-semibold leading-tight tracking-tight md:text-[40px]">
-          Find the places on Earth whose soil, water and climate match your parcel, then see which of their proven
-          techniques carry over.
+          Descubre qué lugares del mundo comparten el suelo, agua y clima de tu parcela — y qué técnicas agropecuarias probadas ahí son transferibles a la República Dominicana.
         </h2>
         <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
-          CropMatch builds a 24-dimension biophysical fingerprint of a parcel from satellite and soil data, finds its
-          closest analogs in a global reference grid, and screens a cited technique library against the parcel's own
-          conditions. Techniques that do not fit are shown with the reason, not hidden.
+          CropMatch construye una huella biofísica de 24 dimensiones a partir de datos satelitales y edáficos, localiza sus análogos más cercanos en una cuadrícula global de referencia, y evalúa una biblioteca de técnicas agrícolas citadas contra las condiciones reales de la parcela. Las técnicas que no aplican se muestran con la razón — no se ocultan.
         </p>
         {meta ? (
           <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
             {[
-              ["Reference cells", meta.reference_cells.toLocaleString()],
-              ["Innovation regions", String(meta.regions.length)],
-              ["Cited techniques", String(meta.n_techniques)],
-              ["Dimensions", String(meta.features.length)],
+              ["Celdas de referencia", meta.reference_cells.toLocaleString()],
+              ["Regiones de innovación", String(meta.regions.length)],
+              ["Técnicas citadas", String(meta.n_techniques)],
+              ["Dimensiones", String(meta.features.length)],
             ].map(([k, v]) => (
               <div key={k} className="border-l border-border pl-3">
                 <dt className="text-[11px] text-muted-foreground">{k}</dt>
@@ -161,8 +158,8 @@ export default function App() {
         {meta && meta.reference_cells < 1900 ? (
           <div className="mt-6 flex max-w-3xl items-start gap-2 rounded-lg border border-warn/40 bg-warn/5 p-3 text-[13px] text-warn">
             <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0" />
-            Preview build: the reference grid is still being computed ({meta.reference_cells.toLocaleString()} of 2,000 cells).
-            Analogs and percentiles will change when it is complete.
+            Build preliminar: la cuadrícula de referencia aún se está calculando ({meta.reference_cells.toLocaleString()} de 2 000 celdas).
+            Los análogos y percentiles cambiarán cuando esté completa.
           </div>
         ) : null}
       </section>
@@ -170,7 +167,7 @@ export default function App() {
       <section id="parcel" className="mx-auto max-w-7xl scroll-mt-16 px-5 py-8">
         {bootError ? (
           <Card className="border-danger/40 p-5 text-sm text-danger">
-            Could not reach the API ({bootError}). Start it with <code className="num">make demo</code>.
+            No se pudo conectar con la API ({bootError}). Iníciala con <code className="num">make demo</code>.
           </Card>
         ) : (
           <Card className="grid gap-0 overflow-hidden lg:grid-cols-[380px_1fr]">
@@ -214,10 +211,10 @@ export default function App() {
           <div className="mt-4 flex items-center gap-2 text-[13px] text-muted-foreground">
             <LoaderCircle className="h-4 w-4 animate-spin" />
             {api.isStatic
-              ? "Loading the parcel and re-running the matching in your browser…"
+              ? "Cargando la parcela y re-ejecutando el matching en tu navegador…"
               : meta?.mode === "live"
-                ? "Querying WorldClim, SoilGrids, Copernicus DEM, MODIS, Sentinel-2 and Sentinel-1. A new parcel can take a minute."
-                : "Replaying recorded responses…"}
+                ? "Consultando WorldClim, SoilGrids, Copernicus DEM, MODIS, Sentinel-2 y Sentinel-1. Una parcela nueva puede tardar un minuto."
+                : "Reproduciendo respuestas grabadas…"}
           </div>
         ) : null}
       </section>

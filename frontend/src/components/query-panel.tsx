@@ -33,15 +33,15 @@ export function QueryPanel(p: Props) {
 
   return (
     <div className="space-y-6">
-      {/* Featured global locations */}
+      {/* DR agricultural zones */}
       <section>
-        <div className="eyebrow mb-2">Explore a location</div>
+        <div className="eyebrow mb-2">🇩🇴 Zonas agrícolas — República Dominicana</div>
         <div className="flex flex-wrap gap-1.5">
           {FEATURED_LOCATIONS.map((loc) => (
             <button
               key={loc.id}
               type="button"
-              title={loc.note}
+              title={`${loc.region}\n${loc.note}`}
               onClick={() => p.onFlyTo(loc)}
               className="inline-flex items-center gap-1 rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:border-primary/60 hover:bg-primary/10 hover:text-foreground"
             >
@@ -51,13 +51,13 @@ export function QueryPanel(p: Props) {
           ))}
         </div>
         <p className="mt-1.5 text-[11px] text-muted-foreground">
-          Click any location to fly the map there and pre-fill coordinates.
+          Selecciona una zona para centrar el mapa y pre-cargar coordenadas.
         </p>
       </section>
 
       {/* Parcel definition */}
       <section>
-        <div className="eyebrow mb-2">Define your parcel</div>
+        <div className="eyebrow mb-2">Definir parcela</div>
         <div className="mb-3 inline-flex rounded-lg border border-border p-0.5">
           {(["circle", "polygon"] as const).map((m) => (
             <button
@@ -70,7 +70,7 @@ export function QueryPanel(p: Props) {
               )}
             >
               {m === "circle" ? <Circle className="h-3.5 w-3.5" /> : <Pentagon className="h-3.5 w-3.5" />}
-              {m === "circle" ? "Point + radius" : "Draw polygon"}
+              {m === "circle" ? "Punto + radio" : "Dibujar polígono"}
             </button>
           ))}
         </div>
@@ -101,17 +101,17 @@ export function QueryPanel(p: Props) {
               </label>
             ))}
             <p className="col-span-3 text-[11px] text-muted-foreground">
-              Or search the map, or click to drop a pin.
+              O busca en el mapa, o haz clic para colocar un pin.
             </p>
           </div>
         ) : (
           <div className="flex items-center justify-between gap-2 text-[12px] text-muted-foreground">
             <span>
-              {d.vertices.length} vertices{" "}
-              {d.closed ? "· closed" : "· click to add points, double-click to close"}
+              {d.vertices.length} vértices{" "}
+              {d.closed ? "· cerrado" : "· clic para añadir puntos, doble clic para cerrar"}
             </span>
             <Button size="sm" variant="ghost" onClick={() => p.onDraft({ ...d, vertices: [], closed: false })}>
-              <RotateCcw /> Clear
+              <RotateCcw /> Limpiar
             </Button>
           </div>
         )}
@@ -120,13 +120,13 @@ export function QueryPanel(p: Props) {
       {/* Weights */}
       <section>
         <div className="mb-2 flex items-center justify-between">
-          <span className="eyebrow">Dimension-group weights</span>
+          <span className="eyebrow">Pesos por grupo de dimensión</span>
           <button
             type="button"
             className="text-[11px] text-muted-foreground hover:text-foreground"
             onClick={() => p.onWeights(p.defaultWeights)}
           >
-            reset
+            restablecer
           </button>
         </div>
         <div className="space-y-2">
@@ -151,23 +151,22 @@ export function QueryPanel(p: Props) {
           ))}
         </div>
         <p className="mt-2 text-[11px] text-muted-foreground">
-          Normalised to 100 %. Default: water 30, soil 25, climate 25, terrain 10, vegetation 10.
+          Normalizado a 100 %. Por defecto: agua 30, suelo 25, clima 25, terreno 10, vegetación 10.
         </p>
       </section>
 
       {/* Run button */}
       <Button size="lg" className="w-full" disabled={!p.canRun || p.loading} onClick={p.onRun}>
         {p.loading ? <LoaderCircle className="animate-spin" /> : <Play />}
-        {p.loading ? "Computing…" : "Find analogs"}
+        {p.loading ? "Calculando…" : "Buscar análogos"}
       </Button>
 
       {/* Precomputed examples (static mode only) */}
       {p.staticMode && p.fixtures.length > 0 && (
         <section className="border-t border-border pt-4">
-          <div className="eyebrow mb-2">Precomputed examples</div>
+          <div className="eyebrow mb-2">Ejemplos precomputados</div>
           <p className="mb-2 text-[11px] leading-snug text-muted-foreground">
-            Three recorded results ship with this static demo. Load one instantly — weights can still be
-            adjusted in your browser.
+            Tres resultados pregrabados incluidos en este demo. Cárgalos al instante — los pesos se pueden ajustar en tu navegador.
           </p>
           <div className="flex flex-wrap gap-1.5">
             {p.fixtures.map((f) => (
