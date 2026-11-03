@@ -1,0 +1,594 @@
+{
+ "title": "La IA física: robots, fábricas y la batalla entre China y EE. UU.",
+ "lang": "es",
+ "style": "papercut",
+ "profile_id": "",
+ "gap": 0.45,
+ "tail": 2.8,
+ "tempo": 1.08,
+ "disclosure": "",
+ "post_text": "La IA sale de la pantalla y se mete en robots. La promesa: si un robot trabaja, el salario pesa menos y EE. UU. podría recuperar fábricas. Pero quien más automatiza es China: 59 % de los robots industriales nuevos en 2025 y la gran mayoría de los humanoides. EE. UU. pone el cerebro (chips y modelos). Y ojo con las demos: algunas, como la de Tesla en 2024, estaban en parte teleoperadas. ¿Trabajarías al lado de un robot? #IAFisica #Robots #InteligenciaArtificial #China #Industria",
+ "sources": [
+  {
+   "title": "IFR: World Robotics 2026, nota de prensa sobre China",
+   "url": "https://ifr.org/downloads/press_docs/EN-2026-SEP-24-IFR_Press_Release_WR-CHINA.pdf"
+  },
+  {
+   "title": "The Next Web: China instala el 59 % de los robots nuevos",
+   "url": "https://thenextweb.com/news/industrial-robots-world-robotics-2026-china-59-eu-falls"
+  },
+  {
+   "title": "TechNode: fabricantes chinos, más del 97 % de los humanoides en el S1 de 2026",
+   "url": "https://technode.com/2026/08/11/chinese-makers-accounted-for-more-than-97-of-global-humanoid-robot-shipments-in-h1-2026/"
+  },
+  {
+   "title": "DIGITIMES: competencia en humanoides y cadena de suministro",
+   "url": "https://www.digitimes.com/news/a20260408PD226.html"
+  },
+  {
+   "title": "TechCrunch: los Optimus de Tesla estaban controlados por humanos en We, Robot",
+   "url": "https://techcrunch.com/2024/10/14/tesla-optimus-bots-were-controlled-by-humans-during-the-we-robot-event"
+  },
+  {
+   "title": "Bloomberg: Tesla's Optimus robots were remotely operated",
+   "url": "https://www.bloomberg.com/news/articles/2024-10-14/tesla-s-optimus-robots-were-remotely-operated-at-cybercab-event"
+  },
+  {
+   "title": "WebProNews: los humanoides chinos inundan el mercado; la mayoría aún no hace trabajo real",
+   "url": "https://www.webpronews.com/chinas-humanoid-robots-flood-the-world-market-most-still-cant-do-real-work/"
+  },
+  {
+   "title": "Deloitte: US manufacturing could need 3.8 million new employees by 2033",
+   "url": "https://www2.deloitte.com/us/en/pages/about-deloitte/articles/press-releases/us-manufacturing-could-need-new-employees-by-2033.html"
+  }
+ ],
+ "facts": [
+  {
+   "claim": "Con robots autónomos, el coste salarial pierde peso y EE. UU. podría recuperar su base industrial",
+   "finding": "Es una tesis plausible pero no un hecho: también influyen la cadena de suministro, la energía y los aranceles. Y quien más automatiza es China: 59 % de los robots industriales instalados en 2025 (IFR, World Robotics 2026); la UE bajó un 11 % y EE. UU. superó a Japón."
+  },
+  {
+   "claim": "China domina el músculo (hardware, ensamblaje)",
+   "finding": "Confirmado: según Smart Analytics Global, fabricantes chinos enviaron más del 97 % de los humanoides en el primer semestre de 2026 (Counterpoint da un 86 % para las cinco primeras, todas chinas). Las cifras varían por consultora; por eso el video dice 'la gran mayoría'."
+  },
+  {
+   "claim": "EE. UU. lidera el cerebro (software, IA, diseño de chips)",
+   "finding": "En general sí (chips avanzados y modelos punteros), con matices: modelos chinos como DeepSeek se acercaron en rendimiento con menos coste."
+  },
+  {
+   "claim": "Los robots aún tienen dificultades con tareas básicas de manipulación",
+   "finding": "Confirmado por la cobertura del sector: las demos van por delante del despliegue real."
+  },
+  {
+   "claim": "Muchas demos dependen de operadores humanos o coreografías",
+   "finding": "Confirmado en casos conocidos: en el evento 'We, Robot' de Tesla (octubre de 2024), los Optimus estaban parcialmente teleoperados (Bloomberg, TechCrunch); caminaban con IA."
+  },
+  {
+   "claim": "Los robots podrían cubrir vacantes que hoy quedan desiertas",
+   "finding": "Hay vacantes reales: Deloitte y The Manufacturing Institute (2024) estiman que EE. UU. necesitará 3,8 millones de trabajadores de fábrica hasta 2033 y que 1,9 millones podrían quedar sin cubrir. El efecto neto de los robots sobre el empleo sigue en debate."
+  },
+  {
+   "claim": "Cambiará cómo gestionamos los ahorros",
+   "finding": "Se omitió del video: es un tema de inversión y este reel no da consejos financieros."
+  }
+ ],
+ "credits": [
+  "Voz sintética (Piper, de código abierto) · Animación hecha con código",
+  "Ilustración, sin imágenes reales · Fuentes en la descripción"
+ ],
+ "sections": [
+  {
+   "id": "f1",
+   "chapter": "Fuera de la pantalla",
+   "text": "La inteligencia artificial está saliendo de la pantalla. Ahora quiere manos: robots que ven, deciden y mueven cosas en el mundo real. Se llama inteligencia artificial física.",
+   "tts": "La inteligencia artificial está saliendo de la pantalla. Ahora quiere manos: robots que ven, deciden y mueven cosas en el mundo real. Se llama inteligencia artificial física.",
+   "seed": 14,
+   "background": "navy",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "FUERA DE LA PANTALLA",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "laptop",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "IA FÍSICA",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 120
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "humanoid",
+       "x": 0,
+       "y": 780,
+       "style": "black",
+       "size": 120
+      },
+      {
+       "kind": "serif",
+       "text": "ve, decide y se mueve",
+       "prop": "none",
+       "x": 0,
+       "y": 1250,
+       "style": "white",
+       "size": 72
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "f2",
+   "chapter": "La promesa",
+   "text": "La promesa: durante décadas, las fábricas se fueron a Asia buscando salarios bajos. Si un robot hace el trabajo, el salario pesa menos, y Estados Unidos podría traerlas de vuelta.",
+   "tts": "La promesa: durante décadas, las fábricas se fueron a Asia buscando salarios bajos. Si un robot hace el trabajo, el salario pesa menos, y Estados Unidos podría traerlas de vuelta.",
+   "seed": 17,
+   "background": "kraft",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "RUMBO A ASIA",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "ship",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "salarios bajos",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 76
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "stamp",
+       "text": "el salario pesa menos",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "coin",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 170
+      },
+      {
+       "kind": "tape",
+       "text": "¿DE VUELTA A EE. UU.?",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "red",
+       "size": 80
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "f3",
+   "chapter": "Pero",
+   "text": "Pero ojo: quien más automatiza hoy es China. En 2025 instaló el cincuenta y nueve por ciento de los robots industriales nuevos del mundo, según la Federación Internacional de Robótica.",
+   "tts": "Pero ojo: quien más automatiza hoy es China. En dos mil veinticinco instaló el cincuenta y nueve por ciento de los robots industriales nuevos del mundo, según la Federación Internacional de Robótica.",
+   "seed": 20,
+   "background": "teal",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "PERO OJO",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "cog",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "59%",
+       "prop": "none",
+       "x": 0,
+       "y": 330,
+       "style": "black",
+       "size": 140
+      },
+      {
+       "kind": "serif",
+       "text": "de los robots industriales nuevos",
+       "prop": "none",
+       "x": 0,
+       "y": 560,
+       "style": "white",
+       "size": 62
+      },
+      {
+       "kind": "tape",
+       "text": "CHINA · 2025",
+       "prop": "none",
+       "x": 0,
+       "y": 1050,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "serif",
+       "text": "Federación Internacional de Robótica",
+       "prop": "none",
+       "x": 0,
+       "y": 1200,
+       "style": "white",
+       "size": 52
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "f4",
+   "chapter": "Músculo y cerebro",
+   "text": "La batalla se reparte así. China pone el músculo: fábricas y piezas baratas; en 2026 envía la gran mayoría de los robots humanoides. Estados Unidos pone el cerebro: chips y modelos de inteligencia artificial.",
+   "tts": "La batalla se reparte así. China pone el músculo: fábricas y piezas baratas; en dos mil veintiséis envía la gran mayoría de los robots humanoides. Estados Unidos pone el cerebro: chips y modelos de inteligencia artificial.",
+   "seed": 23,
+   "background": "rays_blue",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "CHINA",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "humanoid",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "stamp",
+       "text": "el músculo",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "ESTADOS UNIDOS",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "chip",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "stamp",
+       "text": "el cerebro",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "f5",
+   "chapter": "La realidad",
+   "text": "Y los robots aún tropiezan con lo básico, como agarrar un objeto que nunca han visto. Muchas demos tienen truco: en 2024, los robots de Tesla en su gran evento estaban en parte controlados a distancia por personas.",
+   "tts": "Y los robots aún tropiezan con lo básico, como agarrar un objeto que nunca han visto. Muchas demos tienen truco: en dos mil veinticuatro, los robots de Tesla en su gran evento estaban en parte controlados a distancia por personas.",
+   "seed": 26,
+   "background": "cream",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "LO BÁSICO",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "hand",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "agarrar algo nuevo",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 76
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "stamp",
+       "text": "demo con truco",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "tape",
+       "text": "TESLA · 2024",
+       "prop": "none",
+       "x": 0,
+       "y": 470,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "ctrl",
+       "x": 0,
+       "y": 870,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "control remoto humano",
+       "prop": "none",
+       "x": 0,
+       "y": 1180,
+       "style": "black",
+       "size": 70
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "f6",
+   "chapter": "El empleo",
+   "text": "¿Y el empleo? Hay quien teme millones de puestos perdidos. Pero solo en Estados Unidos podrían quedar casi dos millones de empleos de fábrica sin cubrir hasta 2033, según Deloitte. Los robots podrían quedarse con lo peligroso y repetitivo.",
+   "tts": "¿Y el empleo? Hay quien teme millones de puestos perdidos. Pero solo en Estados Unidos podrían quedar casi dos millones de empleos de fábrica sin cubrir hasta dos mil treinta y tres, según Delóit. Los robots podrían quedarse con lo peligroso y repetitivo.",
+   "seed": 29,
+   "background": "sky",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "¿Y EL EMPLEO?",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "person",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "1,9 M",
+       "prop": "none",
+       "x": 0,
+       "y": 320,
+       "style": "black",
+       "size": 130
+      },
+      {
+       "kind": "serif",
+       "text": "empleos de fábrica sin cubrir",
+       "prop": "none",
+       "x": 0,
+       "y": 520,
+       "style": "black",
+       "size": 64
+      },
+      {
+       "kind": "serif",
+       "text": "EE. UU., hasta 2033 · Deloitte",
+       "prop": "none",
+       "x": 0,
+       "y": 620,
+       "style": "black",
+       "size": 52
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "flame",
+       "x": 0,
+       "y": 900,
+       "style": "black",
+       "size": 90
+      },
+      {
+       "kind": "stamp",
+       "text": "lo peligroso y repetitivo",
+       "prop": "none",
+       "x": 0,
+       "y": 1180,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "f7",
+   "chapter": "Cierre",
+   "text": "La inteligencia artificial física llegará, pero más despacio de lo que prometen las demos. ¿Trabajarías al lado de un robot?",
+   "tts": "La inteligencia artificial física llegará, pero más despacio de lo que prometen las demos. ¿Trabajarías al lado de un robot?",
+   "seed": 32,
+   "background": "rays_red",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "MÁS DESPACIO",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "robot",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "de lo que prometen las demos",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "white",
+       "size": 66
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "¿TRABAJARÍAS",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "humanoid",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "tape",
+       "text": "CON UN ROBOT?",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
