@@ -29,8 +29,8 @@ export function AnalogPanel({ result, grid }: { result: QueryResult; grid: GridP
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Global analogs</CardTitle>
-          <CardDescription>No innovation-region cell shares enough dimensions with this parcel to be compared.</CardDescription>
+          <CardTitle>Análogos globales</CardTitle>
+          <CardDescription>Ninguna celda de región de innovación comparte suficientes dimensiones con esta parcela para comparar.</CardDescription>
         </CardHeader>
       </Card>
     )
@@ -42,11 +42,11 @@ export function AnalogPanel({ result, grid }: { result: QueryResult; grid: GridP
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Global analogs</CardTitle>
+        <CardTitle>Análogos globales</CardTitle>
         <CardDescription>
-          Best-matching reference cell in each documented innovation region, ranked by weighted Mahalanobis distance.
-          Similarity percentile = share of the {m.n_comparable_cells.toLocaleString()} comparable reference cells that are
-          farther from your parcel. It is a rank, not a probability.
+          Celda de referencia más similar en cada región de innovación documentada, ordenada por distancia de Mahalanobis ponderada.
+          Percentil de similitud = porcentaje de las {m.n_comparable_cells.toLocaleString()} celdas comparables más lejanas a tu parcela.
+          Es un rango, no una probabilidad.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-5">
@@ -75,10 +75,10 @@ export function AnalogPanel({ result, grid }: { result: QueryResult; grid: GridP
                   </div>
                   <div className="mt-0.5 flex justify-between text-[11px] text-muted-foreground">
                     <span>
-                      {x.country} · cell {x.lat.toFixed(2)}, {x.lon.toFixed(2)}
-                      {i >= 3 ? " · not on map" : ""}
+                      {x.country} · celda {x.lat.toFixed(2)}, {x.lon.toFixed(2)}
+                      {i >= 3 ? " · no en mapa" : ""}
                     </span>
-                    <span>percentile</span>
+                    <span>percentil</span>
                   </div>
                   <div className="mt-2 flex flex-wrap gap-1">
                     {x.drivers.map((k) => (
@@ -95,10 +95,10 @@ export function AnalogPanel({ result, grid }: { result: QueryResult; grid: GridP
 
         <div className="grid gap-5 border-t border-border pt-5 lg:grid-cols-[1fr_1.2fr]">
           <div>
-            <div className="eyebrow mb-1">Why #{sel + 1} matched — {a.region_name}</div>
+            <div className="eyebrow mb-1">Por qué el #{sel + 1} coincidió — {a.region_name}</div>
             <p className="text-[11px] text-muted-foreground">
-              z-scores of your parcel (amber) and the analog cell (cyan) on each shared dimension, clipped to ±3.
-              Distance {fmt(a.distance)} ({a.method.replace("_", " ")}), {a.shared_dims} shared dimensions.
+              z-scores de tu parcela (ámbar) y la celda análoga (cian) en cada dimensión compartida, truncados a ±3.
+              Distancia {fmt(a.distance)} ({a.method.replace("_", " ")}), {a.shared_dims} dimensiones compartidas.
             </p>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
@@ -106,8 +106,8 @@ export function AnalogPanel({ result, grid }: { result: QueryResult; grid: GridP
                   <PolarGrid stroke="#1a2330" />
                   <PolarAngleAxis dataKey="dim" tick={{ fill: "#8793a5", fontSize: 10 }} />
                   <PolarRadiusAxis domain={[-3, 3]} tick={false} axisLine={false} />
-                  <Radar name="Your parcel" dataKey="parcel" stroke="#f2b45a" fill="#f2b45a" fillOpacity={0.18} strokeWidth={1.6} />
-                  <Radar name="Analog" dataKey="analog" stroke="#5ec8e5" fill="#5ec8e5" fillOpacity={0.12} strokeWidth={1.6} />
+                  <Radar name="Tu parcela" dataKey="parcel" stroke="#f2b45a" fill="#f2b45a" fillOpacity={0.18} strokeWidth={1.6} />
+                  <Radar name="Análogo" dataKey="analog" stroke="#5ec8e5" fill="#5ec8e5" fillOpacity={0.12} strokeWidth={1.6} />
                   <Legend wrapperStyle={{ fontSize: 11 }} />
                   <Tooltip
                     contentStyle={{ background: "#0a0f17", border: "1px solid #1a2330", borderRadius: 8, fontSize: 12 }}
@@ -118,15 +118,15 @@ export function AnalogPanel({ result, grid }: { result: QueryResult; grid: GridP
             </div>
           </div>
           <div className="overflow-x-auto">
-            <div className="eyebrow mb-2">Per-dimension deltas, largest contribution to distance first</div>
+            <div className="eyebrow mb-2">Deltas por dimensión — mayor contribución a la distancia primero</div>
             <table className="w-full min-w-[520px] text-[12px]">
               <thead className="text-left text-[11px] text-muted-foreground">
                 <tr>
-                  <th className="py-1 font-medium">Dimension</th>
-                  <th className="py-1 text-right font-medium">Parcel</th>
-                  <th className="py-1 text-right font-medium">Analog</th>
+                  <th className="py-1 font-medium">Dimensión</th>
+                  <th className="py-1 text-right font-medium">Parcela</th>
+                  <th className="py-1 text-right font-medium">Análogo</th>
                   <th className="py-1 text-right font-medium">Δz</th>
-                  <th className="py-1 pl-3 font-medium">Share of d²</th>
+                  <th className="py-1 pl-3 font-medium">Contribución</th>
                 </tr>
               </thead>
               <tbody>
@@ -138,7 +138,7 @@ export function AnalogPanel({ result, grid }: { result: QueryResult; grid: GridP
                       <td className="py-1.5">
                         <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full" style={{ background: GROUP_HEX[d.group] }} />
                         {d.label}
-                        {a.divergences.includes(d.key) ? <span className="ml-1.5 text-[10px] text-warn">diverges</span> : null}
+                        {a.divergences.includes(d.key) ? <span className="ml-1.5 text-[10px] text-warn">diverge</span> : null}
                       </td>
                       <td className="num py-1.5 text-right">{fmt(d.target, d.unit)}</td>
                       <td className="num py-1.5 text-right text-cyan">{fmt(d.analog, d.unit)}</td>
@@ -157,7 +157,7 @@ export function AnalogPanel({ result, grid }: { result: QueryResult; grid: GridP
                     <tr key={d.key} className="border-t border-border/60 text-muted-foreground">
                       <td className="py-1.5 italic">{d.label}</td>
                       <td colSpan={4} className="py-1.5 text-right text-[11px] italic">
-                        not compared (not available for {d.target === null ? "the parcel" : "this cell"})
+                        no comparado (no disponible para {d.target === null ? "la parcela" : "esta celda"})
                       </td>
                     </tr>
                   ))}

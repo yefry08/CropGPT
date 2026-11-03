@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { FileDown, FileJson, LoaderCircle, Satellite, Sprout, TriangleAlert } from "lucide-react"
 
 import { AnalogPanel } from "@/components/analog-panel"
+import { DRMapSection } from "@/components/dr-map-section"
 import { FaultDetector } from "@/components/fault-detector"
 import { HowItWorksSection } from "@/components/how-it-works"
 import { ParcelMap, draftRing, type ParcelDraft } from "@/components/parcel-map"
@@ -19,6 +20,7 @@ import { fmt } from "@/lib/format"
 const FALLBACK_WEIGHTS: Record<Group, number> = { water: 0.3, soil: 0.25, climate: 0.25, terrain: 0.1, vegetation: 0.1 }
 
 export default function App() {
+  const [activeZone, setActiveZone] = useState<string | null>(null)
   const [meta, setMeta] = useState<Meta | null>(null)
   const [grid, setGrid] = useState<GridPoint[]>([])
   const [bootError, setBootError] = useState<string | null>(null)
@@ -47,11 +49,13 @@ export default function App() {
 
   const onDraft = useCallback((d: ParcelDraft) => {
     setFixture(null)
+    setActiveZone(null)
     setDraft(d)
   }, [])
 
   const onFlyTo = useCallback((loc: FeaturedLocation) => {
     setFixture(null)
+    setActiveZone(loc.id)
     setDraft((d) => ({ ...d, mode: "circle", lat: loc.lat, lon: loc.lon, radiusKm: loc.radiusKm }))
   }, [])
 
@@ -136,6 +140,8 @@ export default function App() {
       </header>
 
       <HowItWorksSection />
+
+      <DRMapSection onZoneSelect={onFlyTo} activeZone={activeZone} />
 
       <section className="mx-auto max-w-7xl px-5 pb-6 pt-14">
         <p className="eyebrow">Matching analógico — no predicción de cosecha</p>
@@ -228,13 +234,13 @@ export default function App() {
         <div ref={resultsRef} id="results" className="mx-auto max-w-7xl scroll-mt-16 space-y-6 px-5 pb-16">
           <div className="flex flex-wrap items-end justify-between gap-4 border-t border-border pt-8">
             <div>
-              <p className="eyebrow">Result {result.id}</p>
-              <h2 className="mt-1 text-2xl font-semibold tracking-tight">{result.parcel.name ?? "Parcel"}</h2>
+              <p className="eyebrow">Resultado {result.id}</p>
+              <h2 className="mt-1 text-2xl font-semibold tracking-tight">{result.parcel.name ?? "Parcela"}</h2>
               <p className="mt-1 text-[13px] text-muted-foreground">
                 {result.parcel.centroid.lat.toFixed(4)}, {result.parcel.centroid.lon.toFixed(4)} · {fmt(result.parcel.area_km2, "km²")} ·{" "}
-                {result.profile.n_available}/24 dimensions
-                {top ? ` · closest innovation region: ${top.region_name} (percentile ${top.similarity_percentile.toFixed(1)})` : ""} ·{" "}
-                {result.techniques.ranked.length} transferable, {result.techniques.blocked.length} blocked
+                {result.profile.n_available}/24 dimensiones
+                {top ? ` · región análoga más cercana: ${top.region_name} (percentil ${top.similarity_percentile.toFixed(1)})` : ""} ·{" "}
+                {result.techniques.ranked.length} transferibles, {result.techniques.blocked.length} bloqueadas
               </p>
             </div>
             <div className="no-print flex gap-2">
@@ -256,9 +262,9 @@ export default function App() {
               ) : (
                 <span
                   className="inline-flex h-9 cursor-not-allowed items-center gap-2 rounded-md border border-border px-3 text-sm text-muted-foreground"
-                  title="The static demo ships PDF briefs precomputed at the default weights. Reset the weights to download it."
+                  title="El demo estático incluye PDFs precomputados con los pesos por defecto. Restablece los pesos para descargarlo."
                 >
-                  <FileDown className="h-4 w-4" /> PDF at default weights only
+                  <FileDown className="h-4 w-4" /> PDF solo con pesos por defecto
                 </span>
               )}
             </div>
@@ -266,8 +272,7 @@ export default function App() {
           {result.match.dimensions_missing.length ? (
             <div className="flex items-start gap-2 rounded-lg border border-warn/40 bg-warn/5 p-3 text-[13px] text-warn">
               <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0" />
-              Matched on {result.match.dimensions_used.length} of 24 dimensions. Missing: {result.match.dimensions_missing.join(", ")}. Group weights were
-              renormalised over what is available.
+              Coincidencia en {result.match.dimensions_used.length} de 24 dimensiones. Faltantes: {result.match.dimensions_missing.join(", ")}. Los pesos de grupo se renormalizaron sobre las dimensiones disponibles.
             </div>
           ) : null}
           <ProfilePanel result={result} />

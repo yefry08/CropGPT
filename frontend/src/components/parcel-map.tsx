@@ -188,13 +188,13 @@ export function ParcelMap({ draft, onChange, fixtures, activeFixture, onPickFixt
       const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1`
       const res = await fetch(url, { headers: { Accept: "application/json" } })
       const data: NominatimResult[] = await res.json()
-      if (!data.length) { setGeoError("Location not found"); return }
+      if (!data.length) { setGeoError("Ubicación no encontrada"); return }
       const { lat, lon } = data[0]
       const latN = parseFloat(lat), lonN = parseFloat(lon)
       onChange({ ...latest.current.draft, lat: latN, lon: lonN })
       map.current?.flyTo({ center: [lonN, latN], zoom: 10, speed: 1.8 })
     } catch {
-      setGeoError("Search failed")
+      setGeoError("Error en la búsqueda")
     } finally {
       setSearching(false)
     }

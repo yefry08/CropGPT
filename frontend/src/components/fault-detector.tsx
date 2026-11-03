@@ -19,8 +19,8 @@ const SEVERITY_STYLE: Record<FaultEntry["severity"], string> = {
   crítica:  "bg-red-500/15 text-red-400 border-red-500/30",
 }
 
-function FaultCard({ fault }: { fault: FaultEntry }) {
-  const [open, setOpen] = useState(false)
+function FaultCard({ fault, defaultOpen = false }: { fault: FaultEntry; defaultOpen?: boolean }) {
+  const [open, setOpen] = useState(defaultOpen)
   const cat = CATEGORY_META[fault.category]
 
   return (
@@ -141,8 +141,8 @@ function FaultCard({ fault }: { fault: FaultEntry }) {
 export function FaultDetector() {
   const [query, setQuery] = useState("")
   const [activeCategory, setActiveCategory] = useState<FaultCategory | null>(null)
-  const [results, setResults] = useState<FaultEntry[]>([])
-  const [searched, setSearched] = useState(false)
+  const [results, setResults] = useState<FaultEntry[]>(() => FAULT_DATABASE.slice(0, 3))
+  const [searched, setSearched] = useState(true)
 
   function detect() {
     if (!query.trim() && activeCategory === null) {
@@ -159,17 +159,22 @@ export function FaultDetector() {
 
   return (
     <section id="fault-detector" className="mx-auto max-w-7xl scroll-mt-16 px-5 py-12">
-      <div className="border-t border-border pt-10">
-        <p className="eyebrow">
-          <Zap className="inline h-3.5 w-3.5 mr-1 -mt-0.5" />
-          Herramienta de diagnóstico
-        </p>
-        <h2 className="mt-2 text-2xl font-semibold tracking-tight">
-          Detector de Fallas y Plan de Contingencia
-        </h2>
-        <p className="mt-2 max-w-2xl text-[14px] leading-relaxed text-muted-foreground">
-          Describe el problema de cualquier estructura, máquina o sistema de tu finca. El sistema identifica la falla más probable, sus causas y genera un plan de corrección paso a paso.
-        </p>
+      <div className="border-t border-orange-500/30 pt-10">
+        {/* Visual banner */}
+        <div className="mb-6 flex items-start gap-4 rounded-2xl border border-orange-500/25 bg-gradient-to-r from-orange-500/8 to-transparent p-5">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-500/15">
+            <Zap className="h-5 w-5 text-orange-400" />
+          </div>
+          <div>
+            <p className="text-[11px] font-mono uppercase tracking-widest text-orange-400/80">Sistema de diagnóstico agrícola</p>
+            <h2 className="mt-0.5 text-2xl font-semibold tracking-tight">
+              Detector de Fallas y Plan de Contingencia
+            </h2>
+            <p className="mt-1.5 max-w-2xl text-[14px] leading-relaxed text-muted-foreground">
+              Describe el problema de cualquier estructura, máquina o sistema de tu finca. El sistema identifica la falla, sus causas y genera un plan de corrección <strong className="text-foreground">paso a paso</strong>.
+            </p>
+          </div>
+        </div>
 
         <Card className="mt-6 p-5 space-y-4">
           {/* Category selector */}
@@ -236,8 +241,8 @@ export function FaultDetector() {
                 <p className="text-[12px] text-muted-foreground">
                   {results.length} falla{results.length > 1 ? "s" : ""} encontrada{results.length > 1 ? "s" : ""} — haz clic para ver el plan de contingencia completo
                 </p>
-                {results.map((f) => (
-                  <FaultCard key={f.id} fault={f} />
+                {results.map((f, i) => (
+                  <FaultCard key={f.id} fault={f} defaultOpen={i === 0} />
                 ))}
               </>
             )}

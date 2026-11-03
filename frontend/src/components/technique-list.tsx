@@ -16,10 +16,10 @@ function Evidence({ t }: { t: Technique }) {
       <div className="flex flex-wrap items-center gap-2">
         {t.evidence_url ? (
           <a href={t.evidence_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-cyan hover:underline">
-            {t.evidence_doi ? `doi:${t.evidence_doi}` : "source"} <ExternalLink className="h-3 w-3" />
+            {t.evidence_doi ? `doi:${t.evidence_doi}` : "fuente"} <ExternalLink className="h-3 w-3" />
           </a>
         ) : (
-          <span className="italic text-muted-foreground">evidence link: {NA}</span>
+          <span className="italic text-muted-foreground">fuente: {NA}</span>
         )}
         <Badge variant={ev.tone}>{ev.text}</Badge>
       </div>
@@ -28,7 +28,7 @@ function Evidence({ t }: { t: Technique }) {
 }
 
 function Checks({ t }: { t: Technique }) {
-  if (!t.constraint_checks.length) return <p className="text-[11px] italic text-muted-foreground">No constraints declared.</p>
+  if (!t.constraint_checks.length) return <p className="text-[11px] italic text-muted-foreground">Sin restricciones declaradas.</p>
   return (
     <ul className="space-y-1 text-[11px]">
       {t.constraint_checks.map((c) => (
@@ -58,7 +58,7 @@ function RankedCard({ t, rank }: { t: Technique; rank: number }) {
           <div className="mt-1 h-1 w-full rounded-full bg-secondary">
             <div className="h-full rounded-full bg-primary" style={{ width: `${score * 100}%` }} />
           </div>
-          <div className="mt-1 text-[9px] uppercase tracking-wider text-muted-foreground">transfer</div>
+          <div className="mt-1 text-[9px] uppercase tracking-wider text-muted-foreground">transf.</div>
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-1.5">
@@ -71,11 +71,11 @@ function RankedCard({ t, rank }: { t: Technique; rank: number }) {
           </div>
           <h4 className="mt-1.5 text-[15px] font-semibold leading-snug">{t.technique}</h4>
           <p className="mt-1 text-[12px] text-muted-foreground">
-            similarity {t.analog_similarity?.toFixed(3) ?? NA} × constraints met {Math.round(t.constraint_satisfaction * 100)}%
-            {t.unverified_constraints.length ? ` · ${t.unverified_constraints.length} not verifiable` : ""} · crops: {t.crops.join(", ")}
+            similitud {t.analog_similarity?.toFixed(3) ?? NA} × restricciones cumplidas {Math.round(t.constraint_satisfaction * 100)}%
+            {t.unverified_constraints.length ? ` · ${t.unverified_constraints.length} no verificables` : ""} · cultivos: {t.crops.join(", ")}
           </p>
           <p className="mt-2 text-[13px] leading-relaxed text-secondary-foreground">
-            <span className="text-muted-foreground">Documented effect: </span>
+            <span className="text-muted-foreground">Efecto documentado: </span>
             {t.documented_effect}
           </p>
           <button
@@ -85,19 +85,19 @@ function RankedCard({ t, rank }: { t: Technique; rank: number }) {
             aria-expanded={open}
           >
             <ChevronDown className={cn("h-3.5 w-3.5 transition-transform", open && "rotate-180")} />
-            Evidence, constraints and adaptation notes
+            Evidencia, restricciones y notas de adaptación
           </button>
           {open ? (
             <div className="mt-3 grid gap-4 border-t border-border pt-3 md:grid-cols-2">
               <div className="space-y-3">
                 <Evidence t={t} />
                 <div>
-                  <div className="eyebrow mb-1">Adaptation notes</div>
+                  <div className="eyebrow mb-1">Notas de adaptación</div>
                   <p className="text-[12px] leading-relaxed text-secondary-foreground">{t.adaptation_notes}</p>
                 </div>
               </div>
               <div>
-                <div className="eyebrow mb-1">Constraint check against your parcel</div>
+                <div className="eyebrow mb-1">Verificación de restricciones</div>
                 <Checks t={t} />
                 <p className="mt-2 text-[11px] leading-snug text-muted-foreground">{t.requires_basis}</p>
               </div>
@@ -120,15 +120,15 @@ export function TechniqueList({ ranked, blocked }: { ranked: Technique[]; blocke
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Transferable techniques</CardTitle>
+          <CardTitle>Técnicas transferibles</CardTitle>
           <CardDescription>
-            Transferability = similarity of the source region's best analog cell (percentile ÷ 100) × share of the
-            technique's constraints that your parcel verifiably meets. Constraints that cannot be checked lower the score;
-            they are never assumed met.
+            Transferibilidad = similitud de la celda análoga de la región (percentil ÷ 100) × porcentaje de restricciones
+            de la técnica que tu parcela cumple de forma verificable. Las restricciones no verificables reducen el puntaje;
+            nunca se asumen cumplidas.
           </CardDescription>
           <div className="flex flex-wrap gap-1.5 pt-2">
             <Button size="sm" variant={cat === null ? "secondary" : "ghost"} onClick={() => setCat(null)}>
-              All ({ranked.length})
+              Todas ({ranked.length})
             </Button>
             {cats.map((c) => (
               <Button key={c} size="sm" variant={cat === c ? "secondary" : "ghost"} onClick={() => setCat(c)}>
@@ -141,10 +141,10 @@ export function TechniqueList({ ranked, blocked }: { ranked: Technique[]; blocke
           {shown.slice(0, limit).map((t) => (
             <RankedCard key={t.id} t={t} rank={ranked.indexOf(t) + 1} />
           ))}
-          {shown.length === 0 ? <p className="text-sm italic text-muted-foreground">No transferable technique in this category.</p> : null}
+          {shown.length === 0 ? <p className="text-sm italic text-muted-foreground">No hay técnicas transferibles en esta categoría.</p> : null}
           {shown.length > limit ? (
             <Button variant="outline" className="w-full" onClick={() => setLimit((l) => l + 15)}>
-              Show more ({shown.length - limit} remaining)
+              Ver más ({shown.length - limit} restantes)
             </Button>
           ) : null}
         </CardContent>
@@ -154,11 +154,11 @@ export function TechniqueList({ ranked, blocked }: { ranked: Technique[]; blocke
         <CardHeader>
           <div className="flex items-center gap-2">
             <Ban className="h-4 w-4 text-danger" />
-            <CardTitle>Blocked techniques ({shownBlocked.length})</CardTitle>
+            <CardTitle>Técnicas bloqueadas ({shownBlocked.length})</CardTitle>
           </div>
           <CardDescription>
-            These do not transfer: your parcel violates at least one of the technique's requirements. They are listed with
-            the reason instead of being dropped.
+            Estas no se transfieren: tu parcela viola al menos uno de los requisitos de la técnica. Se muestran con la razón
+            en lugar de eliminarse.
           </CardDescription>
         </CardHeader>
         <CardContent>
