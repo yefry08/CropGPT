@@ -1,0 +1,14 @@
+# Blueprint de Render. Si el repositorio contiene solo este juego en la raíz, elimina `rootDir`.
+services:
+  - type: web
+    name: tension-global
+    runtime: docker
+    rootDir: tension-global
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: starter        # el plan gratuito se duerme y pierde las salas en memoria
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
