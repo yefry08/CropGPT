@@ -1,0 +1,574 @@
+{
+ "title": "La IA encontró fallos ocultos en PHP y Europa apagó webs",
+ "lang": "es",
+ "style": "papercut",
+ "profile_id": "",
+ "gap": 0.45,
+ "tail": 2.8,
+ "tempo": 1.08,
+ "disclosure": "",
+ "post_text": "La IA encontró dos fallos escondidos más de 10 años en PHP, el lenguaje de ~70 % de las webs. Países Bajos, Finlandia, Francia y Dinamarca apagaron servicios por precaución. Ojo: lo de 'millones de intentos de hackeo' no está verificado; los millones son webs vulnerables. Hay ataques reales, pero Mandiant no ve, por ahora, explotación masiva. ¿Tu web ya está actualizada? #Ciberseguridad #IA #PHP #Hackeo #WordPress",
+ "sources": [
+  {
+   "title": "RTÉ: EU cybersecurity, PHP flaws",
+   "url": "https://www.rte.ie/news/world/2026/1021/1596231-eu-cybersecurity/"
+  },
+  {
+   "title": "The Globe and Mail: government websites and PHP vulnerabilities",
+   "url": "https://www.theglobeandmail.com/world/article-government-websites-php-programming-language-vulnerabilities/"
+  },
+  {
+   "title": "KSL: cyber agency warns websites may go dark",
+   "url": "https://www.ksl.com/article/51639011/cyber-agency-warns-websites-may-go-dark-as-php-prepares-critical-fix"
+  },
+  {
+   "title": "Cybersecurity Dive: CISA and researchers on PHP exploitation",
+   "url": "https://www.cybersecuritydive.com/news/cisa-security-researchers-exploitation-php-flaws/872886/"
+  },
+  {
+   "title": "Implicator: Amazon logged an exploit attempt four days before disclosure",
+   "url": "https://www.implicator.ai/amazon-logged-a-php2shell-exploit-attempt-four-days-before-disclosure/"
+  },
+  {
+   "title": "Cybersecurity Dive: PHP exploitation slower than expected",
+   "url": "https://www.cybersecuritydive.com/news/php-exploitation-slower-than-expected/833855/"
+  }
+ ],
+ "facts": [
+  {
+   "claim": "La IA sacó a la luz fallos de seguridad ocultos durante años en PHP",
+   "finding": "Confirmado: el 21 de octubre de 2026 PHP publicó parches para dos fallos críticos que, según Wiz, estuvieron ocultos más de una década. Wiz los halló con su agente Wiz Atlas y modelos de Google y OpenAI."
+  },
+  {
+   "claim": "Páginas gubernamentales de toda Europa fuera de servicio",
+   "finding": "Parcialmente: varios países, no toda Europa, y como precaución. Países Bajos (Overheid.nl, la propia web del NCSC, puerto de Róterdam), Finlandia (Valtori), Francia (Ministerio del Interior) y Dinamarca (Kombit)."
+  },
+  {
+   "claim": "Se han registrado millones de intentos de hackeo",
+   "finding": "No verificado. No encontré ninguna fuente con esa cifra. Los 'millones' son webs expuestas (VirusTotal estima más de 5,1 millones con versiones afectadas). Hay explotación real: Amazon vio un intento el 17 de octubre, honeypots capturaron shells el 24 y CISA lo añadió a su catálogo KEV; Mandiant no ve, por ahora, explotación masiva."
+  },
+  {
+   "claim": "(Contexto) PHP es muy usado",
+   "finding": "Entre el 70 y el 75 % de las webs con lenguaje identificable, incluido WordPress, Drupal, Joomla y Magento."
+  }
+ ],
+ "credits": [
+  "Voz sintética (Piper, de código abierto) · Animación hecha con código",
+  "Ilustración, sin imágenes reales · Fuentes en la descripción"
+ ],
+ "sections": [
+  {
+   "id": "p1",
+   "chapter": "El apagón",
+   "text": "El 21 de octubre, webs de gobiernos europeos se apagaron a propósito. La razón: dos fallos que llevaban más de diez años escondidos en PHP.",
+   "tts": "El veintiuno de octubre, webs de gobiernos europeos se apagaron a propósito. La razón: dos fallos que llevaban más de diez años escondidos en pe, ache, pe.",
+   "seed": 17,
+   "background": "navy",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "21 OCT",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "laptop",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "stamp",
+       "text": "fuera de servicio",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "2 FALLOS",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "lens",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "tiles",
+       "text": "+10 AÑOS",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "p2",
+   "chapter": "Qué es PHP",
+   "text": "PHP es el lenguaje con el que funciona cerca del setenta por ciento de las webs del mundo, incluido WordPress. Los fallos permitían tomar el control de un servidor a distancia.",
+   "tts": "Pe, ache, pe es el lenguaje con el que funciona cerca del setenta por ciento de las webs del mundo, incluido Uórdpres. Los fallos permitían tomar el control de un servidor a distancia.",
+   "seed": 17,
+   "background": "kraft",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "PHP",
+       "prop": "none",
+       "x": 0,
+       "y": 290,
+       "style": "black",
+       "size": 130
+      },
+      {
+       "kind": "tiles",
+       "text": "~70%",
+       "prop": "none",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 130
+      },
+      {
+       "kind": "serif",
+       "text": "de las webs del mundo",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 70
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "CONTROL REMOTO",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "key",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "stamp",
+       "text": "toma del servidor",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "p3",
+   "chapter": "La IA",
+   "text": "Los encontró la empresa Wiz con su propio agente de inteligencia artificial y modelos de Google y OpenAI. Según Wiz, sin esa ayuda, esa búsqueda habría sido difícil y casi imposible de escalar.",
+   "tts": "Los encontró la empresa Uiz con su propio agente de inteligencia artificial y modelos de Gúgol y Open Ei Ai. Según Uiz, sin esa ayuda, esa búsqueda habría sido difícil y casi imposible de escalar.",
+   "seed": 17,
+   "background": "rays_blue",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "WIZ",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "robot",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "con modelos de Google y OpenAI",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 66
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "stamp",
+       "text": "sin IA: casi imposible",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "chip",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "p4",
+   "chapter": "Europa",
+   "text": "El parche salió el mismo día, pero aplicarlo lleva tiempo. Por precaución, Países Bajos desconectó Overheid punto nl y la web de su propia agencia de ciberseguridad. Finlandia, Francia y Dinamarca también apagaron servicios.",
+   "tts": "El parche salió el mismo día, pero aplicarlo lleva tiempo. Por precaución, Países Bajos desconectó Óverjeid punto ene ele y la web de su propia agencia de ciberseguridad. Finlandia, Francia y Dinamarca también apagaron servicios.",
+   "seed": 17,
+   "background": "teal",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "PARCHE",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "cog",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "el mismo día",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 76
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "PAÍSES BAJOS",
+       "prop": "none",
+       "x": 0,
+       "y": 280,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "serif",
+       "text": "Overheid.nl",
+       "prop": "none",
+       "x": 0,
+       "y": 620,
+       "style": "white",
+       "size": 80
+      },
+      {
+       "kind": "serif",
+       "text": "y su agencia de ciberseguridad",
+       "prop": "none",
+       "x": 0,
+       "y": 760,
+       "style": "white",
+       "size": 60
+      },
+      {
+       "kind": "tape",
+       "text": "FINLANDIA · FRANCIA",
+       "prop": "none",
+       "x": 0,
+       "y": 1030,
+       "style": "white",
+       "size": 80
+      },
+      {
+       "kind": "tape",
+       "text": "DINAMARCA",
+       "prop": "none",
+       "x": 0,
+       "y": 1180,
+       "style": "white",
+       "size": 80
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "p5",
+   "chapter": "Los ataques",
+   "text": "Y los ataques llegaron. Amazon registró un intento cuatro días antes del aviso. Trampas para hackers capturaron accesos reales, y Estados Unidos confirmó que se están explotando.",
+   "tts": "Y los ataques llegaron. Amazon registró un intento cuatro días antes del aviso. Trampas para hackers capturaron accesos reales, y Estados Unidos confirmó que se están explotando.",
+   "seed": 17,
+   "background": "navy",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "ATAQUES",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "eye",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "tiles",
+       "text": "-4 DÍAS",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 96
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "TRAMPAS",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "cage",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "stamp",
+       "text": "explotación confirmada",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "p6",
+   "chapter": "Lo exagerado",
+   "text": "Ojo con lo de millones de intentos de hackeo: no encontré esa cifra. Los millones son webs con versiones vulnerables, más de cinco millones según VirusTotal. Y Mandiant no ve, por ahora, explotación masiva.",
+   "tts": "Ojo con lo de millones de intentos de hackeo: no encontré esa cifra. Los millones son webs con versiones vulnerables, más de cinco millones según Virus Tótal. Y Mandiant no ve, por ahora, explotación masiva.",
+   "seed": 17,
+   "background": "cream",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "stamp",
+       "text": "¿millones de ataques?",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "lens",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "tape",
+       "text": "NO VERIFICADO",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "5,1 M",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 120
+      },
+      {
+       "kind": "serif",
+       "text": "webs con versiones vulnerables",
+       "prop": "none",
+       "x": 0,
+       "y": 700,
+       "style": "black",
+       "size": 70
+      },
+      {
+       "kind": "tape",
+       "text": "NO ATAQUES",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "p7",
+   "chapter": "Cierre",
+   "text": "La inteligencia artificial encuentra fallos más rápido que nunca. La pregunta es quién llega primero: el que parchea o el que ataca. ¿Tu web ya está actualizada?",
+   "tts": "La inteligencia artificial encuentra fallos más rápido que nunca. La pregunta es quién llega primero: el que parchea o el que ataca. ¿Tu web ya está actualizada?",
+   "seed": 17,
+   "background": "rays_red",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "¿QUIÉN LLEGA PRIMERO?",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "shield",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "el que parchea o el que ataca",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 70
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "stamp",
+       "text": "actualiza",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "laptop",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "tape",
+       "text": "¿TU WEB?",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
