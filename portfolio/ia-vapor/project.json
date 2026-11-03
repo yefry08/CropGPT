@@ -1,0 +1,494 @@
+{
+ "title": "Hackers pusieron agentes de IA a atacar 200 organizaciones",
+ "lang": "es",
+ "style": "papercut",
+ "profile_id": "",
+ "gap": 0.45,
+ "tail": 2.8,
+ "tempo": 1.08,
+ "disclosure": "",
+ "post_text": "Según CrowdStrike, un grupo vinculado a China (Vapor Panda) usó agentes de IA con DeepSeek para atacar a más de 200 organizaciones en 11 días, entre ellas ministerios de Exteriores de Latinoamérica. No lo hizo sola: un operador humano daba las órdenes; la IA multiplicó la velocidad. En un caso entraron con claves de 2022 que nadie cambió. ¿Cada cuánto cambian las claves en tu empresa? #Ciberseguridad #IA #Hackeo #DeepSeek #AgentesIA",
+ "sources": [
+  {
+   "title": "CyberScoop",
+   "url": "https://cyberscoop.com/china-vapor-panda-agentic-ai-artex-campaign-crowdstrike/"
+  },
+  {
+   "title": "Brandefense, resumen técnico del informe de CrowdStrike",
+   "url": "https://brandefense.io/security-news/vapor-panda-artex-ai-espionage-campaign/"
+  },
+  {
+   "title": "Security Boulevard",
+   "url": "https://securityboulevard.com/2026/10/chinese-hackers-use-deepeesk-ai/"
+  }
+ ],
+ "facts": [
+  {
+   "claim": "Una IA se puso a hackear sola",
+   "finding": "No del todo: según CrowdStrike, un operador humano escribía instrucciones en chino y decidía en los momentos clave; los agentes hacían el volumen de trabajo."
+  },
+  {
+   "claim": "Más de 200 organizaciones en 14 países en 11 días",
+   "finding": "Confirmado como objetivos, desde el 17 de octubre de 2026. Objetivos no es lo mismo que víctimas."
+  },
+  {
+   "claim": "En 9 casos lograron entrar",
+   "finding": "CrowdStrike confirmó actividad posterior a la intrusión en 9 organizaciones y ataques de contraseñas en al menos 12 más. CyberScoop citó un ~70 % de objetivos comprometidos o con indicios; las cifras no coinciden."
+  },
+  {
+   "claim": "Secretarías de Relaciones Exteriores de Latinoamérica",
+   "finding": "Confirmado: dos ministerios de Exteriores latinoamericanos sufrieron intrusiones extensas y un tercero probablemente."
+  },
+  {
+   "claim": "La IA se repartía el trabajo",
+   "finding": "ARTEX, un marco de código abierto, usa agentes planificadores y ejecutores; funcionaba sobre todo con DeepSeek y otro modelo comercial no identificado."
+  },
+  {
+   "claim": "Entraron con una llave de acceso de hace 4 años",
+   "finding": "En una entidad del gobierno griego usaron claves de autenticación de una exportación de 2022 que probablemente nunca se rotaron."
+  }
+ ],
+ "credits": [
+  "Voz sintética (Piper, de código abierto) · Animación hecha con código",
+  "Ilustración, sin imágenes reales · Fuentes en la descripción"
+ ],
+ "sections": [
+  {
+   "id": "v1",
+   "chapter": "El ataque",
+   "text": "Un grupo de hackers vinculado a China puso a agentes de inteligencia artificial a atacar a más de 200 organizaciones en 11 días. Pero no lo hicieron solos.",
+   "tts": "Un grupo de hackers vinculado a China puso a agentes de inteligencia artificial a atacar a más de doscientas organizaciones en once días. Pero no lo hicieron solos.",
+   "seed": 7,
+   "background": "navy",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "AGENTES DE IA",
+       "prop": "none",
+       "x": 0,
+       "y": 280,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "robot",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "tiles",
+       "text": "200+",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 110
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "11 DÍAS",
+       "prop": "none",
+       "x": 0,
+       "y": 330,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "laptop",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "stamp",
+       "text": "pero no solos",
+       "prop": "none",
+       "x": 0,
+       "y": 1100,
+       "style": "red",
+       "size": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v2",
+   "chapter": "Cómo funcionaba",
+   "text": "Según CrowdStrike, el grupo, al que llama Vapor Panda, usó ARTEX, un programa que coordina varios agentes y funcionaba sobre todo con DeepSeek. Unos agentes planeaban la ruta de ataque; otros robaban contraseñas y se movían dentro de las redes.",
+   "tts": "Según Kráud Stráik, el grupo, al que llama Véipor Panda, usó Ártex, un programa que coordina varios agentes y funcionaba sobre todo con Dip Sik. Unos agentes planeaban la ruta de ataque; otros robaban contraseñas y se movían dentro de las redes.",
+   "seed": 7,
+   "background": "kraft",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "VAPOR PANDA",
+       "prop": "none",
+       "x": 0,
+       "y": 280,
+       "style": "red",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "así lo llama CrowdStrike",
+       "prop": "none",
+       "x": 0,
+       "y": 400,
+       "style": "black",
+       "size": 44
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "folder",
+       "x": 0,
+       "y": 790,
+       "style": "black",
+       "size": 90
+      },
+      {
+       "kind": "stamp",
+       "text": "ARTEX + DeepSeek",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "white",
+       "size": 100
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "PLANIFICADORES",
+       "prop": "none",
+       "x": 0,
+       "y": 280,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "cog",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 90
+      },
+      {
+       "kind": "stamp",
+       "text": "eligen la ruta",
+       "prop": "none",
+       "x": 0,
+       "y": 1080,
+       "style": "yellow",
+       "size": 100
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "EJECUTORES",
+       "prop": "none",
+       "x": 0,
+       "y": 280,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "key",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "stamp",
+       "text": "roban contraseñas",
+       "prop": "none",
+       "x": 0,
+       "y": 1080,
+       "style": "red",
+       "size": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v3",
+   "chapter": "El humano",
+   "text": "Un operador humano daba las órdenes en chino y decidía en los momentos clave. La diferencia fue la velocidad: de unos 40 comandos por hora a más de 1.500.",
+   "tts": "Un operador humano daba las órdenes en chino y decidía en los momentos clave. La diferencia fue la velocidad: de unos cuarenta comandos por hora a más de mil quinientos.",
+   "seed": 7,
+   "background": "navy",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "UN HUMANO AL MANDO",
+       "prop": "none",
+       "x": 0,
+       "y": 280,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "person",
+       "x": 0,
+       "y": 780,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "stamp",
+       "text": "decide en los momentos clave",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "white",
+       "size": 96
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "COMANDOS POR HORA",
+       "prop": "none",
+       "x": 0,
+       "y": 280,
+       "style": "black",
+       "size": 90
+      },
+      {
+       "kind": "tiles",
+       "text": "40",
+       "prop": "none",
+       "x": 0,
+       "y": 560,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "tiles",
+       "text": "1.500",
+       "prop": "none",
+       "x": 0,
+       "y": 900,
+       "style": "black",
+       "size": 130
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "chart_up",
+       "x": 0,
+       "y": 1250,
+       "style": "black",
+       "size": 55
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v4",
+   "chapter": "Los objetivos",
+   "text": "Entre los objetivos había ministerios de Exteriores, dos de ellos en Latinoamérica. CrowdStrike confirmó actividad dentro de 9 organizaciones; otras cifras publicadas son mayores y no coinciden.",
+   "tts": "Entre los objetivos había ministerios de Exteriores, dos de ellos en Latinoamérica. Kráud Stráik confirmó actividad dentro de nueve organizaciones; otras cifras publicadas son mayores y no coinciden.",
+   "seed": 7,
+   "background": "teal",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "MINISTERIOS DE EXTERIORES",
+       "prop": "none",
+       "x": 0,
+       "y": 280,
+       "style": "black",
+       "size": 84
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "passport",
+       "x": 0,
+       "y": 780,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "stamp",
+       "text": "dos en Latinoamérica",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "red",
+       "size": 100
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "CONFIRMADOS:",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "tiles",
+       "text": "9",
+       "prop": "none",
+       "x": 0,
+       "y": 560,
+       "style": "black",
+       "size": 150
+      },
+      {
+       "kind": "serif",
+       "text": "otras cifras no coinciden",
+       "prop": "none",
+       "x": 0,
+       "y": 800,
+       "style": "black",
+       "size": 44
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "lens",
+       "x": 0,
+       "y": 1080,
+       "style": "black",
+       "size": 70
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v5",
+   "chapter": "La llave vieja",
+   "text": "En un caso entraron con claves de una exportación de 2022 que nadie había cambiado.",
+   "tts": "En un caso entraron con claves de una exportación de dos mil veintidós que nadie había cambiado.",
+   "seed": 7,
+   "background": "kraft",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "2022",
+       "prop": "none",
+       "x": 0,
+       "y": 330,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "key",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 120
+      },
+      {
+       "kind": "stamp",
+       "text": "nadie la cambió",
+       "prop": "none",
+       "x": 0,
+       "y": 1100,
+       "style": "red",
+       "size": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v6",
+   "chapter": "La lección",
+   "text": "La lección es vieja: cambia las claves. ¿Cada cuánto lo hacen en tu empresa?",
+   "tts": "",
+   "seed": 7,
+   "background": "navy",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "CAMBIA",
+       "prop": "none",
+       "x": 0,
+       "y": 520,
+       "style": "black",
+       "size": 130
+      },
+      {
+       "kind": "tape",
+       "text": "LAS CLAVES",
+       "prop": "none",
+       "x": 0,
+       "y": 670,
+       "style": "red",
+       "size": 130
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "key",
+       "x": 0,
+       "y": 960,
+       "style": "black",
+       "size": 80
+      },
+      {
+       "kind": "stamp",
+       "text": "¿cada cuánto?",
+       "prop": "none",
+       "x": 0,
+       "y": 1220,
+       "style": "white",
+       "size": 100
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
