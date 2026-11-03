@@ -59,6 +59,8 @@ export interface AirlockHeroProps {
     videoSrc?: string
     /** Still shown until the video has enough data to paint. Kills the black flash. */
     posterSrc?: string
+    /** Small brand line above the headline. */
+    eyebrow?: string
     /** Headline over the opening frames. Fades out as the scrub starts. */
     title?: string
     /** Word next to the bouncing arrow. Hidden once the reader moves. */
@@ -116,6 +118,7 @@ function clamp(v: number, min: number, max: number) {
 export default function AirlockHero({
     videoSrc = DEFAULT_VIDEO,
     posterSrc = DEFAULT_POSTER,
+    eyebrow,
     title = "THE AIRLOCK OPENS",
     scrollHint = "SCROLL",
     tagline = "Everything you know fits in one half of the frame.",
@@ -424,13 +427,26 @@ export default function AirlockHero({
 
             <div
                 ref={titleRef}
-                className="pointer-events-none absolute inset-0 flex items-center justify-center px-[6%] text-center"
+                className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 px-[6%] text-center"
             >
+                {eyebrow ? (
+                    <span
+                        className="inline-block rounded-full border border-white/20 bg-white/10 px-4 py-1.5 font-mono font-bold tracking-[0.25em] backdrop-blur-sm"
+                        style={{
+                            fontFamily: SANS,
+                            fontSize: "clamp(10px, 1.6vw, 14px)",
+                            color: palette.muted,
+                            letterSpacing: "0.22em",
+                        }}
+                    >
+                        {eyebrow}
+                    </span>
+                ) : null}
                 <h1
                     className="inline-block font-extrabold leading-none tracking-[-0.02em]"
                     style={{
                         fontFamily: SANS,
-                        fontSize: "clamp(30px, 7vw, 96px)",
+                        fontSize: "clamp(28px, 6.5vw, 88px)",
                         color: palette.text,
                         textShadow: "0 4px 30px rgba(0,0,0,0.55)",
                         willChange: "transform, filter, opacity",
@@ -493,12 +509,12 @@ export default function AirlockHero({
                 </svg>
             </div>
 
-            {/* Never trap anyone: a keyboard-reachable way straight to the page. */}
+            {/* Skip button: always visible on mobile, keyboard-only on desktop */}
             <button
                 type="button"
                 onClick={() => releaseRef.current()}
-                className="absolute left-1/2 top-4 z-10 -translate-x-1/2 rounded-full px-4 py-2 text-xs font-semibold opacity-0 transition-opacity focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                style={{ fontFamily: SANS, color: palette.text, background: "rgba(5,7,13,0.7)", letterSpacing: "0.08em" }}
+                className="absolute bottom-[clamp(20px,6vh,40px)] left-1/2 z-10 -translate-x-1/2 rounded-full border border-white/20 px-5 py-2.5 text-xs font-semibold backdrop-blur-sm transition-opacity md:bottom-auto md:top-4 md:opacity-0 md:focus-visible:opacity-100 md:focus-visible:outline md:focus-visible:outline-2 md:focus-visible:outline-offset-2"
+                style={{ fontFamily: SANS, color: palette.text, background: "rgba(5,7,13,0.55)", letterSpacing: "0.08em" }}
             >
                 {skipLabel}
             </button>

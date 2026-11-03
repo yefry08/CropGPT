@@ -106,7 +106,7 @@ function FaultCard({ fault, defaultOpen = false }: { fault: FaultEntry; defaultO
           </div>
 
           {/* Tools + time */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="rounded-lg border border-border bg-background/50 p-3">
               <p className="flex items-center gap-1.5 eyebrow mb-2">
                 <Wrench className="h-3 w-3" /> Herramientas
@@ -158,7 +158,7 @@ export function FaultDetector() {
   }
 
   return (
-    <section id="fault-detector" className="mx-auto max-w-7xl scroll-mt-16 px-5 py-12">
+    <section id="fault-detector" className="mx-auto max-w-7xl scroll-mt-16 px-4 py-8 md:px-5 md:py-12">
       <div className="border-t border-orange-500/30 pt-10">
         {/* Visual banner */}
         <div className="mb-6 flex items-start gap-4 rounded-2xl border border-orange-500/25 bg-gradient-to-r from-orange-500/8 to-transparent p-5">

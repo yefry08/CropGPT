@@ -150,7 +150,7 @@ function StepCard({ step, title, description, figure }: StepCardProps) {
 
 export function HowItWorksSection() {
   return (
-    <section className="mx-auto max-w-7xl px-5 pb-4 pt-10">
+    <section className="mx-auto max-w-7xl px-4 pb-4 pt-8 md:px-5 md:pt-10">
       <p className="eyebrow text-center">Cómo funciona</p>
       <h2 className="mt-2 text-center text-2xl font-semibold tracking-tight">
         Tres pasos del análisis análogo

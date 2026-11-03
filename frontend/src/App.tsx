@@ -113,24 +113,31 @@ export default function App() {
   return (
     <main className="min-h-screen w-full bg-background text-foreground">
       <AirlockHero
-        title="FIND YOUR FIELD'S TWIN"
-        tagline="En algún lugar del mundo, un campo igual al tuyo ya tiene su manual."
-        scrollHint="SCROLL"
-        skipLabel="Ir al análisis"
+        eyebrow="CROPGPT"
+        title="Tu aliado en la palma de tu mano"
+        tagline="Análogos globales · Diagnóstico de fallas · República Dominicana"
+        scrollHint="DESLIZA"
+        skipLabel="Ir al análisis →"
       />
 
       <header className="no-print sticky top-0 z-20 border-b border-border bg-background/85 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3">
-          <div className="flex items-center gap-2.5">
-            <Sprout className="h-5 w-5 text-primary" />
-            <span className="text-[15px] font-semibold tracking-tight">CropMatch</span>
-            <span className="text-[13px] text-muted-foreground">Analog Engine</span>
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3">
+          <div className="flex items-center gap-2">
+            <Sprout className="h-5 w-5 shrink-0 text-primary" />
+            <span className="text-[15px] font-semibold tracking-tight">CropGPT</span>
+            <span className="hidden text-[12px] text-muted-foreground sm:inline">· Analog Engine</span>
           </div>
+          {/* Desktop nav */}
           <nav className="hidden items-center gap-5 text-[13px] text-muted-foreground md:flex">
             <a href="#parcel" className="hover:text-foreground">Parcela</a>
             <a href="#results" className="hover:text-foreground">Análogos</a>
             <a href="#techniques" className="hover:text-foreground">Técnicas</a>
             <a href="#sources" className="hover:text-foreground">Fuentes</a>
+            <a href="#fault-detector" className="hover:text-foreground">Diagnóstico</a>
+          </nav>
+          {/* Mobile quick-links */}
+          <nav className="flex items-center gap-3 text-[11px] text-muted-foreground md:hidden">
+            <a href="#parcel" className="hover:text-foreground">Parcela</a>
             <a href="#fault-detector" className="hover:text-foreground">Diagnóstico</a>
           </nav>
           <Badge variant={meta?.mode === "live" ? "default" : "warn"} title="DEMO_MODE">
@@ -143,12 +150,12 @@ export default function App() {
 
       <DRMapSection onZoneSelect={onFlyTo} activeZone={activeZone} />
 
-      <section className="mx-auto max-w-7xl px-5 pb-6 pt-14">
+      <section className="mx-auto max-w-7xl px-4 pb-6 pt-10 md:px-5 md:pt-14">
         <p className="eyebrow">Matching analógico — no predicción de cosecha</p>
-        <h2 className="mt-3 max-w-3xl text-3xl font-semibold leading-tight tracking-tight md:text-[40px]">
-          Descubre qué lugares del mundo comparten el suelo, agua y clima de tu parcela — y qué técnicas agropecuarias probadas ahí son transferibles a la República Dominicana.
+        <h2 className="mt-3 max-w-3xl text-2xl font-semibold leading-tight tracking-tight md:text-[36px] lg:text-[40px]">
+          Descubre qué lugares del mundo comparten el suelo, agua y clima de tu parcela — y qué técnicas probadas son transferibles a la República Dominicana.
         </h2>
-        <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
+        <p className="mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground md:text-[15px]">
           CropMatch construye una huella biofísica de 24 dimensiones a partir de datos satelitales y edáficos, localiza sus análogos más cercanos en una cuadrícula global de referencia, y evalúa una biblioteca de técnicas agrícolas citadas contra las condiciones reales de la parcela. Las técnicas que no aplican se muestran con la razón — no se ocultan.
         </p>
         {meta ? (
@@ -175,13 +182,13 @@ export default function App() {
         ) : null}
       </section>
 
-      <section id="parcel" className="mx-auto max-w-7xl scroll-mt-16 px-5 py-8">
+      <section id="parcel" className="mx-auto max-w-7xl scroll-mt-16 px-4 py-6 md:px-5 md:py-8">
         {bootError ? (
           <Card className="border-danger/40 p-5 text-sm text-danger">
             No se pudo conectar con la API ({bootError}). Iníciala con <code className="num">make demo</code>.
           </Card>
         ) : (
-          <Card className="grid gap-0 overflow-hidden lg:grid-cols-[380px_1fr]">
+          <Card className="grid gap-0 overflow-hidden md:grid-cols-[320px_1fr] lg:grid-cols-[380px_1fr]">
             <div className="border-b border-border p-5 lg:border-b-0 lg:border-r">
               <QueryPanel
                 mode={meta?.mode ?? "offline"}
@@ -200,7 +207,7 @@ export default function App() {
                 onRun={run}
               />
             </div>
-            <div className="relative min-h-[460px] p-2">
+            <div className="relative min-h-[300px] p-2 md:min-h-[460px]">
               <ParcelMap
                 draft={draft}
                 onChange={onDraft}
@@ -231,7 +238,7 @@ export default function App() {
       </section>
 
       {result ? (
-        <div ref={resultsRef} id="results" className="mx-auto max-w-7xl scroll-mt-16 space-y-6 px-5 pb-16">
+        <div ref={resultsRef} id="results" className="mx-auto max-w-7xl scroll-mt-16 space-y-6 px-4 pb-12 md:px-5 md:pb-16">
           <div className="flex flex-wrap items-end justify-between gap-4 border-t border-border pt-8">
             <div>
               <p className="eyebrow">Resultado {result.id}</p>
