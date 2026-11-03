@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { FileDown, FileJson, LoaderCircle, Satellite, Sprout, TriangleAlert } from "lucide-react"
 
 import { AnalogPanel } from "@/components/analog-panel"
+import { FaultDetector } from "@/components/fault-detector"
+import { HowItWorksSection } from "@/components/how-it-works"
 import { ParcelMap, draftRing, type ParcelDraft } from "@/components/parcel-map"
 import { ProfilePanel } from "@/components/profile-panel"
 import { ProvenancePanel } from "@/components/provenance-panel"
@@ -125,12 +127,15 @@ export default function App() {
             <a href="#results" className="hover:text-foreground">Análogos</a>
             <a href="#techniques" className="hover:text-foreground">Técnicas</a>
             <a href="#sources" className="hover:text-foreground">Fuentes</a>
+            <a href="#fault-detector" className="hover:text-foreground">Diagnóstico</a>
           </nav>
           <Badge variant={meta?.mode === "live" ? "default" : "warn"} title="DEMO_MODE">
             <Satellite className="h-3 w-3" /> {meta ? (meta.static ? "static demo" : `${meta.mode} mode`) : "connecting…"}
           </Badge>
         </div>
       </header>
+
+      <HowItWorksSection />
 
       <section className="mx-auto max-w-7xl px-5 pb-6 pt-14">
         <p className="eyebrow">Matching analógico — no predicción de cosecha</p>
@@ -280,6 +285,8 @@ export default function App() {
           </ul>
         </div>
       ) : null}
+
+      <FaultDetector />
 
       <footer className="border-t border-border">
         <div className="mx-auto max-w-7xl px-5 py-6 text-[11px] leading-relaxed text-muted-foreground">
