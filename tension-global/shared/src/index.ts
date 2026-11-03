@@ -13,3 +13,4 @@ export * from './sim';
 export * from './protocol';
 export * from './room';
 export * from './war';
+export * from './fronts';

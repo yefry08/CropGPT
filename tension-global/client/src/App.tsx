@@ -3,6 +3,7 @@ import { Home, type Start } from './components/Home';
 import { GameScreen } from './components/GameScreen';
 import { Lobby } from './components/Lobby';
 import { WarScreen } from './components/WarScreen';
+import { FrontsScreen } from './components/FrontsScreen';
 import { useLang } from './i18n';
 import { clearSave, loadSave, useLocalGame, type SavedGame } from './hooks/useLocalGame';
 import { clearToken, getToken, useOnline, type Intent } from './hooks/useOnline';
@@ -92,6 +93,7 @@ export function App() {
   if (!screen) return <Home onStart={setScreen} initialCode={/^[A-Z0-9]{6}$/.test(urlCode) ? urlCode : undefined} />;
   if (screen.t === 'solo') return <SoloGame start={screen} onExit={() => setScreen(null)} />;
   if (screen.t === 'war') return <WarScreen level={screen.level} onExit={() => setScreen(null)} />;
+  if (screen.t === 'fronts') return <FrontsScreen level={screen.level} onExit={() => setScreen(null)} />;
   const intent: Intent = screen.t === 'create' ? screen : { t: 'join', code: screen.code, name: screen.name, spectator: screen.spectator };
   return <OnlineGame key={screen.t === 'join' ? screen.code : 'new'} intent={intent} onExit={() => setScreen(null)} />;
 }

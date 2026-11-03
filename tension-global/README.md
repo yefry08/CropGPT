@@ -13,6 +13,8 @@ reglas concretas y arte son originales. Todo el juego está en español.
 
 - **Guerra de cartas**: un modo rápido aparte, inspirado en el clásico juego de cartas «Guerra» pero con decisiones,
   con cartas de escenarios hipotéticos de conflictos futuros (2027–2040). Ver «Guerra de cartas».
+- **Dos Frentes**: simulación de crisis inspirada en los wargames sobre una guerra simultánea de Rusia contra la OTAN y
+  de China contra Taiwán. Ver «Dos Frentes».
 - **Español e inglés**: selector ES/EN en el menú y en la partida (se recuerda en el navegador; por defecto, el idioma del
   sistema). En las partidas online cada jugador lee el registro en su idioma.
 
@@ -257,6 +259,28 @@ Modo independiente del mapa (`shared/src/war.ts`, con tests en `shared/test/war.
 * **Empate = guerra**: cada bando pone 3 cartas boca abajo y juega otra de su mano; el ganador se lleva todo el bote.
 * Pierde quien se queda sin cartas; tras 40 rondas gana quien tenga más.
 * IA Fácil (al azar) o Normal (estima sus posibilidades contra las cartas que aún no ha visto; nunca mira tu mano).
+
+## Dos Frentes
+
+Simulación de crisis para un jugador (`shared/src/fronts.ts`, con tests en `shared/test/fronts.test.ts`; interfaz en
+`client/src/components/FrontsScreen.tsx`). Es un escenario **hipotético** inspirado en los wargames sobre una guerra en dos
+frentes: Rusia ataca el flanco este de la OTAN mientras China bloquea Taiwán. Diriges a Occidente durante 20 semanas.
+
+* Cada semana tienes 3 puntos de acción (4 con el plan conjunto en fase 2). Al terminarla, la IA lanza ataques híbridos
+  (cables cortados, apagones, drones, desinformación, injerencia electoral, ofertas económicas, chantaje energético) y
+  avanza en los dos frentes.
+* **Decisiones de toda la alianza** (reforzar el flanco este, sanciones coordinadas): potentes pero lentas. Tardan entre 1
+  y 4 semanas según el plan conjunto y el número de miembros que dudan, y basta con que un miembro rompa filas para
+  vetarlas. Mientras debatís, la IA ataca la cohesión del miembro más débil.
+* **Formatos pequeños** (coalición de voluntarios con los miembros firmes, alianza regional del Pacífico): actúan al
+  momento, aunque con menos fuerza.
+* EE. UU. solo puede reforzar un frente a la vez. El **plan conjunto** acorta los debates, da más puntos y hace más
+  eficaces los formatos pequeños. La diplomacia recupera a los miembros que dudan.
+* Pierdes si un frente llega a 10 o si la unidad aliada cae a 0. Si aguantas 20 semanas ganas, y si además los dos frentes
+  están en 4 o menos, restableces la disuasión. El informe final resume los retrasos, los vetos, las coaliciones y los
+  ataques híbridos neutralizados.
+* Equilibrio (test con 200 partidas por caso): una estrategia razonable gana casi siempre en Normal y en torno a una de
+  cada cuatro en Difícil. Jugando al azar se pierde casi siempre.
 
 ## Idiomas
 

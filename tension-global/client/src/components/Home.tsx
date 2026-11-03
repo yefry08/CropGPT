@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { AILevel, Side, WarAILevel } from '@tg/shared';
+import type { AILevel, FLevel, Side, WarAILevel } from '@tg/shared';
 import { loadSave } from '../hooks/useLocalGame';
 import { P2P } from '../hooks/useOnline';
 import { useAuth } from '../hooks/useAuth';
@@ -13,13 +13,15 @@ export type Start =
   | { t: 'solo'; side: Side; level: AILevel; resume: boolean }
   | { t: 'create'; name: string; side: Side }
   | { t: 'join'; code: string; name: string; spectator: boolean }
-  | { t: 'war'; level: WarAILevel };
+  | { t: 'war'; level: WarAILevel }
+  | { t: 'fronts'; level: FLevel };
 
 export function Home({ onStart, initialCode }: { onStart: (s: Start) => void; initialCode?: string }) {
   const { tr } = useLang();
   const [side, setSide] = useState<Side>('W');
   const [level, setLevel] = useState<AILevel>('normal');
   const [warLevel, setWarLevel] = useState<WarAILevel>('normal');
+  const [frontsLevel, setFrontsLevel] = useState<FLevel>('normal');
   const [name, setName] = useState(() => {
     try {
       return localStorage.getItem('tg-name') ?? '';
@@ -117,6 +119,26 @@ export function Home({ onStart, initialCode }: { onStart: (s: Start) => void; in
           </div>
           <button className="primary big" onClick={() => onStart({ t: 'war', level: warLevel })}>
             {tr('Jugar a la guerra de cartas', 'Play Card War')}
+          </button>
+        </section>
+
+        <section className="panel fronts-panel">
+          <h2>{tr('Dos Frentes', 'Two Fronts')}</h2>
+          <p className="muted">
+            {tr(
+              'Simulación de crisis: Rusia ataca el flanco este de la OTAN mientras China bloquea Taiwán. Aguanta 20 semanas entre sabotajes, desinformación, vetos y debates que llegan tarde. Escenario hipotético.',
+              'Crisis simulation: Russia attacks NATO’s eastern flank while China blockades Taiwan. Hold out for 20 weeks through sabotage, disinformation, vetoes and debates that come too late. Hypothetical scenario.',
+            )}
+          </p>
+          <div className="seg" role="group" aria-label={tr('Dificultad', 'Difficulty')}>
+            {LEVELS.map(([k, l, d]) => (
+              <button key={k} className={frontsLevel === k ? 'on' : ''} onClick={() => setFrontsLevel(k)} title={d}>
+                {l}
+              </button>
+            ))}
+          </div>
+          <button className="primary big" onClick={() => onStart({ t: 'fronts', level: frontsLevel })}>
+            {tr('Entrar en la sala de crisis', 'Enter the crisis room')}
           </button>
         </section>
 
