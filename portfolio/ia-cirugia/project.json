@@ -1,0 +1,646 @@
+{
+ "title": "Una IA operó el cerebro de otra IA sin reentrenarla",
+ "lang": "es",
+ "style": "papercut",
+ "profile_id": "",
+ "gap": 0.45,
+ "tail": 2.8,
+ "tempo": 1.08,
+ "disclosure": "",
+ "post_text": "Investigadores del MIT usaron GPT-6 Astra para leer y editar directamente los pesos de otras redes, sin reentrenarlas. Identificó juegos solo mirando números, reparó un coche simulado cambiando el 3,5 % de sus pesos y sacó a Qwen de un bucle: del 8 % al 48 % de aciertos en matemáticas tocando el 0,02 % de los pesos. Ojo: no lo hizo más listo, le quitó el freno de mano, y aún no hay revisión por pares. ¿Quién revisa a la IA que edita? #InteligenciaArtificial #MIT #OpenAI #Qwen #IA",
+ "sources": [
+  {
+   "title": "VentureBeat: 'Like gene editing for neural networks'",
+   "url": "https://venturebeat.com/technology/like-gene-editing-for-neural-networks-mit-researchers-used-gpt-6-astra-to-edit-qwens-open-weights-directly-boosting-math-performance"
+  },
+  {
+   "title": "Digit: MIT researchers show LLMs can edit neural network weights without training",
+   "url": "https://www.digit.in/features/general/mit-researchers-show-llms-can-edit-neural-network-weights-without-training-heres-what-it-means.html"
+  },
+  {
+   "title": "Latent Space: LLMs can read & write neural network weights",
+   "url": "https://latent.space/p/ainews-llms-can-read-write-neural-network-weights-weight-space-programming-cuts-autoresearch-out-of/"
+  },
+  {
+   "title": "AI Front Page: GPT-6 Astra edits neural network weights",
+   "url": "https://aifront-page.com/mit-weight-space-programming-gpt-6-astra/"
+  }
+ ],
+ "facts": [
+  {
+   "claim": "Investigadores del MIT usaron GPT-6 Astra para mejorar otra IA sin reentrenarla",
+   "finding": "Confirmado: cuatro investigadores de MIT CSAIL (Takehi, Teoh, Zhang y Khattab) lo publicaron el 2-11-2026 en un blog, sin revisión por pares. Matiz: Astra pudo hacer hasta 50 pasadas de evaluación, así que no fue 'a ciegas'."
+  },
+  {
+   "claim": "El proceso se llama 'Chispas'",
+   "finding": "No encontrado: los autores lo llaman Weight-Space Programming (programación en el espacio de pesos)."
+  },
+  {
+   "claim": "La IA identificó qué tareas hacían modelos pequeños solo con sus pesos",
+   "finding": "Confirmado: identificó cuatro redes con la misma arquitectura como Breakout, Pong, Pac-Man y Freeway, sin herramientas ni lista de opciones. Falló al distinguir un modelo complaciente de uno correcto hasta que le dieron mediciones de atención."
+  },
+  {
+   "claim": "Reparó un coche atascado en una rampa modificando el 3,5 % de los pesos",
+   "finding": "Confirmado: era un controlador de conducción simulado; el parche cambió el 3,5 % de los pesos y alcanzó un 100 % de éxito."
+  },
+  {
+   "claim": "Fabricó redes desde cero que jugaban mejor que modelos entrenados",
+   "finding": "Parcial: en Breakout (MinAtar) sacó 517,4 frente a 25,3 de una red PPO con 500 millones de pasos; en Seaquest y Asterix quedó por detrás de esas redes, aunque superó a las de 100 millones de pasos."
+  },
+  {
+   "claim": "Eliminó un bucle infinito de Qwen y aumentó drásticamente su eficacia",
+   "finding": "Confirmado: Qwen3.5-0.8B pasó de 7,9 % a 48,1 % en MATH-500 (y de 13,8 % a 67,1 % en GSM8K) editando el 0,016 % de los pesos (131.072). La mejora viene de reducir la repetición, no de más conocimiento; en Gemma 3 270M, sin ese bucle, no mejoró."
+  },
+  {
+   "claim": "No es el fin del entrenamiento: quita el freno de mano",
+   "finding": "Confirmado por los propios autores: editar pesos puede quitar un obstáculo que ocultaba una capacidad, pero no añadir una que el modelo no tenga. Falta replicación independiente y comparación con métodos como ROME o MEMIT."
+  }
+ ],
+ "credits": [
+  "Voz sintética (Piper, de código abierto) · Animación hecha con código",
+  "Ilustración, sin imágenes reales · Fuentes en la descripción"
+ ],
+ "sections": [
+  {
+   "id": "m1",
+   "chapter": "La cirugía",
+   "text": "Una inteligencia artificial acaba de operar el cerebro de otra. Sin reentrenarla: cambiando directamente sus números internos.",
+   "tts": "Una inteligencia artificial acaba de operar el cerebro de otra. Sin reentrenarla: cambiando directamente sus números internos.",
+   "seed": 47,
+   "background": "navy",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "CIRUGÍA ENTRE IAS",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "robot",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "stamp",
+       "text": "sin reentrenar",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 96
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "0.31 -1.2 0.07",
+       "prop": "none",
+       "x": 0,
+       "y": 420,
+       "style": "black",
+       "size": 80
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "chip",
+       "x": 0,
+       "y": 800,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "sus números internos: los pesos",
+       "prop": "none",
+       "x": 0,
+       "y": 1150,
+       "style": "white",
+       "size": 66
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "m2",
+   "chapter": "Quién",
+   "text": "Lo publicaron cuatro investigadores del MIT el 2 de noviembre. Usaron GPT-6 Astra, de OpenAI, y lo llamaron programación en el espacio de pesos. Aún no ha pasado revisión por pares.",
+   "tts": "Lo publicaron cuatro investigadores del eme, i, te, el dos de noviembre. Usaron yi pi ti seis Astra, de Open Ei Ai, y lo llamaron programación en el espacio de pesos. Aún no ha pasado revisión por pares.",
+   "seed": 53,
+   "background": "kraft",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "MIT",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 130
+      },
+      {
+       "kind": "tiles",
+       "text": "2 NOV",
+       "prop": "none",
+       "x": 0,
+       "y": 700,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "serif",
+       "text": "con GPT-6 Astra, de OpenAI",
+       "prop": "none",
+       "x": 0,
+       "y": 900,
+       "style": "black",
+       "size": 68
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "PROGRAMAR LOS PESOS",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "doc",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "stamp",
+       "text": "sin revisión por pares",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "m3",
+   "chapter": "Leer",
+   "text": "Primero, leer. Le dieron cuatro redes idénticas por fuera, entrenadas para juegos distintos. Solo mirando sus números, Astra adivinó cuál jugaba a Breakout, Pong, Pac-Man y Freeway.",
+   "tts": "Primero, leer. Le dieron cuatro redes idénticas por fuera, entrenadas para juegos distintos. Solo mirando sus números, Astra adivinó cuál jugaba a Bréikaut, Pong, Pacman y Fríuei.",
+   "seed": 59,
+   "background": "rays_blue",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "1 · LEER",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "lens",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "4 redes idénticas por fuera",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 68
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "BREAKOUT · PONG",
+       "prop": "none",
+       "x": 0,
+       "y": 290,
+       "style": "white",
+       "size": 80
+      },
+      {
+       "kind": "tape",
+       "text": "PAC-MAN · FREEWAY",
+       "prop": "none",
+       "x": 0,
+       "y": 410,
+       "style": "white",
+       "size": 80
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "ctrl",
+       "x": 0,
+       "y": 860,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "stamp",
+       "text": "4 de 4",
+       "prop": "none",
+       "x": 0,
+       "y": 1150,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "m4",
+   "chapter": "Reparar",
+   "text": "Después, reparar. Un coche simulado se atascaba siempre en una rampa. Astra cambió el tres coma cinco por ciento de sus pesos, y el coche pasó en todos los intentos.",
+   "tts": "Después, reparar. Un coche simulado se atascaba siempre en una rampa. Astra cambió el tres coma cinco por ciento de sus pesos, y el coche pasó en todos los intentos.",
+   "seed": 65,
+   "background": "teal",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "2 · REPARAR",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "car",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "atascado en una rampa",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "white",
+       "size": 72
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "3,5%",
+       "prop": "none",
+       "x": 0,
+       "y": 330,
+       "style": "black",
+       "size": 130
+      },
+      {
+       "kind": "serif",
+       "text": "de los pesos cambiados",
+       "prop": "none",
+       "x": 0,
+       "y": 520,
+       "style": "white",
+       "size": 70
+      },
+      {
+       "kind": "stamp",
+       "text": "100 % de éxito",
+       "prop": "none",
+       "x": 0,
+       "y": 1050,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "m5",
+   "chapter": "Construir",
+   "text": "Incluso construyó redes desde cero. En una versión simple de Breakout, la suya sacó unas veinte veces más puntos que una red entrenada quinientos millones de pasos. En otros dos juegos quedó por detrás.",
+   "tts": "Incluso construyó redes desde cero. En una versión simple de Bréikaut, la suya sacó unas veinte veces más puntos que una red entrenada quinientos millones de pasos. En otros dos juegos quedó por detrás.",
+   "seed": 71,
+   "background": "cream",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "3 · CONSTRUIR",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "cog",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "una red desde cero",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 72
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "×20",
+       "prop": "none",
+       "x": 0,
+       "y": 320,
+       "style": "black",
+       "size": 140
+      },
+      {
+       "kind": "serif",
+       "text": "en Breakout simplificado",
+       "prop": "none",
+       "x": 0,
+       "y": 520,
+       "style": "black",
+       "size": 66
+      },
+      {
+       "kind": "stamp",
+       "text": "en otros 2 juegos, por detrás",
+       "prop": "none",
+       "x": 0,
+       "y": 1100,
+       "style": "black",
+       "size": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "m6",
+   "chapter": "Qwen",
+   "text": "Y el gran golpe: un modelo de lenguaje pequeño, Qwen, se quedaba en bucle al resolver problemas de matemáticas. Editando solo el cero coma cero dos por ciento de sus pesos, sus aciertos subieron del ocho al cuarenta y ocho por ciento.",
+   "tts": "Y el gran golpe: un modelo de lenguaje pequeño, Kuén, se quedaba en bucle al resolver problemas de matemáticas. Editando solo el cero coma cero dos por ciento de sus pesos, sus aciertos subieron del ocho al cuarenta y ocho por ciento.",
+   "seed": 77,
+   "background": "rays_teal",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "QWEN",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "serif",
+       "text": "se quedaba en bucle",
+       "prop": "none",
+       "x": 0,
+       "y": 440,
+       "style": "white",
+       "size": 72
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "bubble",
+       "x": 0,
+       "y": 800,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "tiles",
+       "text": "∞",
+       "prop": "none",
+       "x": 0,
+       "y": 1150,
+       "style": "black",
+       "size": 120
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "8% → 48%",
+       "prop": "none",
+       "x": 0,
+       "y": 330,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "aciertos en matemáticas",
+       "prop": "none",
+       "x": 0,
+       "y": 500,
+       "style": "white",
+       "size": 66
+      },
+      {
+       "kind": "tiles",
+       "text": "0,02%",
+       "prop": "none",
+       "x": 0,
+       "y": 840,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "serif",
+       "text": "de los pesos editados",
+       "prop": "none",
+       "x": 0,
+       "y": 990,
+       "style": "white",
+       "size": 66
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "m7",
+   "chapter": "El matiz",
+   "text": "Ojo: no lo hizo más listo, le quitó el freno de mano. Con otro modelo que no tenía ese bucle, no mejoró nada. Y falta que otros equipos lo repliquen.",
+   "tts": "Ojo: no lo hizo más listo, le quitó el freno de mano. Con otro modelo que no tenía ese bucle, no mejoró nada. Y falta que otros equipos lo repliquen.",
+   "seed": 83,
+   "background": "sky",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "stamp",
+       "text": "no lo hizo más listo",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "lever",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "tape",
+       "text": "QUITÓ EL FRENO",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 96
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "SIN BUCLE:",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "tape",
+       "text": "SIN MEJORA",
+       "prop": "none",
+       "x": 0,
+       "y": 440,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "chart_down",
+       "x": 0,
+       "y": 800,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "falta replicarlo",
+       "prop": "none",
+       "x": 0,
+       "y": 1150,
+       "style": "black",
+       "size": 72
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "m8",
+   "chapter": "Cierre",
+   "text": "Si una inteligencia artificial puede leer y editar a otra, ¿quién revisa a la que edita?",
+   "tts": "Si una inteligencia artificial puede leer y editar a otra, ¿quién revisa a la que edita?",
+   "seed": 89,
+   "background": "rays_red",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "¿QUIÉN REVISA",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "eye",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "tape",
+       "text": "A LA QUE EDITA?",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
