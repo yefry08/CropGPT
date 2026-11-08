@@ -1,0 +1,659 @@
+{
+ "title": "Anthropic compró una biotecnológica de una sola persona",
+ "lang": "es",
+ "style": "papercut",
+ "profile_id": "",
+ "gap": 0.45,
+ "tail": 2.8,
+ "tempo": 1.08,
+ "disclosure": "Aviso: Anthropic, la empresa de esta historia, crea Claude, la IA con la que se hizo este video.",
+ "post_text": "Anthropic compró Mithril Medicine, una biotecnológica de una sola persona que buscaba tratamientos para dos distrofias musculares raras. Su fundador usó Claude para coordinar 11 laboratorios externos y llegó a resultados en ratones en menos de 18 meses. Pero no estuvo solo (8 consultores y asesores), la prueba fue con 7 ratones tratados y 4 de control, Claude cometió errores, y los ensayos en humanos serían a fines de 2028 como muy pronto. ¿Futuro o exageración? #InteligenciaArtificial #Anthropic #Claude #Biotecnologia #IA\n\nAviso: Anthropic crea Claude, la IA con la que se hizo este video.",
+ "sources": [
+  {
+   "title": "R&D World: Anthropic buys Mithril Medicine, a one-person biotech",
+   "url": "https://www.rdworldonline.com/anthropic-acquires-mithril-medicine-one-person-biotech/"
+  },
+  {
+   "title": "Quartz: Anthropic acquires one-person biotech Mithril, starts drug programs",
+   "url": "https://qz.com/anthropic-mithril-medicine-acquisition-drug-programs-102826"
+  },
+  {
+   "title": "Becker's Hospital Review: Anthropic buys drug startup",
+   "url": "https://www.beckershospitalreview.com/healthcare-information-technology/ai/anthropic-buys-drug-startup-reports-claude-results-with-6-partners/"
+  },
+  {
+   "title": "PYMNTS: Anthropic buys one-person biotech to prove Claude can make drugs",
+   "url": "https://www.pymnts.com/news/artificial-intelligence/2026/anthropic-buys-one-person-biotech-to-prove-claude-can-make-drugs/"
+  }
+ ],
+ "facts": [
+  {
+   "claim": "Una empresa de una sola persona vendida a Anthropic",
+   "finding": "Confirmado: Anthropic compró Mithril Medicine (Cambridge, Massachusetts) en julio y lo anunció el 27-10-2026; no se reveló el precio. Tranbarger se unió a Anthropic para dirigir su desarrollo interno de fármacos."
+  },
+  {
+   "claim": "Buscaba tratamiento para dos formas raras de distrofia muscular",
+   "finding": "Confirmado: distrofia muscular congénita por LAMA2 y alfa-distroglicanopatía, con anticuerpos biespecíficos."
+  },
+  {
+   "claim": "Sin laboratorio propio, usó Claude para coordinar 11 laboratorios externos",
+   "finding": "Confirmado: Claude ayudó con contratos, datos, logística y planes de experimentos; los laboratorios externos produjeron los anticuerpos e hicieron los ensayos y los estudios en ratones."
+  },
+  {
+   "claim": "En menos de 18 meses, de la idea a resultados prometedores en ratones",
+   "finding": "Según Anthropic. El estudio fue pequeño: 7 ratones tratados y 4 de control, asignados por camada sin aleatorizar y probados con 126 a 161 días de diferencia; los tratados mostraron cerca del doble de fuerza de agarre. El informe pide replicarlo a ciegas y aún no tiene revisión por pares."
+  },
+  {
+   "claim": "Tenía consultores pagados y estudió biología, con un MBA de Harvard",
+   "finding": "Parcial: tenía 8 consultores y asesores pagados; su formación es un máster y MBA conjunto en biotecnología de Harvard (2025). No encontré confirmación de una licenciatura en biología."
+  },
+  {
+   "claim": "Ensayos en humanos a fines de 2028 como muy pronto",
+   "finding": "Confirmado para LAMA2; para la alfa-distroglicanopatía, 2029 como muy pronto. La selección formal de candidatos está prevista para 2027."
+  },
+  {
+   "claim": "(Contexto) Errores de Claude",
+   "finding": "El informe examinó seis errores de Claude: al menos tres llegaron a laboratorios externos en correos que personas editaron y enviaron, y dos pasaron inadvertidos más de cuatro días."
+  }
+ ],
+ "credits": [
+  "Voz sintética (Piper, de código abierto) · Animación hecha con código",
+  "Ilustración, sin imágenes reales · Fuentes en la descripción"
+ ],
+ "sections": [
+  {
+   "id": "u1",
+   "chapter": "La compra",
+   "text": "Una empresa de una sola persona acaba de ser comprada por Anthropic, la empresa que crea Claude.",
+   "tts": "Una empresa de una sola persona acaba de ser comprada por Ántropic, la empresa que crea Claud.",
+   "seed": 60,
+   "background": "navy",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "1",
+       "prop": "none",
+       "x": 0,
+       "y": 330,
+       "style": "black",
+       "size": 150
+      },
+      {
+       "kind": "serif",
+       "text": "persona, una empresa",
+       "prop": "none",
+       "x": 0,
+       "y": 520,
+       "style": "white",
+       "size": 74
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "person",
+       "x": 0,
+       "y": 860,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "Aviso: Anthropic crea Claude,",
+       "prop": "none",
+       "x": 0,
+       "y": 1250,
+       "style": "white",
+       "size": 50
+      },
+      {
+       "kind": "serif",
+       "text": "la IA usada en este video",
+       "prop": "none",
+       "x": 0,
+       "y": 1320,
+       "style": "white",
+       "size": 50
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "COMPRADA POR ANTHROPIC",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 80
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "folder",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "Aviso: Anthropic crea Claude,",
+       "prop": "none",
+       "x": 0,
+       "y": 1250,
+       "style": "white",
+       "size": 50
+      },
+      {
+       "kind": "serif",
+       "text": "la IA usada en este video",
+       "prop": "none",
+       "x": 0,
+       "y": 1320,
+       "style": "white",
+       "size": 50
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "u2",
+   "chapter": "Mithril",
+   "text": "Se llama Mithril Medicine. Su fundador, Cody Tranbarger, buscaba tratamientos para dos formas raras de distrofia muscular. Sin laboratorio propio.",
+   "tts": "Se llama Mízril Médisin. Su fundador, Cody Tránbarguer, buscaba tratamientos para dos formas raras de distrofia muscular. Sin laboratorio propio.",
+   "seed": 67,
+   "background": "kraft",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "MITHRIL MEDICINE",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "serif",
+       "text": "fundador: Cody Tranbarger",
+       "prop": "none",
+       "x": 0,
+       "y": 440,
+       "style": "black",
+       "size": 66
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "doc",
+       "x": 0,
+       "y": 820,
+       "style": "black",
+       "size": 110
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "stamp",
+       "text": "distrofia muscular",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "tiles",
+       "text": "2",
+       "prop": "none",
+       "x": 0,
+       "y": 700,
+       "style": "black",
+       "size": 130
+      },
+      {
+       "kind": "serif",
+       "text": "formas raras",
+       "prop": "none",
+       "x": 0,
+       "y": 880,
+       "style": "black",
+       "size": 74
+      },
+      {
+       "kind": "tape",
+       "text": "SIN LABORATORIO",
+       "prop": "none",
+       "x": 0,
+       "y": 1150,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "u3",
+   "chapter": "Cómo",
+   "text": "Usó Claude para coordinar contratos, datos y experimentos con once laboratorios externos. En menos de dieciocho meses pasó de una idea a resultados prometedores en ratones.",
+   "tts": "Usó Claud para coordinar contratos, datos y experimentos con once laboratorios externos. En menos de dieciocho meses pasó de una idea a resultados prometedores en ratones.",
+   "seed": 74,
+   "background": "rays_blue",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "11",
+       "prop": "none",
+       "x": 0,
+       "y": 330,
+       "style": "black",
+       "size": 140
+      },
+      {
+       "kind": "serif",
+       "text": "laboratorios externos",
+       "prop": "none",
+       "x": 0,
+       "y": 520,
+       "style": "black",
+       "size": 70
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "laptop",
+       "x": 0,
+       "y": 860,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "Aviso: Anthropic crea Claude,",
+       "prop": "none",
+       "x": 0,
+       "y": 1250,
+       "style": "white",
+       "size": 50
+      },
+      {
+       "kind": "serif",
+       "text": "la IA usada en este video",
+       "prop": "none",
+       "x": 0,
+       "y": 1320,
+       "style": "white",
+       "size": 50
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "<18 MESES",
+       "prop": "none",
+       "x": 0,
+       "y": 330,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "chart_up",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "de la idea a ratones",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "black",
+       "size": 72
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "u4",
+   "chapter": "No tan solo",
+   "text": "Pero no lo hizo solo: tenía ocho consultores y asesores pagados, los experimentos los hicieron esos laboratorios, y él se formó en biotecnología en Harvard.",
+   "tts": "Pero no lo hizo solo: tenía ocho consultores y asesores pagados, los experimentos los hicieron esos laboratorios, y él se formó en biotecnología en Járvard.",
+   "seed": 81,
+   "background": "cream",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "stamp",
+       "text": "¿solo?",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 110
+      },
+      {
+       "kind": "tiles",
+       "text": "8",
+       "prop": "none",
+       "x": 0,
+       "y": 700,
+       "style": "black",
+       "size": 130
+      },
+      {
+       "kind": "serif",
+       "text": "consultores y asesores pagados",
+       "prop": "none",
+       "x": 0,
+       "y": 880,
+       "style": "black",
+       "size": 64
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "HARVARD",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "serif",
+       "text": "máster y MBA en biotecnología",
+       "prop": "none",
+       "x": 0,
+       "y": 440,
+       "style": "black",
+       "size": 64
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "book",
+       "x": 0,
+       "y": 820,
+       "style": "black",
+       "size": 110
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "u5",
+   "chapter": "Los ratones",
+   "text": "Y la prueba fue pequeña: siete ratones tratados y cuatro de control, sin sorteo y en fechas distintas. Los tratados tuvieron el doble de fuerza, pero hay que repetirlo.",
+   "tts": "Y la prueba fue pequeña: siete ratones tratados y cuatro de control, sin sorteo y en fechas distintas. Los tratados tuvieron el doble de fuerza, pero hay que repetirlo.",
+   "seed": 88,
+   "background": "teal",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "7 + 4",
+       "prop": "none",
+       "x": 0,
+       "y": 330,
+       "style": "black",
+       "size": 130
+      },
+      {
+       "kind": "serif",
+       "text": "ratones: tratados y de control",
+       "prop": "none",
+       "x": 0,
+       "y": 520,
+       "style": "white",
+       "size": 64
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "cage",
+       "x": 0,
+       "y": 860,
+       "style": "black",
+       "size": 110
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tiles",
+       "text": "×2",
+       "prop": "none",
+       "x": 0,
+       "y": 330,
+       "style": "black",
+       "size": 130
+      },
+      {
+       "kind": "serif",
+       "text": "fuerza de agarre",
+       "prop": "none",
+       "x": 0,
+       "y": 500,
+       "style": "white",
+       "size": 70
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "hand",
+       "x": 0,
+       "y": 800,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "stamp",
+       "text": "hay que repetirlo",
+       "prop": "none",
+       "x": 0,
+       "y": 1050,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "u6",
+   "chapter": "Errores y plazos",
+   "text": "Claude también se equivocó: al menos tres errores llegaron a los laboratorios en correos enviados por personas. Y los ensayos en humanos serían, como muy pronto, a finales de 2028.",
+   "tts": "Claud también se equivocó: al menos tres errores llegaron a los laboratorios en correos enviados por personas. Y los ensayos en humanos serían, como muy pronto, a finales de dos mil veintiocho.",
+   "seed": 95,
+   "background": "sky",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "ERRORES",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "red",
+       "size": 96
+      },
+      {
+       "kind": "tiles",
+       "text": "3",
+       "prop": "none",
+       "x": 0,
+       "y": 700,
+       "style": "black",
+       "size": 130
+      },
+      {
+       "kind": "serif",
+       "text": "llegaron a los laboratorios",
+       "prop": "none",
+       "x": 0,
+       "y": 880,
+       "style": "black",
+       "size": 66
+      },
+      {
+       "kind": "serif",
+       "text": "Aviso: Anthropic crea Claude,",
+       "prop": "none",
+       "x": 0,
+       "y": 1250,
+       "style": "white",
+       "size": 50
+      },
+      {
+       "kind": "serif",
+       "text": "la IA usada en este video",
+       "prop": "none",
+       "x": 0,
+       "y": 1320,
+       "style": "white",
+       "size": 50
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "HUMANOS:",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "tiles",
+       "text": "FINES DE 2028",
+       "prop": "none",
+       "x": 0,
+       "y": 560,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "calendar",
+       "x": 0,
+       "y": 900,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "stamp",
+       "text": "como muy pronto",
+       "prop": "none",
+       "x": 0,
+       "y": 1200,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "u7",
+   "chapter": "Cierre",
+   "text": "Lo nuevo no es un genio solitario: es una persona coordinando lo que antes necesitaba una empresa entera. ¿Futuro o exageración?",
+   "tts": "Lo nuevo no es un genio solitario: es una persona coordinando lo que antes necesitaba una empresa entera. ¿Futuro o exageración?",
+   "seed": 102,
+   "background": "rays_red",
+   "beats": [
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "UNA PERSONA",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "person",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "serif",
+       "text": "coordinando una empresa entera",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "white",
+       "size": 64
+      }
+     ]
+    },
+    {
+     "items": [
+      {
+       "kind": "tape",
+       "text": "¿FUTURO",
+       "prop": "none",
+       "x": 0,
+       "y": 300,
+       "style": "black",
+       "size": 96
+      },
+      {
+       "kind": "prop",
+       "text": "",
+       "prop": "eye",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 110
+      },
+      {
+       "kind": "tape",
+       "text": "O EXAGERACIÓN?",
+       "prop": "none",
+       "x": 0,
+       "y": 1120,
+       "style": "red",
+       "size": 96
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
