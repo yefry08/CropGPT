@@ -78,7 +78,7 @@ def description(p):
         out += ["**" + ("Qué verificamos:" if es else "What we checked:") + "**", "", "| " + ("Se decía" if es else "Claim") + " | "
                 + ("Lo que dicen las fuentes" if es else "What sources say") + " |", "|---|---|"] + [f"| {f['claim']} | {f['finding']} |" for f in p["facts"]] + [""]
     if p.get("images"):
-        out += ["**" + ("Imágenes de archivo (Wikimedia Commons, dominio público o CC0):" if es else "Archive images (Wikimedia Commons, public domain or CC0):") + "**"]
+        out += ["**" + ("Imágenes de archivo (dominio público o sin restricciones conocidas):" if es else "Archive images (public domain or no known restrictions):") + "**"]
         out += [f"- {i['title']} ({i['author']}, {i['license']}): {i['page']}" for i in p["images"]] + [""]
     if p.get("sources"):
         out += ["**" + ("Fuentes:" if es else "Sources:") + "**"] + [f"- {s['title']}: {s['url']}" for s in p["sources"]] + [""]

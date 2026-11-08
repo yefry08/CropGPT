@@ -21,7 +21,7 @@ Voz sintética de Piper (código abierto). Animación hecha con código con foto
 | Ensayos en humanos a fines de 2028 como muy pronto | Confirmado para LAMA2; para la alfa-distroglicanopatía, 2029 como muy pronto. La selección formal de candidatos está prevista para 2027. |
 | (Contexto) Errores de Claude | El informe examinó seis errores de Claude: al menos tres llegaron a laboratorios externos en correos que personas editaron y enviaron, y dos pasaron inadvertidos más de cuatro días. |
 
-**Imágenes de archivo (Wikimedia Commons, dominio público o CC0):**
+**Imágenes de archivo (dominio público o sin restricciones conocidas):**
 - New Wage-Hour Administrator gets helping hand from missus. Washington, D.C., Aug. 18. Working without pay, Mrs. Elmer F. Andrews, wife of the newly appointed Wa (Harris & Ewing, Library of Congress, sin restricciones conocidas): https://www.loc.gov/pictures/item/2016873939/
 - Test tubes containing bovine tubercular bacteria at Division of Pathology, United States Department of Agriculture Experimental Farm, Beltsville, Maryland (FSA/OWI, Library of Congress, sin restricciones conocidas): https://www.loc.gov/pictures/item/2017758824/
 - First Capitol telephone operator still on job. Washington, D.C., July 30. When Miss Harriot Daley was appointed telephone operator at the United States Capitol  (Harris & Ewing, Library of Congress, sin restricciones conocidas): https://www.loc.gov/pictures/item/2016872097/
