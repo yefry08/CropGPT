@@ -29,6 +29,8 @@ A project is a folder with `project.json` and `audio/`. `samples/neveras` is a c
 - `vmk/draw.py` palette, shapes, ink with the paper-border silhouette, halftone, text, shadowed sprites
 - `vmk/props.py` 51 generic drawings (no logos or real people)
 - `vmk/papercut.py` the recorte (paper-cut) style
+- `vmk/photocollage.py` the fotocollage style: archive photos as torn prints and cut-outs, torn paper, yellow halftone and crumpled blue paper. Photo items (`kind: photo`) name a file in the project's `images/` folder.
+- `vmk/archive.py` finds and downloads free archive photos (Library of Congress collections with no known restrictions, Wikimedia Commons public domain/CC0) and keeps their credits in `project.json` → `images`, which the description lists
 - `vmk/explainer.py` the highlighter explainer style (headline swipe, counters, annotations, lower-third captions, push transition)
 - `vmk/film.py` scenes → frames, piped as raw video to ffmpeg (~12 ms per frame)
 - `vmk/voice.py` Voicebox API client (`/profiles`, `/generate`, `/history/<id>`, `/audio/<id>`) and audio clean-up

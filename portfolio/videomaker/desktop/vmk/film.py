@@ -9,14 +9,16 @@ import cairo
 from . import draw as D
 from . import explainer as EXS
 from . import papercut as PCS
+from . import photocollage as PHC
 from .draw import CX, PA, TAU, W, H, Sprite, clamp, ease_out, pop, rgb, rng, sprite
 from .props import PROPS
 
 FPS = 24
 BACKGROUNDS = ["rays_red", "rays_blue", "rays_teal", "kraft", "navy", "teal", "sky", "cream", "green"]
 DARK = {"navy", "teal", "green"}
-KINDS = ["tape", "tiles", "stamp", "serif", "prop"]
-VISUAL_STYLES = {"collage": "Collage de papel", "papercut": "Recorte de papel (tipo Vox)", "explainer": "Explicativo con subrayador"}
+KINDS = ["tape", "tiles", "stamp", "serif", "prop", "photo"]
+VISUAL_STYLES = {"collage": "Collage de papel", "papercut": "Recorte de papel (tipo Vox)", "explainer": "Explicativo con subrayador",
+                 "fotocollage": "Collage con fotos de archivo (tipo Vox)"}
 STYLES = ["black", "red", "white", "yellow"]
 TAPE = {"black": (PA["ink"], "#f4eee2"), "red": (PA["red"], "#fff6ea"), "white": ("#f4eee2", PA["ink"]), "yellow": (PA["yellow"], PA["ink"])}
 
@@ -28,6 +30,7 @@ class Film:
         self.p = project
         self.style = project.get("style", "collage")
         self.bg, self.sp = {}, {}
+        self.folder = Path(project["folder"]) if project.get("folder") else None
         self.starts, t = [], 0.0
         for s in project["sections"]:
             self.starts.append(t); t += s["duration"]
@@ -35,6 +38,10 @@ class Film:
 
     # ---------- backgrounds ----------
     def background(self, kind):
+        if self.style == "fotocollage":
+            if ("fc", kind) not in self.bg:
+                self.bg[("fc", kind)] = PHC.background(kind)
+            return self.bg[("fc", kind)]
         if self.style == "papercut":
             if ("pc", kind) not in self.bg:
                 self.bg[("pc", kind)] = PCS.background(kind)
@@ -158,6 +165,8 @@ class Film:
             return self.item_explainer(c, it, t, dark, x, y, kind, size)
         if self.style == "papercut":
             return self.item_papercut(c, it, t, dark, x, y, kind, size)
+        if self.style == "fotocollage":
+            return self.item_photo(c, it, t, dark, x, y, kind, size)
         if kind == "tape" and it.get("text"):
             k = pop(t / .35); self.tape_sprite(it["text"], size or 84, it.get("style", "black")).paint(c, x, y, k)
         elif kind == "tiles" and it.get("text"):
@@ -220,6 +229,31 @@ class Film:
             u = ease_out(clamp(t / .6)); drift = math.sin(t * .6 + seed) * 6
             sp.paint(c, x + (1 - u) * 120 * (-1 if it.get("x", 0) < 0 else 1) + drift, y + (1 - u) * 20, 1, alpha=clamp(t / .25))
 
+    def photo_path(self, name):
+        p = Path(name)
+        if not p.is_absolute() and self.folder:
+            p = self.folder / "images" / p
+        return p if p.exists() else None
+
+    def item_photo(self, c, it, t, dark, x, y, kind, size):
+        txt = it.get("text") or ""; seed = abs(int(it.get("x", 0))) + int(it.get("y", 0)); style = it.get("style", "black")
+        side = -1 if it.get("x", 0) < 0 or seed % 2 else 1
+        if kind == "photo" and txt and (path := self.photo_path(txt)):
+            sp = self._cached(("photo", str(path), size or 100, style, seed), lambda: PHC.photo_sprite(path, size or 100, style, seed))
+            PHC.photo(c, sp, x, y, t, seed, side)
+        elif kind == "tape" and txt:
+            PHC.label(c, txt, x, y, t, int((size or 84) * 1.05), style, seed)
+        elif kind == "stamp" and txt:
+            PHC.label(c, txt, x, y, t, int((size or 100) * .48), style, seed, small=True)
+        elif kind == "tiles" and txt:
+            PHC.card(c, txt, x, y, t, int((size or 110) * .85), seed)
+        elif kind == "serif" and txt:
+            PHC.note(c, txt, x, y, t, size or 42, dark)
+        elif kind == "prop" and it.get("prop") in PROPS:
+            sc = (size or 100) / 100
+            sp = self._cached(("sepia", it["prop"], round(sc, 2)), lambda: PCS.sepia(self.prop_sprite(it["prop"], sc)))
+            PHC.photo(c, sp, x, y, t, seed, side)
+
     # ---------- captions ----------
     @staticmethod
     def chunks(text):
@@ -241,6 +275,8 @@ class Film:
                     EXS.caption_bar(c, s)
                 elif self.style == "papercut":
                     PCS.caption(c, s, True)
+                elif self.style == "fotocollage":
+                    PHC.caption(c, s, (tau - acc) / ln)
                 else:
                     self.strip_sprite([s]).paint(c, CX, 1590)
                 return
@@ -270,17 +306,20 @@ class Film:
         b = min(int(tau / d * n), n - 1) if d > 0 else 0; t = tau - d * b / n
         c.set_source_surface(self.background(sec.get("background", "cream")), 0, 0); c.paint()
         c.save()
-        if self.style in ("explainer", "papercut"):   # slow camera push over the whole scene
+        if self.style in ("explainer", "papercut", "fotocollage"):   # slow camera push over the whole scene
             z = 1 + .03 * clamp(tau / d) if d > 0 else 1; c.translate(CX, 760); c.scale(z, z); c.translate(-CX, -760)
+        bgk = sec.get("background", "cream")
+        if self.style == "fotocollage":
+            PHC.band(c, bgk, sec.get("seed", 7) + b, t + .3)
         for i, it in enumerate(beats[b].get("items", [])):
-            bgk = sec.get("background", "cream"); dark = bgk not in PCS.MAP_BG if self.style == "papercut" else bgk in DARK
+            dark = bgk not in PCS.MAP_BG if self.style == "papercut" else PHC.is_dark(bgk) if self.style == "fotocollage" else bgk in DARK
             self.item(c, it, t - .1 - i * .3, dark)
         c.restore()
 
     def frame(self, t):
         out = cairo.ImageSurface(cairo.FORMAT_RGB24, W, H); c = cairo.Context(out)
         i = self.section_at(t); sec = self.p["sections"][i]; tau = t - self.starts[i]; d = sec["duration"]
-        u = clamp(tau / (.45 if self.style == "papercut" else .3))
+        u = clamp(tau / (.45 if self.style in ("papercut", "fotocollage") else .3))
         if u >= 1:
             self.scene(c, sec, tau)
         else:   # whip-pan in: the new scene slides from the right with a motion blur
@@ -291,7 +330,7 @@ class Film:
                 self.scene(cairo.Context(prev), ps, ps["duration"] - .01); c.set_source_surface(prev, 0, 0); c.paint()
             else:
                 rgb(c, PA["cream"]); c.paint()
-            if self.style == "papercut":
+            if self.style in ("papercut", "fotocollage"):
                 c2 = cairo.ImageSurface(cairo.FORMAT_RGB24, W, H); cc = cairo.Context(c2); cc.set_source_surface(out, 0, 0); cc.paint()
                 PCS.wipe(c, c2, tmp, clamp(tau / .45))
             elif self.style == "explainer":   # clean push: the old scene slides out left as the new one enters

@@ -1,7 +1,7 @@
 {
  "title": "Anthropic compró una biotecnológica de una sola persona",
  "lang": "es",
- "style": "papercut",
+ "style": "fotocollage",
  "profile_id": "",
  "gap": 0.45,
  "tail": 2.8,
@@ -58,7 +58,7 @@
  ],
  "credits": [
   "Voz sintética (Piper, de código abierto) · Animación hecha con código",
-  "Ilustración, sin imágenes reales · Fuentes en la descripción"
+  "Fotos de archivo de la Biblioteca del Congreso de EE. UU. · Fuentes en la descripción"
  ],
  "sections": [
   {
@@ -72,49 +72,49 @@
     {
      "items": [
       {
-       "kind": "tiles",
-       "text": "1",
+       "kind": "tape",
+       "text": "1 PERSONA",
        "prop": "none",
        "x": 0,
-       "y": 330,
-       "style": "black",
-       "size": 150
-      },
-      {
-       "kind": "serif",
-       "text": "persona, una empresa",
-       "prop": "none",
-       "x": 0,
-       "y": 520,
-       "style": "white",
-       "size": 74
-      },
-      {
-       "kind": "prop",
-       "text": "",
-       "prop": "person",
-       "x": 0,
-       "y": 860,
+       "y": 290,
        "style": "black",
        "size": 110
+      },
+      {
+       "kind": "photo",
+       "text": "despacho.jpg",
+       "prop": "none",
+       "x": 0,
+       "y": 800,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "stamp",
+       "text": "una empresa entera",
+       "prop": "none",
+       "x": 0,
+       "y": 1200,
+       "style": "black",
+       "size": 96
       },
       {
        "kind": "serif",
        "text": "Aviso: Anthropic crea Claude,",
        "prop": "none",
        "x": 0,
-       "y": 1250,
+       "y": 1300,
        "style": "white",
-       "size": 50
+       "size": 42
       },
       {
        "kind": "serif",
        "text": "la IA usada en este video",
        "prop": "none",
        "x": 0,
-       "y": 1320,
+       "y": 1352,
        "style": "white",
-       "size": 50
+       "size": 42
       }
      ]
     },
@@ -125,36 +125,36 @@
        "text": "COMPRADA POR ANTHROPIC",
        "prop": "none",
        "x": 0,
-       "y": 300,
+       "y": 290,
        "style": "red",
        "size": 80
       },
       {
-       "kind": "prop",
-       "text": "",
-       "prop": "folder",
+       "kind": "photo",
+       "text": "papeles.jpg",
+       "prop": "none",
        "x": 0,
-       "y": 760,
-       "style": "black",
-       "size": 110
+       "y": 800,
+       "style": "yellow",
+       "size": 95
       },
       {
        "kind": "serif",
        "text": "Aviso: Anthropic crea Claude,",
        "prop": "none",
        "x": 0,
-       "y": 1250,
+       "y": 1300,
        "style": "white",
-       "size": 50
+       "size": 42
       },
       {
        "kind": "serif",
        "text": "la IA usada en este video",
        "prop": "none",
        "x": 0,
-       "y": 1320,
+       "y": 1352,
        "style": "white",
-       "size": 50
+       "size": 42
       }
      ]
     }
@@ -175,66 +175,66 @@
        "text": "MITHRIL MEDICINE",
        "prop": "none",
        "x": 0,
-       "y": 300,
+       "y": 290,
        "style": "black",
-       "size": 96
+       "size": 90
       },
       {
-       "kind": "serif",
+       "kind": "photo",
+       "text": "mano.jpg",
+       "prop": "none",
+       "x": 0,
+       "y": 800,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "stamp",
        "text": "fundador: Cody Tranbarger",
        "prop": "none",
        "x": 0,
-       "y": 440,
+       "y": 1230,
        "style": "black",
-       "size": 66
-      },
-      {
-       "kind": "prop",
-       "text": "",
-       "prop": "doc",
-       "x": 0,
-       "y": 820,
-       "style": "black",
-       "size": 110
+       "size": 96
       }
      ]
     },
     {
      "items": [
       {
-       "kind": "stamp",
-       "text": "distrofia muscular",
+       "kind": "tape",
+       "text": "DISTROFIA MUSCULAR",
        "prop": "none",
        "x": 0,
-       "y": 300,
-       "style": "red",
-       "size": 96
+       "y": 290,
+       "style": "white",
+       "size": 84
+      },
+      {
+       "kind": "photo",
+       "text": "tubos.jpg",
+       "prop": "none",
+       "x": 0,
+       "y": 760,
+       "style": "black",
+       "size": 100
       },
       {
        "kind": "tiles",
-       "text": "2",
-       "prop": "none",
-       "x": 0,
-       "y": 700,
-       "style": "black",
-       "size": 130
-      },
-      {
-       "kind": "serif",
-       "text": "formas raras",
-       "prop": "none",
-       "x": 0,
-       "y": 880,
-       "style": "black",
-       "size": 74
-      },
-      {
-       "kind": "tape",
-       "text": "SIN LABORATORIO",
+       "text": "2 formas raras",
        "prop": "none",
        "x": 0,
        "y": 1150,
-       "style": "red",
+       "style": "black",
+       "size": 80
+      },
+      {
+       "kind": "stamp",
+       "text": "sin laboratorio propio",
+       "prop": "none",
+       "x": 0,
+       "y": 1290,
+       "style": "black",
        "size": 96
       }
      ]
@@ -247,54 +247,54 @@
    "text": "Usó Claude para coordinar contratos, datos y experimentos con once laboratorios externos. En menos de dieciocho meses pasó de una idea a resultados prometedores en ratones.",
    "tts": "Usó Claud para coordinar contratos, datos y experimentos con once laboratorios externos. En menos de dieciocho meses pasó de una idea a resultados prometedores en ratones.",
    "seed": 74,
-   "background": "rays_blue",
+   "background": "sky",
    "beats": [
     {
      "items": [
       {
-       "kind": "tiles",
-       "text": "11",
+       "kind": "tape",
+       "text": "11 LABORATORIOS",
        "prop": "none",
        "x": 0,
-       "y": 330,
-       "style": "black",
-       "size": 140
+       "y": 290,
+       "style": "red",
+       "size": 96
       },
       {
-       "kind": "serif",
-       "text": "laboratorios externos",
+       "kind": "photo",
+       "text": "centralita.jpg",
        "prop": "none",
        "x": 0,
-       "y": 520,
+       "y": 800,
        "style": "black",
-       "size": 70
+       "size": 105
       },
       {
-       "kind": "prop",
-       "text": "",
-       "prop": "laptop",
+       "kind": "stamp",
+       "text": "coordinados con Claude",
+       "prop": "none",
        "x": 0,
-       "y": 860,
+       "y": 1230,
        "style": "black",
-       "size": 110
+       "size": 96
       },
       {
        "kind": "serif",
        "text": "Aviso: Anthropic crea Claude,",
        "prop": "none",
        "x": 0,
-       "y": 1250,
+       "y": 1300,
        "style": "white",
-       "size": 50
+       "size": 42
       },
       {
        "kind": "serif",
        "text": "la IA usada en este video",
        "prop": "none",
        "x": 0,
-       "y": 1320,
+       "y": 1352,
        "style": "white",
-       "size": 50
+       "size": 42
       }
      ]
     },
@@ -302,30 +302,30 @@
      "items": [
       {
        "kind": "tiles",
-       "text": "<18 MESES",
+       "text": "<18 meses",
        "prop": "none",
        "x": 0,
-       "y": 330,
+       "y": 300,
        "style": "black",
-       "size": 110
+       "size": 100
       },
       {
-       "kind": "prop",
-       "text": "",
-       "prop": "chart_up",
-       "x": 0,
-       "y": 760,
-       "style": "black",
-       "size": 110
-      },
-      {
-       "kind": "serif",
-       "text": "de la idea a ratones",
+       "kind": "photo",
+       "text": "relojes.jpg",
        "prop": "none",
        "x": 0,
-       "y": 1120,
-       "style": "black",
-       "size": 72
+       "y": 790,
+       "style": "yellow",
+       "size": 100
+      },
+      {
+       "kind": "tape",
+       "text": "DE LA IDEA A RATONES",
+       "prop": "none",
+       "x": 0,
+       "y": 1220,
+       "style": "white",
+       "size": 70
       }
      ]
     }
@@ -342,31 +342,31 @@
     {
      "items": [
       {
-       "kind": "stamp",
-       "text": "¿solo?",
+       "kind": "tape",
+       "text": "¿SOLO?",
        "prop": "none",
        "x": 0,
-       "y": 300,
-       "style": "red",
-       "size": 110
+       "y": 290,
+       "style": "black",
+       "size": 120
+      },
+      {
+       "kind": "photo",
+       "text": "maquinas.jpg",
+       "prop": "none",
+       "x": 0,
+       "y": 790,
+       "style": "black",
+       "size": 100
       },
       {
        "kind": "tiles",
-       "text": "8",
+       "text": "8 consultores y asesores",
        "prop": "none",
        "x": 0,
-       "y": 700,
+       "y": 1220,
        "style": "black",
-       "size": 130
-      },
-      {
-       "kind": "serif",
-       "text": "consultores y asesores pagados",
-       "prop": "none",
-       "x": 0,
-       "y": 880,
-       "style": "black",
-       "size": 64
+       "size": 70
       }
      ]
     },
@@ -377,27 +377,27 @@
        "text": "HARVARD",
        "prop": "none",
        "x": 0,
-       "y": 300,
-       "style": "black",
-       "size": 96
+       "y": 290,
+       "style": "red",
+       "size": 110
       },
       {
-       "kind": "serif",
+       "kind": "photo",
+       "text": "harvard.jpg",
+       "prop": "none",
+       "x": 0,
+       "y": 780,
+       "style": "black",
+       "size": 105
+      },
+      {
+       "kind": "stamp",
        "text": "máster y MBA en biotecnología",
        "prop": "none",
        "x": 0,
-       "y": 440,
+       "y": 1230,
        "style": "black",
-       "size": 64
-      },
-      {
-       "kind": "prop",
-       "text": "",
-       "prop": "book",
-       "x": 0,
-       "y": 820,
-       "style": "black",
-       "size": 110
+       "size": 96
       }
      ]
     }
@@ -409,76 +409,67 @@
    "text": "Y la prueba fue pequeña: siete ratones tratados y cuatro de control, sin sorteo y en fechas distintas. Los tratados tuvieron el doble de fuerza, pero hay que repetirlo.",
    "tts": "Y la prueba fue pequeña: siete ratones tratados y cuatro de control, sin sorteo y en fechas distintas. Los tratados tuvieron el doble de fuerza, pero hay que repetirlo.",
    "seed": 88,
-   "background": "teal",
+   "background": "navy",
    "beats": [
     {
      "items": [
       {
        "kind": "tiles",
-       "text": "7 + 4",
+       "text": "7 + 4 ratones",
        "prop": "none",
        "x": 0,
-       "y": 330,
+       "y": 290,
        "style": "black",
-       "size": 130
+       "size": 90
       },
       {
-       "kind": "serif",
-       "text": "ratones: tratados y de control",
+       "kind": "photo",
+       "text": "ratones.jpg",
        "prop": "none",
        "x": 0,
-       "y": 520,
-       "style": "white",
-       "size": 64
+       "y": 790,
+       "style": "black",
+       "size": 105
       },
       {
-       "kind": "prop",
-       "text": "",
-       "prop": "cage",
+       "kind": "stamp",
+       "text": "tratados y de control, sin sorteo",
+       "prop": "none",
        "x": 0,
-       "y": 860,
+       "y": 1230,
        "style": "black",
-       "size": 110
+       "size": 96
       }
      ]
     },
     {
      "items": [
       {
-       "kind": "tiles",
-       "text": "×2",
+       "kind": "tape",
+       "text": "×2 FUERZA",
        "prop": "none",
        "x": 0,
-       "y": 330,
-       "style": "black",
-       "size": 130
-      },
-      {
-       "kind": "serif",
-       "text": "fuerza de agarre",
-       "prop": "none",
-       "x": 0,
-       "y": 500,
+       "y": 290,
        "style": "white",
-       "size": 70
-      },
-      {
-       "kind": "prop",
-       "text": "",
-       "prop": "hand",
-       "x": 0,
-       "y": 800,
-       "style": "black",
        "size": 110
       },
       {
-       "kind": "stamp",
-       "text": "hay que repetirlo",
+       "kind": "photo",
+       "text": "ratones2.jpg",
        "prop": "none",
        "x": 0,
-       "y": 1050,
+       "y": 790,
        "style": "red",
-       "size": 96
+       "size": 100
+      },
+      {
+       "kind": "tape",
+       "text": "HAY QUE REPETIRLO",
+       "prop": "none",
+       "x": 0,
+       "y": 1230,
+       "style": "red",
+       "size": 80
       }
      ]
     }
@@ -490,54 +481,54 @@
    "text": "Claude también se equivocó: al menos tres errores llegaron a los laboratorios en correos enviados por personas. Y los ensayos en humanos serían, como muy pronto, a finales de 2028.",
    "tts": "Claud también se equivocó: al menos tres errores llegaron a los laboratorios en correos enviados por personas. Y los ensayos en humanos serían, como muy pronto, a finales de dos mil veintiocho.",
    "seed": 95,
-   "background": "sky",
+   "background": "rays_red",
    "beats": [
     {
      "items": [
       {
        "kind": "tape",
-       "text": "ERRORES",
+       "text": "ERRORES DE CLAUDE",
        "prop": "none",
        "x": 0,
-       "y": 300,
-       "style": "red",
-       "size": 96
+       "y": 290,
+       "style": "black",
+       "size": 88
+      },
+      {
+       "kind": "photo",
+       "text": "cartas.jpg",
+       "prop": "none",
+       "x": 0,
+       "y": 790,
+       "style": "black",
+       "size": 100
       },
       {
        "kind": "tiles",
-       "text": "3",
+       "text": "3 llegaron a los laboratorios",
        "prop": "none",
        "x": 0,
-       "y": 700,
+       "y": 1180,
        "style": "black",
-       "size": 130
-      },
-      {
-       "kind": "serif",
-       "text": "llegaron a los laboratorios",
-       "prop": "none",
-       "x": 0,
-       "y": 880,
-       "style": "black",
-       "size": 66
+       "size": 62
       },
       {
        "kind": "serif",
        "text": "Aviso: Anthropic crea Claude,",
        "prop": "none",
        "x": 0,
-       "y": 1250,
+       "y": 1300,
        "style": "white",
-       "size": 50
+       "size": 42
       },
       {
        "kind": "serif",
        "text": "la IA usada en este video",
        "prop": "none",
        "x": 0,
-       "y": 1320,
+       "y": 1352,
        "style": "white",
-       "size": 50
+       "size": 42
       }
      ]
     },
@@ -545,38 +536,29 @@
      "items": [
       {
        "kind": "tape",
-       "text": "HUMANOS:",
+       "text": "HUMANOS: FINES DE 2028",
        "prop": "none",
        "x": 0,
-       "y": 300,
-       "style": "black",
-       "size": 96
+       "y": 290,
+       "style": "white",
+       "size": 78
       },
       {
-       "kind": "tiles",
-       "text": "FINES DE 2028",
+       "kind": "photo",
+       "text": "gradilla.jpg",
        "prop": "none",
        "x": 0,
-       "y": 560,
+       "y": 790,
        "style": "black",
-       "size": 100
-      },
-      {
-       "kind": "prop",
-       "text": "",
-       "prop": "calendar",
-       "x": 0,
-       "y": 900,
-       "style": "black",
-       "size": 110
+       "size": 95
       },
       {
        "kind": "stamp",
        "text": "como muy pronto",
        "prop": "none",
        "x": 0,
-       "y": 1200,
-       "style": "red",
+       "y": 1230,
+       "style": "black",
        "size": 96
       }
      ]
@@ -589,7 +571,7 @@
    "text": "Lo nuevo no es un genio solitario: es una persona coordinando lo que antes necesitaba una empresa entera. ¿Futuro o exageración?",
    "tts": "Lo nuevo no es un genio solitario: es una persona coordinando lo que antes necesitaba una empresa entera. ¿Futuro o exageración?",
    "seed": 102,
-   "background": "rays_red",
+   "background": "sky",
    "beats": [
     {
      "items": [
@@ -598,27 +580,27 @@
        "text": "UNA PERSONA",
        "prop": "none",
        "x": 0,
-       "y": 300,
-       "style": "black",
-       "size": 96
-      },
-      {
-       "kind": "prop",
-       "text": "",
-       "prop": "person",
-       "x": 0,
-       "y": 760,
+       "y": 290,
        "style": "black",
        "size": 110
       },
       {
-       "kind": "serif",
+       "kind": "photo",
+       "text": "teclas.jpg",
+       "prop": "none",
+       "x": 0,
+       "y": 790,
+       "style": "black",
+       "size": 100
+      },
+      {
+       "kind": "stamp",
        "text": "coordinando una empresa entera",
        "prop": "none",
        "x": 0,
-       "y": 1120,
-       "style": "white",
-       "size": 64
+       "y": 1230,
+       "style": "black",
+       "size": 96
       }
      ]
     },
@@ -629,31 +611,124 @@
        "text": "¿FUTURO",
        "prop": "none",
        "x": 0,
-       "y": 300,
-       "style": "black",
-       "size": 96
+       "y": 270,
+       "style": "red",
+       "size": 110
       },
       {
-       "kind": "prop",
-       "text": "",
-       "prop": "eye",
+       "kind": "photo",
+       "text": "maquinas.jpg",
+       "prop": "none",
        "x": 0,
        "y": 760,
-       "style": "black",
-       "size": 110
+       "style": "red",
+       "size": 100
       },
       {
        "kind": "tape",
        "text": "O EXAGERACIÓN?",
        "prop": "none",
        "x": 0,
-       "y": 1120,
-       "style": "red",
-       "size": 96
+       "y": 1180,
+       "style": "black",
+       "size": 100
       }
      ]
     }
    ]
+  }
+ ],
+ "images": [
+  {
+   "file": "papeles.jpg",
+   "title": "New Wage-Hour Administrator gets helping hand from missus. Washington, D.C., Aug. 18. Working without pay, Mrs. Elmer F. Andrews, wife of the newly appointed Wa",
+   "page": "https://www.loc.gov/pictures/item/2016873939/",
+   "license": "Library of Congress, sin restricciones conocidas",
+   "author": "Harris & Ewing"
+  },
+  {
+   "file": "tubos.jpg",
+   "title": "Test tubes containing bovine tubercular bacteria at Division of Pathology, United States Department of Agriculture Experimental Farm, Beltsville, Maryland",
+   "page": "https://www.loc.gov/pictures/item/2017758824/",
+   "license": "Library of Congress, sin restricciones conocidas",
+   "author": "FSA/OWI"
+  },
+  {
+   "file": "centralita.jpg",
+   "title": "First Capitol telephone operator still on job. Washington, D.C., July 30. When Miss Harriot Daley was appointed telephone operator at the United States Capitol ",
+   "page": "https://www.loc.gov/pictures/item/2016872097/",
+   "license": "Library of Congress, sin restricciones conocidas",
+   "author": "Harris & Ewing"
+  },
+  {
+   "file": "relojes.jpg",
+   "title": "War alarm clocks. 1,700,000 of them will be produced this year to meet demand that was normally 12,000,000. Will be distributed by all pre-war alarm clock manuf",
+   "page": "https://www.loc.gov/pictures/item/2017696065/",
+   "license": "Library of Congress, sin restricciones conocidas",
+   "author": "FSA/OWI"
+  },
+  {
+   "file": "maquinas.jpg",
+   "title": "\"Why is an Earthquake\" Washington, D.C., Dec. 17. The old question \"why is an earthquake,\" and many other geological mysteries important to man, are being probe",
+   "page": "https://www.loc.gov/pictures/item/2016872758/",
+   "license": "Library of Congress, sin restricciones conocidas",
+   "author": "Harris & Ewing"
+  },
+  {
+   "file": "harvard.jpg",
+   "title": "Harvard Gate, Harvard University",
+   "page": "https://www.loc.gov/pictures/item/2016794215/",
+   "license": "Library of Congress, sin restricciones conocidas",
+   "author": "Detroit Publishing Co."
+  },
+  {
+   "file": "ratones.jpg",
+   "title": "Testing yellow fever serum by injecting it into white mice. USPHS (United States Public Health Service) Rocky Mountain Laboratory, Hamilton, Montana",
+   "page": "https://www.loc.gov/pictures/item/2017829843/",
+   "license": "Library of Congress, sin restricciones conocidas",
+   "author": "FSA/OWI"
+  },
+  {
+   "file": "ratones2.jpg",
+   "title": "Testing yellow fever serum by injecting it into white mice. USPHS (United States Public Health Service)  Rocky Mountain Laboratory, Hamilton, Montana",
+   "page": "https://www.loc.gov/pictures/item/2017829839/",
+   "license": "Library of Congress, sin restricciones conocidas",
+   "author": "FSA/OWI"
+  },
+  {
+   "file": "cartas.jpg",
+   "title": "V-mail. Finished V-mail letters are sorted and prepared for forwarding to addressees at the Pentagon building, Washington, D.C.  V-mail is available to and from",
+   "page": "https://www.loc.gov/pictures/item/2017696445/",
+   "license": "Library of Congress, sin restricciones conocidas",
+   "author": "FSA/OWI"
+  },
+  {
+   "file": "gradilla.jpg",
+   "title": "Drawing off solutions into test tubes in micro-biological determination of vitamins in dehydrated vegetables. Regional agricultural research laboratory, Albany,",
+   "page": "https://www.loc.gov/pictures/item/2017832276/",
+   "license": "Library of Congress, sin restricciones conocidas",
+   "author": "FSA/OWI"
+  },
+  {
+   "file": "mano.jpg",
+   "title": "Production. Aircraft. Samples for microscope inspection--a lowly rivet, a screw, an extruded part--prepared by a test engineer in a large Western aircraft plant",
+   "page": "https://www.loc.gov/pictures/item/2017692984/",
+   "license": "Library of Congress, sin restricciones conocidas",
+   "author": "FSA/OWI"
+  },
+  {
+   "file": "despacho.jpg",
+   "title": "Washington, D.C. A government clerk's room, showing a desk with books, telephone and directory, and a desk lamp on it",
+   "page": "https://www.loc.gov/pictures/item/2017745253/",
+   "license": "Library of Congress, sin restricciones conocidas",
+   "author": "FSA/OWI"
+  },
+  {
+   "file": "teclas.jpg",
+   "title": "Conservation. Used typewriter campaign. The War Production Board (WPB) has launched a campaign to secure 600,000 used typewriters from business firms and privat",
+   "page": "https://www.loc.gov/pictures/item/2017692947/",
+   "license": "Library of Congress, sin restricciones conocidas",
+   "author": "FSA/OWI"
   }
  ]
 }

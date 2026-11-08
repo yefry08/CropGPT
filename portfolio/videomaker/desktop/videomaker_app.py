@@ -235,7 +235,8 @@ class Main(QMainWindow):
 
     def add_item(self, kind):
         defaults = {"tape": ("TEXTO", "none", 300, 84), "tiles": ("2026", "none", 640, 110), "stamp": ("SELLO", "none", 1000, 100),
-                    "serif": ("texto pequeño", "none", 1180, 46), "prop": ("", "robot", 760, 100)}[kind]
+                    "serif": ("texto pequeño", "none", 1180, 46), "prop": ("", "robot", 760, 100),
+                    "photo": ("foto.jpg", "none", 800, 100)}[kind]   # photo: a file in the project's images/ folder
         self.items().append({"kind": kind, "text": defaults[0], "prop": defaults[1], "x": 0, "y": defaults[2], "style": "black", "size": defaults[3]})
         self.select_beat(); self.table.selectRow(self.table.rowCount() - 1)
 
