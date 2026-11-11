@@ -52,3 +52,8 @@ python3 editar_pitch.py plan_ejemplo.json contractor-ai-pitch.mp4
 - **Formato:** horizontal y de 90 s como máximo, para que no sea un Short.
 - **Fecha:** la fecha de subida se ve en la página del video. No lo borres ni lo vuelvas a subir después de enviar el enlace.
 - **Título:** «Contractor AI – Pitch (90 s)». En la descripción, el enlace a la plataforma.
+
+## Versión solo (Yefry en cámara)
+Si solo puede grabar una persona: `plan_solo.json`, siete tomas `tomas/1_problema.mp4` … `tomas/7_cierre.mp4`. En la toma 5
+Yefry presenta al equipo («I build it with [Name B], [what B brings], and [Name C], [what C brings]») y sus nombres y roles
+salen como texto en pantalla. Teleprompter con este guion: https://claude.ai/artifact/JM5M6MeAJXeX1NWdj6CDng

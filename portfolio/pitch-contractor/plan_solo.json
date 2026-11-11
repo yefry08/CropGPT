@@ -1,0 +1,16 @@
+{
+ "max_seconds": 90,
+ "segments": [
+  {"clip": "tomas/1_problema.mp4", "lower_third": {"name": "Yefry Núñez", "role": "Founder, Contractor AI"},
+   "callouts": [{"text": "Public contracts:\nopen, but unreadable", "at": 4.5}]},
+  {"clip": "tomas/2_producto.mp4",
+   "callouts": [{"text": "• Flags unusual prices\n• What each institution buys\n• What each municipality needs", "at": 5}]},
+  {"clip": "tomas/3_unico.mp4", "callouts": [{"text": "1 method · 10 countries\nEvery alert → official source", "at": 2}]},
+  {"clip": "tomas/4_potencial.mp4", "callouts": [{"text": "Chile → 10 countries →\nany Open Contracting country", "at": 1.5}]},
+  {"clip": "tomas/5_equipo.mp4", "lower_third": {"name": "Yefry Núñez", "role": "Founder, Contractor AI", "at": 0.2, "until": 2.5},
+   "callouts": [{"text": "Team\n[Name B] · [role B]\n[Name C] · [role C]", "at": 2.5}]},
+  {"clip": "tomas/6_por_que.mp4", "callouts": [{"text": "Live · Free · 3 languages\n~50,000 contracts", "at": 1.5}]},
+  {"clip": "tomas/7_cierre.mp4"}
+ ],
+ "end_card": {"title": "Contractor AI", "line": "Public money should be easy to follow.", "seconds": 2.5}
+}
