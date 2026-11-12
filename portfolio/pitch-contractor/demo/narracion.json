@@ -1,0 +1,10 @@
+{
+ "n1": "This is Contractor AI, a functional product that is live on the web, free and open. It covers forty-nine thousand public contracts from ten countries.",
+ "n2": "Here is the full user journey. A citizen or an auditor uploads a contract, as a PDF or as a link to the official publication, and picks the country. This is a fictional example from Paraguay.",
+ "n3": "The platform reads the document and extracts the title and the amount: one hundred eighty-eight million, in Paraguayan currency. The user checks the details and clicks Calculate.",
+ "n4": "In seconds, the price is compared with more than five thousand contracts from the same country, using the median and the median absolute deviation. This one is normal: six percent above the median. And every comparable contract is listed, so anyone can check it.",
+ "n5": "Second, the anomaly feed. Every contract we ingest is scored by two independent signals: a BERT and XGBoost model that predicts the price from the description, and the same statistical test. Almost four thousand contracts are flagged.",
+ "n6": "Open one to see the evidence. This contract, for repairing vehicles, is over two hundred times the price the model predicted. It is a signal worth investigating, not an accusation.",
+ "n7": "Third, the territories page. In Chocó, Colombia, more than half of the people lack adequate water or sanitation, yet none of the contracts there go to water. Every figure links to its official source.",
+ "n8": "The dashboard sums it all up by country and year. Contractor AI is live today, in Spanish, Portuguese and English."
+}

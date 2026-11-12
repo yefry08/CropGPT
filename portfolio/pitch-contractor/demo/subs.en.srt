@@ -1,0 +1,135 @@
+1
+00:00:00,200 --> 00:00:05,592
+This is Contractor AI, a functional product that is live on the web, free and open.
+
+2
+00:00:05,592 --> 00:00:09,879
+It covers forty-nine thousand public contracts from ten countries.
+
+3
+00:00:10,500 --> 00:00:12,677
+Here is the full user journey.
+
+4
+00:00:12,677 --> 00:00:15,799
+A citizen or an auditor uploads a contract,
+
+5
+00:00:15,799 --> 00:00:19,428
+as a PDF or as a link to the official publication,
+
+6
+00:00:19,428 --> 00:00:21,025
+and picks the country.
+
+7
+00:00:21,025 --> 00:00:24,074
+This is a fictional example from Paraguay.
+
+8
+00:00:24,720 --> 00:00:29,608
+The platform reads the document and extracts the title and the amount:
+
+9
+00:00:29,608 --> 00:00:31,912
+one hundred eighty-eight million,
+
+10
+00:00:31,912 --> 00:00:33,518
+in Paraguayan currency.
+
+11
+00:00:33,518 --> 00:00:36,940
+The user checks the details and clicks Calculate.
+
+12
+00:00:37,580 --> 00:00:38,307
+In seconds,
+
+13
+00:00:38,307 --> 00:00:43,798
+the price is compared with more than five thousand contracts from the same country,
+
+14
+00:00:43,798 --> 00:00:47,172
+using the median and the median absolute deviation.
+
+15
+00:00:47,172 --> 00:00:50,413
+This one is normal: six percent above the median.
+
+16
+00:00:50,413 --> 00:00:54,647
+And every comparable contract is listed, so anyone can check it.
+
+17
+00:00:55,380 --> 00:00:57,229
+Second, the anomaly feed.
+
+18
+00:00:57,229 --> 00:01:01,815
+Every contract we ingest is scored by two independent signals:
+
+19
+00:01:01,815 --> 00:01:06,992
+a BERT and XGBoost model that predicts the price from the description,
+
+20
+00:01:06,992 --> 00:01:09,211
+and the same statistical test.
+
+21
+00:01:09,211 --> 00:01:12,392
+Almost four thousand contracts are flagged.
+
+22
+00:01:13,180 --> 00:01:15,122
+Open one to see the evidence.
+
+23
+00:01:15,122 --> 00:01:16,059
+This contract,
+
+24
+00:01:16,059 --> 00:01:17,599
+for repairing vehicles,
+
+25
+00:01:17,599 --> 00:01:21,349
+is over two hundred times the price the model predicted.
+
+26
+00:01:21,349 --> 00:01:24,966
+It is a signal worth investigating, not an accusation.
+
+27
+00:01:25,680 --> 00:01:27,642
+Third, the territories page.
+
+28
+00:01:27,642 --> 00:01:28,273
+In Chocó,
+
+29
+00:01:28,273 --> 00:01:28,904
+Colombia,
+
+30
+00:01:28,904 --> 00:01:33,321
+more than half of the people lack adequate water or sanitation,
+
+31
+00:01:33,321 --> 00:01:36,405
+yet none of the contracts there go to water.
+
+32
+00:01:36,405 --> 00:01:39,349
+Every figure links to its official source.
+
+33
+00:01:40,180 --> 00:01:44,308
+The dashboard sums it all up by country and year.
+
+34
+00:01:44,308 --> 00:01:49,700
+Contractor AI is live today, in Spanish, Portuguese and English.

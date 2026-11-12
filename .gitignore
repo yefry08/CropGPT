@@ -122,3 +122,7 @@ portfolio/ia-una-persona/audio/
 portfolio/ia-una-persona/*.mp4
 portfolio/pitch-contractor/tomas/
 portfolio/pitch-contractor/*.mp4
+portfolio/pitch-contractor/demo/*.mp4
+portfolio/pitch-contractor/demo/*.mkv
+portfolio/pitch-contractor/demo/*.wav
+portfolio/pitch-contractor/demo/nar/
