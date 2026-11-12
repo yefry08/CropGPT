@@ -1,0 +1,7 @@
+{
+ "v1": "Latin American governments publish their public contracts, but almost nobody can read them. Inflated prices slip through, and the money doesn't reach the places that need it most.",
+ "v2": "Contractor AI fixes that. Upload any contract, and it is compared with thousands of similar ones to flag unusual prices, with every comparable contract traced to its official source.",
+ "v3": "It also flags anomalies across forty-nine thousand contracts, with two independent signals, and shows what each municipality needs, next to where its money goes.",
+ "v4": "It works the same way in ten countries, because it builds on the Open Contracting Data Standard, so any country that publishes it can be added. It's live, free, and in three languages.",
+ "v5": "I built it, and I'm ready to take it further. Public money should be easy to follow."
+}
